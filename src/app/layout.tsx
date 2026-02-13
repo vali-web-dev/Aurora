@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/lib/design-system/theme-provider';
 import { AccessibilityProvider } from '@/lib/accessibility/accessibility-provider';
+import { RealtimeProvider } from '@/lib/realtime/realtime-provider';
 import { SkipLinks } from '@/components/accessibility/SkipLinks';
+import { RealtimeToasts } from '@/components/aurora/RealtimeToasts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -58,8 +60,11 @@ export default function RootLayout({
       <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 antialiased">
         <ThemeProvider>
           <AccessibilityProvider>
-            <SkipLinks />
-            {children}
+            <RealtimeProvider>
+              <SkipLinks />
+              {children}
+              <RealtimeToasts />
+            </RealtimeProvider>
           </AccessibilityProvider>
         </ThemeProvider>
       </body>

@@ -4,6 +4,7 @@ import { Card } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
+import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { FeatureGrid } from '@/components/home/FeatureGrid';
 import { TrustSection } from '@/components/home/TrustSection';
 import { Hero } from '@/components/home/Hero';
@@ -61,25 +62,21 @@ const iconMap: Record<string, string> = {
 
 export function HomeUniverse() {
   return (
-    <div className="space-y-16">
+    <Surface className="space-y-16">
       <Hero />
 
-      <section className="space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
-              Home Universe
-            </p>
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-              {dailyBrief.greeting}
-            </h2>
-            <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
-              {dailyBrief.summary}
-            </p>
-          </div>
-          <Button variant="primary">Open Dashboard</Button>
-        </div>
+      <SurfaceHeader
+        title="Home Universe"
+        description={dailyBrief.summary}
+        actions={<Button variant="primary">Open Dashboard</Button>}
+      />
 
+      <SurfaceSection title="Daily Brief">
+        <div>
+          <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
+            {dailyBrief.greeting}
+          </p>
+        </div>
         <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900">
           <div className="space-y-2">
             <p className="text-sm text-slate-600 dark:text-slate-400">Daily Brief</p>
@@ -88,7 +85,7 @@ export function HomeUniverse() {
             </p>
           </div>
         </Card>
-      </section>
+      </SurfaceSection>
 
       <HomeWidgets />
 
@@ -214,6 +211,6 @@ export function HomeUniverse() {
 
       <FeatureGrid />
       <TrustSection />
-    </div>
+    </Surface>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
+import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { ProductCard } from '@/components/commerce/ProductCard';
 import { AuroraDataService, type Product } from '@/data/types';
 
@@ -28,31 +29,21 @@ export function CommerceUniverse() {
   const total = subtotal + tax;
 
   return (
-    <div className="space-y-8 py-8">
-      {/* Header */}
-      <div className="space-y-3">
-        <h1 className="text-5xl font-bold text-slate-900 dark:text-slate-50">
-          Commerce Universe
-        </h1>
-        <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl">
-          Shop everything from the world's best providers in one unified experience.
-        </p>
-      </div>
-
-      {/* Browse section */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-            Featured Products
-          </h2>
+    <Surface className="py-8">
+      <SurfaceHeader
+        title="Commerce Universe"
+        description="Shop everything from the world's best providers in one unified experience."
+        actions={
           <Button
             variant={showCart ? 'primary' : 'secondary'}
             onClick={() => setShowCart(!showCart)}
           >
             🛒 Cart ({cart.length})
           </Button>
-        </div>
+        }
+      />
 
+      <SurfaceSection title="Featured Products">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
             <ProductCard
@@ -66,9 +57,8 @@ export function CommerceUniverse() {
             />
           ))}
         </div>
-      </div>
+      </SurfaceSection>
 
-      {/* Cart sidebar */}
       {showCart && (
         <Card className="bg-blue-50 dark:bg-slate-900 border-blue-200 dark:border-slate-800">
           <div className="space-y-4">
@@ -130,26 +120,24 @@ export function CommerceUniverse() {
         </Card>
       )}
 
-      {/* Providers section */}
-      <Card>
-        <div className="space-y-4">
-          <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">
-            Integrated Providers
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {['Amazon', 'Shopify', 'eBay', 'Walmart', 'Etsy', 'AliExpress', 'Temu', 'Cosco'].map(
-              (provider) => (
-                <div
-                  key={provider}
-                  className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium text-slate-900 dark:text-slate-50"
-                >
-                  {provider}
-                </div>
-              )
-            )}
+      <SurfaceSection title="Integrated Providers">
+        <Card>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {['Amazon', 'Shopify', 'eBay', 'Walmart', 'Etsy', 'AliExpress', 'Temu', 'Cosco'].map(
+                (provider) => (
+                  <div
+                    key={provider}
+                    className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium text-slate-900 dark:text-slate-50"
+                  >
+                    {provider}
+                  </div>
+                )
+              )}
+            </div>
           </div>
-        </div>
-      </Card>
-    </div>
+        </Card>
+      </SurfaceSection>
+    </Surface>
   );
 }

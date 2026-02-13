@@ -1,5 +1,10 @@
+import { AuroraShell } from '@/components/os/AuroraShell';
 import { FinanceUniverse } from '@/components/finance/FinanceUniverse';
 
 export default function FinancePage() {
-  return <FinanceUniverse />;
+  return (
+    <AuroraShell>
+      <FinanceUniverse />
+    </AuroraShell>
+  );
 }

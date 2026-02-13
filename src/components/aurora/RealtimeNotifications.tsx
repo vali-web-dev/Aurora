@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { useRealtime } from '@/lib/realtime/realtime-provider';
 
 interface LiveNotification {
   id: string;
@@ -49,6 +50,7 @@ export function RealtimeNotifications() {
   const [unreadCount, setUnreadCount] = useState(2);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const { addToast } = useRealtime();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -62,6 +64,11 @@ export function RealtimeNotifications() {
       };
       setNotifications((prev) => [newItem, ...prev].slice(0, 6));
       setUnreadCount((prev) => Math.min(prev + 1, 9));
+      addToast({
+        title: next.title,
+        detail: next.detail,
+        tone: next.tone,
+      });
     }, 18000);
 
     return () => clearInterval(interval);

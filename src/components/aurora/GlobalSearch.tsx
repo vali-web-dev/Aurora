@@ -5,6 +5,7 @@ import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { primaryNav, secondaryNav, utilityNav } from '@/lib/navigation';
+import { AuroraModal } from '@/components/aurora/Modal';
 
 interface SearchItem {
   href: string;
@@ -23,7 +24,6 @@ export function GlobalSearch() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
-  const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const results = useMemo(() => {
@@ -51,19 +51,6 @@ export function GlobalSearch() {
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isOpen]);
 
@@ -122,71 +109,60 @@ export function GlobalSearch() {
         S
       </button>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-24">
-          <div className="absolute inset-0 bg-slate-950/40" />
-          <div
-            ref={panelRef}
-            role="dialog"
-            aria-modal="true"
+      <AuroraModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        footerContent="Tip: Use arrow keys to navigate, Enter to open."
+        headerContent={
+          <input
+            ref={inputRef}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleInputKeyDown}
+            placeholder="Search pages and universes"
             className={clsx(
-              'relative w-full max-w-2xl rounded-2xl overflow-hidden',
-              'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
-              'border border-slate-200 dark:border-slate-800',
-              'shadow-2xl'
+              'w-full bg-transparent text-slate-900 dark:text-slate-50',
+              'placeholder:text-slate-400 outline-none text-lg'
             )}
-          >
-            <div className="p-4 border-b border-slate-100 dark:border-slate-800">
-              <input
-                ref={inputRef}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={handleInputKeyDown}
-                placeholder="Search pages and universes"
-                className={clsx(
-                  'w-full bg-transparent text-slate-900 dark:text-slate-50',
-                  'placeholder:text-slate-400 outline-none text-lg'
-                )}
-                aria-label="Search"
-              />
+            aria-label="Search"
+          />
+        }
+      >
+        <div className="max-h-[60vh] overflow-y-auto">
+          {results.length === 0 && (
+            <div className="px-2 py-6 text-sm text-slate-500">
+              No results found.
             </div>
-            <div className="max-h-[60vh] overflow-y-auto p-2">
-              {results.length === 0 && (
-                <div className="px-4 py-6 text-sm text-slate-500">
-                  No results found.
-                </div>
-              )}
-              {results.map((item, index) => (
-                <button
-                  key={`${item.group}-${item.href}`}
-                  onClick={() => handleSelect(item.href)}
+          )}
+          <div className="space-y-2">
+            {results.map((item, index) => (
+              <button
+                key={`${item.group}-${item.href}`}
+                onClick={() => handleSelect(item.href)}
+                className={clsx(
+                  'w-full flex items-center justify-between px-4 py-3 rounded-lg text-left',
+                  'transition-colors',
+                  index === activeIndex
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                )}
+              >
+                <span className="font-medium">{item.label}</span>
+                <span
                   className={clsx(
-                    'w-full flex items-center justify-between px-4 py-3 rounded-lg text-left',
-                    'transition-colors',
-                    index === activeIndex
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  )}
-                >
-                  <span className="font-medium">{item.label}</span>
-                  <span className={clsx(
                     'text-xs px-2 py-1 rounded-full',
                     index === activeIndex
                       ? 'bg-white/20 text-white'
                       : 'bg-slate-200 dark:bg-slate-800 text-slate-500'
                   )}
-                  >
-                    {item.group}
-                  </span>
-                </button>
-              ))}
-            </div>
-            <div className="px-4 py-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500">
-              Tip: Use arrow keys to navigate, Enter to open.
-            </div>
+                >
+                  {item.group}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
-      )}
+      </AuroraModal>
     </div>
   );
 }

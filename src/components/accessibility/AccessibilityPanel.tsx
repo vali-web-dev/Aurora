@@ -44,7 +44,11 @@ const settings: AccessibilitySetting[] = [
   },
 ];
 
-export function AccessibilityPanel() {
+type AccessibilityPanelProps = {
+  showHeader?: boolean;
+};
+
+export function AccessibilityPanel({ showHeader = true }: AccessibilityPanelProps) {
   const accessibility = useAccessibility();
 
   const handleToggle = (key: AccessibilitySetting['key']) => {
@@ -57,14 +61,16 @@ export function AccessibilityPanel() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-          Accessibility Settings
-        </h2>
-        <p className="text-slate-600 dark:text-slate-400">
-          Customize Aurora to meet your accessibility needs. Changes are applied immediately.
-        </p>
-      </div>
+      {showHeader && (
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+            Accessibility Settings
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400">
+            Customize Aurora to meet your accessibility needs. Changes are applied immediately.
+          </p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {settings.map((setting) => {

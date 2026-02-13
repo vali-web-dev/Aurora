@@ -1,5 +1,10 @@
+import { AuroraShell } from '@/components/os/AuroraShell';
 import { HomeControlUniverse } from '@/components/homecontrol/HomeControlUniverse';
 
 export default function HomeControlPage() {
-  return <HomeControlUniverse />;
+  return (
+    <AuroraShell>
+      <HomeControlUniverse />
+    </AuroraShell>
+  );
 }

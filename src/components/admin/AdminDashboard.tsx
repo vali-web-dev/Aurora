@@ -3,6 +3,7 @@
 import { Card } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
+import { Surface, SurfaceHeader } from '@/components/aurora/Surface';
 import clsx from 'clsx';
 
 const stats = [
@@ -59,21 +60,17 @@ const healthTone: Record<string, string> = {
 
 export function AdminDashboard() {
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-50">
-            Admin Command Center
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            Monitor system health, universe activity, and governance controls.
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="secondary">Export Report</Button>
-          <Button variant="primary">Open Governance</Button>
-        </div>
-      </div>
+    <Surface>
+      <SurfaceHeader
+        title="Admin Command Center"
+        description="Monitor system health, universe activity, and governance controls."
+        actions={
+          <>
+            <Button variant="secondary">Export Report</Button>
+            <Button variant="primary">Open Governance</Button>
+          </>
+        }
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => (
@@ -211,6 +208,6 @@ export function AdminDashboard() {
           </div>
         </div>
       </Card>
-    </div>
+    </Surface>
   );
 }

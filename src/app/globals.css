@@ -16,7 +16,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid theme(colors.aurora.accent);
+  outline: 2px solid var(--color-accent, #7df9ff);
   outline-offset: 3px;
 }
 

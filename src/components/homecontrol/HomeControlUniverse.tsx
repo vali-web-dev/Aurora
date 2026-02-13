@@ -5,6 +5,7 @@ import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { AuroraDataService } from '@/data/types';
+import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 
 const devices = AuroraDataService.getSmartDevices();
 const scenes = AuroraDataService.getHomeScenes();
@@ -17,129 +18,134 @@ const currentEnergyUsage = energy.length > 0 ? energy[0].powerUsageWatts : 0;
 
 export function HomeControlUniverse() {
   return (
-    <div className="space-y-8 py-8">
-      <div className="space-y-3">
-        <h1 className="text-5xl font-bold text-slate-900 dark:text-slate-50">Home Control Universe</h1>
-        <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl">
-          Smart devices, scenes, automations, and energy intelligence for connected living.
-        </p>
-      </div>
+    <Surface className="py-8">
+      <SurfaceHeader
+        title="Home Control Universe"
+        description="Smart devices, scenes, automations, and energy intelligence for connected living."
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard label="Devices Online" value={onlineDevices} helper={`of ${devices.length}`} />
-        <StatCard label="Active Automations" value={enabledAutomations} />
-        <StatCard label="Current Usage" value={`${currentEnergyUsage}W`} />
-      </div>
-
-      <Card className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
-              Smart Devices
-            </p>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Connected Home</h2>
-          </div>
-          <Badge size="sm" variant="success">All healthy</Badge>
+      <SurfaceSection title="Home Snapshot">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <StatCard label="Devices Online" value={onlineDevices} helper={`of ${devices.length}`} />
+          <StatCard label="Active Automations" value={enabledAutomations} />
+          <StatCard label="Current Usage" value={`${currentEnergyUsage}W`} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {devices.map((device) => (
-            <div key={device.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
-              <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{device.name}</p>
-                <Badge size="sm" variant={device.status === 'online' ? 'success' : 'error'}>
-                  {device.status}
-                </Badge>
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
-                {device.type} • {device.room}
-              </p>
-              {device.battery !== undefined && (
-                <p className="text-xs text-slate-600 dark:text-slate-400">
-                  Battery: {device.battery}%
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </Card>
+      </SurfaceSection>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
+      <SurfaceSection title="Connected Home">
         <Card className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Scenes</h2>
-            <Button variant="secondary" size="sm">Create Scene</Button>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                Smart Devices
+              </p>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Connected Home</h2>
+            </div>
+            <Badge size="sm" variant="success">All healthy</Badge>
           </div>
-          <div className="space-y-3">
-            {scenes.map((scene) => (
-              <div key={scene.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {devices.map((device) => (
+              <div key={device.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{scene.name}</p>
-                  <Button variant="ghost" size="sm">Activate</Button>
+                  <p className="font-semibold text-slate-900 dark:text-slate-50">{device.name}</p>
+                  <Badge size="sm" variant={device.status === 'online' ? 'success' : 'error'}>
+                    {device.status}
+                  </Badge>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">{scene.description}</p>
                 <p className="text-xs text-slate-600 dark:text-slate-400">
-                  Triggered {scene.triggeredCount} times
+                  {device.type} • {device.room}
                 </p>
+                {device.battery !== undefined && (
+                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                    Battery: {device.battery}%
+                  </p>
+                )}
               </div>
             ))}
           </div>
         </Card>
+      </SurfaceSection>
 
-        <div className="space-y-6">
+      <SurfaceSection title="Scenes & Automations">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Automations</h2>
-              <Button variant="ghost" size="sm">Add</Button>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Scenes</h2>
+              <Button variant="secondary" size="sm">Create Scene</Button>
             </div>
             <div className="space-y-3">
-              {automations.map((auto) => (
-                <div key={auto.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+              {scenes.map((scene) => (
+                <div key={scene.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{auto.name}</p>
-                    <Badge size="sm" variant={auto.enabled ? 'success' : 'default'}>
-                      {auto.enabled ? 'ON' : 'OFF'}
-                    </Badge>
+                    <p className="font-semibold text-slate-900 dark:text-slate-50">{scene.name}</p>
+                    <Button variant="ghost" size="sm">Activate</Button>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{auto.triggerCondition}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">{scene.description}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                    Triggered {scene.triggeredCount} times
+                  </p>
                 </div>
               ))}
             </div>
           </Card>
 
-          <Card className="space-y-3">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Energy Efficiency</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              You're using {((currentEnergyUsage / 3000) * 100).toFixed(0)}% of typical peak usage.
-            </p>
-            <Button variant="primary" size="sm">Optimize Settings</Button>
-          </Card>
-        </div>
-      </div>
-
-      <Card className="space-y-4">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Energy Usage</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {energy.map((record) => (
-            <div key={record.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
+          <div className="space-y-6">
+            <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">
-                  {record.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </p>
-                <Badge size="sm" variant="info">${record.costEstimate.toFixed(2)}</Badge>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Automations</h2>
+                <Button variant="ghost" size="sm">Add</Button>
               </div>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">{record.powerUsageWatts}W</p>
-              <div className="space-y-2">
-                {Object.entries(record.deviceBreakdown).map(([device, wattage]) => (
-                  <div key={device} className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
-                    <span>{device}</span>
-                    <span>{wattage}W</span>
+              <div className="space-y-3">
+                {automations.map((auto) => (
+                  <div key={auto.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                    <div className="flex items-center justify-between">
+                      <p className="font-semibold text-slate-900 dark:text-slate-50">{auto.name}</p>
+                      <Badge size="sm" variant={auto.enabled ? 'success' : 'default'}>
+                        {auto.enabled ? 'ON' : 'OFF'}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">{auto.triggerCondition}</p>
                   </div>
                 ))}
               </div>
-            </div>
-          ))}
+            </Card>
+
+            <Card className="space-y-3">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Energy Efficiency</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                You're using {((currentEnergyUsage / 3000) * 100).toFixed(0)}% of typical peak usage.
+              </p>
+              <Button variant="primary" size="sm">Optimize Settings</Button>
+            </Card>
+          </div>
         </div>
-      </Card>
-    </div>
+      </SurfaceSection>
+
+      <SurfaceSection title="Energy Usage">
+        <Card className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {energy.map((record) => (
+              <div key={record.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                    {record.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                  <Badge size="sm" variant="info">${record.costEstimate.toFixed(2)}</Badge>
+                </div>
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">{record.powerUsageWatts}W</p>
+                <div className="space-y-2">
+                  {Object.entries(record.deviceBreakdown).map(([device, wattage]) => (
+                    <div key={device} className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                      <span>{device}</span>
+                      <span>{wattage}W</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </SurfaceSection>
+    </Surface>
   );
 }
