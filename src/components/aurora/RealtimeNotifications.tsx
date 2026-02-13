@@ -139,11 +139,14 @@ export function RealtimeNotifications() {
         <div
           ref={panelRef}
           className={clsx(
-            'absolute right-0 top-full mt-3 w-80 rounded-xl',
+            'fixed sm:absolute right-0 sm:right-0 top-14 sm:top-full sm:mt-3',
+            'w-full sm:w-80 max-w-md sm:max-w-none',
+            'sm:rounded-xl rounded-none',
             'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
-            'border border-slate-200 dark:border-slate-800',
+            'border-t sm:border border-slate-200 dark:border-slate-800',
             'shadow-2xl z-50 overflow-hidden',
-            'animate-slide-in-down duration-300'
+            'animate-slide-in-down duration-300',
+            'max-h-[80vh] flex flex-col'
           )}
         >
           <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
@@ -181,7 +184,7 @@ export function RealtimeNotifications() {
               </svg>
             </button>
           </div>
-          <div className="max-h-80 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto">
             {notifications.map((item) => (
               <div
                 key={item.id}

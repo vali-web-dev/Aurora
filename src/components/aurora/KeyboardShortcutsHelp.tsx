@@ -60,12 +60,12 @@ export function KeyboardShortcutsHelp({
               {section.items.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2 px-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                 >
                   <span className="text-sm text-slate-700 dark:text-slate-300">
                     {item.description}
                   </span>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 flex-wrap">
                     {item.keys.map((key, i) => (
                       <span key={i} className="flex items-center gap-1">
                         <kbd

@@ -9,10 +9,10 @@ export function Hero() {
           <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
             Aurora — Digital Civilization
           </p>
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight text-slate-900 dark:text-slate-50">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-slate-900 dark:text-slate-50">
             A calm, beautifully designed digital world for your creative life.
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
             Aurora brings clarity, inspiration, and emotional resonance to everything you create. 
             One place for your ideas, projects, and creativity.
           </p>
@@ -48,7 +48,7 @@ export function Hero() {
       </div>
 
       {/* Visual showcase */}
-      <div className="relative h-72 rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-50 dark:from-slate-900 to-slate-100 dark:to-slate-950 overflow-hidden shadow-2xl">
+      <div className="relative h-64 sm:h-72 rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-50 dark:from-slate-900 to-slate-100 dark:to-slate-950 overflow-hidden shadow-2xl">
         <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top_right,_#60a5fa33,_transparent_50%),radial-gradient(circle_at_bottom_left,_#a855f733,_transparent_50%)]" />
         
         <div className="relative flex h-full flex-col justify-between p-6">
