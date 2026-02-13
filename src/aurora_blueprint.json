@@ -1,0 +1,338 @@
+{
+  "name": "Aurora",
+  "description": "Aurora is a universal digital world that unifies entertainment, commerce, social, learning, creativity, productivity, travel, finance, health, home control, and intelligent automation inside a single, emotionally intelligent website.",
+  "corePrinciples": {
+    "clarity": "Every surface feels intentional, readable, and grounded.",
+    "emotion": "Aurora speaks in a warm, mythic, inspiring tone.",
+    "adaptation": "The interface adapts to identity, context, mood, and device.",
+    "unity": "Every domain feels like part of one coherent world."
+  },
+  "personas": [
+    "creator",
+    "shopper",
+    "student",
+    "professional",
+    "gamer",
+    "parent",
+    "traveler",
+    "founder"
+  ],
+  "modes": {
+    "visualModes": ["light", "dark", "illuminated", "system"],
+    "themeFamilies": ["home", "office", "outdoor", "lifestyle", "creative"]
+  },
+  "universes": [
+    {
+      "id": "home",
+      "name": "Home Universe",
+      "tagline": "Your digital home — calm, clear, and beautifully yours.",
+      "purpose": "Provide a personal control center for life inside Aurora.",
+      "keySurfaces": [
+        "Daily brief",
+        "Calendar and tasks",
+        "Watchlist and reading list",
+        "Shopping list",
+        "Learning progress",
+        "Creative projects",
+        "Notifications"
+      ],
+      "widgets": [
+        "Time and date",
+        "Weather",
+        "Quick actions",
+        "Recent activity",
+        "Theme preview",
+	"Health watch",
+	"Diet watch",
+	"latests",
+	"stocks updates"
+      ]
+    },
+    {
+      "id": "entertainment",
+      "name": "Entertainment Universe",
+      "tagline": "Every story, every song, every moment — in one place.",
+      "purpose": "Unify video, music, live events, and media discovery inside Aurora.",
+      "keySurfaces": [
+        "Streaming hub",
+        "Music and podcasts",
+        "Playlists and watchlists",
+        "Live events and watch parties",
+        "Aurora Originals"
+      ],
+      "integrations": [
+        "YouTube",
+        "Netflix",
+        "Prime Video",
+        "Disney+",
+        "Spotify",
+        "SoundCloud",
+        "TikTok",
+        "Twitch"
+	"spotify"
+	"Apple music"
+      ]
+    },
+    {
+      "id": "commerce",
+      "name": "Commerce Universe",
+      "tagline": "Shop the entire internet from one place.",
+      "purpose": "Offer a unified shopping experience with a single Aurora checkout.",
+      "keySurfaces": [
+        "Product discovery grid",
+        "Product detail surfaces",
+        "Aurora Wallet",
+        "Cart and checkout",
+        "Order history and tracking"
+      ],
+      "integrations": [
+        "Amazon",
+        "Shopify",
+        "eBay",
+        "Walmart",
+        "AliExpress",
+        "Etsy"
+      ]
+    },
+    {
+      "id": "social",
+      "name": "Social Universe",
+      "tagline": "All your worlds, one social fabric.",
+      "purpose": "Unify social feeds, messaging, and communities.",
+      "keySurfaces": [
+        "Unified feed",
+        "Post composer",
+        "Messaging panel",
+        "Channel and community discovery"
+      ],
+      "integrations": [
+        "Instagram",
+        "TikTok",
+        "X",
+        "Reddit",
+        "Pinterest",
+        "YouTube community",
+        "LinkedIn"
+      ]
+    },
+    {
+      "id": "learning",
+      "name": "Learning Universe",
+      "tagline": "Learn anything. Master everything.",
+      "purpose": "Provide a global academy for structured and self-directed learning.",
+      "keySurfaces": [
+        "Course catalog",
+        "Lesson view",
+        "Learning paths",
+        "Skill maps",
+        "Progress dashboards"
+      ],
+      "integrations": [
+        "YouTube tutorials",
+        "Udemy",
+        "Coursera",
+        "Skillshare",
+        "Khan Academy",
+        "LinkedIn Learning"
+      ]
+    },
+    {
+      "id": "forge",
+      "name": "Forge (Creative Universe)",
+      "tagline": "Your imagination deserves a studio.",
+      "purpose": "Offer a multi-panel creative studio for surfaces, campaigns, and stories.",
+      "keySurfaces": [
+        "Surface editor",
+        "Block library",
+        "Component library",
+        "Brand Brain panel",
+        "AI editing actions"
+      ],
+      "blockTypes": [
+        "Hero",
+        "Text",
+        "Media",
+        "Features",
+        "Testimonials",
+        "Call to action"
+      ],
+      "aiActions": [
+        "rewrite",
+        "expand",
+        "shorten",
+        "mythic",
+        "analyze",
+        "explain"
+      ]
+    },
+    {
+      "id": "brand",
+      "name": "Brand Universe",
+      "tagline": "Your brand is a living mind.",
+      "purpose": "Host brand identity, guidelines, assets, and campaigns.",
+      "keySurfaces": [
+        "Brand overview",
+        "Story and values",
+        "Tone and archetype",
+        "Vocabulary and examples",
+        "Asset library",
+        "Campaign list and detail"
+      ]
+    },
+    {
+      "id": "communities",
+      "name": "Community Universe",
+      "tagline": "Belong to something bigger.",
+      "purpose": "Provide spaces for creators, brands, and topics.",
+      "keySurfaces": [
+        "Community directory",
+        "Community detail",
+        "Posts and threads",
+        "Events and live rooms"
+      ]
+    },
+    {
+      "id": "gaming",
+      "name": "Gaming Universe",
+      "tagline": "Play without boundaries.",
+      "purpose": "Unify gaming libraries, clips, and events.",
+      "keySurfaces": [
+        "Game library",
+        "Clips and highlights",
+        "Events and tournaments",
+        "Leaderboards"
+      ]
+    },
+    {
+      "id": "productivity",
+      "name": "Productivity Universe",
+      "tagline": "Work with clarity. Create with flow.",
+      "purpose": "Provide tools for planning, organizing, and executing.",
+      "keySurfaces": [
+        "Notes",
+        "Tasks",
+        "Calendar",
+        "Boards",
+        "Documents"
+      ]
+    },
+    {
+      "id": "travel",
+      "name": "Travel Universe",
+      "tagline": "Your journey, beautifully organized.",
+      "purpose": "Help users plan and track trips.",
+      "keySurfaces": [
+        "Trip list",
+        "Itinerary overview",
+        "Trip detail",
+        "Map panel"
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Finance Universe",
+      "tagline": "Understand your money. Shape your future.",
+      "purpose": "Offer a clear view of spending, subscriptions, and goals.",
+      "keySurfaces": [
+        "Spending dashboard",
+        "Subscription list",
+        "Budget and goals",
+        "Account overview"
+      ]
+    },
+    {
+      "id": "health",
+      "name": "Health & Wellness Universe",
+      "tagline": "Wellness, woven into your life.",
+      "purpose": "Support habits, wellness, and reflection.",
+      "keySurfaces": [
+        "Habit tracker",
+        "Wellness summary",
+        "Guided sessions",
+        "Reflection surfaces"
+      ]
+    },
+    {
+      "id": "homeControl",
+      "name": "Home Control Universe",
+      "tagline": "Your home, one tap away.",
+      "purpose": "Control smart devices from Aurora.",
+      "keySurfaces": [
+        "Room overview",
+        "Device cards",
+        "Scenes and routines"
+      ]
+    },
+    {
+      "id": "automation",
+      "name": "Automation & Agents",
+      "tagline": "Let Aurora handle the routine.",
+      "purpose": "Define agents and routines that automate digital life.",
+      "keySurfaces": [
+        "Agent list",
+        "Agent detail",
+        "Routine builder",
+        "Notification center"
+      ]
+    }
+  ],
+  "designSystem": {
+    "interaction": {
+      "hover": "Lift, glow, and subtle motion to signal interactivity.",
+      "press": "Compression, ripple, and tactile feedback.",
+      "drag": "Elastic resistance and magnetic snapping.",
+      "scroll": "Smooth, momentum-based scrolling with optional parallax.",
+      "navigation": "Soft transitions between sections with clear context."
+    },
+    "motionTokens": {
+      "fast": 120,
+      "medium": 200,
+      "slow": 320,
+      "ambientMin": 600,
+      "ambientMax": 2000
+    },
+    "colorTokens": {
+      "base": [
+        "primary",
+        "secondary",
+        "accent",
+        "background",
+        "surface",
+        "glow",
+        "shadow"
+      ],
+      "semantic": [
+        "success",
+        "error",
+        "warning",
+        "info"
+      ]
+    },
+    "typographyTokens": {
+      "levels": [
+        "display",
+        "h1",
+        "h2",
+        "h3",
+        "body",
+        "caption"
+      ],
+      "weights": [
+        "light",
+        "regular",
+        "medium",
+        "bold",
+        "black"
+      ]
+    }
+  },
+  "accessibility": {
+    "modes": [
+      "highContrast",
+      "largeText",
+      "reducedMotion",
+      "dyslexiaFriendly",
+      "simplifiedUI"
+    ]
+  }
+}
