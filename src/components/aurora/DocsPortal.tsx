@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
@@ -196,7 +198,7 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
+        <DialogHeader onClose={() => onOpenChange(false)}>
           <DialogTitle>Aurora Documentation Portal</DialogTitle>
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
             Explore Aurora's docs by topic, role, or feature

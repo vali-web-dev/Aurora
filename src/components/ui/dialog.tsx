@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import clsx from 'clsx';
 
 interface DialogProps {
@@ -16,6 +16,7 @@ interface DialogContentProps {
 
 interface DialogHeaderProps {
   children: ReactNode;
+  onClose?: () => void;
 }
 
 interface DialogTitleProps {
@@ -23,14 +24,31 @@ interface DialogTitleProps {
 }
 
 export function Dialog({ open, onOpenChange, children }: DialogProps) {
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape' && open) {
+        onOpenChange(false);
+      }
+    }
+
+    if (open) {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [open, onOpenChange]);
+
   if (!open) return null;
+
+  const handleBackdropClick = () => {
+    onOpenChange(false);
+  };
 
   return (
     <>
       {/* Backdrop */}
       <div
         className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-        onClick={() => onOpenChange(false)}
+        onClick={handleBackdropClick}
         role="presentation"
       />
       {/* Dialog Content */}
@@ -64,8 +82,44 @@ export function DialogContent({
   );
 }
 
-export function DialogHeader({ children }: DialogHeaderProps) {
-  return <div className="mb-4 space-y-1">{children}</div>;
+export function DialogHeader({
+  children,
+  onClose,
+}: DialogHeaderProps) {
+  return (
+    <div className="mb-4 space-y-1 flex items-start justify-between gap-4">
+      <div className="flex-1">{children}</div>
+      {onClose && (
+        <button
+          onClick={onClose}
+          className={clsx(
+            'flex-shrink-0 w-8 h-8 rounded-lg',
+            'flex items-center justify-center',
+            'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
+            'hover:bg-slate-100 dark:hover:bg-slate-800',
+            'transition-all duration-200',
+            'focus:outline-none focus:ring-2 focus:ring-blue-500'
+          )}
+          aria-label="Close dialog"
+          title="Close (Esc)"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
 }
 
 export function DialogTitle({ children }: DialogTitleProps) {

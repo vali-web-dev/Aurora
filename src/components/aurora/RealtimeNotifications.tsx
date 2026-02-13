@@ -86,9 +86,19 @@ export function RealtimeNotifications() {
       }
     }
 
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    }
+
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('keydown', handleKeyDown);
+      };
     }
   }, [isOpen]);
 
@@ -136,30 +146,90 @@ export function RealtimeNotifications() {
             'animate-slide-in-down duration-300'
           )}
         >
-          <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
-            <div className="flex items-center justify-between">
+          <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div>
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                 Live Updates
               </h3>
               <span className="text-xs text-slate-500 dark:text-slate-400">Realtime</span>
             </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className={clsx(
+                'flex-shrink-0 w-7 h-7 rounded-lg',
+                'flex items-center justify-center',
+                'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
+                'hover:bg-slate-100 dark:hover:bg-slate-800',
+                'transition-all duration-200',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500'
+              )}
+              aria-label="Close notifications"
+              title="Close (Esc)"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
           <div className="max-h-80 overflow-y-auto">
             {notifications.map((item) => (
               <div
                 key={item.id}
-                className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 last:border-b-0"
+                className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 last:border-b-0 group"
               >
-                <div className="flex items-center justify-between">
-                  <p className="font-medium text-slate-900 dark:text-slate-50">
-                    {item.title}
-                  </p>
-                  <span className={toneClass(item.tone)}>{item.tone}</span>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="font-medium text-slate-900 dark:text-slate-50">
+                        {item.title}
+                      </p>
+                      <span className={toneClass(item.tone)}>{item.tone}</span>
+                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      {item.detail}
+                    </p>
+                    <p className="text-[11px] text-slate-400 mt-2">{item.time}</p>
+                  </div>
+                  <button
+                    onClick={() =>
+                      setNotifications((prev) => prev.filter((n) => n.id !== item.id))
+                    }
+                    className={clsx(
+                      'flex-shrink-0 w-6 h-6 rounded',
+                      'flex items-center justify-center',
+                      'text-slate-300 hover:text-slate-500 dark:hover:text-slate-300',
+                      'hover:bg-slate-100 dark:hover:bg-slate-800',
+                      'transition-all duration-200 opacity-0 group-hover:opacity-100',
+                      'focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    )}
+                    aria-label="Dismiss notification"
+                    title="Dismiss"
+                  >
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  {item.detail}
-                </p>
-                <p className="text-[11px] text-slate-400 mt-2">{item.time}</p>
               </div>
             ))}
           </div>
