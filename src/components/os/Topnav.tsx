@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { primaryNav } from '@/lib/navigation';
 import { ThemeSelector } from '@/components/aurora/ThemeSelector';
+import { GlobalSearch } from '@/components/aurora/GlobalSearch';
+import { RealtimeNotifications } from '@/components/aurora/RealtimeNotifications';
 import { CollapsibleNav } from '@/components/os/CollapsibleNav';
 import { useTheme } from '@/lib/design-system/theme-provider';
 import clsx from 'clsx';
@@ -78,6 +80,8 @@ export function TopNav() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
+          <GlobalSearch />
+          <RealtimeNotifications />
           {/* Theme Selector */}
           <ThemeSelector variant="compact" showLabel={false} />
 

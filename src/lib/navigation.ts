@@ -30,6 +30,7 @@ export const secondaryNav = [
 // Utility navigation - in collapsible menu footer
 export const utilityNav = [
   { href: "/accessibility", label: "Accessibility" },
+  { href: "/admin", label: "Admin" },
   { href: "/about", label: "About" },
   { href: "/roadmap", label: "Roadmap" },
   { href: "/blog", label: "Blog" },
@@ -73,6 +74,7 @@ legal: [
     { href: "/health", label: "Health" }
 ],
 support: [
-    { href: "/contact", label: "Contact" }
+  { href: "/admin", label: "Admin" },
+  { href: "/contact", label: "Contact" }
 ]
 };
