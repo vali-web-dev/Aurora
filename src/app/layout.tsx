@@ -2,8 +2,14 @@ import type { Metadata } from 'next';
 import { ThemeProvider } from '@/lib/design-system/theme-provider';
 import { AccessibilityProvider } from '@/lib/accessibility/accessibility-provider';
 import { RealtimeProvider } from '@/lib/realtime/realtime-provider';
+import { CompanionProvider } from '@/lib/companion/companion-provider';
+import { CompanionContextEngineProvider } from '@/lib/companion/companion-context-engine';
+import { MemoryProvider } from '@/lib/memory/memory-provider';
 import { SkipLinks } from '@/components/accessibility/SkipLinks';
+import { MemoryTracker } from '@/components/aurora/MemoryTracker';
+import { CompanionPanel } from '@/components/aurora/CompanionPanel';
 import { RealtimeToasts } from '@/components/aurora/RealtimeToasts';
+import { CompanionHint } from '@/components/aurora/CompanionHint';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -61,9 +67,18 @@ export default function RootLayout({
         <ThemeProvider>
           <AccessibilityProvider>
             <RealtimeProvider>
-              <SkipLinks />
-              {children}
-              <RealtimeToasts />
+              <MemoryProvider>
+                <CompanionProvider>
+                  <CompanionContextEngineProvider>
+                    <SkipLinks />
+                    {children}
+                    <MemoryTracker />
+                    <CompanionPanel />
+                    <CompanionHint />
+                    <RealtimeToasts />
+                  </CompanionContextEngineProvider>
+                </CompanionProvider>
+              </MemoryProvider>
             </RealtimeProvider>
           </AccessibilityProvider>
         </ThemeProvider>

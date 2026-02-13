@@ -8,11 +8,13 @@ import { GlobalSearch } from '@/components/aurora/GlobalSearch';
 import { RealtimeNotifications } from '@/components/aurora/RealtimeNotifications';
 import { CollapsibleNav } from '@/components/os/CollapsibleNav';
 import { useTheme } from '@/lib/design-system/theme-provider';
+import { useCompanion } from '@/lib/companion/companion-provider';
 import clsx from 'clsx';
 
 export function TopNav() {
   const pathname = usePathname();
   const { mode } = useTheme();
+  const { toggle } = useCompanion();
 
   const isIlluminated = mode === 'illuminated';
 
@@ -82,6 +84,21 @@ export function TopNav() {
         <div className="flex items-center gap-2">
           <GlobalSearch />
           <RealtimeNotifications />
+          <button
+            onClick={toggle}
+            className={clsx(
+              'relative w-10 h-10 rounded-lg flex items-center justify-center',
+              'text-slate-600 dark:text-slate-300',
+              'bg-slate-100/70 dark:bg-slate-900/60',
+              'border border-slate-200 dark:border-slate-800',
+              'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
+            )}
+            aria-label="Open companion panel"
+            title="Companion"
+            type="button"
+          >
+            <span className="text-xs font-semibold">CP</span>
+          </button>
           {/* Theme Selector */}
           <ThemeSelector variant="compact" showLabel={false} />
 
