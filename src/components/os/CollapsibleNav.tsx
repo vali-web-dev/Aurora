@@ -95,7 +95,7 @@ export function CollapsibleNav() {
           {/* Backdrop */}
           <div
             className={clsx(
-              'fixed inset-0 top-16 z-40 bg-black/0 md:hidden',
+              'fixed inset-0 top-[80px] z-40 bg-black/0 md:hidden',
               'animate-fade-in duration-200'
             )}
             onClick={() => setIsOpen(false)}

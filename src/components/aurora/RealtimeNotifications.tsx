@@ -139,7 +139,7 @@ export function RealtimeNotifications() {
         <div
           ref={panelRef}
           className={clsx(
-            'fixed sm:absolute right-0 sm:right-0 top-14 sm:top-full sm:mt-3',
+            'fixed right-0 top-[80px]',
             'w-full sm:w-80 max-w-md sm:max-w-none',
             'sm:rounded-xl rounded-none',
             'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
