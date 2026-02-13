@@ -70,6 +70,26 @@ This repository contains Aurora's complete identity, design philosophy, and user
 
 ---
 
+### 💻 **[FEATURE_DEVELOPMENT_GUIDE.md](FEATURE_DEVELOPMENT_GUIDE.md)** **NEW**
+**For:** Developers, designers, anyone adding features to Aurora  
+**Contains:**
+- Feature → Documentation workflow (docs are part of every feature)
+- Planning, implementation, documentation, verification checklist
+- Documentation storage hierarchy (central docs + feature-specific docs)
+- Feature documentation template (use for complex features)
+- Making docs accessible (in-app portal, code links, markdown conventions)
+- Maintenance schedule
+- Real-world examples (adding signals, new universes, memory enhancements)
+- Principle: Aurora's identity is living and evolving
+
+**Read this if:** You're adding a feature to Aurora and want to know how to integrate documentation from day one.
+
+**Key principle:** *Documentation is not optional. It's part of feature completion, same commit.*
+
+**Length:** ~2,500 words (15-20 min read)
+
+---
+
 ### 🎨 **[AURORA_DESIGN_CULTURE.md](AURORA_DESIGN_CULTURE.md)**
 **For:** Designers, developers, marketers, brand builders  
 **Contains:**
@@ -158,14 +178,22 @@ This repository contains Aurora's complete identity, design philosophy, and user
 2. Check **[AURORA_MANUAL.md](AURORA_MANUAL.md#privacy--consent)** - Privacy section
 3. Review **[AURORA_MANUAL.md](AURORA_MANUAL.md#accessibility--inclusivity)** - Accessibility
 
+### ⭐ **I'm Adding a Feature to Aurora** (NEW)
+1. **MUST READ:** **[FEATURE_DEVELOPMENT_GUIDE.md](FEATURE_DEVELOPMENT_GUIDE.md)** (20 min)
+2. Understand: **[AURORA_MANUAL.md](AURORA_MANUAL.md#the-companion-system)** - Companion System (context for personality)
+3. Verify: **[AURORA_PRINCIPLES_ETHICS.md](AURORA_PRINCIPLES_ETHICS.md#core-principles)** - Does your feature align?
+4. Reference: **[AURORA_DESIGN_CULTURE.md](AURORA_DESIGN_CULTURE.md)** - Design patterns (as needed)
+5. **Key principle:** Docs are part of the feature. Same commit. See Feature Development Guide § Checklist.
+
 ### 📚 **I Want to Learn Everything**
 Read in this order:
 1. **[AURORA_MANUAL.md](AURORA_MANUAL.md)** - Get grounded
 2. **[AURORA_PRINCIPLES_ETHICS.md](AURORA_PRINCIPLES_ETHICS.md)** - Understand why
 3. **[AURORA_DESIGN_CULTURE.md](AURORA_DESIGN_CULTURE.md)** - Know how it looks/feels
 4. **[COMPANION_PERSONALITY_DESIGN.md](COMPANION_PERSONALITY_DESIGN.md)** - Understand the magic
+5. **[FEATURE_DEVELOPMENT_GUIDE.md](FEATURE_DEVELOPMENT_GUIDE.md)** - Learn to contribute
 
-Total time: ~90 minutes
+Total time: ~120 minutes
 
 ---
 
@@ -230,6 +258,12 @@ These themes appear throughout:
 - [AURORA_MANUAL.md - Ethical Guidelines](AURORA_MANUAL.md#ethical-guidelines)
 - [AURORA_PRINCIPLES_ETHICS.md - Anti-Principles](AURORA_PRINCIPLES_ETHICS.md#anti-principles-what-well-never-do)
 
+**Contributing & Feature Development** ⭐ **NEW**
+- [FEATURE_DEVELOPMENT_GUIDE.md - Complete Workflow](FEATURE_DEVELOPMENT_GUIDE.md)
+- [FEATURE_DEVELOPMENT_GUIDE.md - Checklist](FEATURE_DEVELOPMENT_GUIDE.md#checklist-for-feature-prs)
+- [FEATURE_DEVELOPMENT_GUIDE.md - Feature Doc Template](FEATURE_DEVELOPMENT_GUIDE.md#feature-specific-documentation-template)
+- [FEATURE_DEVELOPMENT_GUIDE.md - Examples](FEATURE_DEVELOPMENT_GUIDE.md#examples)
+
 ---
 
 ## Contributing to Aurora's Identity
@@ -252,8 +286,9 @@ These documents are maintained by:
 - **AURORA_DESIGN_CULTURE.md** - Design & Brand Team
 - **COMPANION_PERSONALITY_DESIGN.md** - Engineering & Product Team
 - **AURORA_QUICK_REFERENCE.md** - All teams (collaborative)
+- **FEATURE_DEVELOPMENT_GUIDE.md** - Engineering & Product Team ⭐ **NEW**
 
-**Last Updated:** February 2026  
+**Last Updated:** February 2026 (added Feature Development Guide)  
 **Next Review:** May 2026
 
 ---
@@ -268,18 +303,32 @@ We welcome feedback. We welcome scrutiny. We welcome your help in making Aurora 
 
 ---
 
+## Principle: Living Documentation
+
+Aurora's identity lives in these documents. **Every feature, enhancement, and upgrade is added to Aurora's identity profile and made easily accessible.**
+
+This means:
+- Features aren't complete until docs are complete (same commit)
+- Docs are accessible in-app via the "?" button (DocsPortal)
+- Features have inline code comments linking to relevant docs
+- Central docs are the source of truth
+
+See [FEATURE_DEVELOPMENT_GUIDE.md](FEATURE_DEVELOPMENT_GUIDE.md) for the complete workflow.
+
+---
+
 ## Getting Help
 
 - 📖 **Full documentation:** aurora.guide
 - 🤔 **Questions:** support@aurora.guide
 - 🐛 **Bug reports:** aurora.guide/bugs
 - 💬 **Community:** forum.aurora.guide
-- 🤝 **Contributing:** Contributing.md (coming soon)
+- 🤝 **Contributing:** [FEATURE_DEVELOPMENT_GUIDE.md](FEATURE_DEVELOPMENT_GUIDE.md) (now available!)
 
 ---
 
-**Aurora Documentation Suite v0.1**  
-**Status:** Complete & Living  
+**Aurora Documentation Suite v0.2** ⭐ **UPDATED**  
+**Status:** Complete & Living (Feature Development Guide now integrated)  
 **Next Update:** April 2026
 
 > *"Clarity, beauty, integrity, humanity, wonder."*
