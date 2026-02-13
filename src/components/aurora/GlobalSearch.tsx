@@ -126,6 +126,7 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
       <AuroraModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
+        size="md"
         footerContent="Tip: Use arrow keys to navigate, Enter to open."
         headerContent={
           <input
@@ -142,7 +143,7 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
           />
         }
       >
-        <div className="max-h-[60vh] overflow-y-auto">
+        <div className="max-h-[50vh] overflow-y-auto">
           {results.length === 0 && (
             <div className="px-2 py-6 text-sm text-slate-500">
               No results found.
