@@ -3,20 +3,23 @@
 import { useEffect, useState } from 'react';
 import { useCompanionContextEngine } from '@/lib/companion/companion-context-engine';
 import { cn } from '@/lib/utils';
+import clsx from 'clsx';
 
 /**
  * CompanionHint
  * Renders subtle, context-aware hints based on personality and scope
  * Only shows when suggestions are enabled and tone suggests it's appropriate
+ * User can dismiss the hint
  */
 export function CompanionHint() {
   const { canShowSuggestion, currentTone, guidanceTheme, toneBehavior } =
     useCompanionContextEngine();
   const [isVisible, setIsVisible] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
   const [hint, setHint] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!canShowSuggestion() || !guidanceTheme) {
+    if (!canShowSuggestion() || !guidanceTheme || isDismissed) {
       setIsVisible(false);
       return;
     }
@@ -24,14 +27,19 @@ export function CompanionHint() {
     // Stagger appearance for smooth intro
     const timer = setTimeout(() => setIsVisible(true), 800);
     return () => clearTimeout(timer);
-  }, [canShowSuggestion, guidanceTheme]);
+  }, [canShowSuggestion, guidanceTheme, isDismissed]);
 
   useEffect(() => {
     if (!guidanceTheme) return;
     setHint(guidanceTheme);
   }, [guidanceTheme]);
 
-  if (!isVisible || !hint) return null;
+  const handleDismiss = () => {
+    setIsDismissed(true);
+    setIsVisible(false);
+  };
+
+  if (!isVisible || !hint || isDismissed) return null;
 
   const hintColor = {
     mentor: 'from-blue-50 to-blue-100/50 dark:from-blue-950/40 dark:to-blue-900/20 border-blue-200 dark:border-blue-900 text-blue-900 dark:text-blue-100',
@@ -60,6 +68,7 @@ export function CompanionHint() {
         'bg-gradient-to-br p-3 shadow-lg',
         'animate-slide-in-up duration-500',
         'text-sm font-medium',
+        'group',
         hintColor[currentTone]
       )}
       role="complementary"
@@ -67,12 +76,39 @@ export function CompanionHint() {
     >
       <div className="flex gap-2 items-start">
         <span className="text-lg flex-shrink-0">{iconEmoji[currentTone]}</span>
-        <div>
+        <div className="flex-1">
           <p className="text-xs opacity-75 mb-1 capitalize">
             {toneBehavior.greeting.slice(0, 20)}...
           </p>
           <p className="text-sm font-medium">{hint}</p>
         </div>
+        <button
+          onClick={handleDismiss}
+          className={clsx(
+            'flex-shrink-0 w-6 h-6 rounded',
+            'flex items-center justify-center',
+            'opacity-0 group-hover:opacity-100',
+            'hover:bg-black/5 dark:hover:bg-white/10',
+            'transition-all duration-200',
+            'focus:outline-none focus:ring-2 focus:ring-current focus:opacity-100'
+          )}
+          aria-label="Dismiss hint"
+          title="Dismiss (won't show again this session)"
+        >
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   );
