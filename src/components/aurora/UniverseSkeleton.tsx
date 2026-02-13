@@ -35,11 +35,7 @@ export function UniverseSkeleton({
       {showStats && (
         <div className="space-y-4 mb-12">
           <Skeleton variant="text" className="h-6 w-48" />
-          <SkeletonGrid columns={statsCount as any} gap={4}>
-            {Array.from({ length: statsCount }).map((_, i) => (
-              <Skeleton key={i} variant="card" />
-            ))}
-          </SkeletonGrid>
+          <SkeletonGrid count={statsCount} columns={statsCount as any} />
         </div>
       )}
 
@@ -47,11 +43,7 @@ export function UniverseSkeleton({
       {showGrid && (
         <div className="space-y-6">
           <Skeleton variant="text" className="h-6 w-40" />
-          <SkeletonGrid columns={gridCols} gap={6}>
-            {Array.from({ length: itemsCount }).map((_, i) => (
-              <Skeleton key={i} variant="card" className="h-48" />
-            ))}
-          </SkeletonGrid>
+          <SkeletonGrid count={itemsCount} columns={gridCols} />
         </div>
       )}
     </Surface>
