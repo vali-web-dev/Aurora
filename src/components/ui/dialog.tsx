@@ -47,12 +47,12 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-x-0 bottom-0 top-[80px] z-50 bg-black/50 backdrop-blur-sm"
         onClick={handleBackdropClick}
         role="presentation"
       />
       {/* Dialog Content */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-x-0 bottom-0 top-[80px] z-50 flex items-start justify-center p-4 pt-8">
         <div onClick={(e) => e.stopPropagation()}>{children}</div>
       </div>
     </>
