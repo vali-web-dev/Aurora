@@ -48,9 +48,9 @@ export function AuroraModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center sm:items-start justify-center p-4 sm:pt-[100px]">
+    <div className="fixed inset-x-0 bottom-0 top-[80px] z-50 flex items-start justify-center p-4 pt-8">
       <div
-        className="absolute inset-0 bg-slate-950/40 -z-10"
+        className="absolute inset-0 bg-slate-950/40"
         onClick={onClose}
         role="presentation"
       />
