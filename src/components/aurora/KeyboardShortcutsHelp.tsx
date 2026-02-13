@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 interface KeyboardShortcutsHelpProps {
   isOpen: boolean;
-  onClose: () => void;
+  onOpenChange: (open: boolean) => void;
 }
 
 const shortcuts = [
@@ -40,12 +40,12 @@ const shortcuts = [
 
 export function KeyboardShortcutsHelp({
   isOpen,
-  onClose,
+  onOpenChange,
 }: KeyboardShortcutsHelpProps) {
   return (
     <AuroraModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => onOpenChange(false)}
       title="Keyboard Shortcuts"
       description="Speed up your workflow with these keyboard shortcuts"
       size="md"
