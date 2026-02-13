@@ -9,8 +9,10 @@ import { GlobalSearch } from '@/components/aurora/GlobalSearch';
 import { RealtimeNotifications } from '@/components/aurora/RealtimeNotifications';
 import { CollapsibleNav } from '@/components/os/CollapsibleNav';
 import { DocsPortal } from '@/components/aurora/DocsPortal';
+import { KeyboardShortcutsHelp } from '@/components/aurora/KeyboardShortcutsHelp';
 import { useTheme } from '@/lib/design-system/theme-provider';
 import { useCompanion } from '@/lib/companion/companion-provider';
+import { useKeyboardShortcuts } from '@/lib/hooks/useKeyboardShortcuts';
 import clsx from 'clsx';
 
 export function TopNav() {
@@ -18,8 +20,17 @@ export function TopNav() {
   const { mode } = useTheme();
   const { toggle } = useCompanion();
   const [docsOpen, setDocsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   const isIlluminated = mode === 'illuminated';
+
+  // Global keyboard shortcuts
+  useKeyboardShortcuts(
+    () => setSearchOpen(true),
+    () => setDocsOpen(true),
+    () => setHelpOpen(true)
+  );
 
   return (
     <header
@@ -85,7 +96,10 @@ export function TopNav() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
-          <GlobalSearch />
+          <GlobalSearch 
+            externalOpen={searchOpen}
+            onOpenChange={setSearchOpen}
+          />
           <RealtimeNotifications />
           <button
             onClick={() => setDocsOpen(true)}
@@ -125,6 +139,9 @@ export function TopNav() {
           
           {/* Docs Portal Modal */}
           <DocsPortal isOpen={docsOpen} onOpenChange={setDocsOpen} />
+          
+          {/* Keyboard Shortcuts Help Modal */}
+          <KeyboardShortcutsHelp isOpen={helpOpen} onOpenChange={setHelpOpen} />
         </div>
       </div>
     </header>

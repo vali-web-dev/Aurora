@@ -19,12 +19,26 @@ const searchItems: SearchItem[] = [
   ...utilityNav.map((item) => ({ ...item, group: 'Support' as const })),
 ];
 
-export function GlobalSearch() {
+interface GlobalSearchProps {
+  onOpenChange?: (open: boolean) => void;
+  externalOpen?: boolean;
+}
+
+export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps = {}) {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setIsOpen = (open: boolean) => {
+    if (onOpenChange) {
+      onOpenChange(open);
+    } else {
+      setInternalOpen(open);
+    }
+  };
 
   const results = useMemo(() => {
     const trimmed = query.trim().toLowerCase();
