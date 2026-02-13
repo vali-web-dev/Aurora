@@ -458,9 +458,9 @@ Every component in Aurora follows these patterns:
 
 **Modal**
 - Backdrop dark overlay
-- Center on screen
+- Opens below sticky nav (80px offset)
 - Close button (X) and Escape key
-- Focus trapped inside
+- Focus managed on open/close (returns to trigger)
 - Scrollable content if needed
 
 **Input**

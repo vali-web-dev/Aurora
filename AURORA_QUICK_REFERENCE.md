@@ -116,6 +116,13 @@ Aurora works for everyone:
 | `Esc` | Close modals, exit forms |
 | `↑ ↓` | Navigate lists |
 | `Ctrl+K` or `S` | Search (mobile) |
+| `Ctrl+/` | Open documentation portal |
+| `Ctrl+B` | Toggle Companion Panel |
+| `Ctrl+H` | Go to Home |
+| `Ctrl+Shift+L` | Go to Learning |
+| `Ctrl+Shift+F` | Go to Forge |
+| `Ctrl+Shift+P` | Go to Productivity |
+| `?` | Keyboard shortcuts help |
 | `🎨` | Theme selector (top nav) |
 | `CP` | Companion panel |
 | `🔔` | Notifications |

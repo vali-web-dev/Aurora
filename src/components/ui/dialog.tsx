@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 interface DialogProps {
@@ -12,6 +12,8 @@ interface DialogProps {
 interface DialogContentProps {
   className?: string;
   children: ReactNode;
+  titleId?: string;
+  descriptionId?: string;
 }
 
 interface DialogHeaderProps {
@@ -24,6 +26,8 @@ interface DialogTitleProps {
 }
 
 export function Dialog({ open, onOpenChange, children }: DialogProps) {
+  const lastActiveRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape' && open) {
@@ -36,6 +40,14 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
   }, [open, onOpenChange]);
+
+  useEffect(() => {
+    if (!open) return;
+    lastActiveRef.current = document.activeElement as HTMLElement | null;
+    return () => {
+      lastActiveRef.current?.focus();
+    };
+  }, [open]);
 
   if (!open) return null;
 
@@ -62,6 +74,8 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
 export function DialogContent({
   className = '',
   children,
+  titleId,
+  descriptionId,
 }: DialogContentProps) {
   return (
     <div
@@ -76,6 +90,8 @@ export function DialogContent({
       )}
       role="dialog"
       aria-modal="true"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
     >
       {children}
     </div>

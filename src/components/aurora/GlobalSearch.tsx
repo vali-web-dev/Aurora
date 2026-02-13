@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
@@ -30,6 +30,7 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dialogId = useId();
 
   const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
   const setIsOpen = (open: boolean) => {
@@ -50,7 +51,7 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
     if (isOpen) {
       setQuery('');
       setActiveIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 0);
+      requestAnimationFrame(() => inputRef.current?.focus());
     }
   }, [isOpen]);
 
@@ -104,6 +105,9 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
           'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
         )}
         aria-label="Open search"
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
+        aria-controls={dialogId}
       >
         <span>Search</span>
         <span className="text-xs text-slate-400">Ctrl K</span>
@@ -119,6 +123,9 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
           'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
         )}
         aria-label="Open search"
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
+        aria-controls={dialogId}
       >
         S
       </button>
@@ -127,6 +134,7 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         size="md"
+        id={dialogId}
         footerContent="Tip: Use arrow keys to navigate, Enter to open."
         headerContent={
           <input
@@ -140,6 +148,9 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
               'placeholder:text-slate-400 outline-none text-lg'
             )}
             aria-label="Search"
+            aria-activedescendant={
+              results[activeIndex] ? `${dialogId}-option-${activeIndex}` : undefined
+            }
           />
         }
       >
@@ -149,10 +160,11 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
               No results found.
             </div>
           )}
-          <div className="space-y-2">
+          <div className="space-y-2" role="listbox" aria-label="Search results">
             {results.map((item, index) => (
               <button
                 key={`${item.group}-${item.href}`}
+                id={`${dialogId}-option-${index}`}
                 onClick={() => handleSelect(item.href)}
                 className={clsx(
                   'w-full flex items-center justify-between px-4 py-3 rounded-lg text-left',
@@ -161,6 +173,8 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
                     ? 'bg-blue-600 text-white'
                     : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 )}
+                role="option"
+                aria-selected={index === activeIndex}
               >
                 <span className="font-medium">{item.label}</span>
                 <span

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useId } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { secondaryNav, utilityNav } from '@/lib/navigation';
@@ -13,6 +13,7 @@ export function CollapsibleNav() {
   const { mode } = useTheme();
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
 
   const isIlluminated = mode === 'illuminated';
 
@@ -66,6 +67,8 @@ export function CollapsibleNav() {
         )}
         aria-label="Toggle navigation"
         aria-expanded={isOpen}
+        aria-haspopup="menu"
+        aria-controls={panelId}
       >
         <div className="flex flex-col gap-1.5">
           <span
@@ -104,6 +107,7 @@ export function CollapsibleNav() {
           {/* Menu Panel */}
           <div
             ref={panelRef}
+            id={panelId}
             className={clsx(
               'absolute top-full right-0 mt-2 w-64 rounded-xl border',
               'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',

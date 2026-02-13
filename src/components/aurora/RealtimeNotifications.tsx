@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useRealtime } from '@/lib/realtime/realtime-provider';
 
@@ -51,6 +51,7 @@ export function RealtimeNotifications() {
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { addToast } = useRealtime();
+  const panelId = useId();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -72,7 +73,7 @@ export function RealtimeNotifications() {
     }, 18000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [addToast]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -126,6 +127,9 @@ export function RealtimeNotifications() {
           'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
         )}
         aria-label="Open live notifications"
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
       >
         <span className="text-lg">🔔</span>
         {unreadCount > 0 && (
@@ -138,6 +142,9 @@ export function RealtimeNotifications() {
       {isOpen && (
         <div
           ref={panelRef}
+          id={panelId}
+          role="region"
+          aria-label="Live notifications"
           className={clsx(
             'fixed right-0 top-[80px]',
             'w-full sm:w-80 max-w-md sm:max-w-none',
@@ -184,7 +191,7 @@ export function RealtimeNotifications() {
               </svg>
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto" aria-live="polite" aria-relevant="additions text">
             {notifications.map((item) => (
               <div
                 key={item.id}

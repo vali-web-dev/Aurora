@@ -683,6 +683,13 @@ Aurora is built from the ground up for everyone. Accessibility isn't a featureâ€
 - Visible focus indicators on every interactive element
 - Screen reader optimization (semantic HTML, ARIA labels)
 - Skip links on every page ("Skip to main content")
+- Global shortcuts for rapid navigation:
+  - Ctrl+K: Open global search
+  - Ctrl+/: Open documentation portal
+  - Ctrl+B: Toggle Companion Panel
+  - Ctrl+H: Return to Home
+  - Ctrl+Shift+L/F/P: Jump to Learning/Forge/Productivity
+  - ?: Show keyboard shortcuts help
 
 ### Motion & Animation
 

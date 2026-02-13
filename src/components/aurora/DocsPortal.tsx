@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface DocsSection {
@@ -192,15 +192,23 @@ export interface DocsPortalProps {
 
 export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
   const [activeTab, setActiveTab] = useState('Start Here');
+  const titleId = useId();
+  const descriptionId = useId();
 
   const currentSection = DOCS_STRUCTURE[activeTab] || [];
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent
+        className="max-w-4xl max-h-[80vh] overflow-y-auto"
+        titleId={titleId}
+        descriptionId={descriptionId}
+      >
         <DialogHeader onClose={() => onOpenChange(false)}>
-          <DialogTitle>Aurora Documentation Portal</DialogTitle>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          <DialogTitle>
+            <span id={titleId}>Aurora Documentation Portal</span>
+          </DialogTitle>
+          <p id={descriptionId} className="text-sm text-slate-600 dark:text-slate-400 mt-1">
             Explore Aurora's docs by topic, role, or feature
           </p>
         </DialogHeader>

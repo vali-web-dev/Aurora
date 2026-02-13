@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import type { ReactNode } from 'react';
 import clsx from 'clsx';
 
 interface AuroraModalProps {
   isOpen: boolean;
   onClose: () => void;
+  id?: string;
   title?: string;
   description?: string;
   headerContent?: ReactNode;
@@ -25,6 +26,7 @@ const sizeClass: Record<NonNullable<AuroraModalProps['size']>, string> = {
 export function AuroraModal({
   isOpen,
   onClose,
+  id,
   title,
   description,
   headerContent,
@@ -32,6 +34,10 @@ export function AuroraModal({
   size = 'md',
   children,
 }: AuroraModalProps) {
+  const titleId = useId();
+  const descriptionId = useId();
+  const lastActiveRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -45,6 +51,14 @@ export function AuroraModal({
     }
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    lastActiveRef.current = document.activeElement as HTMLElement | null;
+    return () => {
+      lastActiveRef.current?.focus();
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -57,6 +71,9 @@ export function AuroraModal({
       <div
         role="dialog"
         aria-modal="true"
+        aria-labelledby={title ? titleId : undefined}
+        aria-describedby={description ? descriptionId : undefined}
+        id={id}
         className={clsx(
           'relative w-full rounded-2xl overflow-hidden',
           'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
@@ -74,12 +91,18 @@ export function AuroraModal({
                 {headerContent ?? (
                   <div className="space-y-1">
                     {title && (
-                      <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                      <h2
+                        id={titleId}
+                        className="text-lg font-semibold text-slate-900 dark:text-slate-50"
+                      >
                         {title}
                       </h2>
                     )}
                     {description && (
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                      <p
+                        id={descriptionId}
+                        className="text-sm text-slate-500 dark:text-slate-400"
+                      >
                         {description}
                       </p>
                     )}
