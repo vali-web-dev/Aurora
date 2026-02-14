@@ -24,9 +24,9 @@ export function AiUniverse() {
 
       <SurfaceSection title="Intelligence Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="AI Models" value={models.length} />
-          <StatCard label="Active Conversations" value={activeConversations.length} />
-          <StatCard label="Total Messages" value={totalMessages} />
+          <StatCard label="AI Models" value={models.length} helper="Providers" />
+          <StatCard label="Active Conversations" value={activeConversations.length} helper="Live now" />
+          <StatCard label="Total Messages" value={totalMessages} helper="All time" />
         </div>
       </SurfaceSection>
 
@@ -41,9 +41,9 @@ export function AiUniverse() {
             </div>
             <Badge size="sm" variant="info">Real-time</Badge>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="list" aria-label="AI models">
             {models.map((model) => (
-              <div key={model.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
+              <div key={model.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-slate-900 dark:text-slate-50">{model.name}</p>
                   <Badge size="sm" variant="primary">{model.provider}</Badge>
@@ -76,9 +76,9 @@ export function AiUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Conversations</h2>
               <Button variant="secondary" size="sm">New Chat</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Conversations">
               {conversations.slice(0, 5).map((conv) => (
-                <div key={conv.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <div key={conv.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{conv.title}</p>
                     <Badge
@@ -102,9 +102,9 @@ export function AiUniverse() {
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Agents</h2>
                 <Button variant="ghost" size="sm">View All</Button>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Agents">
                 {agents.map((agent) => (
-                  <div key={agent.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={agent.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">{agent.name}</p>
                       <Badge size="sm" variant={agent.status === 'active' ? 'success' : 'warning'}>

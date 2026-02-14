@@ -44,7 +44,7 @@ export function CommerceUniverse() {
       />
 
       <SurfaceSection title="Featured Products">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Featured products">
           {products.map((product) => (
             <ProductCard
               key={product.id}
@@ -72,10 +72,11 @@ export function CommerceUniverse() {
               </p>
             ) : (
               <>
-                <div className="space-y-2 max-h-64 overflow-y-auto">
+                <div className="space-y-2 max-h-64 overflow-y-auto" role="list" aria-label="Cart items">
                   {cart.map((item, idx) => (
                     <div
                       key={idx}
+                      role="listitem"
                       className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-lg"
                     >
                       <div className="flex-grow">
@@ -89,6 +90,8 @@ export function CommerceUniverse() {
                       <button
                         onClick={() => handleRemoveFromCart(item.id)}
                         className="text-red-500 hover:text-red-700 font-bold ml-2"
+                        aria-label={`Remove ${item.title} from cart`}
+                        type="button"
                       >
                         ✕
                       </button>
@@ -123,11 +126,12 @@ export function CommerceUniverse() {
       <SurfaceSection title="Integrated Providers">
         <Card>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="list" aria-label="Integrated providers">
               {['Amazon', 'Shopify', 'eBay', 'Walmart', 'Etsy', 'AliExpress', 'Temu', 'Cosco'].map(
                 (provider) => (
                   <div
                     key={provider}
+                    role="listitem"
                     className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium text-slate-900 dark:text-slate-50"
                   >
                     {provider}

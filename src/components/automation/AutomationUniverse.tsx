@@ -26,9 +26,9 @@ export function AutomationUniverse() {
 
       <SurfaceSection title="Automation Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Active Workflows" value={activeWorkflows} />
-          <StatCard label="Total Executions" value={totalExecutions} />
-          <StatCard label="Avg Success Rate" value={`${avgSuccessRate}%`} />
+          <StatCard label="Active Workflows" value={activeWorkflows} helper="Running" />
+          <StatCard label="Total Executions" value={totalExecutions} helper="Lifetime" />
+          <StatCard label="Avg Success Rate" value={`${avgSuccessRate}%`} helper="All workflows" />
         </div>
       </SurfaceSection>
 
@@ -43,9 +43,9 @@ export function AutomationUniverse() {
             </div>
             <Badge size="sm" variant="info">Real-time</Badge>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-3" role="list" aria-label="Workflows">
             {workflows.map((workflow) => (
-              <div key={workflow.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
+              <div key={workflow.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-slate-900 dark:text-slate-50">{workflow.name}</p>
                   <Badge
@@ -91,9 +91,9 @@ export function AutomationUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Triggers</h2>
               <Button variant="secondary" size="sm">New Trigger</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Triggers">
               {triggers.map((trigger) => (
-                <div key={trigger.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <div key={trigger.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">
                       {workflows.find((w) => w.id === trigger.workflowId)?.name ?? 'Unknown'}
@@ -112,9 +112,9 @@ export function AutomationUniverse() {
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Bot Agents</h2>
                 <Button variant="ghost" size="sm">View All</Button>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Bot agents">
                 {bots.map((bot) => (
-                  <div key={bot.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={bot.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">{bot.name}</p>
                       <Badge size="sm" variant="success">
@@ -142,9 +142,9 @@ export function AutomationUniverse() {
 
       <SurfaceSection title="Actions">
         <Card className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="list" aria-label="Actions">
             {actions.map((action) => (
-              <div key={action.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+              <div key={action.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-slate-900 dark:text-slate-50">
                     Step {action.order}

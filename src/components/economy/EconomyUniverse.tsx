@@ -59,9 +59,9 @@ export function EconomyUniverse() {
 
       <SurfaceSection title="Marketplace Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Marketplace Listings" value={listings.length} />
-          <StatCard label="Creator Payouts" value={payouts.length} />
-          <StatCard label="Total Distributed" value={`$${(payoutTotal / 100).toFixed(0)}`} />
+          <StatCard label="Marketplace Listings" value={listings.length} helper="Active" />
+          <StatCard label="Creator Payouts" value={payouts.length} helper="All time" />
+          <StatCard label="Total Distributed" value={`$${(payoutTotal / 100).toFixed(0)}`} helper="YTD" />
         </div>
       </SurfaceSection>
 
@@ -76,7 +76,7 @@ export function EconomyUniverse() {
             </div>
             <Badge size="sm" variant="info">+12% WoW</Badge>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Marketplace metrics">
             <div className="space-y-2">
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Avg Listing Price</p>
               <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">
@@ -86,9 +86,9 @@ export function EconomyUniverse() {
             </div>
             <div className="space-y-2">
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Category Mix</p>
-              <div className="space-y-2">
+              <div className="space-y-2" role="list" aria-label="Category mix">
                 {categoryBreakdown.map((entry) => (
-                  <div key={entry.category} className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                  <div key={entry.category} role="listitem" className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                     <span className="uppercase tracking-wide">{entry.category}</span>
                     <span>{entry.count} items</span>
                   </div>
@@ -97,9 +97,9 @@ export function EconomyUniverse() {
             </div>
             <div className="space-y-2">
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Revenue Trend</p>
-              <div className="flex items-end gap-2 h-20">
+              <div className="flex items-end gap-2 h-20" role="list" aria-label="Revenue trend">
                 {revenueTrend.map((value, index) => (
-                  <div key={`rev-${value}-${index}`} className="flex-1">
+                  <div key={`rev-${value}-${index}`} role="listitem" className="flex-1">
                     <div
                       className="w-full rounded-md bg-emerald-500/80"
                       style={{ height: `${value}%` }}
@@ -121,9 +121,9 @@ export function EconomyUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Marketplace</h2>
               <Button variant="secondary" size="sm">Browse</Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="list" aria-label="Marketplace listings">
               {listings.map((listing) => (
-                <div key={listing.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+                <div key={listing.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{listing.title}</p>
                     <Badge size="sm" variant="info">{listing.category}</Badge>
@@ -144,7 +144,7 @@ export function EconomyUniverse() {
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Payouts</h2>
                 <Button variant="ghost" size="sm">View All</Button>
               </div>
-              <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
+              <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400" role="list" aria-label="Payout status counts">
                 <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-1">
                   Paid {payoutStatusCounts.paid ?? 0}
                 </span>
@@ -155,9 +155,9 @@ export function EconomyUniverse() {
                   Pending {payoutStatusCounts.pending ?? 0}
                 </span>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Recent payouts">
                 {payouts.map((payout) => (
-                  <div key={payout.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={payout.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">{payout.creator}</p>
                       <Badge size="sm" variant={payout.status === 'paid' ? 'success' : payout.status === 'processing' ? 'warning' : 'default'}>
