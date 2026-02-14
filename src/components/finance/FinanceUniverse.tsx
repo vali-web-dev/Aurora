@@ -16,6 +16,8 @@ const insights = AuroraDataService.getFinanceInsights();
 const totalBalance = accounts.reduce((sum, acc) => sum + acc.balanceCents, 0);
 const totalInvested = investments.reduce((sum, inv) => sum + inv.currentValue, 0);
 const totalGainLoss = investments.reduce((sum, inv) => sum + inv.gainLoss, 0);
+const gainLossLabel = totalGainLoss >= 0 ? '+' : '-';
+const absGainLoss = Math.abs(totalGainLoss);
 
 export function FinanceUniverse() {
   return (
@@ -27,9 +29,9 @@ export function FinanceUniverse() {
 
       <SurfaceSection title="Portfolio Overview">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Total Balance" value={`$${(totalBalance / 100).toFixed(0)}k`} />
-          <StatCard label="Invested" value={`$${(totalInvested / 100).toFixed(0)}k`} />
-          <StatCard label="Gain/Loss" value={`$${(totalGainLoss / 100).toFixed(0)}`} helper={totalGainLoss > 0 ? '+' : ''} />
+          <StatCard label="Total Balance" value={`$${(totalBalance / 100).toFixed(0)}k`} helper="Across accounts" />
+          <StatCard label="Invested" value={`$${(totalInvested / 100).toFixed(0)}k`} helper="Market value" />
+          <StatCard label="Gain/Loss" value={`${gainLossLabel}$${(absGainLoss / 100).toFixed(0)}`} helper="YTD" />
         </div>
       </SurfaceSection>
 
@@ -65,9 +67,13 @@ export function FinanceUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Recent Transactions</h2>
               <Button variant="secondary" size="sm">View All</Button>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2" role="list" aria-label="Recent transactions">
               {transactions.slice(0, 5).map((tx) => (
-                <div key={tx.id} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <div
+                  key={tx.id}
+                  role="listitem"
+                  className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800"
+                >
                   <div>
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{tx.description}</p>
                     <p className="text-xs text-slate-600 dark:text-slate-400">{tx.date.toLocaleDateString()}</p>

@@ -57,50 +57,61 @@ export function RealmsUniverse() {
 
       <SurfaceSection title="Enter a Realm">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockRealms.map((realm) => (
-            <button
-              key={realm.id}
-              onClick={() => setActiveRealm(realm.id)}
-              className="text-left"
-            >
-              <Card
-                hoverable
-                className="cursor-pointer h-full"
+          {mockRealms.map((realm) => {
+            const isActive = activeRealm === realm.id;
+
+            return (
+              <button
+                key={realm.id}
+                onClick={() => setActiveRealm(realm.id)}
+                className="text-left rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
+                aria-pressed={isActive}
+                aria-label={`Enter ${realm.name} realm`}
+                type="button"
               >
-                <div className="space-y-4">
-                <div className={`h-32 bg-gradient-to-br ${realm.color} rounded-lg flex items-center justify-center text-6xl`}>
-                  {realm.icon}
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-xl text-slate-900 dark:text-slate-50">
-                    {realm.name}
-                  </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    {realm.description}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  {realm.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                      <span className="text-lg">✓</span>
-                      <span>{feature}</span>
+                <Card
+                  hoverable
+                  className={
+                    isActive
+                      ? 'cursor-pointer h-full ring-2 ring-blue-500/40 border-blue-200 dark:border-blue-800'
+                      : 'cursor-pointer h-full'
+                  }
+                >
+                  <div className="space-y-4">
+                    <div className={`h-32 bg-gradient-to-br ${realm.color} rounded-lg flex items-center justify-center text-6xl`}>
+                      {realm.icon}
                     </div>
-                  ))}
-                </div>
 
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  📊 {mockRealmUsage[realm.id]?.timeLabel ?? '0h 0m this week'}
-                </p>
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-xl text-slate-900 dark:text-slate-50">
+                        {realm.name}
+                      </h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        {realm.description}
+                      </p>
+                    </div>
 
-                <Button variant="primary" size="sm" className="w-full">
-                  Enter Realm →
-                </Button>
-              </div>
-            </Card>
-            </button>
-          ))}
+                    <div className="space-y-2">
+                      {realm.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                          <span className="text-lg">✓</span>
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                      📊 {mockRealmUsage[realm.id]?.timeLabel ?? '0h 0m this week'}
+                    </p>
+
+                    <Button variant="primary" size="sm" className="w-full">
+                      Enter Realm →
+                    </Button>
+                  </div>
+                </Card>
+              </button>
+            );
+          })}
         </div>
       </SurfaceSection>
 
@@ -115,6 +126,8 @@ export function RealmsUniverse() {
                 <button
                   onClick={() => setActiveRealm(null)}
                   className="text-3xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  aria-label="Close active realm"
+                  type="button"
                 >
                   ✕
                 </button>

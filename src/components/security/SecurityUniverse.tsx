@@ -48,9 +48,9 @@ export function SecurityUniverse() {
 
       <SurfaceSection title="Security Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Trusted Devices" value={devices.filter((d) => d.status === 'trusted').length} />
-          <StatCard label="Active Sessions" value={activeSessions} />
-          <StatCard label="Security Events" value={events.length} />
+          <StatCard label="Trusted Devices" value={devices.filter((d) => d.status === 'trusted').length} helper="Verified" />
+          <StatCard label="Active Sessions" value={activeSessions} helper="Live now" />
+          <StatCard label="Security Events" value={events.length} helper="Last 30 days" />
         </div>
       </SurfaceSection>
 
@@ -75,9 +75,9 @@ export function SecurityUniverse() {
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Devices</h2>
                 <Button variant="secondary" size="sm">Manage</Button>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Trusted devices">
                 {devices.map((device) => (
-                  <div key={device.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={device.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">{device.name}</p>
                       <Badge size="sm" variant={statusVariant(device.status) as 'default' | 'success' | 'warning' | 'error'}>
@@ -97,9 +97,9 @@ export function SecurityUniverse() {
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Active Sessions</h2>
                 <Button variant="ghost" size="sm">Review</Button>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Active sessions">
                 {sessions.map((session) => (
-                  <div key={session.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={session.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">{session.ipAddress}</p>
                       <Badge size="sm" variant={session.status === 'active' ? 'success' : 'default'}>
