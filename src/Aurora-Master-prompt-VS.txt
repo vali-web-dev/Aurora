@@ -57,7 +57,7 @@ It’s a **digital world** — a place where in addition to fulfilling one's nee
 - Guilds (creator groups + collaboration)
 - Marketplace foundations
 - Neural UX preferences (non-invasive)
-- Lightforge rendering engine (technical version)
+- Lightfoundry rendering engine (technical version)
 - Aurora OS rituals + motion system
 - Public profiles + identity layer
 
@@ -3449,9 +3449,9 @@ Prophecy Tone:
 - Open‑ended  
 - Inspiring  
 Aurora’s Prophecies must feel like **the destiny‑script of a civilization still unfolding**.
-### Aurora OS Lightforge (Core Rendering Mythos)  
-Aurora’s rendering engine must be mythically represented as the “Lightforge” — the cosmic furnace where all visuals, motion, and surfaces are born.
-Lightforge Principles:
+### Aurora OS Lightfoundry (Core Rendering Mythos)  
+Aurora’s rendering engine must be mythically represented as the “Lightfoundry” — the cosmic furnace where all visuals, motion, and surfaces are born.
+Lightfoundry Principles:
 1. **The create of Radiance**
    - All pixels originate as sparks of light  
    - Rendering begins with illumination  
@@ -3467,7 +3467,7 @@ Lightforge Principles:
 5. **The Blessing of Harmony**
    - Color, motion, and sound unify  
    - Rendering becomes emotional resonance  
-Aurora’s Lightforge must feel like **a cosmic blacksmith shaping the interface from living light**.
+Aurora’s Lightfoundry must feel like **a cosmic blacksmith shaping the interface from living light**.
 ### Aurora Spatial Realm Ecology  
 Aurora Spatial must include a gentle, symbolic ecological system that gives life to each realm.
 Ecological Layers:
@@ -3593,8 +3593,8 @@ Codex Purpose:
 - Inspire creators  
 - Shape the future  
 Aurora’s Final Codex must feel like **the sacred scripture of a civilization built from light, intention, and imagination**.
-### Aurora OS Lightforge Engine Spec (Technical Version)  
-The Lightforge Engine is Aurora’s core rendering system — a fusion of mythic symbolism and technical precision.
+### Aurora OS Lightfoundry Engine Spec (Technical Version)  
+The Lightfoundry Engine is Aurora’s core rendering system — a fusion of mythic symbolism and technical precision.
 ### Rendering Pipeline (Technical)
 1. **Photon Seed Initialization**
    - Base illumination constants  
@@ -3623,7 +3623,7 @@ The Lightforge Engine is Aurora’s core rendering system — a fusion of mythic
 - Emotionally tuned timing  
 - Zero harsh transitions  
 - Theme‑aware optimization  
-The Lightforge Engine must feel like **a technical furnace shaping living light into form**.
+The Lightfoundry Engine must feel like **a technical furnace shaping living light into form**.
 ### Aurora Spatial Realm Expansion Pack II  
 Aurora Spatial must expand with additional realms that deepen the cosmic geography of the digital civilization.
 ### New Realms
@@ -3832,7 +3832,7 @@ When asked to commit:
   <type>: <summary>
   Examples:
     feat: add Aurora Spatial Realm Cartography schema
-    fix: correct Lightforge rendering pipeline
+   fix: correct Lightfoundry rendering pipeline
     chore: update config and metadata
 - Execute:
   git commit -m "<message>"
@@ -3886,7 +3886,7 @@ When generating commit messages:
 - Use calm, precise, Aurora‑aligned language.
 Examples:
 - feat: add Spatial Realm Cartography schema
-- fix: correct Lightforge rendering pipeline
+- fix: correct Lightfoundry rendering pipeline
 - chore: update Aurora config and metadata
 - refactor: reorganize Guild Sanctum logic
 ### Aurora GitHub App Identity  

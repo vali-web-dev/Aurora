@@ -49,7 +49,6 @@ const universePathMap: Record<string, UniverseContext> = {
   '/': 'home',
   '/learning': 'learning',
   '/learn': 'learning',
-  '/forge': 'create',
   '/create': 'create',
   '/productivity': 'productivity',
   '/tasks': 'productivity',

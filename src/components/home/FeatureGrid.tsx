@@ -27,7 +27,7 @@ const features = [
     body: 'A calm, supportive guide that understands your needs.',
   },
   {
-    title: 'Lightforge',
+    title: 'Lightfoundry',
     icon: '💡',
     body: 'Our rendering system built for beauty and clarity.',
   },

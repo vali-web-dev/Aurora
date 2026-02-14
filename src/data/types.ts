@@ -1895,7 +1895,7 @@ export const mockPlaylists: Playlist[] = [
 export const mockGames: Game[] = [
   {
     id: 'game-1',
-    title: 'Skyforge Odyssey',
+    title: 'Skylight Odyssey',
     platform: 'pc',
     hoursPlayed: 124,
     status: 'playing',
@@ -1965,7 +1965,7 @@ export const mockGameTournaments: GameTournament[] = [
   },
   {
     id: 'tourney-2',
-    title: 'Skyforge Night Run',
+    title: 'Skylight Night Run',
     gameId: 'game-1',
     status: 'upcoming',
     startsAt: new Date('2026-02-18T19:00:00'),
