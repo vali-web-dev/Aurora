@@ -90,6 +90,15 @@ export function AuroraModal({
   useEffect(() => {
     if (!isOpen) return;
     lastActiveRef.current = document.activeElement as HTMLElement | null;
+    requestAnimationFrame(() => {
+      const focusable = getFocusableElements();
+      const first = focusable[0];
+      if (first) {
+        first.focus();
+      } else {
+        dialogRef.current?.focus();
+      }
+    });
     return () => {
       lastActiveRef.current?.focus();
     };
@@ -111,6 +120,7 @@ export function AuroraModal({
         aria-describedby={description ? descriptionId : undefined}
         id={id}
         ref={dialogRef}
+        tabIndex={-1}
         className={clsx(
           'relative w-full rounded-2xl overflow-hidden',
           'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',

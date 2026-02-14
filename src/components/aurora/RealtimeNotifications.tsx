@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useRealtime } from '@/lib/realtime/realtime-provider';
+import { announce } from '@/lib/a11y/announcer';
 
 interface LiveNotification {
   id: string;
@@ -101,6 +102,12 @@ export function RealtimeNotifications() {
         document.removeEventListener('keydown', handleKeyDown);
       };
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    announce('Live updates opened');
+    return () => announce('Live updates closed');
   }, [isOpen]);
 
   const toneClass = (tone: LiveNotification['tone']) =>

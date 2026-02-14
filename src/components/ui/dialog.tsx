@@ -84,6 +84,15 @@ export function Dialog({ open, onOpenChange, children, announceLabel }: DialogPr
   useEffect(() => {
     if (!open) return;
     lastActiveRef.current = document.activeElement as HTMLElement | null;
+    requestAnimationFrame(() => {
+      const focusable = getFocusableElements();
+      const first = focusable[0];
+      if (first) {
+        first.focus();
+      } else {
+        contentRef.current?.focus();
+      }
+    });
     return () => {
       lastActiveRef.current?.focus();
     };
@@ -105,7 +114,7 @@ export function Dialog({ open, onOpenChange, children, announceLabel }: DialogPr
       />
       {/* Dialog Content */}
       <div className="fixed inset-x-0 bottom-0 top-[80px] z-50 flex items-start justify-center p-4 pt-8">
-        <div ref={contentRef} onClick={(e) => e.stopPropagation()}>
+        <div ref={contentRef} tabIndex={-1} onClick={(e) => e.stopPropagation()}>
           {children}
         </div>
       </div>

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { secondaryNav, utilityNav } from '@/lib/navigation';
 import { useTheme } from '@/lib/design-system/theme-provider';
 import clsx from 'clsx';
+import { announce } from '@/lib/a11y/announcer';
 
 export function CollapsibleNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,7 @@ export function CollapsibleNav() {
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelId = useId();
+  const hasAnnouncedRef = useRef(false);
 
   const isIlluminated = mode === 'illuminated';
 
@@ -48,6 +50,14 @@ export function CollapsibleNav() {
       document.addEventListener('keydown', handleEscape);
       return () => document.removeEventListener('keydown', handleEscape);
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!hasAnnouncedRef.current) {
+      hasAnnouncedRef.current = true;
+      return;
+    }
+    announce(isOpen ? 'Navigation menu opened' : 'Navigation menu closed');
   }, [isOpen]);
 
   return (
