@@ -23,9 +23,9 @@ export function SocialUniverse() {
 
       <SurfaceSection title="Social Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Active Channels" value={channels.length} />
-          <StatCard label="Daily Highlights" value={posts.length} />
-          <StatCard label="Connected Platforms" value={6} />
+          <StatCard label="Active Channels" value={channels.length} helper="Community" />
+          <StatCard label="Daily Highlights" value={posts.length} helper="Today" />
+          <StatCard label="Connected Platforms" value={6} helper="Linked" />
         </div>
       </SurfaceSection>
 
@@ -39,13 +39,17 @@ export function SocialUniverse() {
               <Button variant="secondary">Compose</Button>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-6" role="list" aria-label="Unified feed">
               {posts.map((post) => {
                 const author = profileById.get(post.authorId);
                 if (!author) {
                   return null;
                 }
-                return <SocialPostCard key={post.id} post={post} author={author} />;
+                return (
+                  <div key={post.id} role="listitem">
+                    <SocialPostCard post={post} author={author} />
+                  </div>
+                );
               })}
             </div>
           </div>
@@ -53,10 +57,11 @@ export function SocialUniverse() {
           <div className="space-y-6">
             <Card className="space-y-3">
               <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Trending Topics</h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="list" aria-label="Trending topics">
                 {['#aurora', '#realms', '#focus', '#forge', '#learning', '#community'].map((tag) => (
                   <span
                     key={tag}
+                    role="listitem"
                     className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold"
                   >
                     {tag}
@@ -67,9 +72,9 @@ export function SocialUniverse() {
 
             <Card className="space-y-3">
               <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Live Channels</h3>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Live channels">
                 {channels.map((channel) => (
-                  <div key={channel.id} className="flex items-center justify-between">
+                  <div key={channel.id} role="listitem" className="flex items-center justify-between">
                     <div>
                       <p className="font-semibold text-slate-900 dark:text-slate-50">
                         {channel.name}
@@ -90,9 +95,9 @@ export function SocialUniverse() {
 
             <Card className="space-y-3">
               <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Creator Spotlight</h3>
-              <div className="space-y-2">
+              <div className="space-y-2" role="list" aria-label="Creator spotlight">
                 {profiles.map((profile) => (
-                  <div key={profile.id} className="flex items-center gap-3">
+                  <div key={profile.id} role="listitem" className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
                       {profile.displayName.charAt(0)}
                     </div>

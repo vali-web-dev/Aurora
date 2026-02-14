@@ -23,9 +23,9 @@ export function EntertainmentUniverse() {
 
       <SurfaceSection title="Media Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Active Providers" value={8} />
-          <StatCard label="Curated Playlists" value={playlists.length} />
-          <StatCard label="Featured Releases" value={mediaItems.length} />
+          <StatCard label="Active Providers" value={8} helper="Connected" />
+          <StatCard label="Curated Playlists" value={playlists.length} helper="Handpicked" />
+          <StatCard label="Featured Releases" value={mediaItems.length} helper="Available" />
         </div>
       </SurfaceSection>
 
@@ -58,28 +58,33 @@ export function EntertainmentUniverse() {
       )}
 
       <SurfaceSection title="Trending Now">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Trending media">
           {mediaItems.map((item) => (
-            <MediaCard key={item.id} item={item} />
+            <div key={item.id} role="listitem">
+              <MediaCard item={item} />
+            </div>
           ))}
         </div>
       </SurfaceSection>
 
       <SurfaceSection title="Curated Playlists">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6" role="list" aria-label="Curated playlists">
           {playlists.map((playlist) => (
-            <PlaylistCard key={playlist.id} playlist={playlist} />
+            <div key={playlist.id} role="listitem">
+              <PlaylistCard playlist={playlist} />
+            </div>
           ))}
         </div>
       </SurfaceSection>
 
       <SurfaceSection title="Integrated Providers">
         <Card>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="list" aria-label="Integrated providers">
             {['YouTube', 'Netflix', 'Prime Video', 'Spotify', 'Apple Music', 'Twitch', 'Disney+', 'Hulu'].map(
               (provider) => (
                 <div
                   key={provider}
+                  role="listitem"
                   className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium text-slate-900 dark:text-slate-50"
                 >
                   {provider}

@@ -35,20 +35,23 @@ export function ForgeUniverse() {
       />
 
       <SurfaceSection title="Forge Workspace">
-        <div className="flex gap-2 border-b border-slate-200 dark:border-slate-800">
-        {(['builder', 'library', 'templates'] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-3 font-medium border-b-2 transition-colors ${
-              activeTab === tab
-                ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
-            }`}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
+        <div className="flex gap-2 border-b border-slate-200 dark:border-slate-800" role="tablist" aria-label="Forge workspace tabs">
+          {(['builder', 'library', 'templates'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-3 font-medium border-b-2 transition-colors ${
+                activeTab === tab
+                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
+                  : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
+              }`}
+              role="tab"
+              aria-selected={activeTab === tab}
+              type="button"
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
         </div>
 
         {activeTab === 'builder' && (
@@ -68,10 +71,11 @@ export function ForgeUniverse() {
               <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">
                 Recent Surfaces
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-2" role="list" aria-label="Recent surfaces">
                 {recentSurfaces.map((surface) => (
                   <div
                     key={surface.id}
+                    role="listitem"
                     className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:shadow-lg transition-shadow cursor-pointer"
                   >
                     <div className="flex items-center justify-between">
@@ -105,7 +109,7 @@ export function ForgeUniverse() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" role="list" aria-label="Block library">
               {blockTypes.map((block) => (
                 <button
                   key={block.name}
@@ -116,24 +120,27 @@ export function ForgeUniverse() {
                         : [...selectedBlocks, block.name]
                     )
                   }
-                  className="text-left"
+                  className="text-left rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
+                  aria-pressed={selectedBlocks.includes(block.name)}
+                  aria-label={`${selectedBlocks.includes(block.name) ? 'Remove' : 'Add'} ${block.name} block`}
+                  type="button"
                 >
                   <Card
                     hoverable
                     className="cursor-pointer h-full"
                   >
                     <div className="space-y-3 text-center">
-                    <div className="text-4xl">{block.icon}</div>
-                    <div>
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">
-                        {block.name}
-                      </p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">
-                        {block.description}
-                      </p>
+                      <div className="text-4xl">{block.icon}</div>
+                      <div>
+                        <p className="font-semibold text-slate-900 dark:text-slate-50">
+                          {block.name}
+                        </p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                          {block.description}
+                        </p>
+                      </div>
+                      <div className={`h-1 rounded-full ${selectedBlocks.includes(block.name) ? 'bg-blue-600' : 'bg-slate-200 dark:bg-slate-800'}`} />
                     </div>
-                    <div className={`h-1 rounded-full ${selectedBlocks.includes(block.name) ? 'bg-blue-600' : 'bg-slate-200 dark:bg-slate-800'}`} />
-                  </div>
                 </Card>
                 </button>
               ))}
@@ -145,10 +152,11 @@ export function ForgeUniverse() {
                   <p className="font-semibold text-slate-900 dark:text-slate-50">
                     Selected Blocks ({selectedBlocks.length})
                   </p>
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex gap-2 flex-wrap" role="list" aria-label="Selected blocks">
                     {selectedBlocks.map((block) => (
                       <span
                         key={block}
+                        role="listitem"
                         className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm"
                       >
                         {block} ✕
@@ -175,7 +183,7 @@ export function ForgeUniverse() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6" role="list" aria-label="Templates">
               {[
                 { name: 'SaaS Landing', blocks: 8, category: 'Product' },
                 { name: 'Personal Portfolio', blocks: 6, category: 'Creator' },
@@ -184,7 +192,7 @@ export function ForgeUniverse() {
                 { name: 'Course Intro', blocks: 9, category: 'Learning' },
                 { name: 'Shop Showcase', blocks: 10, category: 'Commerce' },
               ].map((template, idx) => (
-                <Card key={idx} hoverable>
+                <Card key={idx} hoverable className="h-full" role="listitem">
                   <div className="space-y-4">
                     <div className="h-40 bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg" />
                     <div>
