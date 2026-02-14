@@ -2,7 +2,7 @@ import { Card, CardDescription, CardTitle } from '@/components/aurora/Card';
 
 const features = [
   {
-    title: 'Forge',
+    title: 'Create',
     icon: '🔨',
     body: 'Build components, surfaces, and creative studio for your ideas.',
   },

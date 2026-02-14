@@ -58,7 +58,7 @@ Aurora will:
 
 ### 2. Coherence Across 15 Worlds
 
-You might work in Productivity, create in Forge, learn in Learning, connect in Social, then manage your home in Home Control. Each universe has its own tone, tools, and energy—but they all speak the same underlying language. You can seamlessly move between them without context whiplash.
+You might work in Productivity, create in Create, learn in Learning, connect in Social, then manage your home in Home Control. Each universe has its own tone, tools, and energy—but they all speak the same underlying language. You can seamlessly move between them without context whiplash.
 
 ### 3. Adaptive Personality (Not Fake Friendliness)
 
@@ -144,7 +144,7 @@ Each universe is a full digital world with its own tools, culture, and companion
 
 ---
 
-### 3. 🎨 **Forge Universe**
+### 3. 🎨 **Create Universe**
 *Create. Build. Ship. Your maker's studio.*
 
 **What it is:**
@@ -512,13 +512,13 @@ Aurora's companion is not an AI chatbot. It's a **personality engine** that adap
 ### How It Works
 
 **Step 1: Universe Detection**
-Aurora knows which universe you're in (home, learning, forge, etc.).
+Aurora knows which universe you're in (home, learning, create, etc.).
 
 **Step 2: Tone Selection**
 Based on the universe, Aurora picks a default tone:
 - **Mentor:** Learning, home, identity → warm and encouraging
 - **Strategist:** Productivity, commerce, guilds → direct and goal-focused
-- **Explorer:** Forge, social, entertainment, travel → spirited and discovery-led
+- **Explorer:** Create, social, entertainment, travel → spirited and discovery-led
 - **Analyst:** Finance, developer, AI, automation, security → neutral and data-driven
 - **Guardian:** Health, home control → protective and safety-first
 
@@ -679,7 +679,7 @@ Aurora is built from the ground up for everyone. Accessibility isn't a feature�
   - Ctrl+/: Open documentation portal
   - Ctrl+B: Toggle Companion Panel
   - Ctrl+H: Return to Home
-  - Ctrl+Shift+L/F/P: Jump to Learning/Forge/Productivity
+  - Ctrl+Shift+L/F/P: Jump to Learning/Create/Productivity
   - ?: Show keyboard shortcuts help
 
 ### Motion & Animation
@@ -702,7 +702,7 @@ Aurora is built from the ground up for everyone. Accessibility isn't a feature�
 ### Accessible Universe Features
 
 - **Learning:** Transcripts for all video content, downloadable materials
-- **Forge:** Alt text required for images, contrast checker for designs
+- **Create:** Alt text required for images, contrast checker for designs
 - **Productivity:** Calendar import/export, plain text export of all data
 - **Health:** Clear, jargon-free health information, transcribed guidance
 - **Finance:** Accessible charts and downloadable CSV reports
@@ -788,7 +788,7 @@ Aurora's privacy practices are built on a simple principle: **Your data is yours
 ### Data Categories
 
 **Data You Create**
-- Notes, goals, projects, creations in Forge
+- Notes, goals, projects, creations in Create
 - You own this 100%. Export it anytime. Delete it anytime.
 
 **Data Aurora Generates**
@@ -800,7 +800,7 @@ Aurora's privacy practices are built on a simple principle: **Your data is yours
 **Data You Choose to Share**
 - Social posts and comments in Social universe
 - Photos and travel journals in Travel universe
-- Shared projects in Forge
+- Shared projects in Create
 - Community posts in Guilds/Realms
 - You control sharing and can delete anytime
 
@@ -897,7 +897,7 @@ Aurora's companion adjusts its tone based on this.
 
 Don't try to do everything at once. Pick one universe that calls to you:
 - Curious? Start with **Learning**
-- Creative? Try **Forge**
+- Creative? Try **Create**
 - Organized? Jump to **Productivity**
 - Social? Enter **Social**
 - Relaxing? Explore **Entertainment**
@@ -929,7 +929,7 @@ Feel the different personalities. Each universe is a different relationship.
 
 ### 6. Create Something Small
 
-Go to **Forge** and create something tiny:
+Go to **Create** and create something tiny:
 - Write 100 words about your day
 - Sketch an idea
 - Draft a note
@@ -1181,7 +1181,7 @@ When you enable "relaxation":
 7. Back to **Productivity** with another focus session
 
 **The Creative Flow**
-1. Enter **Forge** universe
+1. Enter **Create** universe
 2. Enable "exploration" signal
 3. Open a blank project
 4. Turn off notifications (CP panel > mute)
@@ -1194,13 +1194,13 @@ When you enable "relaxation":
 3. Enable "learning" signal (mentor tone)
 4. Companion suggests examples and scaffolding
 5. Create a note in **Companion Panel** after each section
-6. Move to **Forge** to apply what you learned
+6. Move to **Create** to apply what you learned
 7. Back to **Learning** next day to review spaced-repetition
 
 **The Evening Wind-Down**
 1. Set "relaxation" signal in **Companion Panel**
 2. Review your day in **Home**
-3. Journal in **Forge** or **Health** universe
+3. Journal in **Create** or **Health** universe
 4. Browse **Entertainment** for a movie or music
 5. Dim theme to Dark mode with warm accent
 6. Let Aurora gently suggest you rest

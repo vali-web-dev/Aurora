@@ -250,7 +250,7 @@ export function SocialUniverse() {
             <Card className="space-y-3">
               <CardTitle>Trending Topics</CardTitle>
               <div className="flex flex-wrap gap-2" role="list" aria-label="Trending topics">
-                {['#aurora', '#realms', '#focus', '#forge', '#learning', '#community'].map((tag) => (
+                {['#aurora', '#realms', '#focus', '#create', '#learning', '#community'].map((tag) => (
                   <Badge key={tag} role="listitem" size="sm" variant="info">
                     {tag}
                   </Badge>

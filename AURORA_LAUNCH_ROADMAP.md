@@ -59,11 +59,11 @@
 - [ ] Implement full-text search across all data
 - **Universe Impact**: All universes enhanced with search
 
-### Forge Universe (3 items)
-- [ ] Create surface/template builder (Forge universe)
+### Create Universe (3 items)
+- [ ] Create surface/template builder (Create universe)
 - [ ] Build component library system with versioning
 - [ ] Build API surface management endpoints
-- **Universe Impact**: Forge → LIVE (creative tools)
+- **Universe Impact**: Create → LIVE (creative tools)
 
 ### Commerce Universe (4 items)
 - [ ] Implement payment processing (Stripe/Payment provider)
@@ -346,7 +346,7 @@ These items must be completed first (~6 weeks):
 - [ ] Social (Feed, Communities) - P1 (Real-time)
 - [ ] Commerce (Shopping, Checkout) - P1 (Payments)
 - [ ] Learning (Courses, Progress) - P2
-- [ ] Forge (Builder, Components) - P1
+- [ ] Create (Builder, Components) - P1
 - [ ] Entertainment (Media, Streaming) - P2
 - [ ] Productivity (Tasks, Notes, Calendar) - P1
 - [ ] Finance (Accounts, Budgets, Investing) - P2

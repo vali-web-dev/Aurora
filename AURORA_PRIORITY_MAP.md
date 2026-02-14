@@ -199,7 +199,7 @@ Aurora is transitioning from "stunning UI with mock data" to "live, functional p
 - **Entertainment**: Media streaming
 - **Travel**: Trip planning
 - **Health**: Vital tracking
-- **Forge**: Builder tools
+- **Create**: Builder tools
 - **Communities**: Groups & messaging
 
 ### P3 (Post-launch)

@@ -20,6 +20,7 @@ import {
   type Course,
   type Realm,
 } from '@/data/types';
+import { useRouter } from 'next/navigation';
 
 const tasks = AuroraDataService.getTasks();
 const notes = AuroraDataService.getNotes();
@@ -42,10 +43,10 @@ const activeCourses = courses
   .slice(0, 3);
 
 const quickActions = [
-  { label: 'Start Focus Realm', icon: 'target' },
-  { label: 'Open Forge', icon: 'forge' },
-  { label: 'New Note', icon: 'note' },
-  { label: 'Plan the Day', icon: 'calendar' },
+  { label: 'Start Focus Realm', icon: 'target', href: '/realms' },
+  { label: 'Open Create', icon: 'create', href: '/create' },
+  { label: 'New Note', icon: 'note', href: '/productivity' },
+  { label: 'Plan the Day', icon: 'calendar', href: '/productivity' },
 ];
 
 const dailyBrief = {
@@ -56,12 +57,14 @@ const dailyBrief = {
 
 const iconMap: Record<string, string> = {
   target: 'Target',
-  forge: 'Forge',
+  create: 'Create',
   note: 'Note',
   calendar: 'Plan',
 };
 
 export function HomeUniverse() {
+  const router = useRouter();
+
   return (
     <Surface className="space-y-16">
       <Hero />
@@ -69,7 +72,11 @@ export function HomeUniverse() {
       <SurfaceHeader
         title="Home Universe"
         description={dailyBrief.summary}
-        actions={<Button variant="primary">Open Dashboard</Button>}
+        actions={
+          <Button variant="primary" onClick={() => router.push('/dashboard')}>
+            Open Dashboard
+          </Button>
+        }
       />
 
       <SurfaceSection title="Daily Brief">
@@ -111,12 +118,18 @@ export function HomeUniverse() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="list" aria-label="Quick actions">
               {quickActions.map((action) => (
-                <div key={action.label} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+                <button
+                  key={action.label}
+                  type="button"
+                  role="listitem"
+                  onClick={() => router.push(action.href)}
+                  className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                >
                   <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                     {iconMap[action.icon]}
                   </div>
                   <p className="text-xs text-slate-600 dark:text-slate-400">{action.label}</p>
-                </div>
+                </button>
               ))}
             </div>
           </Card>
@@ -124,7 +137,13 @@ export function HomeUniverse() {
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
               <CardTitle>Priority Tasks</CardTitle>
-              <Button variant="secondary" size="sm">View Board</Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => router.push('/productivity')}
+              >
+                View Board
+              </Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Priority tasks">
               {topTasks.map((task) => (
@@ -146,7 +165,13 @@ export function HomeUniverse() {
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
               <CardTitle>Learning Progress</CardTitle>
-              <Button variant="ghost" size="sm">Open Learning</Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push('/learning')}
+              >
+                Open Learning
+              </Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Learning progress">
               {activeCourses.map(({ course, progress }) => (
@@ -190,7 +215,13 @@ export function HomeUniverse() {
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{realm.name}</p>
                     <p className="text-xs text-slate-600 dark:text-slate-400">{realm.description}</p>
                   </div>
-                  <Button variant="ghost" size="sm">Enter</Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => router.push('/realms')}
+                  >
+                    Enter
+                  </Button>
                 </div>
               ))}
             </div>

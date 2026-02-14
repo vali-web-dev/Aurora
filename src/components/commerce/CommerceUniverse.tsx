@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { ProductCard } from '@/components/commerce/ProductCard';
-import { AuroraDataService, type Product } from '@/data/types';
+import { AuroraDataService } from '@/data/types';
+import { useCartStore } from '@/lib/commerce/cart-store';
+import { useState } from 'react';
 
 const products = AuroraDataService.getProducts();
 
@@ -13,20 +14,8 @@ const formatProvider = (providerId: string) =>
   providerId.charAt(0).toUpperCase() + providerId.slice(1);
 
 export function CommerceUniverse() {
-  const [cart, setCart] = useState<Product[]>([]);
+  const { items, itemCount, subtotal, tax, total, addItem, removeItem } = useCartStore();
   const [showCart, setShowCart] = useState(false);
-
-  const handleAddToCart = (product: Product) => {
-    setCart([...cart, product]);
-  };
-
-  const handleRemoveFromCart = (id: string) => {
-    setCart(cart.filter((item) => item.id !== id));
-  };
-
-  const subtotal = cart.reduce((sum, item) => sum + item.priceCents, 0);
-  const tax = Math.round(subtotal * 0.08);
-  const total = subtotal + tax;
 
   return (
     <Surface className="py-8">
@@ -38,7 +27,7 @@ export function CommerceUniverse() {
             variant={showCart ? 'primary' : 'secondary'}
             onClick={() => setShowCart(!showCart)}
           >
-            🛒 Cart ({cart.length})
+            🛒 Cart ({itemCount})
           </Button>
         }
       />
@@ -53,7 +42,7 @@ export function CommerceUniverse() {
               imageUrl={product.imageUrl}
               provider={formatProvider(product.providerId)}
               rating={product.rating}
-              onAddToCart={() => handleAddToCart(product)}
+              onAddToCart={() => addItem(product)}
             />
           ))}
         </div>
@@ -64,31 +53,31 @@ export function CommerceUniverse() {
           <div className="space-y-4">
             <CardTitle className="text-xl">Shopping Cart</CardTitle>
 
-            {cart.length === 0 ? (
+            {items.length === 0 ? (
               <p className="text-slate-600 dark:text-slate-400">
                 Your cart is empty. Add items to get started!
               </p>
             ) : (
               <>
                 <div className="space-y-2 max-h-64 overflow-y-auto" role="list" aria-label="Cart items">
-                  {cart.map((item, idx) => (
+                  {items.map((line) => (
                     <div
-                      key={idx}
+                      key={line.product.id}
                       role="listitem"
                       className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-lg"
                     >
                       <div className="flex-grow">
                         <p className="font-medium text-slate-900 dark:text-slate-50 truncate">
-                          {item.title}
+                          {line.product.title}
                         </p>
                         <p className="text-sm text-slate-600 dark:text-slate-400">
-                          ${(item.priceCents / 100).toFixed(2)}
+                          ${(line.product.priceCents / 100).toFixed(2)} • Qty {line.quantity}
                         </p>
                       </div>
                       <button
-                        onClick={() => handleRemoveFromCart(item.id)}
+                        onClick={() => removeItem(line.product.id)}
                         className="text-red-500 hover:text-red-700 font-bold ml-2"
-                        aria-label={`Remove ${item.title} from cart`}
+                        aria-label={`Remove ${line.product.title} from cart`}
                         type="button"
                       >
                         ✕

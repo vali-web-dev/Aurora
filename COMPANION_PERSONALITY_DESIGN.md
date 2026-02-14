@@ -89,7 +89,7 @@ Each universe has a **default tone + scope** plus **signal overrides**:
   - Crisis → Guardian + Light
   - Collaboration → Explorer + Standard
 
-### 🎨 **Forge Universe**
+### 🎨 **Create Universe**
 - **Default:** Explorer + Deep
 - **Theme:** Creative studio; spark ideas, minimize friction, celebrate iteration
 - **Overrides:**

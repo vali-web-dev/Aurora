@@ -16,7 +16,7 @@ Aurora adapts its personality based on where you are:
 |------|-----------|----------|----------|
 | 🧑‍🏫 **Mentor** | Warm, encouraging | Learning, Home | "What are you working on today?" |
 | 🎯 **Strategist** | Direct, goal-focused | Productivity, Commerce | "Let's organize your goals." |
-| 🔍 **Explorer** | Spirited, curious | Forge, Social, Travel | "What sparks your curiosity?" |
+| 🔍 **Explorer** | Spirited, curious | Create, Social, Travel | "What sparks your curiosity?" |
 | 📊 **Analyst** | Neutral, data-driven | Finance, Developer, AI | "Here's what's happening." |
 | 🛡️ **Guardian** | Protective, safe | Health, Security | "Your safety comes first." |
 
@@ -26,7 +26,7 @@ Aurora adapts its personality based on where you are:
 |----------|-----------|----------|
 | 🏠 Home | Dashboard, summaries, orientation | Starting your day |
 | 📚 Learning | Courses, skills, progress | Growing and learning |
-| 🎨 Forge | Create, build, design, write, code | Making things |
+| 🎨 Create | Create, build, design, write, code | Making things |
 | 🎯 Productivity | Tasks, goals, projects, calendar | Getting things done |
 | 💪 Health | Habits, mood, wellness, fitness | Taking care of yourself |
 | 💰 Finance | Budget, spending, wealth, goals | Money management |
@@ -122,7 +122,7 @@ Aurora works for everyone:
 | `Ctrl+B` | Toggle Companion Panel |
 | `Ctrl+H` | Go to Home |
 | `Ctrl+Shift+L` | Go to Learning |
-| `Ctrl+Shift+F` | Go to Forge |
+| `Ctrl+Shift+F` | Go to Create |
 | `Ctrl+Shift+P` | Go to Productivity |
 | `?` | Keyboard shortcuts help |
 | `🎨` | Theme selector (top nav) |
@@ -135,10 +135,10 @@ Aurora works for everyone:
 Home → Productivity (set goals) → Productivity (focus mode) → Break
 
 **Creative Flow:**
-Forge + Exploration signal → Create → Save/Publish
+Create + Exploration signal → Create → Save/Publish
 
 **Learning Session:**
-Learning → Read material → Forge (apply) → Learning (review)
+Learning → Read material → Create (apply) → Learning (review)
 
 **Evening Wind-Down:**
 Relaxation signal → Entertainment → Journal → Switch to Dark theme

@@ -211,7 +211,7 @@ Aurora speaks to you with a consistent voice. Not all universes sound the same (
 - Efficient: "Done. 2 more to go."
 - Momentum-driven: "Keep going."
 
-**Forge Universe (Explorer)**
+**Create Universe (Explorer)**
 - Curious: "What if you tried...?"
 - Playful: "Let's see what happens."
 - Possibility-focused: "Imagine if you..."

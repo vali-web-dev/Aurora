@@ -185,7 +185,7 @@ Aurora becomes the world’s learning platform.
 
 ⭐ 7. Creative Universe — The Heart of Aurora
 Aurora becomes the creative engine of the internet.
-7.1 Forge
+7.1 Create
 - Multi‑panel workspace
 - Block editor
 - Component insertion

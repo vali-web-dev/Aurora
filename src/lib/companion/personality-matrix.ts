@@ -14,7 +14,7 @@
 export type UniverseContext =
   | 'home'
   | 'learning'
-  | 'forge'
+  | 'create'
   | 'productivity'
   | 'health'
   | 'finance'
@@ -82,7 +82,7 @@ export const personalityMatrix: Record<UniverseContext, {
     guidanceTheme: 'Learning companion; progressive, encouraging; scaffold progress',
   },
 
-  forge: {
+  create: {
     defaultTone: 'explorer',
     defaultScope: 'deep',
     signalOverrides: {

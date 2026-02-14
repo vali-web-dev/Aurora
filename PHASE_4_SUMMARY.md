@@ -329,7 +329,7 @@ The Social Universe is **fully functional** and ready for use. All core features
 - Learning
 - Entertainment
 - Commerce
-- Forge
+- Create
 - Or continue enhancing Social Universe
 
 ---

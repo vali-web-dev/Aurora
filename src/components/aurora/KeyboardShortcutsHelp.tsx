@@ -14,7 +14,7 @@ const shortcuts = [
     items: [
       { keys: ['Ctrl/Cmd', 'H'], description: 'Go to Home' },
       { keys: ['Ctrl/Cmd', 'Shift', 'L'], description: 'Go to Learning' },
-      { keys: ['Ctrl/Cmd', 'Shift', 'F'], description: 'Go to Forge' },
+      { keys: ['Ctrl/Cmd', 'Shift', 'F'], description: 'Go to Create' },
       { keys: ['Ctrl/Cmd', 'Shift', 'P'], description: 'Go to Productivity' },
     ],
   },

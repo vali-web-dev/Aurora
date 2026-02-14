@@ -508,7 +508,7 @@ export interface BotInstance {
   lastExecuted: Date;
 }
 
-// ============ Creative (Forge) ============
+// ============ Creative (Create) ============
 export interface Surface {
   id: string;
   ownerUserId: string;
@@ -853,8 +853,8 @@ export const mockDigitalTwinSuggestions: DigitalTwinSuggestion[] = [
   {
     id: 'dt-2',
     title: 'Refine Today\'s Surface',
-    description: 'Your latest Forge surface could benefit from a simplified CTA block.',
-    actionLabel: 'Open in Forge',
+    description: 'Your latest Create surface could benefit from a simplified CTA block.',
+    actionLabel: 'Open in Create',
     confidence: 0.81,
   },
   {
@@ -1352,7 +1352,7 @@ export const mockMarketplaceListings: MarketplaceListing[] = [
     title: 'Automation Agent Toolkit',
     category: 'plugins',
     priceCents: 14900,
-    creator: 'Forge Labs',
+    creator: 'Create Labs',
     rating: 4.5,
   },
 ];
@@ -1441,7 +1441,7 @@ export const mockWebhooks: WebhookEndpoint[] = [
   {
     id: 'hook-2',
     url: 'https://builder.aurora.app/webhooks/surfaces',
-    events: ['forge.surface.published'],
+    events: ['create.surface.published'],
     status: 'paused',
   },
 ];
@@ -1765,11 +1765,11 @@ export const mockSocialPosts: SocialPost[] = [
   {
     id: '3',
     authorId: '3',
-    body: 'Just built a new onboarding surface in Forge. The block library feels incredible.',
+    body: 'Just built a new onboarding surface in Create. The block library feels incredible.',
     platform: 'linkedin',
     mediaType: 'link',
-    mediaUrl: 'https://aurora.app/forge',
-    tags: ['forge', 'design', 'product'],
+    mediaUrl: 'https://aurora.app/create',
+    tags: ['create', 'design', 'product'],
     likes: 1230,
     comments: 88,
     createdAt: new Date('2026-02-11T16:15:00Z'),
@@ -1803,7 +1803,7 @@ export const mockSocialChannels: SocialChannel[] = [
   },
   {
     id: '3',
-    name: 'Forge Studio',
+    name: 'Create Studio',
     description: 'Showcase surfaces and components',
     members: 6210,
     isLive: true,

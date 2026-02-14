@@ -7,7 +7,7 @@ return (
         </p>
         <h1 className="text-2xl font-semibold">What Aurora actually is.</h1>
         <p className="text-sm text-aurora-muted max-w-xl">
-        Aurora is a unified environment for your creative life. It behaves like an operating system: Realms for context, Forge for building, Guilds for collaboration, Luma for guidance, and Neural UX for comfort.
+        Aurora is a unified environment for your creative life. It behaves like an operating system: Realms for context, Create for building, Guilds for collaboration, Luma for guidance, and Neural UX for comfort.
         </p>
     </div>
     <div className="grid gap-4 md:grid-cols-2 text-xs">
@@ -27,7 +27,7 @@ return (
             Focus, Creation, Reflection, and more—each Realm is a tuned environment for a different mental state.
         </p>
         </div>
-        {/* Add Forge, Guilds, Luma, Neural UX cards similarly */}
+        {/* Add Create, Guilds, Luma, Neural UX cards similarly */}
     </div>
     </section>
 );

@@ -46,7 +46,7 @@ const recentEvents = [
 const universeStatus = [
   { name: 'Home', health: 'Green', users: '38k', activity: 'High' },
   { name: 'Learning', health: 'Green', users: '24k', activity: 'High' },
-  { name: 'Forge', health: 'Yellow', users: '12k', activity: 'Medium' },
+  { name: 'Create', health: 'Yellow', users: '12k', activity: 'Medium' },
   { name: 'Finance', health: 'Green', users: '9k', activity: 'High' },
   { name: 'Health', health: 'Green', users: '7k', activity: 'Medium' },
   { name: 'Automation', health: 'Yellow', users: '6k', activity: 'High' },

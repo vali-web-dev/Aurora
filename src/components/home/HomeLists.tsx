@@ -4,18 +4,27 @@ import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { AuroraDataService } from '@/data/types';
+import { useRouter } from 'next/navigation';
 
 const watchlist = AuroraDataService.getWatchlist();
 const readingList = AuroraDataService.getReadingList();
 const shoppingList = AuroraDataService.getShoppingList();
 
 export function HomeLists() {
+  const router = useRouter();
+
   return (
     <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
           <CardTitle>Watchlist</CardTitle>
-          <Button variant="ghost" size="sm">Open</Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push('/entertainment')}
+          >
+            Open
+          </Button>
         </div>
         <div className="space-y-3">
           {watchlist.map((item) => (
@@ -35,7 +44,13 @@ export function HomeLists() {
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
           <CardTitle>Reading List</CardTitle>
-          <Button variant="ghost" size="sm">Open</Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push('/learning')}
+          >
+            Open
+          </Button>
         </div>
         <div className="space-y-3">
           {readingList.map((item) => (
@@ -55,7 +70,13 @@ export function HomeLists() {
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
           <CardTitle>Shopping List</CardTitle>
-          <Button variant="ghost" size="sm">Open</Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push('/commerce')}
+          >
+            Open
+          </Button>
         </div>
         <div className="space-y-3">
           {shoppingList.map((item) => (

@@ -1,8 +1,11 @@
+'use client';
+
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { AuroraDataService } from '@/data/types';
 import { formatDateTime } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 const notifications = AuroraDataService.getNotifications();
 const learningTimeline = AuroraDataService.getLearningTimeline();
@@ -11,6 +14,7 @@ const shoppingList = AuroraDataService.getShoppingList();
 const unreadCount = notifications.filter((item) => !item.read).length;
 
 export function HomeUpgrades() {
+  const router = useRouter();
   const totalShopping = shoppingList.reduce((sum, item) => sum + item.priceCents, 0);
   const highPriority = shoppingList.filter((item) => item.priority === 'high').length;
 
@@ -49,7 +53,13 @@ export function HomeUpgrades() {
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
           <CardTitle>Learning Timeline</CardTitle>
-          <Button variant="ghost" size="sm">Open</Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push('/learning')}
+          >
+            Open
+          </Button>
         </div>
         <div className="space-y-3">
           {learningTimeline.map((item) => (
@@ -73,7 +83,13 @@ export function HomeUpgrades() {
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
           <CardTitle>Shopping Detail</CardTitle>
-          <Button variant="ghost" size="sm">Review</Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push('/commerce/review')}
+          >
+            Review
+          </Button>
         </div>
         <div className="space-y-3">
           <p className="text-sm text-slate-600 dark:text-slate-400">

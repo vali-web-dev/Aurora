@@ -111,7 +111,7 @@ const DOCS_STRUCTURE: Record<string, DocsSection[]> = {
     },
     {
       title: 'All 15 Universes',
-      description: 'Home, Learning, Forge, Productivity, and more',
+      description: 'Home, Learning, Create, Productivity, and more',
       links: [
         { label: 'Universes Guide', href: '/docs/manual#the-15-universes' },
         { label: 'Quick Ref', href: '/docs/quick-reference#universes' },

@@ -186,7 +186,7 @@ To populate the database with test data, run:
 INSERT INTO social_posts (author_user_id, universe, content, visibility)
 VALUES
   (1, 'social', 'Welcome to the Aurora Social Universe! 🌟', 'public'),
-  (1, 'social', 'Just launched my new project on Aurora Forge. Check it out!', 'public'),
+  (1, 'social', 'Just launched my new project on Aurora Create. Check it out!', 'public'),
   (1, 'social', 'Learning something new today in the Learning Universe 📚', 'public');
 
 -- Insert test comments (assuming post IDs 1, 2, 3 exist)

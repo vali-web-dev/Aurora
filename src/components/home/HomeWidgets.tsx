@@ -22,7 +22,7 @@ const financeSummary = {
 const trending = [
   { label: 'Aurora Town Hall', type: 'Live Event' },
   { label: 'Focus Ritual Playlist', type: 'Audio' },
-  { label: 'Forge Templates Pack', type: 'Marketplace' },
+  { label: 'Create Templates Pack', type: 'Marketplace' },
   { label: 'Guilds Weekly Summit', type: 'Community' },
 ];
 

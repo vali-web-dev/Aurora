@@ -2,10 +2,10 @@
 export const primaryNav = [
   { href: "/", label: "Home" },
   { href: "/entertainment", label: "Entertainment" },
-  { href: "/product", label: "Commerce" },
+  { href: "/commerce", label: "Commerce" },
   { href: "/social", label: "Social" },
   { href: "/learning", label: "Learning" },
-  { href: "/forge", label: "Forge" }
+  { href: "/create", label: "Create" }
 ];
 
 // Secondary navigation - in collapsible menu
@@ -14,6 +14,7 @@ export const secondaryNav = [
   { href: "/brand", label: "Brand" },
   { href: "/communities", label: "Communities" },
   { href: "/gaming", label: "Gaming" },
+  { href: "/commerce/review", label: "Shopping Review" },
   { href: "/economy", label: "Economy" },
   { href: "/developer", label: "Developer" },
   { href: "/ai", label: "AI" },
@@ -49,6 +50,7 @@ export const footerNav = {
 product: [
     { href: "/identity", label: "Identity" },
     { href: "/product", label: "Overview" },
+  { href: "/commerce/review", label: "Shopping Review" },
   { href: "/brand", label: "Brand" },
   { href: "/communities", label: "Communities" },
   { href: "/gaming", label: "Gaming" },
@@ -66,7 +68,7 @@ product: [
     { href: "/travel", label: "Travel" },
     { href: "/navigation", label: "Navigation" },
     { href: "/realms", label: "Realms" },
-    { href: "/forge", label: "Forge" },
+    { href: "/create", label: "Create" },
     { href: "/guilds", label: "Guilds" },
     { href: "/luma", label: "Luma" }
 ],

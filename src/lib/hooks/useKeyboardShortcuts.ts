@@ -15,7 +15,7 @@ import { useCompanion } from '@/lib/companion/companion-provider';
  * - Ctrl/Cmd + B: Toggle companion panel
  * - Ctrl/Cmd + H: Navigate to home
  * - Ctrl/Cmd + Shift + L: Navigate to learning
- * - Ctrl/Cmd + Shift + F: Navigate to forge
+ * - Ctrl/Cmd + Shift + F: Navigate to create
  * - Ctrl/Cmd + Shift + P: Navigate to productivity
  * - ?: Show keyboard shortcuts help (when not in input)
  * 
@@ -74,10 +74,10 @@ export function useKeyboardShortcuts(
         return;
       }
 
-      // Cmd/Ctrl + Shift + F: Forge
+      // Cmd/Ctrl + Shift + F: Create
       if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key === 'F') {
         event.preventDefault();
-        router.push('/forge');
+        router.push('/create');
         return;
       }
 

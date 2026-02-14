@@ -1,7 +1,7 @@
 # Aurora - Digital Civilization Platform
 
 ## Project Overview
-Aurora is a comprehensive, emotionally intelligent digital civilization platform that unifies 15 interconnected universes: Home, Entertainment, Commerce, Social, Learning, Forge, Brand, Communities, Gaming, Productivity, Travel, Finance, Health & Wellness, Home Control, and Automation & Agents.
+Aurora is a comprehensive, emotionally intelligent digital civilization platform that unifies 15 interconnected universes: Home, Entertainment, Commerce, Social, Learning, Create, Brand, Communities, Gaming, Productivity, Travel, Finance, Health & Wellness, Home Control, and Automation & Agents.
 
 ## Technology Stack
 - **Framework:** Next.js 14+ (App Router)

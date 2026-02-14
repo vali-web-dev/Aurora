@@ -12,7 +12,7 @@ Aurora brings together:
 - **Commerce** — Federated shopping with universal checkout
 - **Social** — Unified feeds, communities, and messaging
 - **Learning** — Global academy with courses and progress
-- **Forge** — Creative studio for building surfaces and components
+- **Create** — Creative studio for building surfaces and components
 - **Brand** — Identity systems and campaigns
 - **Communities** — Creator groups and collaboration
 - **Gaming** — Games, clips, events, and leaderboards
@@ -128,7 +128,7 @@ src/
 │   ├── about/                   # About universe
 │   ├── product/                 # Product universe
 │   ├── realms/                  # Realms universe
-│   ├── forge/                   # Forge (builder) universe
+│   ├── create/                  # Create (builder) universe
 │   ├── guilds/                  # Guilds (communities) universe
 │   └── ...                      # Other universe pages
 ├── components/
