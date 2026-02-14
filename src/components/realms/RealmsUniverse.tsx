@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { mockRealms, mockRealmUsage } from '@/data/types';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
@@ -83,9 +83,9 @@ export function RealmsUniverse() {
                     </div>
 
                     <div className="space-y-2">
-                      <h3 className="font-bold text-xl text-slate-900 dark:text-slate-50">
+                      <CardTitle className="text-xl">
                         {realm.name}
-                      </h3>
+                      </CardTitle>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
                         {realm.description}
                       </p>
@@ -120,9 +120,9 @@ export function RealmsUniverse() {
           <Card className="bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+                <CardTitle className="text-2xl">
                   {mockRealms.find((r) => r.id === activeRealm)?.name} Realm
-                </h3>
+                </CardTitle>
                 <button
                   onClick={() => setActiveRealm(null)}
                   className="text-3xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
@@ -164,9 +164,7 @@ export function RealmsUniverse() {
       <SurfaceSection title="Realm Insights">
         <Card>
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">
-              Your Realm Insights
-            </h3>
+            <CardTitle className="text-xl">Your Realm Insights</CardTitle>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 bg-blue-50 dark:bg-slate-800 rounded-lg">
                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Most Focused Day</p>

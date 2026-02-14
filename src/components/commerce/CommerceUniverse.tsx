@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { ProductCard } from '@/components/commerce/ProductCard';
@@ -62,9 +62,7 @@ export function CommerceUniverse() {
       {showCart && (
         <Card className="bg-blue-50 dark:bg-slate-900 border-blue-200 dark:border-slate-800">
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">
-              Shopping Cart
-            </h3>
+            <CardTitle className="text-xl">Shopping Cart</CardTitle>
 
             {cart.length === 0 ? (
               <p className="text-slate-600 dark:text-slate-400">

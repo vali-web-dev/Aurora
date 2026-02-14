@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { AuroraDataService } from '@/data/types';
+import { formatDateTime } from '@/lib/utils';
 
 const workflows = AuroraDataService.getWorkflows();
 const triggers = AuroraDataService.getWorkflowTriggers();
@@ -39,7 +40,7 @@ export function AutomationUniverse() {
               <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
                 Automation Platform
               </p>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Workflow Overview</h2>
+              <CardTitle>Workflow Overview</CardTitle>
             </div>
             <Badge size="sm" variant="info">Real-time</Badge>
           </div>
@@ -74,7 +75,7 @@ export function AutomationUniverse() {
                   <div>
                     <p className="text-slate-600 dark:text-slate-400">Next Run</p>
                     <p className="font-semibold text-slate-900 dark:text-slate-50">
-                      {workflow.nextRun?.toLocaleString() ?? 'Manual'}
+                      {workflow.nextRun ? formatDateTime(workflow.nextRun) : 'Manual'}
                     </p>
                   </div>
                 </div>
@@ -88,7 +89,7 @@ export function AutomationUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Triggers</h2>
+              <CardTitle>Triggers</CardTitle>
               <Button variant="secondary" size="sm">New Trigger</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Triggers">
@@ -109,7 +110,7 @@ export function AutomationUniverse() {
           <div className="space-y-6">
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Bot Agents</h2>
+                <CardTitle>Bot Agents</CardTitle>
                 <Button variant="ghost" size="sm">View All</Button>
               </div>
               <div className="space-y-3" role="list" aria-label="Bot agents">
@@ -122,7 +123,7 @@ export function AutomationUniverse() {
                       </Badge>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">
-                      {bot.capability} • {bot.tasksCompleted} tasks • Last: {bot.lastExecuted.toLocaleString()}
+                      {bot.capability} • {bot.tasksCompleted} tasks • Last: {formatDateTime(bot.lastExecuted)}
                     </p>
                   </div>
                 ))}
@@ -130,7 +131,7 @@ export function AutomationUniverse() {
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">System Health</h3>
+              <CardTitle>System Health</CardTitle>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 All automation systems operating nominally with {bots.length} active agents.
               </p>

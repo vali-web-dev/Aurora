@@ -1,5 +1,6 @@
-import { Card } from '@/components/aurora/Card';
+import { Card, CardDescription, CardFooter, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
+import { Badge } from '@/components/aurora/Badge';
 
 interface CourseCardProps {
   id: string;
@@ -36,18 +37,14 @@ export function CourseCard({
 
       <div className="flex-grow space-y-3">
         <div>
-          <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-50 mb-1">
-            {title}
-          </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
-            {description}
-          </p>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription className="line-clamp-2">{description}</CardDescription>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${levelColors[level]}`}>
+          <Badge variant="default" size="sm" className={levelColors[level]}>
             {level.charAt(0).toUpperCase() + level.slice(1)}
-          </span>
+          </Badge>
           <span className="text-xs text-slate-600 dark:text-slate-400">
             {duration}h • {lessons} lessons
           </span>
@@ -69,14 +66,16 @@ export function CourseCard({
         )}
       </div>
 
-      <Button
-        variant={progress > 0 ? 'secondary' : 'primary'}
-        size="sm"
-        onClick={onEnroll}
-        className="w-full mt-4"
-      >
-        {progress > 0 ? 'Continue Learning' : 'Enroll Now'}
-      </Button>
+      <CardFooter>
+        <Button
+          variant={progress > 0 ? 'secondary' : 'primary'}
+          size="sm"
+          onClick={onEnroll}
+          className="w-full"
+        >
+          {progress > 0 ? 'Continue Learning' : 'Enroll Now'}
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

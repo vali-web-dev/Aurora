@@ -1,6 +1,6 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
@@ -12,6 +12,7 @@ import { HomeWidgets } from '@/components/home/HomeWidgets';
 import { HomePreviews } from '@/components/home/HomePreviews';
 import { HomeLists } from '@/components/home/HomeLists';
 import { HomeUpgrades } from '@/components/home/HomeUpgrades';
+import { formatDateTime } from '@/lib/utils';
 import {
   AuroraDataService,
   mockCourseProgress,
@@ -105,7 +106,7 @@ export function HomeUniverse() {
         <div className="space-y-6">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Quick Actions</h3>
+              <CardTitle>Quick Actions</CardTitle>
               <Button variant="ghost" size="sm">Customize</Button>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="list" aria-label="Quick actions">
@@ -122,7 +123,7 @@ export function HomeUniverse() {
 
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Priority Tasks</h3>
+              <CardTitle>Priority Tasks</CardTitle>
               <Button variant="secondary" size="sm">View Board</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Priority tasks">
@@ -144,7 +145,7 @@ export function HomeUniverse() {
 
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Learning Progress</h3>
+              <CardTitle>Learning Progress</CardTitle>
               <Button variant="ghost" size="sm">Open Learning</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Learning progress">
@@ -167,13 +168,13 @@ export function HomeUniverse() {
 
         <div className="space-y-6">
           <Card className="space-y-4">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Upcoming Events</h3>
+            <CardTitle>Upcoming Events</CardTitle>
             <div className="space-y-3">
               {upcomingEvents.map((event) => (
                 <div key={event.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <p className="font-semibold text-slate-900 dark:text-slate-50">{event.title}</p>
                   <p className="text-xs text-slate-600 dark:text-slate-400">
-                    {event.startsAt.toLocaleString()} • {event.durationMinutes} min
+                    {formatDateTime(event.startsAt)} • {event.durationMinutes} min
                   </p>
                 </div>
               ))}
@@ -181,7 +182,7 @@ export function HomeUniverse() {
           </Card>
 
           <Card className="space-y-4">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Realm Highlights</h3>
+            <CardTitle>Realm Highlights</CardTitle>
             <div className="space-y-3">
               {realms.slice(0, 3).map((realm) => (
                 <div key={realm.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-between">
@@ -196,7 +197,7 @@ export function HomeUniverse() {
           </Card>
 
           <Card className="space-y-4">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Notes</h3>
+            <CardTitle>Notes</CardTitle>
             <div className="space-y-3">
               {notes.slice(0, 3).map((note) => (
                 <div key={note.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">

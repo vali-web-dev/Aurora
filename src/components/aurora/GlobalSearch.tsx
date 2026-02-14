@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { primaryNav, secondaryNav, utilityNav } from '@/lib/navigation';
 import { AuroraModal } from '@/components/aurora/Modal';
+import { Badge } from '@/components/aurora/Badge';
 
 interface SearchItem {
   href: string;
@@ -183,16 +184,13 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
                 aria-selected={index === activeIndex}
               >
                 <span className="font-medium">{item.label}</span>
-                <span
-                  className={clsx(
-                    'text-xs px-2 py-1 rounded-full',
-                    index === activeIndex
-                      ? 'bg-white/20 text-white'
-                      : 'bg-slate-200 dark:bg-slate-800 text-slate-500'
-                  )}
+                <Badge
+                  size="sm"
+                  variant={index === activeIndex ? 'primary' : 'default'}
+                  className={index === activeIndex ? 'bg-white/20 text-white' : ''}
                 >
                   {item.group}
-                </span>
+                </Badge>
               </button>
             ))}
           </div>

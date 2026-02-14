@@ -1,4 +1,4 @@
-import { Card } from '@/components/aurora/Card';
+import { Card, CardFooter, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 
 interface ProductCardProps {
@@ -32,9 +32,7 @@ export function ProductCard({
       </div>
 
       <div className="flex-grow space-y-2">
-        <h3 className="font-semibold text-slate-900 dark:text-slate-50 line-clamp-2">
-          {title}
-        </h3>
+        <CardTitle className="line-clamp-2">{title}</CardTitle>
         
         <p className="text-xs text-slate-500 dark:text-slate-400">
           {provider}
@@ -52,14 +50,16 @@ export function ProductCard({
         </p>
       </div>
 
-      <Button
-        variant="primary"
-        size="sm"
-        onClick={onAddToCart}
-        className="w-full mt-4"
-      >
-        Add to Cart
-      </Button>
+      <CardFooter>
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={onAddToCart}
+          className="w-full"
+        >
+          Add to Cart
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

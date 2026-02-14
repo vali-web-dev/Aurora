@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { AuroraDataService } from '@/data/types';
+import { formatNumber } from '@/lib/utils';
 
 const products = AuroraDataService.getProducts().slice(0, 3);
 const mediaItems = AuroraDataService.getMediaItems().slice(0, 3);
@@ -20,9 +21,7 @@ export function HomePreviews() {
               <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
                 Commerce
               </p>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                Curated for you
-              </h3>
+              <CardTitle>Curated for you</CardTitle>
             </div>
             <Link href="/product">
               <Button variant="secondary" size="sm">Shop</Button>
@@ -56,9 +55,7 @@ export function HomePreviews() {
               <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
                 Entertainment
               </p>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                Trending now
-              </h3>
+              <CardTitle>Trending now</CardTitle>
             </div>
             <Link href="/entertainment">
               <Button variant="secondary" size="sm">Explore</Button>
@@ -96,9 +93,7 @@ export function HomePreviews() {
               <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
                 Economy
               </p>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                Marketplace momentum
-              </h3>
+              <CardTitle>Marketplace momentum</CardTitle>
             </div>
             <Link href="/economy">
               <Button variant="secondary" size="sm">Open</Button>
@@ -132,9 +127,7 @@ export function HomePreviews() {
               <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
                 Developer
               </p>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                Build surfaces faster
-              </h3>
+              <CardTitle>Build surfaces faster</CardTitle>
             </div>
             <Link href="/developer">
               <Button variant="secondary" size="sm">Open</Button>
@@ -152,7 +145,7 @@ export function HomePreviews() {
                     {plugin.name}
                   </p>
                   <p className="text-xs text-slate-600 dark:text-slate-400">
-                    v{plugin.version} • {plugin.installs.toLocaleString()} installs
+                    v{plugin.version} • {formatNumber(plugin.installs)} installs
                   </p>
                 </div>
                 <Badge size="sm" variant={plugin.status === 'active' ? 'success' : 'warning'}>

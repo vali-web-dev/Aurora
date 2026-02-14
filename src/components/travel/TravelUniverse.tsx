@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { AuroraDataService } from '@/data/types';
+import { formatDate } from '@/lib/utils';
 
 const trips = AuroraDataService.getTrips();
 const itinerary = AuroraDataService.getItinerary();
@@ -40,7 +41,7 @@ export function TravelUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Trips</h2>
+              <CardTitle>Trips</CardTitle>
               <Button variant="secondary" size="sm">New Trip</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Upcoming trips">
@@ -51,7 +52,7 @@ export function TravelUniverse() {
                     <Badge size="sm" variant="info">{trip.status}</Badge>
                   </div>
                   <p className="text-xs text-slate-600 dark:text-slate-400">
-                    {trip.startDate.toLocaleDateString()} - {trip.endDate.toLocaleDateString()}
+                    {formatDate(trip.startDate)} - {formatDate(trip.endDate)}
                   </p>
                   <p className="text-xs text-slate-600 dark:text-slate-400">
                     Budget ${(trip.budgetCents / 100).toFixed(0)}
@@ -62,7 +63,7 @@ export function TravelUniverse() {
           </Card>
 
           <Card className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Today\'s Itinerary</h2>
+            <CardTitle>Today's Itinerary</CardTitle>
             <div className="space-y-3" role="list" aria-label="Today's itinerary">
               {itinerary.map((item) => (
                 <div key={item.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
@@ -97,7 +98,7 @@ export function TravelUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Packing List</h2>
+              <CardTitle>Packing List</CardTitle>
               <Button variant="ghost" size="sm">Manage</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Packing list">
@@ -114,7 +115,7 @@ export function TravelUniverse() {
 
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Budget Breakdown</h2>
+              <CardTitle>Budget Breakdown</CardTitle>
               <Badge size="sm" variant="info">
                 ${(budgetSpent / 100).toFixed(0)} / ${(budgetTotal / 100).toFixed(0)}
               </Badge>

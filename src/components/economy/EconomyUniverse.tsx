@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { AuroraDataService } from '@/data/types';
+import { formatDate } from '@/lib/utils';
 
 const listings = AuroraDataService.getMarketplaceListings();
 const payouts = AuroraDataService.getCreatorPayouts();
@@ -72,7 +73,7 @@ export function EconomyUniverse() {
               <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
                 Revenue Snapshot
               </p>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Marketplace Momentum</h2>
+              <CardTitle>Marketplace Momentum</CardTitle>
             </div>
             <Badge size="sm" variant="info">+12% WoW</Badge>
           </div>
@@ -118,7 +119,7 @@ export function EconomyUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.5fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Marketplace</h2>
+              <CardTitle>Marketplace</CardTitle>
               <Button variant="secondary" size="sm">Browse</Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="list" aria-label="Marketplace listings">
@@ -141,19 +142,19 @@ export function EconomyUniverse() {
           <div className="space-y-6">
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Payouts</h2>
+                <CardTitle>Payouts</CardTitle>
                 <Button variant="ghost" size="sm">View All</Button>
               </div>
-              <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400" role="list" aria-label="Payout status counts">
-                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-1">
+              <div className="flex flex-wrap gap-2" role="list" aria-label="Payout status counts">
+                <Badge size="sm" variant="success" role="listitem">
                   Paid {payoutStatusCounts.paid ?? 0}
-                </span>
-                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-1">
+                </Badge>
+                <Badge size="sm" variant="warning" role="listitem">
                   Processing {payoutStatusCounts.processing ?? 0}
-                </span>
-                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-1">
+                </Badge>
+                <Badge size="sm" variant="default" role="listitem">
                   Pending {payoutStatusCounts.pending ?? 0}
-                </span>
+                </Badge>
               </div>
               <div className="space-y-3" role="list" aria-label="Recent payouts">
                 {payouts.map((payout) => (
@@ -165,7 +166,7 @@ export function EconomyUniverse() {
                       </Badge>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">
-                      ${(payout.amountCents / 100).toFixed(2)} • {payout.scheduledFor.toLocaleDateString()}
+                      ${(payout.amountCents / 100).toFixed(2)} • {formatDate(payout.scheduledFor)}
                     </p>
                   </div>
                 ))}
@@ -173,7 +174,7 @@ export function EconomyUniverse() {
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Revenue Intelligence</h3>
+              <CardTitle>Revenue Intelligence</CardTitle>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 Automated insights surface ethical growth opportunities.
               </p>
@@ -182,7 +183,7 @@ export function EconomyUniverse() {
 
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Latest Activity</h3>
+                <CardTitle>Latest Activity</CardTitle>
                 <Button variant="ghost" size="sm">View</Button>
               </div>
               <div className="space-y-3">

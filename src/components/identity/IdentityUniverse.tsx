@@ -1,6 +1,6 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
@@ -32,9 +32,7 @@ export function IdentityUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
           <div className="space-y-6">
             <Card className="space-y-4">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                Personas
-              </h2>
+              <CardTitle>Personas</CardTitle>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Personas">
                 {personas.map((persona) => (
                   <div key={persona.id} role="listitem" className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-2">
@@ -46,9 +44,11 @@ export function IdentityUniverse() {
                     </p>
                     <div className="flex flex-wrap gap-2" role="list" aria-label="Persona preferences">
                       {Object.entries(persona.preferences).map(([key, value]) => (
-                        <Badge key={key} size="sm" role="listitem">
-                          {key}: {String(value)}
-                        </Badge>
+                        <span key={key} role="listitem">
+                          <Badge size="sm">
+                            {key}: {String(value)}
+                          </Badge>
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -58,29 +58,26 @@ export function IdentityUniverse() {
             </Card>
 
             <Card className="space-y-4">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                Life Graph
-              </h2>
+              <CardTitle>Life Graph</CardTitle>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 A living model of your interests, skills, habits, and rhythms.
               </p>
               <div className="flex flex-wrap gap-2" role="list" aria-label="Life graph nodes">
                 {lifeGraph.map((node) => (
-                  <span
+                  <Badge
                     key={node.id}
                     role="listitem"
-                    className="px-3 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-medium"
+                    variant="default"
+                    size="md"
                   >
                     {node.label}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             </Card>
 
             <Card className="space-y-4">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                Digital Twin
-              </h2>
+              <CardTitle>Digital Twin</CardTitle>
               <div className="space-y-3" role="list" aria-label="Digital twin suggestions">
                 {digitalTwin.map((suggestion) => (
                   <div key={suggestion.id} role="listitem" className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-2">
@@ -106,35 +103,35 @@ export function IdentityUniverse() {
 
           <div className="space-y-6">
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Public Identity</h3>
+              <CardTitle>Public Identity</CardTitle>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 {profile.publicBio}
               </p>
               <div className="flex flex-wrap gap-2" role="list" aria-label="Public values">
                 {profile.values.map((value) => (
-                  <Badge key={value} size="sm" role="listitem">
-                    {value}
-                  </Badge>
+                  <span key={value} role="listitem">
+                    <Badge size="sm">{value}</Badge>
+                  </span>
                 ))}
               </div>
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Private Context</h3>
+              <CardTitle>Private Context</CardTitle>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 {profile.privateBio}
               </p>
               <div className="flex flex-wrap gap-2" role="list" aria-label="Focus themes">
                 {profile.focusThemes.map((theme) => (
-                  <Badge key={theme} variant="primary" size="sm" role="listitem">
-                    {theme}
-                  </Badge>
+                  <span key={theme} role="listitem">
+                    <Badge variant="primary" size="sm">{theme}</Badge>
+                  </span>
                 ))}
               </div>
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Privacy Mode</h3>
+              <CardTitle>Privacy Mode</CardTitle>
               <div className="flex items-center justify-between">
                 <p className="text-sm text-slate-600 dark:text-slate-400">Current</p>
                 <Badge variant="success" size="sm">

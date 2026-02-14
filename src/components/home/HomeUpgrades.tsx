@@ -1,7 +1,8 @@
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { AuroraDataService } from '@/data/types';
+import { formatDateTime } from '@/lib/utils';
 
 const notifications = AuroraDataService.getNotifications();
 const learningTimeline = AuroraDataService.getLearningTimeline();
@@ -17,9 +18,7 @@ export function HomeUpgrades() {
     <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">
-            Notifications
-          </h3>
+          <CardTitle>Notifications</CardTitle>
           <Badge size="sm" variant={unreadCount > 0 ? 'warning' : 'default'}>
             {unreadCount} new
           </Badge>
@@ -39,7 +38,7 @@ export function HomeUpgrades() {
                 {item.body}
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-500">
-                {item.createdAt.toLocaleString()}
+                {formatDateTime(item.createdAt)}
               </p>
             </div>
           ))}
@@ -49,9 +48,7 @@ export function HomeUpgrades() {
 
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">
-            Learning Timeline
-          </h3>
+          <CardTitle>Learning Timeline</CardTitle>
           <Button variant="ghost" size="sm">Open</Button>
         </div>
         <div className="space-y-3">
@@ -75,9 +72,7 @@ export function HomeUpgrades() {
 
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">
-            Shopping Detail
-          </h3>
+          <CardTitle>Shopping Detail</CardTitle>
           <Button variant="ghost" size="sm">Review</Button>
         </div>
         <div className="space-y-3">

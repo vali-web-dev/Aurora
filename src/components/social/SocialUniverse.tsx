@@ -1,11 +1,13 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
+import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { SocialPostCard } from '@/components/social/SocialPostCard';
 import { AuroraDataService } from '@/data/types';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
+import { formatNumber } from '@/lib/utils';
 
 const profiles = AuroraDataService.getSocialProfiles();
 const posts = AuroraDataService.getSocialPosts();
@@ -56,22 +58,18 @@ export function SocialUniverse() {
 
           <div className="space-y-6">
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Trending Topics</h3>
+              <CardTitle>Trending Topics</CardTitle>
               <div className="flex flex-wrap gap-2" role="list" aria-label="Trending topics">
                 {['#aurora', '#realms', '#focus', '#forge', '#learning', '#community'].map((tag) => (
-                  <span
-                    key={tag}
-                    role="listitem"
-                    className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold"
-                  >
+                  <Badge key={tag} role="listitem" size="sm">
                     {tag}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Live Channels</h3>
+              <CardTitle>Live Channels</CardTitle>
               <div className="space-y-3" role="list" aria-label="Live channels">
                 {channels.map((channel) => (
                   <div key={channel.id} role="listitem" className="flex items-center justify-between">
@@ -80,21 +78,19 @@ export function SocialUniverse() {
                         {channel.name}
                       </p>
                       <p className="text-xs text-slate-600 dark:text-slate-400">
-                        {channel.members.toLocaleString()} members
+                        {formatNumber(channel.members)} members
                       </p>
                     </div>
-                    {channel.isLive ? (
-                      <span className="text-xs font-semibold text-red-500">LIVE</span>
-                    ) : (
-                      <span className="text-xs text-slate-500">Offline</span>
-                    )}
+                    <Badge size="sm" variant={channel.isLive ? 'error' : 'default'}>
+                      {channel.isLive ? 'Live' : 'Offline'}
+                    </Badge>
                   </div>
                 ))}
               </div>
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Creator Spotlight</h3>
+              <CardTitle>Creator Spotlight</CardTitle>
               <div className="space-y-2" role="list" aria-label="Creator spotlight">
                 {profiles.map((profile) => (
                   <div key={profile.id} role="listitem" className="flex items-center gap-3">
@@ -106,7 +102,7 @@ export function SocialUniverse() {
                         {profile.displayName}
                       </p>
                       <p className="text-xs text-slate-600 dark:text-slate-400">
-                        {profile.followers.toLocaleString()} followers
+                        {formatNumber(profile.followers)} followers
                       </p>
                     </div>
                   </div>

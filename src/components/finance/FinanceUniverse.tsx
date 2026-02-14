@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { AuroraDataService } from '@/data/types';
+import { formatDate } from '@/lib/utils';
 
 const accounts = AuroraDataService.getFinanceAccounts();
 const transactions = AuroraDataService.getTransactions();
@@ -42,7 +43,7 @@ export function FinanceUniverse() {
               <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
                 Portfolio Snapshot
               </p>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Asset Allocation</h2>
+              <CardTitle>Asset Allocation</CardTitle>
             </div>
             <Badge size="sm" variant="success">+{(totalGainLoss > 0 ? totalGainLoss / totalInvested * 100 : 0).toFixed(1)}% YTD</Badge>
           </div>
@@ -64,7 +65,7 @@ export function FinanceUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Recent Transactions</h2>
+              <CardTitle>Recent Transactions</CardTitle>
               <Button variant="secondary" size="sm">View All</Button>
             </div>
             <div className="space-y-2" role="list" aria-label="Recent transactions">
@@ -76,7 +77,7 @@ export function FinanceUniverse() {
                 >
                   <div>
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{tx.description}</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{tx.date.toLocaleDateString()}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">{formatDate(tx.date)}</p>
                   </div>
                   <Badge size="sm" variant={tx.category === 'income' ? 'success' : 'default'}>
                     {tx.category === 'income' ? '+' : ''} ${(tx.amountCents / 100).toFixed(2)}
@@ -88,7 +89,7 @@ export function FinanceUniverse() {
 
           <div className="space-y-6">
             <Card className="space-y-4">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Budget Status</h2>
+              <CardTitle>Budget Status</CardTitle>
               <div className="space-y-3">
                 {budgets.map((budget) => {
                   const percent = Math.round((budget.spentCents / budget.limitCents) * 100);
@@ -111,7 +112,7 @@ export function FinanceUniverse() {
             </Card>
 
             <Card className="space-y-4">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Smart Insights</h2>
+              <CardTitle>Smart Insights</CardTitle>
               <div className="space-y-3">
                 {insights.map((insight) => (
                   <div key={insight.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">

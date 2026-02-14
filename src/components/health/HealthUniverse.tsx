@@ -1,6 +1,6 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
@@ -40,7 +40,7 @@ export function HealthUniverse() {
               <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
                 Current Status
               </p>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Vitals</h2>
+              <CardTitle>Vitals</CardTitle>
             </div>
             <Badge size="sm" variant="success">Healthy</Badge>
           </div>
@@ -62,7 +62,7 @@ export function HealthUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Recent Activities</h2>
+              <CardTitle>Recent Activities</CardTitle>
               <Button variant="secondary" size="sm">Log Activity</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Recent activities">
@@ -82,7 +82,7 @@ export function HealthUniverse() {
 
           <div className="space-y-6">
             <Card className="space-y-4">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Wellness Goals</h2>
+              <CardTitle>Wellness Goals</CardTitle>
               <div className="space-y-3" role="list" aria-label="Wellness goals">
                 {goals.map((goal) => (
                   <div key={goal.id} role="listitem" className="space-y-2">
@@ -104,7 +104,7 @@ export function HealthUniverse() {
             </Card>
 
             <Card className="space-y-4">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Sleep</h2>
+              <CardTitle>Sleep</CardTitle>
               <div className="space-y-3" role="list" aria-label="Sleep records">
                 {sleep.map((record) => (
                   <div key={record.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">

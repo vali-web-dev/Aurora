@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Card } from '@/components/aurora/Card';
+import { Card, CardDescription, CardTitle } from '@/components/aurora/Card';
+import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 
@@ -58,9 +59,7 @@ export function ForgeUniverse() {
           <div className="space-y-6">
             <Card className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
               <div className="text-center space-y-4">
-                <p className="text-xl font-semibold text-slate-900 dark:text-slate-50">
-                  Create a new surface
-                </p>
+                <CardTitle className="text-xl">Create a new surface</CardTitle>
                 <Button variant="primary" size="lg">
                   ✨ Start Building
                 </Button>
@@ -132,12 +131,10 @@ export function ForgeUniverse() {
                     <div className="space-y-3 text-center">
                       <div className="text-4xl">{block.icon}</div>
                       <div>
-                        <p className="font-semibold text-slate-900 dark:text-slate-50">
-                          {block.name}
-                        </p>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                        <CardTitle>{block.name}</CardTitle>
+                        <CardDescription className="text-xs">
                           {block.description}
-                        </p>
+                        </CardDescription>
                       </div>
                       <div className={`h-1 rounded-full ${selectedBlocks.includes(block.name) ? 'bg-blue-600' : 'bg-slate-200 dark:bg-slate-800'}`} />
                     </div>
@@ -149,18 +146,20 @@ export function ForgeUniverse() {
             {selectedBlocks.length > 0 && (
               <Card className="bg-blue-50 dark:bg-slate-900 border-blue-200 dark:border-slate-800">
                 <div className="space-y-3">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                  <CardTitle>
                     Selected Blocks ({selectedBlocks.length})
-                  </p>
+                  </CardTitle>
                   <div className="flex gap-2 flex-wrap" role="list" aria-label="Selected blocks">
                     {selectedBlocks.map((block) => (
-                      <span
+                      <Badge
                         key={block}
                         role="listitem"
-                        className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm"
+                        size="sm"
+                        variant="primary"
+                        className="bg-blue-600 text-white ring-0 dark:bg-blue-500 dark:text-white"
                       >
                         {block} ✕
-                      </span>
+                      </Badge>
                     ))}
                   </div>
                   <Button variant="primary" size="lg" className="w-full">
@@ -192,22 +191,22 @@ export function ForgeUniverse() {
                 { name: 'Course Intro', blocks: 9, category: 'Learning' },
                 { name: 'Shop Showcase', blocks: 10, category: 'Commerce' },
               ].map((template, idx) => (
-                <Card key={idx} hoverable className="h-full" role="listitem">
-                  <div className="space-y-4">
-                    <div className="h-40 bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg" />
-                    <div>
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">
-                        {template.name}
-                      </p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
-                        {template.blocks} blocks • {template.category}
-                      </p>
+                <div key={idx} role="listitem">
+                  <Card hoverable className="h-full">
+                    <div className="space-y-4">
+                      <div className="h-40 bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg" />
+                      <div>
+                        <CardTitle>{template.name}</CardTitle>
+                        <CardDescription>
+                          {template.blocks} blocks • {template.category}
+                        </CardDescription>
+                      </div>
+                      <Button variant="primary" size="sm" className="w-full">
+                        Use Template
+                      </Button>
                     </div>
-                    <Button variant="primary" size="sm" className="w-full">
-                      Use Template
-                    </Button>
-                  </div>
-                </Card>
+                  </Card>
+                </div>
               ))}
             </div>
           </div>

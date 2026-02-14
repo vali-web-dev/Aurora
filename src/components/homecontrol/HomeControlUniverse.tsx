@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { AuroraDataService } from '@/data/types';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
+import { formatTime } from '@/lib/utils';
 
 const devices = AuroraDataService.getSmartDevices();
 const scenes = AuroraDataService.getHomeScenes();
@@ -39,7 +40,7 @@ export function HomeControlUniverse() {
               <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
                 Smart Devices
               </p>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Connected Home</h2>
+              <CardTitle>Connected Home</CardTitle>
             </div>
             <Badge size="sm" variant="success">All healthy</Badge>
           </div>
@@ -70,7 +71,7 @@ export function HomeControlUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Scenes</h2>
+              <CardTitle>Scenes</CardTitle>
               <Button variant="secondary" size="sm">Create Scene</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Scenes">
@@ -92,7 +93,7 @@ export function HomeControlUniverse() {
           <div className="space-y-6">
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Automations</h2>
+                <CardTitle>Automations</CardTitle>
                 <Button variant="ghost" size="sm">Add</Button>
               </div>
               <div className="space-y-3" role="list" aria-label="Automations">
@@ -111,7 +112,7 @@ export function HomeControlUniverse() {
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Energy Efficiency</h3>
+              <CardTitle>Energy Efficiency</CardTitle>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 You're using {((currentEnergyUsage / 3000) * 100).toFixed(0)}% of typical peak usage.
               </p>
@@ -128,7 +129,7 @@ export function HomeControlUniverse() {
               <div key={record.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-slate-900 dark:text-slate-50">
-                    {record.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {formatTime(record.timestamp)}
                   </p>
                   <Badge size="sm" variant="info">${record.costEstimate.toFixed(2)}</Badge>
                 </div>

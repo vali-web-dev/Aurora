@@ -1,4 +1,4 @@
-import { Card } from '@/components/aurora/Card';
+import { Card, CardDescription, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import type { Playlist } from '@/data/types';
 
@@ -32,12 +32,10 @@ export function PlaylistCard({ playlist }: PlaylistCardProps) {
           </span>
         </div>
 
-        <h3 className="font-semibold text-slate-900 dark:text-slate-50">
-          {playlist.title}
-        </h3>
-        <p className="text-xs text-slate-600 dark:text-slate-400">
+        <CardTitle>{playlist.title}</CardTitle>
+        <CardDescription className="text-xs">
           {playlist.description}
-        </p>
+        </CardDescription>
       </div>
     </Card>
   );

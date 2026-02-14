@@ -1,4 +1,4 @@
-import { Card } from '@/components/aurora/Card';
+import { Card, CardDescription, CardTitle } from '@/components/aurora/Card';
 
 const features = [
   {
@@ -50,12 +50,8 @@ export function FeatureGrid() {
           <Card key={feature.title} hoverable className="flex flex-col gap-3">
             <div className="text-3xl">{feature.icon}</div>
             <div>
-              <h3 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                {feature.body}
-              </p>
+              <CardTitle>{feature.title}</CardTitle>
+              <CardDescription>{feature.body}</CardDescription>
             </div>
           </Card>
         ))}

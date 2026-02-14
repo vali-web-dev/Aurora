@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { Badge } from '@/components/aurora/Badge';
 import { useRealtime } from '@/lib/realtime/realtime-provider';
 import { announce } from '@/lib/a11y/announcer';
 
@@ -110,13 +111,11 @@ export function RealtimeNotifications() {
     return () => announce('Live updates closed');
   }, [isOpen]);
 
-  const toneClass = (tone: LiveNotification['tone']) =>
-    clsx(
-      'text-xs px-2 py-0.5 rounded-full',
-      tone === 'success' && 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300',
-      tone === 'info' && 'bg-blue-500/15 text-blue-600 dark:text-blue-300',
-      tone === 'warning' && 'bg-amber-500/15 text-amber-600 dark:text-amber-300'
-    );
+  const toneVariant = (tone: LiveNotification['tone']) => {
+    if (tone === 'success') return 'success';
+    if (tone === 'warning') return 'warning';
+    return 'info';
+  };
 
   return (
     <div className="relative">
@@ -210,7 +209,9 @@ export function RealtimeNotifications() {
                       <p className="font-medium text-slate-900 dark:text-slate-50">
                         {item.title}
                       </p>
-                      <span className={toneClass(item.tone)}>{item.tone}</span>
+                      <Badge size="sm" variant={toneVariant(item.tone)} className="capitalize">
+                        {item.tone}
+                      </Badge>
                     </div>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       {item.detail}

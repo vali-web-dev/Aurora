@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
 import { AuroraDataService } from '@/data/types';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
+import { formatDate, formatDateTime } from '@/lib/utils';
 
 const devices = AuroraDataService.getDevices();
 const sessions = AuroraDataService.getSecuritySessions();
@@ -72,7 +73,7 @@ export function SecurityUniverse() {
           <div className="space-y-6">
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Devices</h2>
+                <CardTitle>Devices</CardTitle>
                 <Button variant="secondary" size="sm">Manage</Button>
               </div>
               <div className="space-y-3" role="list" aria-label="Trusted devices">
@@ -85,7 +86,7 @@ export function SecurityUniverse() {
                       </Badge>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">
-                      {device.location} • Last active {device.lastActiveAt.toLocaleString()}
+                      {device.location} • Last active {formatDateTime(device.lastActiveAt)}
                     </p>
                   </div>
                 ))}
@@ -94,7 +95,7 @@ export function SecurityUniverse() {
 
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Active Sessions</h2>
+                <CardTitle>Active Sessions</CardTitle>
                 <Button variant="ghost" size="sm">Review</Button>
               </div>
               <div className="space-y-3" role="list" aria-label="Active sessions">
@@ -107,7 +108,7 @@ export function SecurityUniverse() {
                       </Badge>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">
-                      Device {session.deviceId} • Started {session.startedAt.toLocaleString()}
+                      Device {session.deviceId} • Started {formatDateTime(session.startedAt)}
                     </p>
                   </div>
                 ))}
@@ -118,7 +119,7 @@ export function SecurityUniverse() {
           <div className="space-y-6">
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Security Events</h2>
+                <CardTitle>Security Events</CardTitle>
                 <Button variant="ghost" size="sm">View Log</Button>
               </div>
               <div className="space-y-3">
@@ -134,7 +135,7 @@ export function SecurityUniverse() {
                       {event.description}
                     </p>
                     <p className="text-xs text-slate-500 dark:text-slate-500">
-                      {event.createdAt.toLocaleString()}
+                      {formatDateTime(event.createdAt)}
                     </p>
                   </div>
                 ))}
@@ -143,7 +144,7 @@ export function SecurityUniverse() {
 
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Policies</h2>
+                <CardTitle>Policies</CardTitle>
                 <Button variant="ghost" size="sm">Edit</Button>
               </div>
               <div className="space-y-3">
@@ -156,7 +157,7 @@ export function SecurityUniverse() {
                       </Badge>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">
-                      Updated {policy.lastUpdated.toLocaleDateString()}
+                      Updated {formatDate(policy.lastUpdated)}
                     </p>
                   </div>
                 ))}
@@ -164,7 +165,7 @@ export function SecurityUniverse() {
             </Card>
 
             <Card className="space-y-4">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Security Actions</h2>
+              <CardTitle>Security Actions</CardTitle>
               <div className="space-y-3">
                 <Button variant="primary">Enable 2FA</Button>
                 <Button variant="secondary">Review Recovery Codes</Button>

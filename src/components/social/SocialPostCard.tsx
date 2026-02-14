@@ -1,7 +1,8 @@
-import { Card } from '@/components/aurora/Card';
+import { Card, CardDescription, CardFooter } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import type { SocialPost, SocialProfile } from '@/data/types';
+import { formatNumber } from '@/lib/utils';
 
 interface SocialPostCardProps {
   post: SocialPost;
@@ -50,9 +51,9 @@ export function SocialPostCard({ post, author }: SocialPostCardProps) {
         </Badge>
       </div>
 
-      <p className="text-sm text-slate-700 dark:text-slate-300">
+      <CardDescription className="text-slate-700 dark:text-slate-300">
         {post.body}
-      </p>
+      </CardDescription>
 
       {post.mediaType && (
         <div className="h-40 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
@@ -70,15 +71,15 @@ export function SocialPostCard({ post, author }: SocialPostCardProps) {
         ))}
       </div>
 
-      <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-400">
+      <CardFooter className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-400">
         <div className="flex gap-4">
-          <span>❤ {post.likes.toLocaleString()}</span>
-          <span>💬 {post.comments.toLocaleString()}</span>
+          <span>❤ {formatNumber(post.likes)}</span>
+          <span>💬 {formatNumber(post.comments)}</span>
         </div>
         <Button variant="ghost" size="sm">
           Open
         </Button>
-      </div>
+      </CardFooter>
     </Card>
   );
 }

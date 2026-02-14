@@ -1,6 +1,6 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
@@ -47,7 +47,7 @@ export function NavigationUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Route Planner</h2>
+              <CardTitle>Route Planner</CardTitle>
               <Button variant="secondary" size="sm">New Route</Button>
             </div>
             <div className="h-64 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center">
@@ -79,7 +79,7 @@ export function NavigationUniverse() {
 
           <div className="space-y-6">
             <Card className="space-y-4">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Saved Places</h2>
+              <CardTitle>Saved Places</CardTitle>
               <div className="space-y-3" role="list" aria-label="Saved places">
                 {places.map((place) => (
                   <div key={place.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
@@ -94,7 +94,7 @@ export function NavigationUniverse() {
             </Card>
 
             <Card className="space-y-4">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Ride Options</h2>
+              <CardTitle>Ride Options</CardTitle>
               <div className="space-y-3" role="list" aria-label="Ride options">
                 {['Uber', 'Lyft', 'Waze'].map((provider) => (
                   <div key={provider} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-between">

@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { AuroraDataService } from '@/data/types';
+import { formatDate } from '@/lib/utils';
 
 const models = AuroraDataService.getAiModels();
 const conversations = AuroraDataService.getAiConversations();
@@ -37,7 +38,7 @@ export function AiUniverse() {
               <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
                 Intelligence Platform
               </p>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Model Performance</h2>
+              <CardTitle>Model Performance</CardTitle>
             </div>
             <Badge size="sm" variant="info">Real-time</Badge>
           </div>
@@ -73,7 +74,7 @@ export function AiUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Conversations</h2>
+              <CardTitle>Conversations</CardTitle>
               <Button variant="secondary" size="sm">New Chat</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Conversations">
@@ -89,7 +90,7 @@ export function AiUniverse() {
                     </Badge>
                   </div>
                   <p className="text-xs text-slate-600 dark:text-slate-400">
-                    {conv.messageCount} messages • {conv.lastMessageAt.toLocaleDateString()}
+                    {conv.messageCount} messages • {formatDate(conv.lastMessageAt)}
                   </p>
                 </div>
               ))}
@@ -99,7 +100,7 @@ export function AiUniverse() {
           <div className="space-y-6">
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Agents</h2>
+                <CardTitle>Agents</CardTitle>
                 <Button variant="ghost" size="sm">View All</Button>
               </div>
               <div className="space-y-3" role="list" aria-label="Agents">
@@ -120,7 +121,7 @@ export function AiUniverse() {
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Agent Insights</h3>
+              <CardTitle>Agent Insights</CardTitle>
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 Your AI agents are performing 18% better than last week.
               </p>

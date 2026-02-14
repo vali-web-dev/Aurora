@@ -10,13 +10,19 @@ interface StatCardProps {
 export function StatCard({ label, value, helper }: StatCardProps) {
   return (
     <Card>
-      <div className="space-y-2">
-        <p className="text-sm text-slate-600 dark:text-slate-400">{label}</p>
-        <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-          {value}
-        </p>
+      <div className="space-y-3">
+        <div className="space-y-1">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+            {label}
+          </p>
+          <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+            {value}
+          </p>
+        </div>
         {helper && (
-          <p className="text-xs text-slate-500 dark:text-slate-400">{helper}</p>
+          <div className="border-t border-slate-200/70 pt-2 text-xs text-slate-500 dark:border-slate-800/80 dark:text-slate-400">
+            {helper}
+          </div>
         )}
       </div>
     </Card>

@@ -82,9 +82,10 @@ export function AdminDashboard() {
               <span className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
                 {stat.value}
               </span>
-              <span
+              <Badge
+                size="sm"
                 className={clsx(
-                  'text-xs font-semibold px-2 py-1 rounded-full',
+                  'ring-0',
                   stat.tone === 'emerald' && 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300',
                   stat.tone === 'blue' && 'bg-blue-500/15 text-blue-600 dark:text-blue-300',
                   stat.tone === 'violet' && 'bg-violet-500/15 text-violet-600 dark:text-violet-300',
@@ -92,7 +93,7 @@ export function AdminDashboard() {
                 )}
               >
                 {stat.delta}
-              </span>
+              </Badge>
             </div>
           </Card>
         ))}
@@ -113,9 +114,12 @@ export function AdminDashboard() {
                   <p className="text-sm text-slate-500 dark:text-slate-400">{item.label}</p>
                   <p className="font-semibold text-slate-900 dark:text-slate-50">{item.value}</p>
                 </div>
-                <span className="text-xs px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <Badge
+                  size="sm"
+                  className="bg-slate-100 text-slate-600 ring-0 dark:bg-slate-800 dark:text-slate-300"
+                >
                   {item.status}
-                </span>
+                </Badge>
               </div>
             ))}
           </div>
@@ -137,9 +141,9 @@ export function AdminDashboard() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={clsx('text-xs px-2 py-1 rounded-full', healthTone[universe.health])}>
+                  <Badge size="sm" className={clsx('ring-0', healthTone[universe.health])}>
                     {universe.health}
-                  </span>
+                  </Badge>
                   <span className="text-xs text-slate-500 dark:text-slate-400">
                     {universe.activity}
                   </span>
@@ -161,9 +165,9 @@ export function AdminDashboard() {
                 </p>
                 <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                   <span>{event.time}</span>
-                  <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800">
+                  <Badge size="sm" className="bg-slate-100 text-slate-600 ring-0 dark:bg-slate-800 dark:text-slate-300">
                     {event.tag}
-                  </span>
+                  </Badge>
                 </div>
               </div>
             ))}

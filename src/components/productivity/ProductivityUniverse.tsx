@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
 import { AuroraDataService, type Task, type TaskStatus } from '@/data/types';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
+import { formatDate, formatDateTime } from '@/lib/utils';
 
 const tasks = AuroraDataService.getTasks();
 const notes = AuroraDataService.getNotes();
@@ -95,7 +96,7 @@ export function ProductivityUniverse() {
                           </Badge>
                           {task.dueDate && (
                             <span className="text-xs text-slate-500 dark:text-slate-400">
-                              {task.dueDate.toLocaleDateString()}
+                              {formatDate(task.dueDate)}
                             </span>
                           )}
                         </div>
@@ -109,7 +110,7 @@ export function ProductivityUniverse() {
 
           <div className="space-y-6">
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Notes</h3>
+              <CardTitle>Notes</CardTitle>
               <div className="space-y-3">
                 {notes.map((note) => (
                   <div key={note.id} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
@@ -132,7 +133,7 @@ export function ProductivityUniverse() {
             </Card>
 
             <Card className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Upcoming</h3>
+              <CardTitle>Upcoming</CardTitle>
               <div className="space-y-3">
                 {upcoming.map((event) => (
                   <div key={event.id} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
@@ -140,7 +141,7 @@ export function ProductivityUniverse() {
                       {event.title}
                     </p>
                     <p className="text-xs text-slate-600 dark:text-slate-400">
-                      {event.startsAt.toLocaleString()} • {event.durationMinutes} min
+                      {formatDateTime(event.startsAt)} • {event.durationMinutes} min
                     </p>
                     {event.location && (
                       <p className="text-xs text-slate-500 dark:text-slate-400">

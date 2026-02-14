@@ -1,11 +1,12 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { AuroraDataService } from '@/data/types';
+import { formatDate, formatNumber } from '@/lib/utils';
 
 const plugins = AuroraDataService.getPlugins();
 const apiKeys = AuroraDataService.getApiKeys();
@@ -16,27 +17,27 @@ const revokedKeys = apiKeys.filter((key) => key.status === 'revoked').length;
 const usageTrend = [22, 31, 28, 36, 44, 52, 48];
 const releaseVelocity = [3, 5, 4, 6, 5, 7];
 
-const latestActivity = [
-  {
-    id: 'dev-activity-1',
-    title: `${plugins[0]?.name ?? 'New plugin'} released`,
-    detail: `Version ${plugins[0]?.version ?? '1.0.0'} • ${plugins[0]?.status ?? 'active'}`,
-  },
-  {
-    id: 'dev-activity-2',
-    title: `${apiKeys[0]?.label ?? 'API key'} accessed`,
-    detail: apiKeys[0]?.lastUsedAt
-      ? `Last used ${apiKeys[0].lastUsedAt.toLocaleDateString()}`
-      : 'Last used recently',
-  },
-  {
-    id: 'dev-activity-3',
-    title: `Webhook ${webhooks[0]?.status ?? 'active'}`,
-    detail: webhooks[0]?.events?.[0] ?? 'commerce.order.created',
-  },
-];
-
 export function DeveloperUniverse() {
+  const latestActivity = [
+    {
+      id: 'dev-activity-1',
+      title: `${plugins[0]?.name ?? 'New plugin'} released`,
+      detail: `Version ${plugins[0]?.version ?? '1.0.0'} • ${plugins[0]?.status ?? 'active'}`,
+    },
+    {
+      id: 'dev-activity-2',
+      title: `${apiKeys[0]?.label ?? 'API key'} accessed`,
+      detail: apiKeys[0]?.lastUsedAt
+        ? `Last used ${formatDate(apiKeys[0].lastUsedAt)}`
+        : 'Last used recently',
+    },
+    {
+      id: 'dev-activity-3',
+      title: `Webhook ${webhooks[0]?.status ?? 'active'}`,
+      detail: webhooks[0]?.events?.[0] ?? 'commerce.order.created',
+    },
+  ];
+
   return (
     <Surface className="py-8">
       <SurfaceHeader
@@ -59,7 +60,7 @@ export function DeveloperUniverse() {
               <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
                 Platform Health
               </p>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Build Signal</h2>
+              <CardTitle>Build Signal</CardTitle>
             </div>
             <Badge size="sm" variant="success">99.98% uptime</Badge>
           </div>
@@ -110,7 +111,7 @@ export function DeveloperUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr,1fr] gap-8">
           <Card className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Plugin Registry</h2>
+              <CardTitle>Plugin Registry</CardTitle>
               <Button variant="secondary" size="sm">Create Plugin</Button>
             </div>
             <div className="space-y-3" role="list" aria-label="Plugins">
@@ -127,7 +128,7 @@ export function DeveloperUniverse() {
                   </p>
                   <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                     <span>v{plugin.version}</span>
-                    <span>{plugin.installs.toLocaleString()} installs</span>
+                    <span>{formatNumber(plugin.installs)} installs</span>
                   </div>
                 </div>
               ))}
@@ -137,7 +138,7 @@ export function DeveloperUniverse() {
           <div className="space-y-6">
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">API Keys</h2>
+                <CardTitle>API Keys</CardTitle>
                 <Button variant="ghost" size="sm">New Key</Button>
               </div>
               <div className="space-y-3" role="list" aria-label="API keys">
@@ -150,8 +151,8 @@ export function DeveloperUniverse() {
                       </Badge>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">
-                      Created {key.createdAt.toLocaleDateString()}
-                      {key.lastUsedAt ? ` • Last used ${key.lastUsedAt.toLocaleDateString()}` : ''}
+                      Created {formatDate(key.createdAt)}
+                      {key.lastUsedAt ? ` • Last used ${formatDate(key.lastUsedAt)}` : ''}
                     </p>
                   </div>
                 ))}
@@ -160,7 +161,7 @@ export function DeveloperUniverse() {
 
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Webhooks</h2>
+                <CardTitle>Webhooks</CardTitle>
                 <Button variant="ghost" size="sm">Add Endpoint</Button>
               </div>
               <div className="space-y-3">
@@ -182,7 +183,7 @@ export function DeveloperUniverse() {
 
             <Card className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Latest Activity</h2>
+                <CardTitle>Latest Activity</CardTitle>
                 <Button variant="ghost" size="sm">View</Button>
               </div>
               <div className="space-y-3">

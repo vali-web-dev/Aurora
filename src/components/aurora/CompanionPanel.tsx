@@ -2,17 +2,18 @@
 
 import { useMemo, useState } from 'react';
 import { AuroraModal } from '@/components/aurora/Modal';
+import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { useCompanion } from '@/lib/companion/companion-provider';
 import { useMemory } from '@/lib/memory/memory-provider';
 import { useCompanionContextEngine } from '@/lib/companion/companion-context-engine';
-import { cn } from '@/lib/utils';
+import { cn, formatDateTime } from '@/lib/utils';
 
 const formatTimestamp = (timestamp?: string) => {
   if (!timestamp) return 'Not set';
   const date = new Date(timestamp);
   if (Number.isNaN(date.getTime())) return 'Not set';
-  return date.toLocaleString();
+  return formatDateTime(date);
 };
 
 export function CompanionPanel() {
@@ -65,9 +66,9 @@ export function CompanionPanel() {
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                 Aurora's Personality
               </h3>
-              <span className="text-xs px-2 py-1 rounded-full bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100 font-medium">
+              <Badge variant="primary" size="sm" className="bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100">
                 Adaptive
-              </span>
+              </Badge>
             </div>
 
             <dl className="grid gap-3 text-sm">
@@ -181,9 +182,11 @@ export function CompanionPanel() {
             </h3>
             <div className="flex flex-wrap gap-2">
               {signals.map((signal) => (
-                <div
+                <Badge
                   key={signal}
-                  className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-200 text-xs font-medium"
+                  size="sm"
+                  variant="primary"
+                  className="gap-2 pr-2 bg-blue-100 text-blue-700 ring-0 dark:bg-blue-900/40 dark:text-blue-200"
                 >
                   {signal}
                   <button
@@ -193,7 +196,7 @@ export function CompanionPanel() {
                   >
                     ×
                   </button>
-                </div>
+                </Badge>
               ))}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">

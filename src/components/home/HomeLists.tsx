@@ -1,6 +1,6 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { AuroraDataService } from '@/data/types';
@@ -14,7 +14,7 @@ export function HomeLists() {
     <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Watchlist</h3>
+          <CardTitle>Watchlist</CardTitle>
           <Button variant="ghost" size="sm">Open</Button>
         </div>
         <div className="space-y-3">
@@ -34,7 +34,7 @@ export function HomeLists() {
 
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Reading List</h3>
+          <CardTitle>Reading List</CardTitle>
           <Button variant="ghost" size="sm">Open</Button>
         </div>
         <div className="space-y-3">
@@ -54,7 +54,7 @@ export function HomeLists() {
 
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Shopping List</h3>
+          <CardTitle>Shopping List</CardTitle>
           <Button variant="ghost" size="sm">Open</Button>
         </div>
         <div className="space-y-3">

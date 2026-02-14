@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
+import { cn, formatLongDate, formatTime } from '@/lib/utils';
 
 const moodOptions = [
   { label: 'Focused', color: 'info' },
@@ -30,16 +31,12 @@ export function HomeWidgets() {
 
   const timeString = useMemo(() => {
     const now = new Date();
-    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return formatTime(now);
   }, []);
 
   const dateString = useMemo(() => {
     const now = new Date();
-    return now.toLocaleDateString([], {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-    });
+    return formatLongDate(now);
   }, []);
 
   const remaining = financeSummary.budget - financeSummary.spent;
@@ -56,19 +53,27 @@ export function HomeWidgets() {
       <Card className="space-y-3">
         <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Mood</p>
         <div className="flex flex-wrap gap-2">
-          {moodOptions.map((option) => (
-            <button
-              key={option.label}
-              onClick={() => setMood(option)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                mood.label === option.label
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
+          {moodOptions.map((option) => {
+            const isActive = mood.label === option.label;
+            return (
+              <Button
+                key={option.label}
+                type="button"
+                variant="ghost"
+                size="sm"
+                aria-pressed={isActive}
+                onClick={() => setMood(option)}
+                className={cn(
+                  'rounded-full px-3 text-xs font-semibold',
+                  isActive
+                    ? 'bg-blue-600 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-500'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                )}
+              >
+                {option.label}
+              </Button>
+            );
+          })}
         </div>
         <Badge variant={mood.color as 'default' | 'info' | 'success' | 'primary'} size="sm">
           Current: {mood.label}

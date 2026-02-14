@@ -1,6 +1,6 @@
 'use client';
 
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
@@ -37,9 +37,7 @@ export function EntertainmentUniverse() {
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   Featured
                 </p>
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-                  {featured.title}
-                </h2>
+                <CardTitle className="text-3xl">{featured.title}</CardTitle>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
                   {featured.provider} • {featured.durationMinutes} min • ★ {featured.rating.toFixed(1)}
                 </p>

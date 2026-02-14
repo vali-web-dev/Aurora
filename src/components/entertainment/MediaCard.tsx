@@ -1,4 +1,4 @@
-import { Card } from '@/components/aurora/Card';
+import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import type { MediaItem } from '@/data/types';
 
@@ -39,9 +39,7 @@ export function MediaCard({ item }: MediaCardProps) {
           </span>
         </div>
 
-        <h3 className="font-semibold text-slate-900 dark:text-slate-50">
-          {item.title}
-        </h3>
+        <CardTitle>{item.title}</CardTitle>
 
         <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
           <span>{item.durationMinutes} min</span>
