@@ -137,8 +137,8 @@
       ]
     },
     {
-      "id": "forge",
-      "name": "Forge (Creative Universe)",
+      "id": "create",
+      "name": "create (Creative Universe)",
       "tagline": "Your imagination deserves a studio.",
       "purpose": "Offer a multi-panel creative studio for surfaces, campaigns, and stories.",
       "keySurfaces": [

@@ -36,9 +36,11 @@ Aurora adapts its personality based on where you are:
 | 🏠 Home Control | Smart home, automation, energy | Controlling your space |
 | ⚙️ Automation | Workflows, if-this-then-that, rules | Automating tasks |
 | 🛍️ Commerce | Shop, compare, find, wishlist | Mindful shopping |
-| 🔒 Security | Password, privacy, 2FA, audit | Staying secure |
-| 👨‍💻 Developer | APIs, integrations, webhooks, build | Extending Aurora |
-| 🤖 AI & Ethics | Transparency, controls, education | Understanding AI |
+| 🧠 Brand | Story, values, voice, campaigns | Building identity |
+| 🤝 Communities | Spaces, posts, events, moderation | Belonging together |
+| 🎮 Gaming | Library, clips, events, leaderboards | Playing socially |
+
+**System Universes (Coming Soon):** Security & Privacy, Developer, AI & Ethics
 
 ## Companion Panel (CP)
 

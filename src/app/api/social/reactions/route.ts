@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = validation.data as any;
-    const postId = parseInt(data.postId, 10);
+    const postId = data.postId as number;
 
     // Create reaction
     const reaction = await createReaction({

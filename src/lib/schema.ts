@@ -517,10 +517,23 @@ export const socialComments = pgTable('social_comments', {
   postId: integer('post_id')
     .references(() => socialPosts.id)
     .notNull(),
+  parentCommentId: integer('parent_comment_id').references(() => socialComments.id),
   userId: integer('user_id')
     .references(() => users.id)
     .notNull(),
   content: text('content').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const socialCommentReactions = pgTable('social_comment_reactions', {
+  id: serial('id').primaryKey(),
+  commentId: integer('comment_id')
+    .references(() => socialComments.id)
+    .notNull(),
+  userId: integer('user_id')
+    .references(() => users.id)
+    .notNull(),
+  emoji: varchar('emoji', { length: 10 }).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 
@@ -532,6 +545,9 @@ export type NewSocialReaction = typeof socialReactions.$inferInsert;
 
 export type SocialComment = typeof socialComments.$inferSelect;
 export type NewSocialComment = typeof socialComments.$inferInsert;
+
+export type SocialCommentReaction = typeof socialCommentReactions.$inferSelect;
+export type NewSocialCommentReaction = typeof socialCommentReactions.$inferInsert;
 
 // ============================================================================
 // COMMUNITY MESSAGES TABLES (For real-time chat)

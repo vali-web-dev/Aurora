@@ -418,95 +418,86 @@ Each universe is a full digital world with its own tools, culture, and companion
 
 ---
 
-### 13. 🔒 **Security & Privacy Universe**
-*Your fortress. Transparent protection. Education first.*
+### 13. 🧠 **Brand Universe**
+*Your brand is a living mind. Protect it, refine it, scale it.*
 
 **What it is:**
-- Password management and generation
-- Security audit (weak passwords, exposed accounts)
-- Two-factor authentication setup and recovery
-- Data deletion requests (GDPR, CCPA, etc.)
-- Privacy settings for all universes
-- Security education and best practices
-- Incident response if you're ever compromised
+- Brand overview: story, values, tone, archetype
+- Vocabulary and writing guidance
+- Asset library (logos, palettes, typography, templates)
+- Campaign list and detail surfaces
+- Consistency checks across touchpoints
 
 **Who uses it:**
-- Anyone wanting to secure their digital life
-- Privacy advocates
-- Professionals handling sensitive data
+- Founders and brand leads
+- Marketing and creative teams
+- Creators building a public identity
 
-**Companion tone:** Guardian (protective, transparent, educational)
+**Companion tone:** Strategist (clear, pragmatic, identity-focused)
 
 **Key features:**
-- Zero-knowledge password vault (we can't see your passwords)
-- Breach monitoring (get alerted if your info appears in leaks)
-- Privacy controls for all universes (one place to rule them all)
-- Security checklist (audit your own account)
-- Transparent logging (see what apps have accessed your data)
-- Educational articles and best practices
+- Living brand story and values vault
+- Tone and vocabulary panels
+- Asset inventory with usage status
+- Campaign timelines and briefs
+- Brand health checklist
 
 ---
 
-### 14. 👨‍💻 **Developer Universe**
-*Build, integrate, extend Aurora.*
+### 14. 🤝 **Communities Universe**
+*Belong to something bigger. Build together.*
 
 **What it is:**
-- API documentation and SDK
-- Integration playground
-- Webhook management
-- App marketplace (Aurora apps)
-- Analytics and monitoring
-- Community-built extensions
+- Community directory and discovery
+- Community detail pages with posts and threads
+- Events and live rooms
+- Roles, moderation, and shared resources
 
 **Who uses it:**
-- Developers extending Aurora
-- Technical teams building integrations
-- Makers and tinkerers
+- Creators and builders
+- Learning circles and peer groups
+- Brand communities and customer teams
 
-**Companion tone:** Analyst (precise, documentation-first, respecting expertise)
+**Companion tone:** Explorer (social, respectful, connection-first)
 
 **Key features:**
-- REST and GraphQL APIs
-- SDK for popular languages (JS, Python, Go)
-- Rate limiting and quota management
-- Webhook events and retry logic
-- OAuth and API key management
-- Sandbox environment for testing
-- Community forums and support
+- Community membership and roles
+- Threaded discussion surfaces
+- Event scheduling and RSVP
+- Moderation tools and safety controls
+- Shared resource libraries
 
 ---
 
-### 15. 🤖 **AI & Ethics Universe**
-*Understand, control, and shape AI in Aurora.*
+### 15. 🎮 **Gaming Universe**
+*Play without boundaries. Track, share, and celebrate.*
 
 **What it is:**
-- Transparency center for any AI used in Aurora
-- Controls for AI suggestions across universes
-- Learn about AI ethics and safety
-- Community feedback on Aurora's AI behavior
-- Request audits or explanations
-- Opt-in/opt-out for experimental features
+- Unified game library across platforms
+- Clips and highlights archive
+- Events and tournaments
+- Leaderboards and community challenges
 
 **Who uses it:**
-- AI-curious users
-- Privacy advocates wanting control
-- Anyone wanting transparency
-- Researchers and ethicists
+- Gamers and creators
+- Competitive teams
+- Anyone who plays socially
 
-**Companion tone:** Analyst (transparent, educational, consent-first)
+**Companion tone:** Explorer (energetic, supportive, celebratory)
 
 **Key features:**
-- Audit trail: see why Aurora suggested something
-- Model transparency (what AI model, how trained)
-- Opt-in research programs (understand how Aurora learns)
-- Community review boards
-- Monthly transparency reports
-- Right to explanation (ask why)
+- Game library and play history
+- Highlight capture and sharing
+- Tournament scheduling and watch mode
+- Performance summaries and rankings
 
 ---
 
 ### Bonus Universes (Coming Soon)
 
+- **🔒 Security & Privacy:** Fortress controls, audits, privacy center
+- **👨‍💻 Developer:** APIs, integrations, and extension tooling
+- **🤖 AI & Ethics:** Transparency, consent, and AI governance
 - **🏰 Realms:** Community spaces and group coordination
 - **⚔️ Guilds:** Master-level learning and craft groups
 - **🌙 Luma:** Experimental lab for trying new features

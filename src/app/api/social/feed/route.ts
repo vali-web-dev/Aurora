@@ -88,21 +88,19 @@ export async function POST(request: NextRequest) {
       metadata: data.metadata || {},
     });
 
-    // Broadcast to real-time feed subscribers
-    broadcastToUniverse(post.universe, WSEventType.POST_CREATE, {
-      id: post.id,
-      authorUserId: post.authorUserId,
-      universe: post.universe,
-      content: post.content,
-      visibility: post.visibility,
-      metadata: post.metadata,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
+    const authorName = session.user.name || session.user.email || 'Unknown User';
+    const postWithAuthor = {
+      ...post,
       author: {
         id: session.user.id,
-        name: session.user.name,
-        email: session.user.email,
+        name: authorName,
+        email: session.user.email || '',
       },
+    };
+
+    // Broadcast to real-time feed subscribers
+    broadcastToUniverse(post.universe, WSEventType.POST_CREATE, {
+      ...postWithAuthor,
     });
 
     console.log(
@@ -111,7 +109,7 @@ export async function POST(request: NextRequest) {
 
     return successResponse(
       {
-        post,
+        post: postWithAuthor,
         broadcast: true,
         wsEvent: WSEventType.POST_CREATE,
       },

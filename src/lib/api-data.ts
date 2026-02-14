@@ -1,6 +1,17 @@
 import { db } from './db';
 import * as schema from './schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
+
+function resolveAuthorName(author: {
+  name: string | null;
+  displayName: string | null;
+  email: string | null;
+}) {
+  if (author.displayName) return author.displayName;
+  if (author.name) return author.name;
+  if (author.email) return author.email.split('@')[0];
+  return 'Unknown User';
+}
 
 /**
  * Personas data access
@@ -202,13 +213,33 @@ export async function getCart(cartId: number) {
  * Get feed posts for a universe
  */
 export async function getFeedPosts(universe: string, limit: number = 50, offset: number = 0) {
-  return await db
-    .select()
+  const rows = await db
+    .select({
+      post: schema.socialPosts,
+      author: {
+        id: schema.users.id,
+        name: schema.users.name,
+        displayName: schema.users.displayName,
+        email: schema.users.email,
+      },
+    })
     .from(schema.socialPosts)
+    .leftJoin(schema.users, eq(schema.socialPosts.authorUserId, schema.users.id))
     .where(eq(schema.socialPosts.universe, universe))
     .orderBy(schema.socialPosts.createdAt)
     .limit(limit)
     .offset(offset);
+
+  return rows.map((row) => ({
+    ...row.post,
+    author: row.author?.id
+      ? {
+          id: row.author.id.toString(),
+          name: resolveAuthorName(row.author),
+          email: row.author.email ?? '',
+        }
+      : undefined,
+  }));
 }
 
 /**
@@ -298,6 +329,14 @@ export async function createReaction(data: {
   userId: number;
   emoji: string;
 }) {
+  await db
+    .delete(schema.socialReactions)
+    .where(
+      and(
+        eq(schema.socialReactions.postId, data.postId),
+        eq(schema.socialReactions.userId, data.userId)
+      )
+    );
   const [reaction] = await db
     .insert(schema.socialReactions)
     .values({
@@ -320,9 +359,11 @@ export async function deleteReaction(
   await db
     .delete(schema.socialReactions)
     .where(
-      eq(schema.socialReactions.postId, postId) &&
-        eq(schema.socialReactions.userId, userId) &&
+      and(
+        eq(schema.socialReactions.postId, postId),
+        eq(schema.socialReactions.userId, userId),
         eq(schema.socialReactions.emoji, emoji)
+      )
     );
 }
 
@@ -334,11 +375,30 @@ export async function deleteReaction(
  * Get comments for a post
  */
 export async function getPostComments(postId: number) {
-  return await db
-    .select()
+  const rows = await db
+    .select({
+      comment: schema.socialComments,
+      author: {
+        id: schema.users.id,
+        name: schema.users.name,
+        displayName: schema.users.displayName,
+        email: schema.users.email,
+      },
+    })
     .from(schema.socialComments)
+    .leftJoin(schema.users, eq(schema.socialComments.userId, schema.users.id))
     .where(eq(schema.socialComments.postId, postId))
     .orderBy(schema.socialComments.createdAt);
+
+  return rows.map((row) => ({
+    ...row.comment,
+    author: row.author?.id
+      ? {
+          id: row.author.id.toString(),
+          name: resolveAuthorName(row.author),
+        }
+      : undefined,
+  }));
 }
 
 /**
@@ -348,6 +408,7 @@ export async function createComment(data: {
   postId: number;
   userId: number;
   content: string;
+  parentCommentId?: number;
 }) {
   const [comment] = await db
     .insert(schema.socialComments)
@@ -355,6 +416,7 @@ export async function createComment(data: {
       postId: data.postId,
       userId: data.userId,
       content: data.content,
+      parentCommentId: data.parentCommentId,
     })
     .returning();
   return comment;
@@ -365,6 +427,62 @@ export async function createComment(data: {
  */
 export async function deleteComment(commentId: number) {
   await db.delete(schema.socialComments).where(eq(schema.socialComments.id, commentId));
+}
+
+/**
+ * Get reactions for a comment
+ */
+export async function getCommentReactions(commentId: number) {
+  return await db
+    .select()
+    .from(schema.socialCommentReactions)
+    .where(eq(schema.socialCommentReactions.commentId, commentId));
+}
+
+/**
+ * Create a reaction for a comment
+ */
+export async function createCommentReaction(data: {
+  commentId: number;
+  userId: number;
+  emoji: string;
+}) {
+  await db
+    .delete(schema.socialCommentReactions)
+    .where(
+      and(
+        eq(schema.socialCommentReactions.commentId, data.commentId),
+        eq(schema.socialCommentReactions.userId, data.userId)
+      )
+    );
+  const [reaction] = await db
+    .insert(schema.socialCommentReactions)
+    .values({
+      commentId: data.commentId,
+      userId: data.userId,
+      emoji: data.emoji,
+    })
+    .returning();
+  return reaction;
+}
+
+/**
+ * Delete a reaction for a comment
+ */
+export async function deleteCommentReaction(
+  commentId: number,
+  userId: number,
+  emoji: string
+) {
+  await db
+    .delete(schema.socialCommentReactions)
+    .where(
+      and(
+        eq(schema.socialCommentReactions.commentId, commentId),
+        eq(schema.socialCommentReactions.userId, userId),
+        eq(schema.socialCommentReactions.emoji, emoji)
+      )
+    );
 }
 
 // ============================================================================

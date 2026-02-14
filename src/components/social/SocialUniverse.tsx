@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
@@ -34,6 +34,7 @@ export function SocialUniverse() {
   const [isComposing, setIsComposing] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const composeInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   // Fetch feed data
   useEffect(() => {
@@ -87,6 +88,14 @@ export function SocialUniverse() {
       disconnectSocket();
     };
   }, [session]);
+
+  useEffect(() => {
+    if (!isComposing) return;
+    const handle = setTimeout(() => {
+      composeInputRef.current?.focus();
+    }, 0);
+    return () => clearTimeout(handle);
+  }, [isComposing]);
 
   const handleCreatePost = async () => {
     if (!newPostContent.trim() || isSubmitting) return;
@@ -177,6 +186,8 @@ export function SocialUniverse() {
                   value={newPostContent}
                   onChange={(e) => setNewPostContent(e.target.value)}
                   disabled={isSubmitting}
+                  ref={composeInputRef}
+                  data-autofocus="true"
                 />
                 <div className="flex justify-end gap-3">
                   <Button
@@ -203,7 +214,9 @@ export function SocialUniverse() {
             {isLoading ? (
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
-                  <Card key={i} className="h-48 animate-pulse bg-slate-100 dark:bg-slate-800" />
+                  <Card key={i} className="h-48 animate-pulse bg-slate-100 dark:bg-slate-800">
+                    <span className="sr-only">Loading post</span>
+                  </Card>
                 ))}
               </div>
             ) : posts.length === 0 ? (

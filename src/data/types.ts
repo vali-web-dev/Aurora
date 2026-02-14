@@ -535,6 +535,38 @@ export interface Block {
   content: Record<string, unknown>;
 }
 
+// ============ Brand Universe ============
+export interface BrandProfile {
+  id: string;
+  ownerUserId: string;
+  name: string;
+  slug: string;
+  story: string;
+  values: string[];
+  tone: string;
+  archetype: string;
+  vocabulary: string[];
+  createdAt: Date;
+}
+
+export interface BrandAsset {
+  id: string;
+  brandId: string;
+  label: string;
+  kind: 'logo' | 'palette' | 'type' | 'icon' | 'image' | 'template';
+  updatedAt: Date;
+}
+
+export interface BrandCampaign {
+  id: string;
+  brandId: string;
+  title: string;
+  status: 'draft' | 'active' | 'paused' | 'completed';
+  channel: 'web' | 'social' | 'email' | 'product';
+  startsAt: Date;
+  endsAt?: Date;
+}
+
 // ============ Communities ============
 export interface Community {
   id: string;
@@ -618,6 +650,43 @@ export interface Playlist {
   coverUrl: string;
 }
 
+// ============ Gaming ============
+export interface Game {
+  id: string;
+  title: string;
+  platform: 'pc' | 'console' | 'cloud' | 'mobile';
+  hoursPlayed: number;
+  status: 'playing' | 'queued' | 'completed';
+  lastPlayedAt: Date;
+}
+
+export interface GameClip {
+  id: string;
+  gameId: string;
+  title: string;
+  durationSeconds: number;
+  highlights: string[];
+  createdAt: Date;
+}
+
+export interface GameTournament {
+  id: string;
+  title: string;
+  gameId: string;
+  status: 'upcoming' | 'live' | 'completed';
+  startsAt: Date;
+  participants: number;
+}
+
+export interface LeaderboardEntry {
+  id: string;
+  gameId: string;
+  player: string;
+  rank: number;
+  score: number;
+  change: 'up' | 'down' | 'steady';
+}
+
 // ============ Realms ============
 export interface Realm {
   id: string;
@@ -696,6 +765,81 @@ export const mockLifeGraph: LifeGraphNode[] = [
   { id: 'lg-5', type: 'brand', label: 'Aurora', strength: 1.0 },
   { id: 'lg-6', type: 'creator', label: 'Luma', strength: 0.6 },
   { id: 'lg-7', type: 'rhythm', label: 'Evening Reflection', strength: 0.66 },
+];
+
+// ============ Brand Universe Mock Data ============
+
+export const mockBrands: BrandProfile[] = [
+  {
+    id: 'brand-aurora',
+    ownerUserId: 'user-1',
+    name: 'Aurora',
+    slug: 'aurora',
+    story: 'A calm, beautifully designed digital world that helps people create, learn, and live with clarity.',
+    values: ['Clarity', 'Beauty', 'Integrity', 'Humanity', 'Wonder'],
+    tone: 'Warm, mythic, honest',
+    archetype: 'Visionary Guide',
+    vocabulary: ['clarity', 'light', 'flow', 'home', 'craft', 'trust'],
+    createdAt: new Date('2025-11-01'),
+  },
+];
+
+export const mockBrandAssets: BrandAsset[] = [
+  {
+    id: 'asset-1',
+    brandId: 'brand-aurora',
+    label: 'Primary Logo',
+    kind: 'logo',
+    updatedAt: new Date('2026-01-10'),
+  },
+  {
+    id: 'asset-2',
+    brandId: 'brand-aurora',
+    label: 'Core Palette',
+    kind: 'palette',
+    updatedAt: new Date('2026-01-12'),
+  },
+  {
+    id: 'asset-3',
+    brandId: 'brand-aurora',
+    label: 'Primary Typeface',
+    kind: 'type',
+    updatedAt: new Date('2026-01-15'),
+  },
+  {
+    id: 'asset-4',
+    brandId: 'brand-aurora',
+    label: 'Icon Set',
+    kind: 'icon',
+    updatedAt: new Date('2026-02-01'),
+  },
+];
+
+export const mockBrandCampaigns: BrandCampaign[] = [
+  {
+    id: 'campaign-1',
+    brandId: 'brand-aurora',
+    title: 'Aurora Rv.0 Launch',
+    status: 'active',
+    channel: 'web',
+    startsAt: new Date('2026-02-01'),
+  },
+  {
+    id: 'campaign-2',
+    brandId: 'brand-aurora',
+    title: 'Creator Spotlight Series',
+    status: 'draft',
+    channel: 'social',
+    startsAt: new Date('2026-03-01'),
+  },
+  {
+    id: 'campaign-3',
+    brandId: 'brand-aurora',
+    title: 'Ethical AI Principles',
+    status: 'paused',
+    channel: 'email',
+    startsAt: new Date('2026-01-20'),
+  },
 ];
 
 export const mockDigitalTwinSuggestions: DigitalTwinSuggestion[] = [
@@ -1531,6 +1675,40 @@ export const mockCommunities: Community[] = [
   },
 ];
 
+export const mockCommunityPosts: Post[] = [
+  {
+    id: 'post-1',
+    communityId: 'community-1',
+    authorUserId: 'user-1',
+    title: 'Designing the Home Universe daily brief',
+    body: 'Sharing our latest structure for the daily brief surface and how it adapts to mood and schedule.',
+    media: ['daily-brief.png'],
+    createdAt: new Date('2026-02-12T10:30:00'),
+    likes: 48,
+    comments: 12,
+  },
+  {
+    id: 'post-2',
+    communityId: 'community-2',
+    authorUserId: 'user-1',
+    title: 'Learning path for creative founders',
+    body: 'A new learning path that blends brand strategy, product thinking, and storytelling.',
+    createdAt: new Date('2026-02-11T15:00:00'),
+    likes: 32,
+    comments: 8,
+  },
+  {
+    id: 'post-3',
+    communityId: 'community-3',
+    authorUserId: 'user-1',
+    title: 'Community challenge: build a calm UI',
+    body: 'Weekly challenge is live. Share your calmest UI design and we will feature it.',
+    createdAt: new Date('2026-02-10T09:15:00'),
+    likes: 64,
+    comments: 21,
+  },
+];
+
 export const mockSocialProfiles: SocialProfile[] = [
   {
     id: '1',
@@ -1709,6 +1887,132 @@ export const mockPlaylists: Playlist[] = [
     mood: 'joy',
     items: ['1', '5'],
     coverUrl: '/media/playlist-originals.jpg',
+  },
+];
+
+// ============ Gaming Universe Mock Data ============
+
+export const mockGames: Game[] = [
+  {
+    id: 'game-1',
+    title: 'Skyforge Odyssey',
+    platform: 'pc',
+    hoursPlayed: 124,
+    status: 'playing',
+    lastPlayedAt: new Date('2026-02-12T19:45:00'),
+  },
+  {
+    id: 'game-2',
+    title: 'Lumen Drift',
+    platform: 'console',
+    hoursPlayed: 48,
+    status: 'queued',
+    lastPlayedAt: new Date('2026-02-01T20:10:00'),
+  },
+  {
+    id: 'game-3',
+    title: 'Aurora Arena',
+    platform: 'cloud',
+    hoursPlayed: 212,
+    status: 'playing',
+    lastPlayedAt: new Date('2026-02-13T21:05:00'),
+  },
+  {
+    id: 'game-4',
+    title: 'Calm Coastline',
+    platform: 'mobile',
+    hoursPlayed: 18,
+    status: 'completed',
+    lastPlayedAt: new Date('2026-01-28T08:20:00'),
+  },
+];
+
+export const mockGameClips: GameClip[] = [
+  {
+    id: 'clip-1',
+    gameId: 'game-1',
+    title: 'Cliffside run - no damage',
+    durationSeconds: 42,
+    highlights: ['Precision', 'Speed', 'No damage'],
+    createdAt: new Date('2026-02-12T20:15:00'),
+  },
+  {
+    id: 'clip-2',
+    gameId: 'game-3',
+    title: 'Arena comeback win',
+    durationSeconds: 58,
+    highlights: ['Team clutch', 'Final round'],
+    createdAt: new Date('2026-02-13T21:30:00'),
+  },
+  {
+    id: 'clip-3',
+    gameId: 'game-2',
+    title: 'New build preview',
+    durationSeconds: 36,
+    highlights: ['Base setup', 'Layout'],
+    createdAt: new Date('2026-02-02T18:00:00'),
+  },
+];
+
+export const mockGameTournaments: GameTournament[] = [
+  {
+    id: 'tourney-1',
+    title: 'Aurora Arena Invitational',
+    gameId: 'game-3',
+    status: 'live',
+    startsAt: new Date('2026-02-14T17:00:00'),
+    participants: 64,
+  },
+  {
+    id: 'tourney-2',
+    title: 'Skyforge Night Run',
+    gameId: 'game-1',
+    status: 'upcoming',
+    startsAt: new Date('2026-02-18T19:00:00'),
+    participants: 128,
+  },
+  {
+    id: 'tourney-3',
+    title: 'Lumen Drift Trials',
+    gameId: 'game-2',
+    status: 'completed',
+    startsAt: new Date('2026-01-30T20:00:00'),
+    participants: 42,
+  },
+];
+
+export const mockLeaderboards: LeaderboardEntry[] = [
+  {
+    id: 'leader-1',
+    gameId: 'game-3',
+    player: 'NovaWraith',
+    rank: 1,
+    score: 12840,
+    change: 'steady',
+  },
+  {
+    id: 'leader-2',
+    gameId: 'game-3',
+    player: 'LumaPulse',
+    rank: 2,
+    score: 12420,
+    change: 'up',
+  },
+  {
+    id: 'leader-3',
+    gameId: 'game-3',
+    player: 'AuricTrail',
+    rank: 3,
+    score: 12110,
+    change: 'down',
+  },
+  {
+    id: 'leader-4',
+    gameId: 'game-3',
+    player: 'EchoRise',
+    rank: 4,
+    score: 11850,
+    change: 'steady',
   },
 ];
 
@@ -2314,6 +2618,18 @@ export class AuroraDataService {
     return mockProducts;
   }
 
+  static getBrands(): BrandProfile[] {
+    return mockBrands;
+  }
+
+  static getBrandAssets(): BrandAsset[] {
+    return mockBrandAssets;
+  }
+
+  static getBrandCampaigns(): BrandCampaign[] {
+    return mockBrandCampaigns;
+  }
+
   static getCourses(): Course[] {
     return mockCourses;
   }
@@ -2324,6 +2640,10 @@ export class AuroraDataService {
 
   static getCommunities(): Community[] {
     return mockCommunities;
+  }
+
+  static getCommunityPosts(): Post[] {
+    return mockCommunityPosts;
   }
 
   static getUsers(): User[] {
@@ -2456,6 +2776,22 @@ export class AuroraDataService {
 
   static getMediaItems(): MediaItem[] {
     return mockMediaItems;
+  }
+
+  static getGames(): Game[] {
+    return mockGames;
+  }
+
+  static getGameClips(): GameClip[] {
+    return mockGameClips;
+  }
+
+  static getGameTournaments(): GameTournament[] {
+    return mockGameTournaments;
+  }
+
+  static getGameLeaderboards(): LeaderboardEntry[] {
+    return mockLeaderboards;
   }
 
   static getPlaylists(): Playlist[] {

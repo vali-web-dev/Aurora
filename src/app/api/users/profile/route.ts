@@ -7,6 +7,8 @@ import { userProfileUpdateSchema } from '@/lib/validations';
 import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/users/profile
  * Get current user profile

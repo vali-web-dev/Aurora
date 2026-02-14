@@ -54,13 +54,19 @@ export const postUpdateSchema = z.object({
 });
 
 export const reactionCreateSchema = z.object({
-  postId: z.string().min(1, 'Post ID is required'),
+  postId: z.coerce.number().int().positive('Post ID is required'),
   emoji: z.string().min(1, 'Emoji is required').max(10),
 });
 
 export const commentCreateSchema = z.object({
-  postId: z.string().min(1, 'Post ID is required'),
+  postId: z.coerce.number().int().positive('Post ID is required'),
+  parentCommentId: z.coerce.number().int().positive().optional(),
   content: z.string().min(1, 'Comment content is required').max(1000),
+});
+
+export const commentReactionCreateSchema = z.object({
+  commentId: z.coerce.number().int().positive('Comment ID is required'),
+  emoji: z.string().min(1, 'Emoji is required').max(10),
 });
 
 // ============================================================================

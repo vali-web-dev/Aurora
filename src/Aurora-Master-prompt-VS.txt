@@ -47,7 +47,7 @@ It’s a **digital world** — a place where in addition to fulfilling one's nee
 
 #### In Development 
 - Aurora OS shell (early UI)
-- Forge (component + surface builder)
+- create (component + surface builder)
 - Themes, color systems, typography
 - Basic navigation + surfaces
 - Early Companion interactions
@@ -116,7 +116,7 @@ Trust is the foundation of Aurora.
 - Home
 - Product
 - Realms
-- Forge
+- create
 - Guilds
 - Roadmap
 - About
@@ -137,7 +137,7 @@ Trust is the foundation of Aurora.
 1. Home
 2. Product Overview
 3. Realms (Spatial)
-4. Forge (Builder)
+4. create (Builder)
 5. Guilds
 6. Marketplace 
 7. Roadmap
@@ -162,16 +162,16 @@ Secondary CTA: “Explore the Vision”
 - Built with ethical, human-centered principles  
 
 #### Feature Grid
-1. **Forge** — Build components, surfaces, and ideas with ease.  
+1. **create** — Build components, surfaces, and ideas with ease.  
 2. **Realms** — Explore interactive environments that inspire focus and creativity.  
 3. **Guilds** — Join creator groups and collaborate on meaningful work.  
 4. **Themes & Sensory Design** — A world that adapts to your mood and style.  
 5. **Companion** — A calm, supportive guide.  
-6. **Lightforge Engine** — A rendering system built for beauty and clarity.
+6. **Lightcreate Engine** — A rendering system built for beauty and clarity.
 
 #### Screens / UI Frames
 - OS shell  
-- Forge editor  
+- create editor  
 - Realm previews  
 - Theme system  
 - Companion interactions  
@@ -268,7 +268,7 @@ Implement a global navigation that exposes at least these primary sections:
 - Commerce
 - Social
 - Learning
-- Forge (creative studio)
+- create (creative studio)
 - Brand
 - Communities
 - Gaming
@@ -303,7 +303,7 @@ Each section should be a routed page with its own layout, panels, and key compon
    - Course and lesson listing surfaces.
    - Learning path overview.
    - Lesson view with video embed, notes, and progress indicators.
-6. **Forge (Creative Universe)**
+6. **create (Creative Universe)**
    - Multi-panel layout: left (library), center (surface editor), right (Brand Brain / AI panel).
    - Block-based editor with a small set of block types (hero, text, media, features, CTA).
    - Component library panel with reusable components.
@@ -372,7 +372,7 @@ Follow a clean, modular structure:
 - `app/(sections)/...` for each major Aurora universe.
 - `components/` for shared UI components.
 - `components/aurora/` for design-system primitives (buttons, cards, panels, nav, etc.).
-- `components/forge/` for Forge-specific components.
+- `components/create/` for create-specific components.
 - `lib/` for helpers (theme, tokens, mock services).
 - `data/` for mock data aligned with `aurora_schema.sql`.
 ### Output expectations
@@ -623,7 +623,7 @@ Examples:
 - At night → Aurora becomes calmer, darker, quieter  
 - During work → Aurora becomes focused, minimal, productive  
 - During travel → Aurora surfaces itineraries, maps, and essentials  
-- During creative sessions → Aurora enhances Forge tools and Brand Brain
+- During creative sessions → Aurora enhances create tools and Brand Brain
 ---
 ### 4. Aurora Universe Intelligence  
 Aurora understands the relationships between all universes and uses that knowledge to create cross‑domain experiences.
@@ -1031,7 +1031,7 @@ Examples:
 - Commerce  
 - Social  
 - Learning  
-- Forge (Creative)  
+- create (Creative)  
 - Brand  
 - Communities  
 - Gaming  
@@ -1202,7 +1202,7 @@ Aurora must support a modular plugin architecture that allows developers to exte
 Plugins can add:
 - New components  
 - New surfaces  
-- New blocks for Forge  
+- New blocks for create  
 - New AI tools  
 - New automation triggers and actions  
 - New commerce providers  
@@ -1246,7 +1246,7 @@ Aurora must provide REST, GraphQL, and WebSocket endpoints.
 Aurora must provide multiple SDKs for different types of development.
 ### SDK Types:
 - **Component SDK** — build new UI components  
-- **Surface SDK** — build new surfaces for Forge  
+- **Surface SDK** — build new surfaces for create  
 - **Theme SDK** — build new themes, modes, and variants  
 - **Agent SDK** — build new autonomous agents  
 - **Commerce SDK** — integrate new providers  
@@ -2053,7 +2053,7 @@ Aurora Spatial must create immersive, emotionally rich environments that feel li
    - Soft textures  
    - Floating widgets  
    - Ambient soundscape  
-2. **Creative Room (Forge)**
+2. **Creative Room (create)**
    - Infinite canvas  
    - Floating components  
    - Neon accents  
@@ -2104,7 +2104,7 @@ Aurora Citizenship must begin with a warm, mythic, emotionally resonant onboardi
    - Commerce  
    - Social  
    - Learning  
-   - Forge  
+   - create  
    - Communities  
 6. **First Personalization**
    - Choose theme  
@@ -2231,7 +2231,7 @@ Icon Categories:
    - Commerce → circle + spark (value)  
    - Social → orbiting dots (connection)  
    - Learning → open arc (growth)  
-   - Forge → spark + frame (creation)  
+   - create → spark + frame (creation)  
    - Communities → cluster glyph  
    - Gaming → diamond glyph  
    - Productivity → grid glyph  
@@ -2413,7 +2413,7 @@ Mythic Elements:
    - Entertainment Realm (The Storyfield)  
    - Commerce Realm (The Market of Echoes)  
    - Learning Realm (The Library of Paths)  
-   - Forge Realm (The Studio of Sparks)  
+   - create Realm (The Studio of Sparks)  
    - Community Realm (The Circle of Voices)  
 4. **The Lightflow**
    - The energy that connects all universes  
@@ -2796,7 +2796,7 @@ Guild Rituals:
 1. **The Spark Ceremony**
    - New creators join a guild  
    - Receive their first guild badge  
-2. **The Forge Rite**
+2. **The create Rite**
    - Creators release their first major work  
    - Guild members gather to celebrate  
 3. **The Luminary Ascension**
@@ -3188,7 +3188,7 @@ Aurora Spatial must include gateways — mythic portals that connect realms thro
 2. **The Prism Gate**
    - Creative gateway  
    - Splits light into colors  
-   - Leads to Forge and design realms  
+   - Leads to create and design realms  
 3. **The Echo Gate**
    - Knowledge gateway  
    - Emits soft resonance  
@@ -3452,7 +3452,7 @@ Aurora’s Prophecies must feel like **the destiny‑script of a civilization st
 ### Aurora OS Lightforge (Core Rendering Mythos)  
 Aurora’s rendering engine must be mythically represented as the “Lightforge” — the cosmic furnace where all visuals, motion, and surfaces are born.
 Lightforge Principles:
-1. **The Forge of Radiance**
+1. **The create of Radiance**
    - All pixels originate as sparks of light  
    - Rendering begins with illumination  
 2. **The Hammer of Motion**
@@ -3498,7 +3498,7 @@ Each Creator Guild must have a Sanctuary — a sacred space where members gather
 Sanctuary Types:
 1. **Builders Sanctuary**
    - Floating workbenches  
-   - Component forges  
+   - Component creates  
    - Blueprint constellations  
 2. **Storytellers Sanctuary**
    - Narrative amphitheater  
@@ -3635,7 +3635,7 @@ Aurora Spatial must expand with additional realms that deepen the cosmic geograp
    - A realm of sensory design  
    - Color flora  
    - Motion streams  
-3. **The Forge of Stars**
+3. **The create of Stars**
    - A realm of creation  
    - Component foundries  
    - Spark storms  
@@ -3731,7 +3731,7 @@ Aurora must include the Infinite Canon — an ever‑expanding mythic text that 
    - Realms emerge  
 2. **The Creation Cycle**
    - Guilds rise  
-   - Tools are forged  
+   - Tools are created  
    - Stories are woven  
 3. **The Balance Cycle**
    - Justice is established  

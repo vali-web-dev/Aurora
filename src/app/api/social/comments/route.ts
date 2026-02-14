@@ -60,14 +60,25 @@ export async function POST(request: NextRequest) {
     }
 
     const data = validation.data as any;
-    const postId = parseInt(data.postId, 10);
+    const postId = data.postId as number;
+    const parentCommentId = data.parentCommentId as number | undefined;
 
     // Create comment
     const comment = await createComment({
       postId,
       userId: parseInt(session.user.id, 10),
       content: data.content,
+      parentCommentId,
     });
+
+    const authorName = session.user.name || session.user.email || 'Unknown User';
+    const commentWithAuthor = {
+      ...comment,
+      author: {
+        id: session.user.id,
+        name: authorName,
+      },
+    };
 
     // Broadcast comment to all feed subscribers
     broadcastToUniverse('social', WSEventType.POST_COMMENT, {
@@ -75,10 +86,11 @@ export async function POST(request: NextRequest) {
       postId,
       userId: parseInt(session.user.id, 10),
       content: data.content,
+      parentCommentId: comment.parentCommentId ?? null,
       createdAt: comment.createdAt,
       author: {
         id: session.user.id,
-        name: session.user.name,
+        name: authorName,
       },
     });
 
@@ -99,7 +111,7 @@ export async function POST(request: NextRequest) {
 
     return successResponse(
       {
-        comment,
+        comment: commentWithAuthor,
         broadcast: true,
         wsEvent: WSEventType.POST_COMMENT,
       },

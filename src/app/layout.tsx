@@ -7,6 +7,7 @@ import { CompanionContextEngineProvider } from '@/lib/companion/companion-contex
 import { MemoryProvider } from '@/lib/memory/memory-provider';
 import { AuthSessionProvider } from '@/components/auth/SessionProvider';
 import { SkipLinks } from '@/components/accessibility/SkipLinks';
+import { AutoFocusManager } from '@/components/accessibility/AutoFocusManager';
 import { MemoryTracker } from '@/components/aurora/MemoryTracker';
 import { CompanionPanel } from '@/components/aurora/CompanionPanel';
 import { RealtimeToasts } from '@/components/aurora/RealtimeToasts';
@@ -73,6 +74,7 @@ export default function RootLayout({
                   <CompanionProvider>
                     <CompanionContextEngineProvider>
                       <SkipLinks />
+                      <AutoFocusManager />
                       {children}
                       <MemoryTracker />
                       <CompanionPanel />

@@ -1,14 +1,19 @@
 // Primary navigation - always visible
 export const primaryNav = [
   { href: "/", label: "Home" },
-  { href: "/learning", label: "Learn" },
-  { href: "/forge", label: "Create" },
-  { href: "/product", label: "Shop" }
+  { href: "/entertainment", label: "Entertainment" },
+  { href: "/product", label: "Commerce" },
+  { href: "/social", label: "Social" },
+  { href: "/learning", label: "Learning" },
+  { href: "/forge", label: "Forge" }
 ];
 
 // Secondary navigation - in collapsible menu
 export const secondaryNav = [
   { href: "/identity", label: "Identity" },
+  { href: "/brand", label: "Brand" },
+  { href: "/communities", label: "Communities" },
+  { href: "/gaming", label: "Gaming" },
   { href: "/economy", label: "Economy" },
   { href: "/developer", label: "Developer" },
   { href: "/ai", label: "AI" },
@@ -44,6 +49,9 @@ export const footerNav = {
 product: [
     { href: "/identity", label: "Identity" },
     { href: "/product", label: "Overview" },
+  { href: "/brand", label: "Brand" },
+  { href: "/communities", label: "Communities" },
+  { href: "/gaming", label: "Gaming" },
     { href: "/economy", label: "Economy" },
     { href: "/developer", label: "Developer" },
     { href: "/ai", label: "AI" },
