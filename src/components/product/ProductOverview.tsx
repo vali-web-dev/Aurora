@@ -28,9 +28,9 @@ export function ProductOverview({
 
       {features.length > 0 && (
         <SurfaceSection title="Highlights">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list" aria-label="Product highlights">
             {features.map((feature, i) => (
-              <Card key={i}>
+              <Card key={i} role="listitem">
                 <p className="text-slate-900 dark:text-slate-50">{feature}</p>
               </Card>
             ))}
