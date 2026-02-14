@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPlaylists, getPlaylist, getPlaylistItems } from '@/lib/api-data';
+import { getPlaylists } from '@/lib/api-data';
+import { playlistCreateSchema } from '@/lib/validations';
+import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/entertainment/playlists
@@ -11,20 +13,14 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId');
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'userId query parameter is required' },
-        { status: 400 }
-      );
+      return errorResponse('userId query parameter is required', 400);
     }
 
     const playlists = await getPlaylists(parseInt(userId));
-    return NextResponse.json(playlists);
+    return successResponse(playlists);
   } catch (error) {
     console.error('Error fetching playlists:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }
 
@@ -34,26 +30,15 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { title, description } = body;
-
-    if (!title) {
-      return NextResponse.json(
-        { error: 'Title is required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(request, playlistCreateSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
     // TODO: Implement create logic with auth check
-    return NextResponse.json(
-      { error: 'Not implemented yet' },
-      { status: 501 }
-    );
+    return errorResponse('Not implemented yet', 501);
   } catch (error) {
     console.error('Error creating playlist:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

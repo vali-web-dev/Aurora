@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBrands, getBrand } from '@/lib/api-data';
+import { getBrands } from '@/lib/api-data';
+import { brandCreateSchema } from '@/lib/validations';
+import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/brand/brands
@@ -17,13 +19,10 @@ export async function GET(request: NextRequest) {
       brands = await getBrands();
     }
 
-    return NextResponse.json(brands);
+    return successResponse(brands);
   } catch (error) {
     console.error('Error fetching brands:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }
 
@@ -33,26 +32,15 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { name, slug, story } = body;
-
-    if (!name || !slug) {
-      return NextResponse.json(
-        { error: 'Name and slug are required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(request, brandCreateSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
     // TODO: Implement create logic with auth check
-    return NextResponse.json(
-      { error: 'Not implemented yet' },
-      { status: 501 }
-    );
+    return errorResponse('Not implemented yet', 501);
   } catch (error) {
     console.error('Error creating brand:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPlaylist, getPlaylistItems } from '@/lib/api-data';
+import { successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/entertainment/playlists/[id]
@@ -13,33 +14,24 @@ export async function GET(
     const playlistId = parseInt(params.id);
 
     if (isNaN(playlistId)) {
-      return NextResponse.json(
-        { error: 'Invalid playlist ID' },
-        { status: 400 }
-      );
+      return errorResponse('Invalid playlist ID', 400);
     }
 
     const playlist = await getPlaylist(playlistId);
 
     if (!playlist) {
-      return NextResponse.json(
-        { error: 'Playlist not found' },
-        { status: 404 }
-      );
+      return errorResponse('Playlist not found', 404);
     }
 
     const items = await getPlaylistItems(playlistId);
 
-    return NextResponse.json({
+    return successResponse({
       ...playlist,
       items,
       itemCount: items.length,
     });
   } catch (error) {
     console.error('Error fetching playlist:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

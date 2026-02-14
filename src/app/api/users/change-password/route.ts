@@ -4,16 +4,9 @@ import { users } from '@/lib/schema';
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { changePasswordSchema } from '@/lib/validations';
+import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
 import { z } from 'zod';
-
-const changePasswordSchema = z.object({
-  currentPassword: z.string().min(1),
-  newPassword: z.string().min(6),
-  confirmPassword: z.string().min(6),
-}).refine(data => data.newPassword === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
 
 /**
  * POST /api/users/change-password
@@ -24,23 +17,15 @@ export async function POST(request: NextRequest) {
     const session = await getSession();
 
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return errorResponse('Unauthorized', 401);
     }
 
-    const body = await request.json();
-    const validation = changePasswordSchema.safeParse(body);
-
+    const validation = await validateRequestBody(request, changePasswordSchema);
     if (!validation.success) {
-      return NextResponse.json(
-        { error: validation.error.issues[0].message },
-        { status: 400 }
-      );
+      return validation.response;
     }
 
-    const { currentPassword, newPassword } = validation.data;
+    const { currentPassword, newPassword } = validation.data as z.infer<typeof changePasswordSchema>;
     const userId = parseInt(session.user.id);
 
     // Get user with password hash
@@ -51,26 +36,17 @@ export async function POST(request: NextRequest) {
       .limit(1);
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return errorResponse('User not found', 404);
     }
 
     // Verify current password
     if (!user.passwordHash) {
-      return NextResponse.json(
-        { error: 'This account uses OAuth login. Password cannot be changed.' },
-        { status: 400 }
-      );
+      return errorResponse('This account uses OAuth login. Password cannot be changed.', 400);
     }
 
     const isValid = await bcrypt.compare(currentPassword, user.passwordHash);
     if (!isValid) {
-      return NextResponse.json(
-        { error: 'Current password is incorrect' },
-        { status: 401 }
-      );
+      return errorResponse('Current password is incorrect', 401);
     }
 
     // Hash new password
@@ -82,14 +58,9 @@ export async function POST(request: NextRequest) {
       .set({ passwordHash: hashedPassword })
       .where(eq(users.id, userId));
 
-    return NextResponse.json({
-      message: 'Password changed successfully',
-    });
+    return successResponse({ message: 'Password changed successfully' });
   } catch (error) {
     console.error('Error changing password:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getService } from '@/lib/api-data';
+import { successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/services/[id]
@@ -13,27 +14,18 @@ export async function GET(
     const serviceId = parseInt(params.id);
 
     if (isNaN(serviceId)) {
-      return NextResponse.json(
-        { error: 'Invalid service ID' },
-        { status: 400 }
-      );
+      return errorResponse('Invalid service ID', 400);
     }
 
     const service = await getService(serviceId);
 
     if (!service) {
-      return NextResponse.json(
-        { error: 'Service not found' },
-        { status: 404 }
-      );
+      return errorResponse('Service not found', 404);
     }
 
-    return NextResponse.json(service);
+    return successResponse(service);
   } catch (error) {
     console.error('Error fetching service:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

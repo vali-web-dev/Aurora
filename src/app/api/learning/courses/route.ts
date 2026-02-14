@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCourses, getCourse, getLessons } from '@/lib/api-data';
+import { getCourses } from '@/lib/api-data';
+import { courseCreateSchema } from '@/lib/validations';
+import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/learning/courses
@@ -8,13 +10,10 @@ import { getCourses, getCourse, getLessons } from '@/lib/api-data';
 export async function GET(request: NextRequest) {
   try {
     const courses = await getCourses();
-    return NextResponse.json(courses);
+    return successResponse(courses);
   } catch (error) {
     console.error('Error fetching courses:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }
 
@@ -24,26 +23,15 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { title, description } = body;
-
-    if (!title) {
-      return NextResponse.json(
-        { error: 'Title is required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(request, courseCreateSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
     // TODO: Implement create logic with admin check
-    return NextResponse.json(
-      { error: 'Not implemented yet' },
-      { status: 501 }
-    );
+    return errorResponse('Not implemented yet', 501);
   } catch (error) {
     console.error('Error creating course:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

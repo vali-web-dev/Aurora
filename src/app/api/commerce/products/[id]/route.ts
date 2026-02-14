@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getProduct } from '@/lib/api-data';
+import { successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/commerce/products/[id]
@@ -13,27 +14,18 @@ export async function GET(
     const productId = parseInt(params.id);
 
     if (isNaN(productId)) {
-      return NextResponse.json(
-        { error: 'Invalid product ID' },
-        { status: 400 }
-      );
+      return errorResponse('Invalid product ID', 400);
     }
 
     const product = await getProduct(productId);
 
     if (!product) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      );
+      return errorResponse('Product not found', 404);
     }
 
-    return NextResponse.json(product);
+    return successResponse(product);
   } catch (error) {
     console.error('Error fetching product:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

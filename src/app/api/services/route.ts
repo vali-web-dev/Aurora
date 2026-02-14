@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServices, getService } from '@/lib/api-data';
+import { getServices } from '@/lib/api-data';
+import { serviceCreateSchema } from '@/lib/validations';
+import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/services
@@ -16,13 +18,10 @@ export async function GET(request: NextRequest) {
       services = services.filter(s => s.category === category);
     }
 
-    return NextResponse.json(services);
+    return successResponse(services);
   } catch (error) {
     console.error('Error fetching services:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }
 
@@ -32,26 +31,15 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { name, category, description } = body;
-
-    if (!name || !category) {
-      return NextResponse.json(
-        { error: 'Name and category are required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(request, serviceCreateSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
     // TODO: Implement create logic with admin check
-    return NextResponse.json(
-      { error: 'Not implemented yet' },
-      { status: 501 }
-    );
+    return errorResponse('Not implemented yet', 501);
   } catch (error) {
     console.error('Error creating service:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

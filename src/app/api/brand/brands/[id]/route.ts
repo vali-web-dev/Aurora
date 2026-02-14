@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getBrand } from '@/lib/api-data';
+import { successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/brand/brands/[id]
@@ -13,27 +14,18 @@ export async function GET(
     const brandId = parseInt(params.id);
 
     if (isNaN(brandId)) {
-      return NextResponse.json(
-        { error: 'Invalid brand ID' },
-        { status: 400 }
-      );
+      return errorResponse('Invalid brand ID', 400);
     }
 
     const brand = await getBrand(brandId);
 
     if (!brand) {
-      return NextResponse.json(
-        { error: 'Brand not found' },
-        { status: 404 }
-      );
+      return errorResponse('Brand not found', 404);
     }
 
-    return NextResponse.json(brand);
+    return successResponse(brand);
   } catch (error) {
     console.error('Error fetching brand:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

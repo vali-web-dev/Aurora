@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPosts, getPost, getPostsByUser } from '@/lib/api-data';
+import { postCreateSchema } from '@/lib/validations';
+import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/social/posts
@@ -17,13 +19,10 @@ export async function GET(request: NextRequest) {
       posts = await getPosts();
     }
 
-    return NextResponse.json(posts);
+    return successResponse(posts);
   } catch (error) {
     console.error('Error fetching posts:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }
 
@@ -33,26 +32,15 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { content } = body;
-
-    if (!content) {
-      return NextResponse.json(
-        { error: 'Content is required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(request, postCreateSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
     // TODO: Implement create logic with auth check
-    return NextResponse.json(
-      { error: 'Not implemented yet' },
-      { status: 501 }
-    );
+    return errorResponse('Not implemented yet', 501);
   } catch (error) {
     console.error('Error creating post:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

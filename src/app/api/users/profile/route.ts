@@ -3,6 +3,9 @@ import { db } from '@/lib/db';
 import { users } from '@/lib/schema';
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
+import { userProfileUpdateSchema } from '@/lib/validations';
+import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
+import { z } from 'zod';
 
 /**
  * GET /api/users/profile
@@ -13,10 +16,7 @@ export async function GET() {
     const session = await getSession();
 
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return errorResponse('Unauthorized', 401);
     }
 
     const [user] = await db
@@ -26,13 +26,10 @@ export async function GET() {
       .limit(1);
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return errorResponse('User not found', 404);
     }
 
-    return NextResponse.json({
+    return successResponse({
       id: user.id,
       email: user.email,
       name: user.name,
@@ -43,10 +40,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching profile:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }
 
@@ -59,25 +53,18 @@ export async function PUT(request: NextRequest) {
     const session = await getSession();
 
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return errorResponse('Unauthorized', 401);
     }
 
-    const body = await request.json();
-    const { name, displayName } = body;
-
-    if (!name && !displayName) {
-      return NextResponse.json(
-        { error: 'At least one field is required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(request, userProfileUpdateSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
+    const { name, displayName } = validation.data as z.infer<typeof userProfileUpdateSchema>;
     const userId = parseInt(session.user.id);
-    const updateData: Record<string, any> = {};
 
+    const updateData: Record<string, any> = {};
     if (name !== undefined) updateData.name = name;
     if (displayName !== undefined) updateData.displayName = displayName;
 
@@ -92,7 +79,7 @@ export async function PUT(request: NextRequest) {
       .where(eq(users.id, userId))
       .limit(1);
 
-    return NextResponse.json({
+    return successResponse({
       id: updatedUser.id,
       email: updatedUser.email,
       name: updatedUser.name,
@@ -102,9 +89,6 @@ export async function PUT(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error updating profile:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

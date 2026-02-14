@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCourse, getLessons } from '@/lib/api-data';
+import { successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/learning/courses/[id]
@@ -13,32 +14,23 @@ export async function GET(
     const courseId = parseInt(params.id);
 
     if (isNaN(courseId)) {
-      return NextResponse.json(
-        { error: 'Invalid course ID' },
-        { status: 400 }
-      );
+      return errorResponse('Invalid course ID', 400);
     }
 
     const course = await getCourse(courseId);
 
     if (!course) {
-      return NextResponse.json(
-        { error: 'Course not found' },
-        { status: 404 }
-      );
+      return errorResponse('Course not found', 404);
     }
 
     const lessons = await getLessons(courseId);
 
-    return NextResponse.json({
+    return successResponse({
       ...course,
       lessons,
     });
   } catch (error) {
     console.error('Error fetching course:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }

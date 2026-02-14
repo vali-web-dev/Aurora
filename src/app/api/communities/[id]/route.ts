@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCommunity, getCommunityMembers } from '@/lib/api-data';
+import { successResponse, errorResponse } from '@/lib/request-validation';
 
 /**
  * GET /api/communities/[id]
@@ -13,33 +14,24 @@ export async function GET(
     const communityId = parseInt(params.id);
 
     if (isNaN(communityId)) {
-      return NextResponse.json(
-        { error: 'Invalid community ID' },
-        { status: 400 }
-      );
+      return errorResponse('Invalid community ID', 400);
     }
 
     const community = await getCommunity(communityId);
 
     if (!community) {
-      return NextResponse.json(
-        { error: 'Community not found' },
-        { status: 404 }
-      );
+      return errorResponse('Community not found', 404);
     }
 
     const members = await getCommunityMembers(communityId);
 
-    return NextResponse.json({
+    return successResponse({
       ...community,
       members,
       memberCount: members.length,
     });
   } catch (error) {
     console.error('Error fetching community:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return errorResponse('Internal server error', 500);
   }
 }
