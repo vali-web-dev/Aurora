@@ -105,6 +105,17 @@ export const communityMemberCreateSchema = z.object({
   role: z.enum(['member', 'moderator', 'admin']).default('member'),
 });
 
+export const messageCreateSchema = z.object({
+  content: z.string().min(1, 'Message content is required').max(5000),
+  metadata: z.record(z.string(), z.any()).optional(),
+  mentions: z.array(z.string()).optional(),
+});
+
+export const messageUpdateSchema = z.object({
+  messageId: z.string().min(1, 'Message ID is required'),
+  content: z.string().min(1, 'Message content is required').max(5000),
+});
+
 // ============================================================================
 // BRAND SCHEMAS
 // ============================================================================

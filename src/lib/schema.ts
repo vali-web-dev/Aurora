@@ -532,3 +532,25 @@ export type NewSocialReaction = typeof socialReactions.$inferInsert;
 
 export type SocialComment = typeof socialComments.$inferSelect;
 export type NewSocialComment = typeof socialComments.$inferInsert;
+
+// ============================================================================
+// COMMUNITY MESSAGES TABLES (For real-time chat)
+// ============================================================================
+
+export const communityMessages = pgTable('community_messages', {
+  id: serial('id').primaryKey(),
+  communityId: integer('community_id')
+    .references(() => communities.id)
+    .notNull(),
+  userId: integer('user_id')
+    .references(() => users.id)
+    .notNull(),
+  content: text('content').notNull(),
+  metadata: jsonb('metadata').default({}),
+  edited: integer('edited').notNull().default(0),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export type CommunityMessage = typeof communityMessages.$inferSelect;
+export type NewCommunityMessage = typeof communityMessages.$inferInsert;

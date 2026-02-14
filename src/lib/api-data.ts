@@ -366,3 +366,74 @@ export async function createComment(data: {
 export async function deleteComment(commentId: number) {
   await db.delete(schema.socialComments).where(eq(schema.socialComments.id, commentId));
 }
+
+// ============================================================================
+// COMMUNITY MESSAGES FUNCTIONS
+// ============================================================================
+
+/**
+ * Get messages for a community
+ */
+export async function getCommunityMessages(
+  communityId: number,
+  limit: number = 100,
+  offset: number = 0
+) {
+  return await db
+    .select()
+    .from(schema.communityMessages)
+    .where(eq(schema.communityMessages.communityId, communityId))
+    .orderBy(schema.communityMessages.createdAt)
+    .limit(limit)
+    .offset(offset);
+}
+
+/**
+ * Create a message
+ */
+export async function createMessage(data: {
+  communityId: number;
+  userId: number;
+  content: string;
+  metadata: Record<string, any>;
+}) {
+  const [message] = await db
+    .insert(schema.communityMessages)
+    .values({
+      communityId: data.communityId,
+      userId: data.userId,
+      content: data.content,
+      metadata: data.metadata,
+    })
+    .returning();
+  return message;
+}
+
+/**
+ * Update a message
+ */
+export async function updateMessage(
+  messageId: number,
+  data: {
+    content: string;
+    edited: boolean;
+  }
+) {
+  const [message] = await db
+    .update(schema.communityMessages)
+    .set({
+      content: data.content,
+      edited: data.edited ? 1 : 0,
+      updatedAt: new Date(),
+    })
+    .where(eq(schema.communityMessages.id, messageId))
+    .returning();
+  return message;
+}
+
+/**
+ * Delete a message
+ */
+export async function deleteMessage(messageId: number) {
+  await db.delete(schema.communityMessages).where(eq(schema.communityMessages.id, messageId));
+}
