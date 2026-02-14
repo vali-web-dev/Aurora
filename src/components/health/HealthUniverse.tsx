@@ -27,9 +27,9 @@ export function HealthUniverse() {
 
       <SurfaceSection title="Wellness Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Calories Burned" value={totalCaloriesBurned} />
-          <StatCard label="Calories Consumed" value={totalCaloriesConsumed} />
-          <StatCard label="Avg Sleep" value={`${avgSleepDuration}h`} />
+          <StatCard label="Calories Burned" value={totalCaloriesBurned} helper="This week" />
+          <StatCard label="Calories Consumed" value={totalCaloriesConsumed} helper="This week" />
+          <StatCard label="Avg Sleep" value={`${avgSleepDuration}h`} helper="Last 7 days" />
         </div>
       </SurfaceSection>
 
@@ -44,9 +44,9 @@ export function HealthUniverse() {
             </div>
             <Badge size="sm" variant="success">Healthy</Badge>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Vitals">
             {vitals.map((vital) => (
-              <div key={vital.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+              <div key={vital.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                 <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
                   {vital.type.replace('_', ' ')}
                 </p>
@@ -65,9 +65,9 @@ export function HealthUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Recent Activities</h2>
               <Button variant="secondary" size="sm">Log Activity</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Recent activities">
               {activities.map((activity) => (
-                <div key={activity.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <div key={activity.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50 capitalize">{activity.type}</p>
                     <Badge size="sm" variant="info">{activity.caloriesBurned} kcal</Badge>
@@ -83,9 +83,9 @@ export function HealthUniverse() {
           <div className="space-y-6">
             <Card className="space-y-4">
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Wellness Goals</h2>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Wellness goals">
                 {goals.map((goal) => (
-                  <div key={goal.id} className="space-y-2">
+                  <div key={goal.id} role="listitem" className="space-y-2">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{goal.category}</p>
                       <Badge size="sm" variant={goal.status === 'completed' ? 'success' : 'default'}>
@@ -105,9 +105,9 @@ export function HealthUniverse() {
 
             <Card className="space-y-4">
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Sleep</h2>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Sleep records">
                 {sleep.map((record) => (
-                  <div key={record.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={record.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">
                         {(record.duration / 60).toFixed(1)}h
@@ -129,9 +129,9 @@ export function HealthUniverse() {
 
       <SurfaceSection title="Today's Nutrition">
         <Card className="space-y-4">
-          <div className="space-y-3">
+          <div className="space-y-3" role="list" aria-label="Nutrition entries">
             {nutrition.map((entry) => (
-              <div key={entry.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+              <div key={entry.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-slate-900 dark:text-slate-50 capitalize">{entry.mealType}</p>
                   <Badge size="sm" variant="info">{entry.caloriesEstimated} kcal</Badge>

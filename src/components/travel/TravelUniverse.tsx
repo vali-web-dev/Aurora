@@ -30,9 +30,9 @@ export function TravelUniverse() {
 
       <SurfaceSection title="Travel Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Upcoming Trips" value={upcomingTrips.length} />
-          <StatCard label="Itinerary Items" value={itinerary.length} />
-          <StatCard label="Saved Budgets" value={`$${(trips.reduce((sum, t) => sum + t.budgetCents, 0) / 100).toFixed(0)}`} />
+          <StatCard label="Upcoming Trips" value={upcomingTrips.length} helper="Planned" />
+          <StatCard label="Itinerary Items" value={itinerary.length} helper="All trips" />
+          <StatCard label="Saved Budgets" value={`$${(trips.reduce((sum, t) => sum + t.budgetCents, 0) / 100).toFixed(0)}`} helper="Total" />
         </div>
       </SurfaceSection>
 
@@ -43,9 +43,9 @@ export function TravelUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Trips</h2>
               <Button variant="secondary" size="sm">New Trip</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Upcoming trips">
               {upcomingTrips.map((trip) => (
-                <div key={trip.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <div key={trip.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{trip.destination}</p>
                     <Badge size="sm" variant="info">{trip.status}</Badge>
@@ -63,9 +63,9 @@ export function TravelUniverse() {
 
           <Card className="space-y-4">
             <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Today\'s Itinerary</h2>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Today's itinerary">
               {itinerary.map((item) => (
-                <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <div key={item.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{item.title}</p>
                     <Badge size="sm" variant="default">{item.type}</Badge>
@@ -82,9 +82,9 @@ export function TravelUniverse() {
 
       <SurfaceSection title="Travel Tools">
         <Card className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Travel tools">
             {['Itinerary Builder', 'Packing List', 'Budget Planner'].map((tool) => (
-              <div key={tool} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800">
+              <div key={tool} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800">
                 <p className="font-semibold text-slate-900 dark:text-slate-50">{tool}</p>
                 <p className="text-xs text-slate-600 dark:text-slate-400">Ready to customize</p>
               </div>
@@ -100,9 +100,9 @@ export function TravelUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Packing List</h2>
               <Button variant="ghost" size="sm">Manage</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Packing list">
               {tripPacking.map((item) => (
-                <div key={item.id} className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3">
+                <div key={item.id} role="listitem" className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3">
                   <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{item.label}</p>
                   <Badge size="sm" variant={item.packed ? 'success' : 'default'}>
                     {item.packed ? 'Packed' : 'To pack'}
@@ -119,11 +119,11 @@ export function TravelUniverse() {
                 ${(budgetSpent / 100).toFixed(0)} / ${(budgetTotal / 100).toFixed(0)}
               </Badge>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Budget breakdown">
               {tripBudget.map((item) => {
                 const pct = Math.round((item.spentCents / item.budgetCents) * 100);
                 return (
-                  <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={item.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{item.label}</p>
                       <span className="text-xs text-slate-600 dark:text-slate-400">

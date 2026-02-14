@@ -108,9 +108,9 @@ export function HomeUniverse() {
               <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Quick Actions</h3>
               <Button variant="ghost" size="sm">Customize</Button>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="list" aria-label="Quick actions">
               {quickActions.map((action) => (
-                <div key={action.label} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+                <div key={action.label} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                   <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                     {iconMap[action.icon]}
                   </div>
@@ -125,9 +125,9 @@ export function HomeUniverse() {
               <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Priority Tasks</h3>
               <Button variant="secondary" size="sm">View Board</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Priority tasks">
               {topTasks.map((task) => (
-                <div key={task.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+                <div key={task.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{task.title}</p>
                     <Badge variant={task.priority === 'high' ? 'error' : task.priority === 'medium' ? 'warning' : 'default'} size="sm">
@@ -147,9 +147,9 @@ export function HomeUniverse() {
               <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Learning Progress</h3>
               <Button variant="ghost" size="sm">Open Learning</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Learning progress">
               {activeCourses.map(({ course, progress }) => (
-                <div key={course.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+                <div key={course.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                   <p className="font-semibold text-slate-900 dark:text-slate-50">{course.title}</p>
                   <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                     <span>{progress}% complete</span>

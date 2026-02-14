@@ -22,9 +22,9 @@ export function IdentityUniverse() {
 
       <SurfaceSection title="Identity Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Active Personas" value={personas.length} />
-          <StatCard label="Life Graph Nodes" value={lifeGraph.length} />
-          <StatCard label="Twin Insights" value={digitalTwin.length} />
+          <StatCard label="Active Personas" value={personas.length} helper="In rotation" />
+          <StatCard label="Life Graph Nodes" value={lifeGraph.length} helper="Tracked" />
+          <StatCard label="Twin Insights" value={digitalTwin.length} helper="Suggestions" />
         </div>
       </SurfaceSection>
 
@@ -35,18 +35,18 @@ export function IdentityUniverse() {
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
                 Personas
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Personas">
                 {personas.map((persona) => (
-                  <div key={persona.id} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-2">
+                  <div key={persona.id} role="listitem" className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-2">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">
                       {persona.name}
                     </p>
                     <p className="text-xs text-slate-600 dark:text-slate-400">
                       Mode: {persona.mode}
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2" role="list" aria-label="Persona preferences">
                       {Object.entries(persona.preferences).map(([key, value]) => (
-                        <Badge key={key} size="sm">
+                        <Badge key={key} size="sm" role="listitem">
                           {key}: {String(value)}
                         </Badge>
                       ))}
@@ -64,10 +64,11 @@ export function IdentityUniverse() {
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 A living model of your interests, skills, habits, and rhythms.
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="list" aria-label="Life graph nodes">
                 {lifeGraph.map((node) => (
                   <span
                     key={node.id}
+                    role="listitem"
                     className="px-3 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-medium"
                   >
                     {node.label}
@@ -80,9 +81,9 @@ export function IdentityUniverse() {
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
                 Digital Twin
               </h2>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Digital twin suggestions">
                 {digitalTwin.map((suggestion) => (
-                  <div key={suggestion.id} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-2">
+                  <div key={suggestion.id} role="listitem" className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-2">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">
                         {suggestion.title}
@@ -109,9 +110,9 @@ export function IdentityUniverse() {
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 {profile.publicBio}
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="list" aria-label="Public values">
                 {profile.values.map((value) => (
-                  <Badge key={value} size="sm">
+                  <Badge key={value} size="sm" role="listitem">
                     {value}
                   </Badge>
                 ))}
@@ -123,9 +124,9 @@ export function IdentityUniverse() {
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 {profile.privateBio}
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="list" aria-label="Focus themes">
                 {profile.focusThemes.map((theme) => (
-                  <Badge key={theme} variant="primary" size="sm">
+                  <Badge key={theme} variant="primary" size="sm" role="listitem">
                     {theme}
                   </Badge>
                 ))}
