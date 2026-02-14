@@ -87,7 +87,13 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
     return d.toLocaleDateString();
   };
 
-  // Fetch comments when expanded
+  // Preload comments so counts are accurate before expanding.
+  useEffect(() => {
+    fetchComments();
+  }, [post.id]);
+
+
+  // Fetch comments when expanded if not already loaded.
   useEffect(() => {
     if (showComments && comments.length === 0) {
       fetchComments();
@@ -155,6 +161,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
       setIsLoadingComments(false);
     }
   };
+
 
   const fetchReactions = async () => {
     setIsLoadingReactions(true);
@@ -357,6 +364,8 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
       ? 'px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors'
       : 'px-2.5 py-1 rounded-full text-xs font-medium transition-colors';
     const totalReactions = reactionsForComment.reduce((sum, reaction) => sum + reaction.count, 0);
+    const heartReaction = reactionsForComment.find((reaction) => reaction.emoji === '❤️');
+    const userHeart = heartReaction?.userReacted || false;
 
     return (
       <div key={comment.id} className="space-y-2">
@@ -387,14 +396,18 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
               </div>
               <button
                 type="button"
-                className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50"
+                className={`flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide transition-colors ${
+                  userHeart
+                    ? 'text-white bg-rose-500/90 px-2 py-1 rounded-full'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
+                }`}
                 onClick={() => handleCommentReaction(comment.id, '❤️')}
                 disabled={isLoadingCommentReactions[comment.id]}
               >
                 <svg
                   className="h-4 w-4"
                   viewBox="0 0 24 24"
-                  fill="none"
+                  fill={userHeart ? 'currentColor' : 'none'}
                   stroke="currentColor"
                   strokeWidth="1.6"
                 >

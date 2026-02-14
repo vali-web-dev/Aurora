@@ -401,6 +401,7 @@ export async function getPostComments(postId: number) {
   }));
 }
 
+
 /**
  * Create a comment
  */
