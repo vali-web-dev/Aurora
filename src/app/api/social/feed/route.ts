@@ -91,12 +91,13 @@ export async function POST(request: NextRequest) {
     // Broadcast to real-time feed subscribers
     broadcastToUniverse(post.universe, WSEventType.POST_CREATE, {
       id: post.id,
-      userId: post.authorUserId,
-      content: post.content,
+      authorUserId: post.authorUserId,
       universe: post.universe,
+      content: post.content,
       visibility: post.visibility,
       metadata: post.metadata,
       createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
       author: {
         id: session.user.id,
         name: session.user.name,

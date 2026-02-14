@@ -14,15 +14,21 @@ let socket: Socket | null = null;
  * Initialize Socket.IO client connection
  */
 export function initializeSocket(
-  url: string = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  url?: string
 ): Socket {
   if (socket?.connected) {
     return socket;
   }
 
-  console.log('[Socket.IO] Connecting to', url);
+  // Auto-detect URL from browser window if not provided
+  const socketUrl = url || 
+    (typeof window !== 'undefined' 
+      ? `${window.location.protocol}//${window.location.host}`
+      : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000');
 
-  socket = io(url, {
+  console.log('[Socket.IO] Connecting to', socketUrl);
+
+  socket = io(socketUrl, {
     path: '/socket.io',
     reconnection: true,
     reconnectionDelay: 1000,

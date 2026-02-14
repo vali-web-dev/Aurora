@@ -27,7 +27,7 @@ export function initializeWebSocket(server: any): Server {
   if (ioInstance) return ioInstance;
 
   ioInstance = new Server(server, {
-    path: '/api/ws',
+    path: '/socket.io',
     cors: {
       origin: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
       credentials: true,

@@ -40,12 +40,10 @@ export const productUpdateSchema = productCreateSchema.partial();
 // ============================================================================
 
 export const postCreateSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(255).optional(),
-  body: z.string().min(1, 'Post body is required').max(5000),
-  media: z.array(z.object({
-    url: z.string().url(),
-    type: z.enum(['image', 'video', 'link']),
-  })).optional(),
+  content: z.string().min(1, 'Post content is required').max(5000),
+  universe: z.string().min(1).max(50).optional(),
+  visibility: z.enum(['public', 'private', 'friends']).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
 });
 
 export const postUpdateSchema = z.object({

@@ -34,7 +34,7 @@ app.prepare().then(() => {
   // Initialize WebSocket server
   console.log('[Server] Initializing WebSocket server...');
   initializeWebSocket(server);
-  console.log('[Server] WebSocket server initialized on /api/ws');
+  console.log('[Server] WebSocket server initialized');
 
   // Start server
   server.listen(port, (err) => {

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 import { primaryNav } from '@/lib/navigation';
 import { ThemeSelector } from '@/components/aurora/ThemeSelector';
 import { GlobalSearch } from '@/components/aurora/GlobalSearch';
@@ -17,13 +18,17 @@ import clsx from 'clsx';
 
 export function TopNav() {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
   const { mode } = useTheme();
   const { toggle } = useCompanion();
   const [docsOpen, setDocsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const isIlluminated = mode === 'illuminated';
+  const isLoading = status === 'loading';
+  const isAuthenticated = status === 'authenticated';
 
   // Global keyboard shortcuts
   useKeyboardShortcuts(
@@ -101,6 +106,111 @@ export function TopNav() {
             onOpenChange={setSearchOpen}
           />
           <RealtimeNotifications />
+          
+          {/* Auth Buttons */}
+          {!isAuthenticated && !isLoading && (
+            <>
+              <Link
+                href="/auth/signin"
+                className={clsx(
+                  'hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg',
+                  'text-slate-600 dark:text-slate-300',
+                  'hover:bg-slate-100 dark:hover:bg-slate-800',
+                  'transition-all duration-200'
+                )}
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/auth/signup"
+                className={clsx(
+                  'hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg',
+                  'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
+                  'text-white shadow-lg',
+                  'transition-all duration-200',
+                  isIlluminated && 'shadow-[0_0_20px_rgba(59,130,246,0.6)]'
+                )}
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+
+          {/* User Menu */}
+          {isAuthenticated && session?.user && (
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className={clsx(
+                  'flex items-center gap-2 px-3 py-2 rounded-lg',
+                  'bg-slate-100 dark:bg-slate-800',
+                  'hover:bg-slate-200 dark:hover:bg-slate-700',
+                  'transition-all duration-200'
+                )}
+                type="button"
+              >
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
+                  {session.user.name?.charAt(0)?.toUpperCase() || session.user.email?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+                <span className="hidden sm:inline text-sm font-medium text-slate-900 dark:text-slate-50">
+                  {session.user.name || 'User'}
+                </span>
+                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {userMenuOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setUserMenuOpen(false)}
+                  />
+                  <div className={clsx(
+                    'absolute right-0 mt-2 w-56 rounded-lg shadow-xl z-50',
+                    'bg-white dark:bg-slate-900',
+                    'border border-slate-200 dark:border-slate-700',
+                    'py-1'
+                  )}>
+                    <Link
+                      href="/dashboard"
+                      className="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                    <Link
+                      href="/settings"
+                      className="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      Settings
+                    </Link>
+                    <div className="border-t border-slate-200 dark:border-slate-700 my-1" />
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        signOut({ callbackUrl: '/' });
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      type="button"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
           <button
             onClick={() => setDocsOpen(true)}
             className={clsx(

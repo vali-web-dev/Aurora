@@ -10,9 +10,9 @@
 
 **Primary Colors**
 ```
-Primary Blue: #0084ff        // Hope, clarity, action
-Accent Cyan: #7df9ff         // Wonder, innovation, energy
-Warm Orange: #ff8c42         // Creativity, warmth, energy
+Primary Blue: #46a3fa        // Hope, clarity, action
+Accent Cyan: #7df8ffe7         // Wonder, innovation, energy
+Warm Orange: #f77b2d         // Creativity, warmth, energy
 ```
 
 **Neutral Palette** (Slate)
