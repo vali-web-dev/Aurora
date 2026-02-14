@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from 'react';
 import type { ReactNode } from 'react';
 import clsx from 'clsx';
+import { announce } from '@/lib/a11y/announcer';
 
 interface AuroraModalProps {
   isOpen: boolean;
@@ -37,11 +38,40 @@ export function AuroraModal({
   const titleId = useId();
   const descriptionId = useId();
   const lastActiveRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  const getFocusableElements = () => {
+    const container = dialogRef.current;
+    if (!container) return [] as HTMLElement[];
+    return Array.from(
+      container.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+  };
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         onClose();
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        const focusable = getFocusableElements();
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement as HTMLElement | null;
+
+        if (event.shiftKey && active === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && active === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     }
 
@@ -50,6 +80,12 @@ export function AuroraModal({
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    announce(`${title ?? 'Dialog'} opened`);
+    return () => announce(`${title ?? 'Dialog'} closed`);
+  }, [isOpen, title]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -74,6 +110,7 @@ export function AuroraModal({
         aria-labelledby={title ? titleId : undefined}
         aria-describedby={description ? descriptionId : undefined}
         id={id}
+        ref={dialogRef}
         className={clsx(
           'relative w-full rounded-2xl overflow-hidden',
           'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',

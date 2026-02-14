@@ -461,6 +461,8 @@ Every component in Aurora follows these patterns:
 - Opens below sticky nav (80px offset)
 - Close button (X) and Escape key
 - Focus managed on open/close (returns to trigger)
+- Focus trapped inside the modal
+- Screen reader announces open/close
 - Scrollable content if needed
 
 **Input**

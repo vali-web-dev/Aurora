@@ -705,6 +705,8 @@ Aurora is built from the ground up for everyone. Accessibility isn't a featureâ€
 - Form labels, error messages, hints clearly associated
 - Aria live regions for dynamic content updates
 - Focus management when modals open/close
+- Screen reader announcements when dialogs open/close
+- Focus is trapped inside active dialogs
 
 ### Accessible Universe Features
 

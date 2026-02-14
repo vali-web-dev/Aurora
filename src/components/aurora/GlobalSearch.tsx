@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
@@ -69,28 +69,34 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
     }
   }, [isOpen]);
 
-  const handleSelect = (href: string) => {
-    setIsOpen(false);
-    router.push(href);
-  };
+  const handleSelect = useCallback(
+    (href: string) => {
+      setIsOpen(false);
+      router.push(href);
+    },
+    [router]
+  );
 
-  const handleInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      setActiveIndex((prev) => Math.min(prev + 1, results.length - 1));
-    }
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      setActiveIndex((prev) => Math.max(prev - 1, 0));
-    }
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      const selected = results[activeIndex];
-      if (selected) {
-        handleSelect(selected.href);
+  const handleInputKeyDown = useCallback(
+    (event: ReactKeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setActiveIndex((prev) => Math.min(prev + 1, results.length - 1));
       }
-    }
-  };
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        setActiveIndex((prev) => Math.max(prev - 1, 0));
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        const selected = results[activeIndex];
+        if (selected) {
+          handleSelect(selected.href);
+        }
+      }
+    },
+    [results, activeIndex, handleSelect]
+  );
 
   return (
     <div className="relative">

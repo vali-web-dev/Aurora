@@ -2,11 +2,13 @@
 
 import React, { ReactNode, useEffect, useRef } from 'react';
 import clsx from 'clsx';
+import { announce } from '@/lib/a11y/announcer';
 
 interface DialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: ReactNode;
+  announceLabel?: string;
 }
 
 interface DialogContentProps {
@@ -25,13 +27,44 @@ interface DialogTitleProps {
   children: ReactNode;
 }
 
-export function Dialog({ open, onOpenChange, children }: DialogProps) {
+export function Dialog({ open, onOpenChange, children, announceLabel }: DialogProps) {
   const lastActiveRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const getFocusableElements = () => {
+    const container = contentRef.current;
+    if (!container) return [] as HTMLElement[];
+    return Array.from(
+      container.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+  };
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape' && open) {
+      if (!open) return;
+
+      if (event.key === 'Escape') {
         onOpenChange(false);
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        const focusable = getFocusableElements();
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement as HTMLElement | null;
+
+        if (event.shiftKey && active === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && active === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     }
 
@@ -40,6 +73,13 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
   }, [open, onOpenChange]);
+
+  useEffect(() => {
+    if (!open) return;
+    const label = announceLabel ?? 'Dialog';
+    announce(`${label} opened`);
+    return () => announce(`${label} closed`);
+  }, [open, announceLabel]);
 
   useEffect(() => {
     if (!open) return;
@@ -65,7 +105,9 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
       />
       {/* Dialog Content */}
       <div className="fixed inset-x-0 bottom-0 top-[80px] z-50 flex items-start justify-center p-4 pt-8">
-        <div onClick={(e) => e.stopPropagation()}>{children}</div>
+        <div ref={contentRef} onClick={(e) => e.stopPropagation()}>
+          {children}
+        </div>
       </div>
     </>
   );

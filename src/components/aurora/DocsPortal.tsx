@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useId, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 interface DocsSection {
   title: string;
@@ -198,7 +198,11 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
   const currentSection = DOCS_STRUCTURE[activeTab] || [];
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={onOpenChange}
+      announceLabel="Documentation portal"
+    >
       <DialogContent
         className="max-w-4xl max-h-[80vh] overflow-y-auto"
         titleId={titleId}
