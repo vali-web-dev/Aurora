@@ -21,3 +21,10 @@ Thumbs.db
 
 # IDE
 .vscode/
+# Database
+*.sql
+*.sql.bak
+src/lib/migrations/*.sql
+db.sqlite
+db.sqlite-wal
+db.sqlite-shm

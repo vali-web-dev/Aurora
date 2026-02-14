@@ -5,6 +5,7 @@ import { RealtimeProvider } from '@/lib/realtime/realtime-provider';
 import { CompanionProvider } from '@/lib/companion/companion-provider';
 import { CompanionContextEngineProvider } from '@/lib/companion/companion-context-engine';
 import { MemoryProvider } from '@/lib/memory/memory-provider';
+import { AuthSessionProvider } from '@/components/auth/SessionProvider';
 import { SkipLinks } from '@/components/accessibility/SkipLinks';
 import { MemoryTracker } from '@/components/aurora/MemoryTracker';
 import { CompanionPanel } from '@/components/aurora/CompanionPanel';
@@ -64,24 +65,26 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 antialiased">
-        <ThemeProvider>
-          <AccessibilityProvider>
-            <RealtimeProvider>
-              <MemoryProvider>
-                <CompanionProvider>
-                  <CompanionContextEngineProvider>
-                    <SkipLinks />
-                    {children}
-                    <MemoryTracker />
-                    <CompanionPanel />
-                    <CompanionHint />
-                    <RealtimeToasts />
-                  </CompanionContextEngineProvider>
-                </CompanionProvider>
-              </MemoryProvider>
-            </RealtimeProvider>
-          </AccessibilityProvider>
-        </ThemeProvider>
+        <AuthSessionProvider>
+          <ThemeProvider>
+            <AccessibilityProvider>
+              <RealtimeProvider>
+                <MemoryProvider>
+                  <CompanionProvider>
+                    <CompanionContextEngineProvider>
+                      <SkipLinks />
+                      {children}
+                      <MemoryTracker />
+                      <CompanionPanel />
+                      <CompanionHint />
+                      <RealtimeToasts />
+                    </CompanionContextEngineProvider>
+                  </CompanionProvider>
+                </MemoryProvider>
+              </RealtimeProvider>
+            </AccessibilityProvider>
+          </ThemeProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );
