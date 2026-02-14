@@ -64,7 +64,7 @@ export function LearningUniverse() {
               duration={course.durationHours}
               lessons={course.lessonsCount}
               progress={getProgress(course.id)}
-              onEnroll={() => console.log('Enrolled in:', course.title)}
+              onEnroll={() => {}}
             />
           ))}
         </div>
