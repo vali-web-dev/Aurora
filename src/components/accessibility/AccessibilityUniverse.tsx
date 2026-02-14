@@ -11,7 +11,9 @@ export function AccessibilityUniverse() {
         description="Customize Aurora to meet your accessibility needs. Changes are applied immediately."
       />
       <SurfaceSection title="Preferences">
-        <AccessibilityPanel showHeader={false} />
+        <div aria-label="Accessibility preferences">
+          <AccessibilityPanel showHeader={false} />
+        </div>
       </SurfaceSection>
     </Surface>
   );

@@ -46,9 +46,9 @@ export function DeveloperUniverse() {
 
       <SurfaceSection title="Developer Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="Plugins" value={plugins.length} />
-          <StatCard label="API Keys" value={apiKeys.length} />
-          <StatCard label="Webhooks" value={webhooks.length} />
+          <StatCard label="Plugins" value={plugins.length} helper="Published" />
+          <StatCard label="API Keys" value={apiKeys.length} helper="Active + revoked" />
+          <StatCard label="Webhooks" value={webhooks.length} helper="Connected" />
         </div>
       </SurfaceSection>
 
@@ -63,12 +63,12 @@ export function DeveloperUniverse() {
             </div>
             <Badge size="sm" variant="success">99.98% uptime</Badge>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Build signal metrics">
             <div className="space-y-2">
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">API Usage (7d)</p>
-              <div className="flex items-end gap-2 h-20">
+              <div className="flex items-end gap-2 h-20" role="list" aria-label="API usage trend">
                 {usageTrend.map((value, index) => (
-                  <div key={`usage-${value}-${index}`} className="flex-1">
+                  <div key={`usage-${value}-${index}`} role="listitem" className="flex-1">
                     <div
                       className="w-full rounded-md bg-indigo-500/80"
                       style={{ height: `${value}%` }}
@@ -81,9 +81,9 @@ export function DeveloperUniverse() {
             </div>
             <div className="space-y-2">
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Release Velocity</p>
-              <div className="flex items-end gap-2 h-20">
+              <div className="flex items-end gap-2 h-20" role="list" aria-label="Release velocity">
                 {releaseVelocity.map((value, index) => (
-                  <div key={`release-${value}-${index}`} className="flex-1">
+                  <div key={`release-${value}-${index}`} role="listitem" className="flex-1">
                     <div
                       className="w-full rounded-md bg-emerald-500/80"
                       style={{ height: `${value * 10}%` }}
@@ -113,9 +113,9 @@ export function DeveloperUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Plugin Registry</h2>
               <Button variant="secondary" size="sm">Create Plugin</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Plugins">
               {plugins.map((plugin) => (
-                <div key={plugin.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <div key={plugin.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{plugin.name}</p>
                     <Badge size="sm" variant={plugin.status === 'active' ? 'success' : plugin.status === 'beta' ? 'warning' : 'default'}>
@@ -140,9 +140,9 @@ export function DeveloperUniverse() {
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">API Keys</h2>
                 <Button variant="ghost" size="sm">New Key</Button>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="API keys">
                 {apiKeys.map((key) => (
-                  <div key={key.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={key.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">{key.label}</p>
                       <Badge size="sm" variant={key.status === 'active' ? 'success' : 'default'}>

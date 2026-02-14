@@ -27,8 +27,8 @@ export function HomeControlUniverse() {
       <SurfaceSection title="Home Snapshot">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard label="Devices Online" value={onlineDevices} helper={`of ${devices.length}`} />
-          <StatCard label="Active Automations" value={enabledAutomations} />
-          <StatCard label="Current Usage" value={`${currentEnergyUsage}W`} />
+          <StatCard label="Active Automations" value={enabledAutomations} helper="Enabled" />
+          <StatCard label="Current Usage" value={`${currentEnergyUsage}W`} helper="Right now" />
         </div>
       </SurfaceSection>
 
@@ -43,9 +43,9 @@ export function HomeControlUniverse() {
             </div>
             <Badge size="sm" variant="success">All healthy</Badge>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="list" aria-label="Smart devices">
             {devices.map((device) => (
-              <div key={device.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+              <div key={device.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-slate-900 dark:text-slate-50">{device.name}</p>
                   <Badge size="sm" variant={device.status === 'online' ? 'success' : 'error'}>
@@ -73,9 +73,9 @@ export function HomeControlUniverse() {
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Scenes</h2>
               <Button variant="secondary" size="sm">Create Scene</Button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="Scenes">
               {scenes.map((scene) => (
-                <div key={scene.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+                <div key={scene.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-slate-900 dark:text-slate-50">{scene.name}</p>
                     <Button variant="ghost" size="sm">Activate</Button>
@@ -95,9 +95,9 @@ export function HomeControlUniverse() {
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">Automations</h2>
                 <Button variant="ghost" size="sm">Add</Button>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3" role="list" aria-label="Automations">
                 {automations.map((auto) => (
-                  <div key={auto.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <div key={auto.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-slate-900 dark:text-slate-50">{auto.name}</p>
                       <Badge size="sm" variant={auto.enabled ? 'success' : 'default'}>
@@ -123,9 +123,9 @@ export function HomeControlUniverse() {
 
       <SurfaceSection title="Energy Usage">
         <Card className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="list" aria-label="Energy usage">
             {energy.map((record) => (
-              <div key={record.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
+              <div key={record.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-slate-900 dark:text-slate-50">
                     {record.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -133,9 +133,9 @@ export function HomeControlUniverse() {
                   <Badge size="sm" variant="info">${record.costEstimate.toFixed(2)}</Badge>
                 </div>
                 <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">{record.powerUsageWatts}W</p>
-                <div className="space-y-2">
+                <div className="space-y-2" role="list" aria-label="Device breakdown">
                   {Object.entries(record.deviceBreakdown).map(([device, wattage]) => (
-                    <div key={device} className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                    <div key={device} role="listitem" className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                       <span>{device}</span>
                       <span>{wattage}W</span>
                     </div>
