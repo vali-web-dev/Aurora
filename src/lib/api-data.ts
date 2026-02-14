@@ -193,3 +193,176 @@ export async function getCart(cartId: number) {
     .from(schema.cartItems)
     .where(eq(schema.cartItems.cartId, cartId));
 }
+
+// ============================================================================
+// SOCIAL FEED FUNCTIONS
+// ============================================================================
+
+/**
+ * Get feed posts for a universe
+ */
+export async function getFeedPosts(universe: string, limit: number = 50, offset: number = 0) {
+  return await db
+    .select()
+    .from(schema.socialPosts)
+    .where(eq(schema.socialPosts.universe, universe))
+    .orderBy(schema.socialPosts.createdAt)
+    .limit(limit)
+    .offset(offset);
+}
+
+/**
+ * Get post by ID
+ */
+export async function getPostById(postId: number) {
+  const [post] = await db
+    .select()
+    .from(schema.socialPosts)
+    .where(eq(schema.socialPosts.id, postId));
+  return post;
+}
+
+/**
+ * Create a new post
+ */
+export async function createPost(data: {
+  userId: number;
+  universe: string;
+  content: string;
+  visibility: string;
+  metadata: Record<string, any>;
+}) {
+  const [post] = await db
+    .insert(schema.socialPosts)
+    .values({
+      authorUserId: data.userId,
+      universe: data.universe,
+      content: data.content,
+      visibility: data.visibility,
+      metadata: data.metadata,
+    })
+    .returning();
+  return post;
+}
+
+/**
+ * Update a post
+ */
+export async function updatePost(
+  postId: number,
+  data: {
+    content?: string;
+    visibility?: string;
+    metadata?: Record<string, any>;
+  }
+) {
+  const [post] = await db
+    .update(schema.socialPosts)
+    .set({
+      content: data.content,
+      visibility: data.visibility,
+      metadata: data.metadata,
+      updatedAt: new Date(),
+    })
+    .where(eq(schema.socialPosts.id, postId))
+    .returning();
+  return post;
+}
+
+/**
+ * Delete a post
+ */
+export async function deletePost(postId: number) {
+  await db.delete(schema.socialPosts).where(eq(schema.socialPosts.id, postId));
+}
+
+// ============================================================================
+// REACTIONS FUNCTIONS
+// ============================================================================
+
+/**
+ * Get reactions for a post
+ */
+export async function getPostReactions(postId: number) {
+  return await db
+    .select()
+    .from(schema.socialReactions)
+    .where(eq(schema.socialReactions.postId, postId));
+}
+
+/**
+ * Create a reaction
+ */
+export async function createReaction(data: {
+  postId: number;
+  userId: number;
+  emoji: string;
+}) {
+  const [reaction] = await db
+    .insert(schema.socialReactions)
+    .values({
+      postId: data.postId,
+      userId: data.userId,
+      emoji: data.emoji,
+    })
+    .returning();
+  return reaction;
+}
+
+/**
+ * Delete a reaction
+ */
+export async function deleteReaction(
+  postId: number,
+  userId: number,
+  emoji: string
+) {
+  await db
+    .delete(schema.socialReactions)
+    .where(
+      eq(schema.socialReactions.postId, postId) &&
+        eq(schema.socialReactions.userId, userId) &&
+        eq(schema.socialReactions.emoji, emoji)
+    );
+}
+
+// ============================================================================
+// COMMENTS FUNCTIONS
+// ============================================================================
+
+/**
+ * Get comments for a post
+ */
+export async function getPostComments(postId: number) {
+  return await db
+    .select()
+    .from(schema.socialComments)
+    .where(eq(schema.socialComments.postId, postId))
+    .orderBy(schema.socialComments.createdAt);
+}
+
+/**
+ * Create a comment
+ */
+export async function createComment(data: {
+  postId: number;
+  userId: number;
+  content: string;
+}) {
+  const [comment] = await db
+    .insert(schema.socialComments)
+    .values({
+      postId: data.postId,
+      userId: data.userId,
+      content: data.content,
+    })
+    .returning();
+  return comment;
+}
+
+/**
+ * Delete a comment
+ */
+export async function deleteComment(commentId: number) {
+  await db.delete(schema.socialComments).where(eq(schema.socialComments.id, commentId));
+}

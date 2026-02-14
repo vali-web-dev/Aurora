@@ -482,3 +482,53 @@ export type NewCommunity = typeof communities.$inferInsert;
 
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
+
+// ============================================================================
+// SOCIAL FEED TABLES (For real-time social features)
+// ============================================================================
+
+export const socialPosts = pgTable('social_posts', {
+  id: serial('id').primaryKey(),
+  authorUserId: integer('author_user_id')
+    .references(() => users.id)
+    .notNull(),
+  universe: varchar('universe', { length: 50 }).notNull().default('social'),
+  content: text('content').notNull(),
+  visibility: varchar('visibility', { length: 20 }).notNull().default('public'),
+  metadata: jsonb('metadata').default({}),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const socialReactions = pgTable('social_reactions', {
+  id: serial('id').primaryKey(),
+  postId: integer('post_id')
+    .references(() => socialPosts.id)
+    .notNull(),
+  userId: integer('user_id')
+    .references(() => users.id)
+    .notNull(),
+  emoji: varchar('emoji', { length: 10 }).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const socialComments = pgTable('social_comments', {
+  id: serial('id').primaryKey(),
+  postId: integer('post_id')
+    .references(() => socialPosts.id)
+    .notNull(),
+  userId: integer('user_id')
+    .references(() => users.id)
+    .notNull(),
+  content: text('content').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export type SocialPost = typeof socialPosts.$inferSelect;
+export type NewSocialPost = typeof socialPosts.$inferInsert;
+
+export type SocialReaction = typeof socialReactions.$inferSelect;
+export type NewSocialReaction = typeof socialReactions.$inferInsert;
+
+export type SocialComment = typeof socialComments.$inferSelect;
+export type NewSocialComment = typeof socialComments.$inferInsert;
