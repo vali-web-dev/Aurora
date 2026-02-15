@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { Badge } from '@/components/aurora/Badge';
@@ -13,6 +14,7 @@ import { HomePreviews } from '@/components/home/HomePreviews';
 import { HomeLists } from '@/components/home/HomeLists';
 import { HomeUpgrades } from '@/components/home/HomeUpgrades';
 import { formatDateTime } from '@/lib/utils';
+import { InlineNotice } from '@/components/ui/InlineNotice';
 import {
   AuroraDataService,
   mockCourseProgress,
@@ -21,6 +23,8 @@ import {
   type Realm,
 } from '@/data/types';
 import { useRouter } from 'next/navigation';
+import { expandableNavigation } from '@/lib/expandable-navigation';
+import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
 
 const tasks = AuroraDataService.getTasks();
 const notes = AuroraDataService.getNotes();
@@ -64,6 +68,38 @@ const iconMap: Record<string, string> = {
 
 export function HomeUniverse() {
   const router = useRouter();
+  const [notice, setNotice] = useState<{ message: string; tone: 'success' | 'error' | 'info' | 'warning' } | null>(null);
+  const noticeTimerRef = useRef<number | null>(null);
+  const primaryPortals = expandableNavigation.filter((item) => item.group === 'Primary');
+  const orbitPrimary = primaryPortals.slice(0, 10);
+  const orbitSecondary = primaryPortals.flatMap((item) => item.children ?? []).slice(0, 16);
+
+  useEffect(() => {
+    return () => {
+      if (noticeTimerRef.current !== null) {
+        window.clearTimeout(noticeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const pushNotice = (message: string, tone: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setNotice({ message, tone });
+    if (noticeTimerRef.current !== null) {
+      window.clearTimeout(noticeTimerRef.current);
+    }
+    noticeTimerRef.current = window.setTimeout(() => {
+      setNotice(null);
+    }, 2200);
+  };
+
+  const handleNavigate = (path: string, label: string) => {
+    pushNotice(`Opening ${label}...`, 'info');
+    window.setTimeout(() => router.push(path), 200);
+  };
+
+  const handleOrbitalClick = (item: { href: string; label: string }) => {
+    handleNavigate(item.href, item.label);
+  };
 
   return (
     <Surface className="space-y-16">
@@ -73,11 +109,15 @@ export function HomeUniverse() {
         title="Home Universe"
         description={dailyBrief.summary}
         actions={
-          <Button variant="primary" onClick={() => router.push('/dashboard')}>
+          <Button variant="primary" onClick={() => handleNavigate('/dashboard', 'Dashboard')}>
             Open Dashboard
           </Button>
         }
       />
+
+      {notice && (
+        <InlineNotice message={notice.message} tone={notice.tone} />
+      )}
 
       <SurfaceSection title="Daily Brief">
         <div>
@@ -122,7 +162,7 @@ export function HomeUniverse() {
                   key={action.label}
                   type="button"
                   role="listitem"
-                  onClick={() => router.push(action.href)}
+                  onClick={() => handleNavigate(action.href, action.label)}
                   className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                 >
                   <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">
@@ -140,7 +180,7 @@ export function HomeUniverse() {
               <Button
                 variant="secondary"
                 size="sm"
-                onClick={() => router.push('/productivity')}
+                onClick={() => handleNavigate('/productivity', 'Priority Board')}
               >
                 View Board
               </Button>
@@ -168,7 +208,7 @@ export function HomeUniverse() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => router.push('/learning')}
+                onClick={() => handleNavigate('/learning', 'Learning')}
               >
                 Open Learning
               </Button>
@@ -218,7 +258,7 @@ export function HomeUniverse() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => router.push('/realms')}
+                    onClick={() => handleNavigate('/realms', 'Realms')}
                   >
                     Enter
                   </Button>
@@ -243,6 +283,9 @@ export function HomeUniverse() {
 
       <FeatureGrid />
       <TrustSection />
+
+      <style jsx>{`
+      `}</style>
     </Surface>
   );
 }

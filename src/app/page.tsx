@@ -1,10 +1,5 @@
-import { AuroraShell } from '@/components/os/AuroraShell';
-import { HomeUniverse } from '@/components/home/HomeUniverse';
+import { AuroraCoverPage } from '@/components/aurora/AuroraCoverPage';
 
 export default function HomePage() {
-    return (
-        <AuroraShell>
-            <HomeUniverse />
-        </AuroraShell>
-    );
+    return <AuroraCoverPage />;
 }

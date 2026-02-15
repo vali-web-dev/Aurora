@@ -512,7 +512,7 @@ export const socialReactions = pgTable('social_reactions', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
-export const socialComments = pgTable('social_comments', {
+export const socialComments: any = pgTable('social_comments', {
   id: serial('id').primaryKey(),
   postId: integer('post_id')
     .references(() => socialPosts.id)

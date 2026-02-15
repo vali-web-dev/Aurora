@@ -1,11 +1,14 @@
 'use client';
 
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
+import { InlineNotice } from '@/components/ui/InlineNotice';
 import { AuroraDataService } from '@/data/types';
 import { formatDateTime } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { useOrderStore } from '@/lib/commerce/order-store';
 
 const notifications = AuroraDataService.getNotifications();
 const learningTimeline = AuroraDataService.getLearningTimeline();
@@ -15,11 +18,43 @@ const unreadCount = notifications.filter((item) => !item.read).length;
 
 export function HomeUpgrades() {
   const router = useRouter();
+  const { orders, orderCount, pendingCount } = useOrderStore();
+  const recentOrders = useMemo(() => Array.isArray(orders) ? orders.slice(0, 3) : [], [orders]);
+  const [notice, setNotice] = useState<{ message: string; tone: 'success' | 'error' | 'info' | 'warning' } | null>(null);
+  const noticeTimerRef = useRef<number | null>(null);
   const totalShopping = shoppingList.reduce((sum, item) => sum + item.priceCents, 0);
   const highPriority = shoppingList.filter((item) => item.priority === 'high').length;
 
+  useEffect(() => {
+    return () => {
+      if (noticeTimerRef.current !== null) {
+        window.clearTimeout(noticeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const pushNotice = (message: string, tone: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setNotice({ message, tone });
+    if (noticeTimerRef.current !== null) {
+      window.clearTimeout(noticeTimerRef.current);
+    }
+    noticeTimerRef.current = window.setTimeout(() => {
+      setNotice(null);
+    }, 2200);
+  };
+
+  const handleNavigate = (path: string, label: string) => {
+    pushNotice(`Opening ${label}...`, 'info');
+    window.setTimeout(() => router.push(path), 200);
+  };
+
   return (
     <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {notice && (
+        <div className="lg:col-span-3">
+          <InlineNotice message={notice.message} tone={notice.tone} />
+        </div>
+      )}
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
           <CardTitle>Notifications</CardTitle>
@@ -56,7 +91,7 @@ export function HomeUpgrades() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/learning')}
+            onClick={() => handleNavigate('/learning', 'Learning Timeline')}
           >
             Open
           </Button>
@@ -82,33 +117,74 @@ export function HomeUpgrades() {
 
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <CardTitle>Shopping Detail</CardTitle>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.push('/commerce/review')}
-          >
-            Review
-          </Button>
-        </div>
-        <div className="space-y-3">
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            {shoppingList.length} items • {highPriority} high priority
-          </p>
-          <div className="space-y-2">
-            {shoppingList.map((item) => (
-              <div key={item.id} className="flex items-center justify-between text-sm">
-                <span className="text-slate-900 dark:text-slate-50">{item.title}</span>
-                <Badge size="sm" variant={item.priority === 'high' ? 'error' : item.priority === 'medium' ? 'warning' : 'default'}>
-                  {item.priority}
-                </Badge>
-              </div>
-            ))}
+          <CardTitle>Recent Orders</CardTitle>
+          <div className="flex items-center gap-2">
+            {pendingCount > 0 && (
+              <Badge size="sm" variant="info">
+                {pendingCount} active
+              </Badge>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleNavigate('/commerce/orders', 'Order History')}
+            >
+              View All
+            </Button>
           </div>
-          <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-            Total ${(totalShopping / 100).toFixed(2)}
-          </p>
         </div>
+        {orderCount === 0 ? (
+          <div className="space-y-3 text-center py-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              No orders yet
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleNavigate('/commerce', 'Commerce Universe')}
+            >
+              Start Shopping
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              {orderCount} total orders • {pendingCount} pending delivery
+            </p>
+            <div className="space-y-2">
+              {recentOrders.map((order) => {
+                const statusColors = {
+                  processing: 'info',
+                  shipped: 'warning',
+                  delivered: 'default',
+                  cancelled: 'error',
+                } as const;
+                return (
+                  <div
+                    key={order.id}
+                    className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                    onClick={() => handleNavigate(`/commerce/orders/${order.id}`, `Order ${order.id}`)}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="font-semibold text-slate-900 dark:text-slate-50 text-sm">
+                        Order {order.id}
+                      </p>
+                      <Badge size="sm" variant={statusColors[order.status]}>
+                        {order.status}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                      {order.cartItems.length} items • ${(order.totalCents / 100).toFixed(2)}
+                    </p>
+                    <p className="text-xs text-slate-500 dark:text-slate-500">
+                      {formatDateTime(order.createdAt)}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </Card>
     </section>
   );

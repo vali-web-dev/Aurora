@@ -1,9 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
+import { InlineNotice } from '@/components/ui/InlineNotice';
 import { cn, formatLongDate, formatTime } from '@/lib/utils';
 
 const moodOptions = [
@@ -28,6 +29,8 @@ const trending = [
 
 export function HomeWidgets() {
   const [mood, setMood] = useState(moodOptions[0]);
+  const [notice, setNotice] = useState<{ message: string; tone: 'success' | 'error' | 'info' | 'warning' } | null>(null);
+  const noticeTimerRef = useRef<number | null>(null);
 
   const timeString = useMemo(() => {
     const now = new Date();
@@ -41,6 +44,24 @@ export function HomeWidgets() {
 
   const remaining = financeSummary.budget - financeSummary.spent;
   const spendPct = Math.round((financeSummary.spent / financeSummary.budget) * 100);
+
+  useEffect(() => {
+    return () => {
+      if (noticeTimerRef.current !== null) {
+        window.clearTimeout(noticeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const pushNotice = (message: string, tone: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setNotice({ message, tone });
+    if (noticeTimerRef.current !== null) {
+      window.clearTimeout(noticeTimerRef.current);
+    }
+    noticeTimerRef.current = window.setTimeout(() => {
+      setNotice(null);
+    }, 2000);
+  };
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -62,7 +83,10 @@ export function HomeWidgets() {
                 variant="ghost"
                 size="sm"
                 aria-pressed={isActive}
-                onClick={() => setMood(option)}
+                onClick={() => {
+                  setMood(option);
+                  pushNotice(`Mood set to ${option.label}.`, 'success');
+                }}
                 className={cn(
                   'rounded-full px-3 text-xs font-semibold',
                   isActive
@@ -78,6 +102,9 @@ export function HomeWidgets() {
         <Badge variant={mood.color as 'default' | 'info' | 'success' | 'primary'} size="sm">
           Current: {mood.label}
         </Badge>
+        {notice && (
+          <InlineNotice message={notice.message} tone={notice.tone} />
+        )}
       </Card>
 
       <Card className="space-y-3">

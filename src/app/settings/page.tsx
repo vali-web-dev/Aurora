@@ -1,9 +1,11 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
+import { InlineNotice } from '@/components/ui/InlineNotice';
+import { AuroraShell } from '@/components/os/AuroraShell';
 import clsx from 'clsx';
 
 export default function SettingsPage() {
@@ -14,6 +16,8 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [notice, setNotice] = useState<{ message: string; tone: 'success' | 'error' | 'info' | 'warning' } | null>(null);
+  const noticeTimerRef = useRef<number | null>(null);
 
   // Notification preferences
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -28,6 +32,24 @@ export default function SettingsPage() {
 
   const isLoading = status === 'loading';
 
+  useEffect(() => {
+    return () => {
+      if (noticeTimerRef.current !== null) {
+        window.clearTimeout(noticeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const pushNotice = (message: string, tone: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setNotice({ message, tone });
+    if (noticeTimerRef.current !== null) {
+      window.clearTimeout(noticeTimerRef.current);
+    }
+    noticeTimerRef.current = window.setTimeout(() => {
+      setNotice(null);
+    }, 2600);
+  };
+
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -35,11 +57,13 @@ export default function SettingsPage() {
 
     if (newPassword !== confirmPassword) {
       setError('Passwords do not match');
+      pushNotice('Passwords do not match.', 'error');
       return;
     }
 
     if (newPassword.length < 6) {
       setError('Password must be at least 6 characters');
+      pushNotice('Password must be at least 6 characters.', 'error');
       return;
     }
 
@@ -57,15 +81,18 @@ export default function SettingsPage() {
 
       if (response.ok) {
         setSuccess('Password changed successfully');
+        pushNotice('Password changed successfully.', 'success');
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
       } else {
         const data = await response.json();
         setError(data.error || 'Failed to change password');
+        pushNotice(data.error || 'Failed to change password.', 'error');
       }
     } catch (error) {
       setError('An error occurred. Please try again.');
+      pushNotice('An error occurred. Please try again.', 'error');
     } finally {
       setIsSaving(false);
     }
@@ -77,7 +104,10 @@ export default function SettingsPage() {
       // TODO: Implement API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       setSuccess('Notification preferences saved');
+      pushNotice('Notification preferences saved.', 'success');
       setTimeout(() => setSuccess(''), 3000);
+    } catch (error) {
+      pushNotice('Failed to save notification preferences.', 'error');
     } finally {
       setIsSaving(false);
     }
@@ -89,7 +119,10 @@ export default function SettingsPage() {
       // TODO: Implement API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       setSuccess('Privacy settings saved');
+      pushNotice('Privacy settings saved.', 'success');
       setTimeout(() => setSuccess(''), 3000);
+    } catch (error) {
+      pushNotice('Failed to save privacy settings.', 'error');
     } finally {
       setIsSaving(false);
     }
@@ -106,23 +139,22 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8 px-4">
-      <div className="max-w-4xl mx-auto space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-            Settings
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-2">
-            Manage your account settings and preferences
-          </p>
-        </div>
+    <AuroraShell>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8 px-4">
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Header */}
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+              Settings
+            </h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-2">
+              Manage your account settings and preferences
+            </p>
+          </div>
 
         {/* Success/Error Messages */}
-        {success && (
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-sm text-green-600 dark:text-green-400">
-            {success}
-          </div>
+        {notice && (
+          <InlineNotice message={notice.message} tone={notice.tone} />
         )}
 
         {/* Password Change */}
@@ -352,7 +384,11 @@ export default function SettingsPage() {
                   Permanently delete your account and all associated data
                 </div>
               </div>
-              <Button variant="accent" size="sm">
+              <Button
+                variant="accent"
+                size="sm"
+                onClick={() => pushNotice('Delete account is not available in this demo.', 'warning')}
+              >
                 Delete Account
               </Button>
             </div>
@@ -360,5 +396,6 @@ export default function SettingsPage() {
         </Card>
       </div>
     </div>
+    </AuroraShell>
   );
 }

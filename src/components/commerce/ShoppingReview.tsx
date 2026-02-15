@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { AuroraDataService, type ShoppingItem } from '@/data/types';
+import { AuroraDataService, type ShoppingItem, type Product } from '@/data/types';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
-import { useCartStore } from '@/lib/commerce/cart-store';
+import { useCartStore, type CartLine } from '@/lib/commerce/cart-store';
 
 const shoppingList = AuroraDataService.getShoppingList();
 const products = AuroraDataService.getProducts();
@@ -42,10 +42,10 @@ export function ShoppingReview() {
   const { items: cartItems } = useCartStore();
   const reviewItems = useMemo<ReviewItem[]>(() => {
     if (cartItems.length > 0) {
-      const prices = cartItems.map((line) => line.product.priceCents * line.quantity);
+      const prices = cartItems.map((line: CartLine) => line.product.priceCents * line.quantity);
       const min = Math.min(...prices);
       const max = Math.max(...prices);
-      return cartItems.map((line) => ({
+      return cartItems.map((line: CartLine) => ({
         id: line.product.id,
         title: line.product.title,
         providerId: line.product.providerId,
@@ -59,7 +59,7 @@ export function ShoppingReview() {
 
   const providerTotals = useMemo(() => {
     return reviewItems.reduce<Record<string, { count: number; total: number }>>(
-      (acc, item) => {
+      (acc: Record<string, { count: number; total: number }>, item: ReviewItem) => {
         if (!acc[item.providerId]) {
           acc[item.providerId] = { count: 0, total: 0 };
         }
@@ -73,7 +73,7 @@ export function ShoppingReview() {
 
   const providerStats = useMemo(
     () =>
-      Object.entries(providerTotals)
+      (Object.entries(providerTotals) as [string, { count: number; total: number }][])
         .map(([providerId, stats]) => ({
           providerId,
           count: stats.count,
@@ -85,16 +85,16 @@ export function ShoppingReview() {
 
   const priorities = useMemo(
     () => ({
-      high: reviewItems.filter((item) => item.priority === 'high'),
-      medium: reviewItems.filter((item) => item.priority === 'medium'),
-      low: reviewItems.filter((item) => item.priority === 'low'),
+      high: reviewItems.filter((item: ReviewItem) => item.priority === 'high'),
+      medium: reviewItems.filter((item: ReviewItem) => item.priority === 'medium'),
+      low: reviewItems.filter((item: ReviewItem) => item.priority === 'low'),
     }),
     [reviewItems]
   );
 
   const totals = useMemo(() => {
-    const totalCents = reviewItems.reduce((sum, item) => sum + item.priceCents, 0);
-    const prices = reviewItems.map((item) => item.priceCents);
+    const totalCents = reviewItems.reduce((sum: number, item: ReviewItem) => sum + item.priceCents, 0);
+    const prices = reviewItems.map((item: ReviewItem) => item.priceCents);
     const highestCents = prices.length ? Math.max(...prices) : 0;
     const lowestCents = prices.length ? Math.min(...prices) : 0;
     const averageCents = reviewItems.length ? Math.round(totalCents / reviewItems.length) : 0;
@@ -123,11 +123,13 @@ export function ShoppingReview() {
             <Badge size="sm" variant={cartItems.length > 0 ? 'info' : 'default'}>
               Cart Sync: {cartItems.length > 0 ? 'Live' : 'Preview'}
             </Badge>
-            <Link href="/commerce">
-              <Button variant="secondary">Open Commerce</Button>
+            <Link href="/commerce/cart">
+              <Button variant="secondary">Back to Cart</Button>
             </Link>
-            <Link href="/commerce">
-              <Button variant="primary">Shop Now</Button>
+            <Link href="/commerce/checkout">
+              <Button variant="primary" disabled={cartItems.length === 0}>
+                Proceed to Checkout
+              </Button>
             </Link>
           </>
         }
@@ -160,7 +162,7 @@ export function ShoppingReview() {
           <Card className="bg-gradient-to-br from-emerald-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-emerald-950/30">
             <CardTitle>Provider Mix</CardTitle>
             <div className="mt-3 space-y-2">
-              {providerStats.slice(0, 3).map((provider) => (
+              {providerStats.slice(0, 3).map((provider: { providerId: string; count: number; total: number }) => (
                 <div key={provider.providerId} className="flex items-center justify-between text-sm">
                   <span className="font-medium text-slate-900 dark:text-slate-50">
                     {formatProvider(provider.providerId)}
@@ -194,7 +196,7 @@ export function ShoppingReview() {
             </p>
           ) : (
             <div className="space-y-3">
-              {priorities.high.map((item) => (
+              {priorities.high.map((item: ReviewItem) => (
                 <div
                   key={item.id}
                   className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between"
@@ -250,7 +252,7 @@ export function ShoppingReview() {
 
       <SurfaceSection title="Next Best Picks" description="High-rated items that complement your list.">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {topPicks.map((product) => (
+          {topPicks.map((product: Product) => (
             <Card key={product.id} className="space-y-3">
               <div className="flex items-center justify-between">
                 <CardTitle>{product.title}</CardTitle>
@@ -267,6 +269,35 @@ export function ShoppingReview() {
               </Link>
             </Card>
           ))}
+        </div>
+      </SurfaceSection>
+
+      <SurfaceSection title="Next Steps">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="space-y-3">
+            <CardTitle>Continue Shopping</CardTitle>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Go back to your cart to adjust quantities or remove items.
+            </p>
+            <Link href="/commerce/cart">
+              <Button variant="secondary" className="w-full">
+                Back to Cart
+              </Button>
+            </Link>
+          </Card>
+          <Card className="space-y-3">
+            <CardTitle>Ready to Purchase</CardTitle>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              {cartItems.length > 0
+                ? 'Proceed to checkout and complete your order.'
+                : 'Add items to your cart before checking out.'}
+            </p>
+            <Link href="/commerce/checkout">
+              <Button variant="primary" className="w-full" disabled={cartItems.length === 0}>
+                Proceed to Checkout
+              </Button>
+            </Link>
+          </Card>
         </div>
       </SurfaceSection>
     </Surface>

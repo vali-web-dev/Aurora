@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
+import { AuroraShell } from '@/components/os/AuroraShell';
 import clsx from 'clsx';
 
 export default function ProfilePage() {
@@ -59,7 +60,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8 px-4">
+    <AuroraShell>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8 px-4">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -264,5 +266,6 @@ export default function ProfilePage() {
         </Card>
       </div>
     </div>
+    </AuroraShell>
   );
 }

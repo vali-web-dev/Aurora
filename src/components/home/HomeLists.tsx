@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/aurora/Button';
+import { InlineNotice } from '@/components/ui/InlineNotice';
 import { AuroraDataService } from '@/data/types';
 import { useRouter } from 'next/navigation';
 
@@ -12,16 +14,46 @@ const shoppingList = AuroraDataService.getShoppingList();
 
 export function HomeLists() {
   const router = useRouter();
+  const [notice, setNotice] = useState<{ message: string; tone: 'success' | 'error' | 'info' | 'warning' } | null>(null);
+  const noticeTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (noticeTimerRef.current !== null) {
+        window.clearTimeout(noticeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const pushNotice = (message: string, tone: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setNotice({ message, tone });
+    if (noticeTimerRef.current !== null) {
+      window.clearTimeout(noticeTimerRef.current);
+    }
+    noticeTimerRef.current = window.setTimeout(() => {
+      setNotice(null);
+    }, 2200);
+  };
+
+  const handleNavigate = (path: string, label: string) => {
+    pushNotice(`Opening ${label}...`, 'info');
+    window.setTimeout(() => router.push(path), 200);
+  };
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {notice && (
+        <div className="lg:col-span-3">
+          <InlineNotice message={notice.message} tone={notice.tone} />
+        </div>
+      )}
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
           <CardTitle>Watchlist</CardTitle>
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/entertainment')}
+            onClick={() => handleNavigate('/entertainment', 'Watchlist')}
           >
             Open
           </Button>
@@ -47,7 +79,7 @@ export function HomeLists() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/learning')}
+            onClick={() => handleNavigate('/learning', 'Reading List')}
           >
             Open
           </Button>
@@ -73,7 +105,7 @@ export function HomeLists() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/commerce')}
+            onClick={() => handleNavigate('/commerce', 'Commerce')}
           >
             Open
           </Button>

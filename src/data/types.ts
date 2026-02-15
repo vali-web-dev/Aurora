@@ -79,13 +79,44 @@ export interface CartItem {
   config?: Record<string, unknown>;
 }
 
+export interface Address {
+  name: string;
+  street: string;
+  city: string;
+  province: string;
+  zip: string;
+  country: string;
+}
+
+export interface OrderItem extends CartItem {
+  productId: string;
+  quantity: number;
+  unitPriceCents: number;
+  sellerId: string;
+  sellerName: string;
+  asin?: string;
+}
+
 export interface Order {
   id: string;
   userId: string;
-  cartItems: CartItem[];
+  cartItems: OrderItem[];
+  invoiceNumber: string;
+  invoiceDate: Date;
+  shipmentNumber: string;
+  shipmentDate: Date;
+  subtotalCents: number;
+  discountCents: number;
+  taxFederalCents: number;
+  taxProvincialCents: number;
   totalCents: number;
+  shippingCostCents: number;
+  shippingDiscount: number;
   currency: string;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  billingAddress: Address;
+  shippingAddress: Address;
+  paymentMethod: 'card' | 'wallet' | 'bank';
   createdAt: Date;
 }
 
@@ -1521,6 +1552,127 @@ export const mockProducts: Product[] = [
   },
 ];
 
+const demoAddress: Address = {
+  name: 'Fred Harper',
+  street: '11 Maple Lane',
+  city: 'Northvale',
+  province: 'Ontario',
+  zip: 'N0N 0N0',
+  country: 'Canada',
+};
+
+export const mockOrders: Order[] = [
+  {
+    id: 'order-1',
+    userId: 'user-1',
+    cartItems: [
+      {
+        productId: '1',
+        quantity: 1,
+        unitPriceCents: 2999,
+        sellerId: 'seller-shopify-1',
+        sellerName: 'Aurora Essentials',
+        asin: 'B0F6D871P9',
+      },
+      {
+        productId: '4',
+        quantity: 2,
+        unitPriceCents: 7999,
+        sellerId: 'seller-etsy-1',
+        sellerName: 'Artisan Lighting Co',
+        asin: undefined,
+      },
+    ],
+    invoiceNumber: 'CA61W25IC0HI',
+    invoiceDate: new Date('2026-02-10'),
+    shipmentNumber: '457830609940301',
+    shipmentDate: new Date('2026-02-10'),
+    subtotalCents: 34997,
+    discountCents: 590,
+    taxFederalCents: 2210,
+    taxProvincialCents: 0,
+    shippingCostCents: 590,
+    shippingDiscount: 590,
+    totalCents: 45997,
+    currency: 'USD',
+    status: 'shipped',
+    billingAddress: demoAddress,
+    shippingAddress: demoAddress,
+    paymentMethod: 'card',
+    createdAt: new Date('2026-02-10T14:30:00Z'),
+  },
+  {
+    id: 'order-2',
+    userId: 'user-1',
+    cartItems: [
+      {
+        productId: '2',
+        quantity: 1,
+        unitPriceCents: 14999,
+        sellerId: 'seller-bestbuy-1',
+        sellerName: 'Best Buy Electronics',
+        asin: 'B0H7K2M9X5',
+      },
+      {
+        productId: '6',
+        quantity: 1,
+        unitPriceCents: 3999,
+        sellerId: 'seller-walmart-1',
+        sellerName: 'Walmart Essentials',
+        asin: 'B0K1R3P7V2',
+      },
+    ],
+    invoiceNumber: 'CA62B41UL2XI',
+    invoiceDate: new Date('2026-02-13'),
+    shipmentNumber: '823145678901234',
+    shipmentDate: new Date('2026-02-13'),
+    subtotalCents: 18998,
+    discountCents: 0,
+    taxFederalCents: 1437,
+    taxProvincialCents: 563,
+    shippingCostCents: 0,
+    shippingDiscount: 0,
+    totalCents: 19998,
+    currency: 'USD',
+    status: 'processing',
+    billingAddress: demoAddress,
+    shippingAddress: demoAddress,
+    paymentMethod: 'wallet',
+    createdAt: new Date('2026-02-13T09:15:00Z'),
+  },
+  {
+    id: 'order-3',
+    userId: 'user-1',
+    cartItems: [
+      {
+        productId: '5',
+        quantity: 1,
+        unitPriceCents: 9999,
+        sellerId: 'seller-amazon-1',
+        sellerName: 'Amazon Direct',
+        asin: 'B0L2M5K8Q3',
+      },
+    ],
+    invoiceNumber: 'CA60T19JM9CV',
+    invoiceDate: new Date('2026-02-06'),
+    shipmentNumber: '945612378450612',
+    shipmentDate: new Date('2026-02-06'),
+    subtotalCents: 9999,
+    discountCents: 0,
+    taxFederalCents: 650,
+    taxProvincialCents: 350,
+    shippingCostCents: 0,
+    shippingDiscount: 0,
+    totalCents: 9999,
+    currency: 'USD',
+    status: 'delivered',
+    billingAddress: demoAddress,
+    shippingAddress: demoAddress,
+    paymentMethod: 'card',
+    createdAt: new Date('2026-02-06T17:45:00Z'),
+  },
+];
+
 export const mockCourses: Course[] = [
   {
     id: '1',
@@ -2688,6 +2840,14 @@ export class AuroraDataService {
 
   static getShoppingList(): ShoppingItem[] {
     return mockShoppingList;
+  }
+
+  static getOrders(): Order[] {
+    return mockOrders;
+  }
+
+  static getOrderById(id: string): Order | undefined {
+    return mockOrders.find((order) => order.id === id);
   }
 
   static getNotifications(): NotificationItem[] {

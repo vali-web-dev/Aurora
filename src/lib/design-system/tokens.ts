@@ -165,6 +165,53 @@ export const motionTokens = {
   },
 };
 
+// Aurora Button Tokens
+export const buttonTokens = {
+  // Aurora Primary Button (Cover Page Style)
+  aurora: {
+    gradient: {
+      from: '#a855f7', // purple-500
+      via: '#ec4899', // pink-500
+      to: '#3b82f6', // blue-500
+    },
+    gradientHover: {
+      from: '#9333ea', // purple-600
+      via: '#db2777', // pink-600
+      to: '#2563eb', // blue-600
+    },
+    shadow: {
+      base: '0 25px 50px -12px rgba(168, 85, 247, 0.5)',
+      hover: '0 25px 50px -12px rgba(168, 85, 247, 0.7)',
+    },
+    scale: {
+      base: '1',
+      hover: '1.05',
+    },
+    transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+    borderRadius: '1rem', // rounded-2xl
+  },
+  // Aurora Secondary Button (Glassmorphic)
+  auroraSecondary: {
+    background: 'rgba(255, 255, 255, 0.1)',
+    backgroundHover: 'rgba(255, 255, 255, 0.2)',
+    border: 'rgba(255, 255, 255, 0.2)',
+    backdropBlur: '12px',
+    scale: {
+      base: '1',
+      hover: '1.05',
+    },
+    transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+    borderRadius: '1rem',
+  },
+  // Aurora Ghost Button
+  auroraGhost: {
+    background: 'transparent',
+    backgroundHover: 'rgba(255, 255, 255, 0.1)',
+    transition: 'all 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+    borderRadius: '0.5rem',
+  },
+};
+
 // Theme modes
 export type ThemeMode = 'light' | 'dark' | 'illuminated' | 'system';
 export type ThemeFamily = 'home' | 'office' | 'outdoor' | 'lifestyle' | 'creative';

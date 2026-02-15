@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { Card, CardDescription } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
+import { InlineNotice } from '@/components/ui/InlineNotice';
 import { onEvent } from '@/lib/websocket-client';
 import { WSEventType } from '@/lib/websocket-types';
 
@@ -66,6 +67,8 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
   const [expandedReplies, setExpandedReplies] = useState<Record<number, boolean>>({});
   const [showAllComments, setShowAllComments] = useState(false);
   const [collapsedThreads, setCollapsedThreads] = useState<Record<number, boolean>>({});
+  const [notice, setNotice] = useState<{ message: string; tone: 'success' | 'error' | 'info' | 'warning' } | null>(null);
+  const noticeTimerRef = useRef<number | null>(null);
   const topLevelVisibleCount = 3;
   const replyVisibleCount = 2;
 
@@ -115,6 +118,24 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
     }, 0);
     return () => clearTimeout(handle);
   }, [replyingTo]);
+
+  useEffect(() => {
+    return () => {
+      if (noticeTimerRef.current !== null) {
+        window.clearTimeout(noticeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const pushNotice = (message: string, tone: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setNotice({ message, tone });
+    if (noticeTimerRef.current !== null) {
+      window.clearTimeout(noticeTimerRef.current);
+    }
+    noticeTimerRef.current = window.setTimeout(() => {
+      setNotice(null);
+    }, 2600);
+  };
 
   // Fetch reactions on mount
   useEffect(() => {
@@ -244,9 +265,14 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
         } else {
           setNewComment('');
         }
+        pushNotice('Comment posted.', 'success');
+      } else {
+        const data = await response.json().catch(() => ({}));
+        pushNotice(data.error || 'Failed to post comment.', 'error');
       }
     } catch (error) {
       console.error('Error adding comment:', error);
+      pushNotice('Error posting comment. Please try again.', 'error');
     } finally {
       setIsSubmittingComment(false);
     }
@@ -259,12 +285,17 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
     try {
       if (alreadyReacted) {
         // Remove reaction
-        await fetch(`/api/social/reactions?postId=${post.id}&emoji=${emoji}`, {
+        const response = await fetch(`/api/social/reactions?postId=${post.id}&emoji=${emoji}`, {
           method: 'DELETE',
         });
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          pushNotice(data.error || 'Failed to remove reaction.', 'error');
+          return;
+        }
       } else {
         // Add reaction
-        await fetch('/api/social/reactions', {
+        const response = await fetch('/api/social/reactions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -272,10 +303,17 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
             emoji,
           }),
         });
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          pushNotice(data.error || 'Failed to add reaction.', 'error');
+          return;
+        }
       }
       await fetchReactions();
+      pushNotice('Reaction updated.', 'success');
     } catch (error) {
       console.error('Error toggling reaction:', error);
+      pushNotice('Error updating reaction.', 'error');
     }
   };
 
@@ -285,11 +323,16 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
 
     try {
       if (alreadyReacted) {
-        await fetch(`/api/social/comment-reactions?commentId=${commentId}&emoji=${emoji}`, {
+        const response = await fetch(`/api/social/comment-reactions?commentId=${commentId}&emoji=${emoji}`, {
           method: 'DELETE',
         });
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          pushNotice(data.error || 'Failed to remove reaction.', 'error');
+          return;
+        }
       } else {
-        await fetch('/api/social/comment-reactions', {
+        const response = await fetch('/api/social/comment-reactions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -297,10 +340,17 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
             emoji,
           }),
         });
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          pushNotice(data.error || 'Failed to add reaction.', 'error');
+          return;
+        }
       }
       await fetchCommentReactions(commentId);
+      pushNotice('Reaction updated.', 'success');
     } catch (error) {
       console.error('Error toggling comment reaction:', error);
+      pushNotice('Error updating reaction.', 'error');
     }
   };
 
@@ -313,10 +363,15 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
       });
 
       if (response.ok && onDelete) {
+        pushNotice('Post deleted.', 'success');
         onDelete(post.id);
+      } else if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        pushNotice(data.error || 'Failed to delete post.', 'error');
       }
     } catch (error) {
       console.error('Error deleting post:', error);
+      pushNotice('Error deleting post.', 'error');
     }
   };
 
@@ -575,6 +630,10 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
           </Button>
         )}
       </div>
+
+      {notice && (
+        <InlineNotice message={notice.message} tone={notice.tone} />
+      )}
 
       {/* Content */}
       <CardDescription className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">

@@ -4,6 +4,20 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
+import { AuroraShell } from '@/components/os/AuroraShell';
+import {
+  UniverseCard,
+  RecentOrdersWidget,
+  CartSummaryWidget,
+  ActivityFeedWidget,
+  QuickStatsWidget,
+} from '@/components/home/DashboardWidgets';
+import {
+  CompanionWidget,
+  WeatherWidget,
+  NotificationsWidget,
+} from '@/components/home/CompanionWidget';
+import { EmptyDashboardState } from '@/components/home/EmptyDashboardState';
 import Link from 'next/link';
 import clsx from 'clsx';
 
@@ -30,8 +44,11 @@ export default function DashboardPage() {
   const [isLoadingActivity, setIsLoadingActivity] = useState(true);
 
   const isLoading = status === 'loading';
+  const hasNoActivity = !isLoadingStats && !isLoadingActivity && 
+    stats.posts === 0 && stats.communities === 0 && 
+    stats.messages === 0 && activities.length === 0;
 
-  useEffect(() => {
+  const fetchData = async () => {
     // Fetch user stats
     async function fetchStats() {
       try {
@@ -69,175 +86,158 @@ export default function DashboardPage() {
       fetchStats();
       fetchActivity();
     }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [session]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-slate-600 dark:text-slate-400">
-          Loading dashboard...
+      <AuroraShell>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-pulse text-slate-600 dark:text-slate-400">
+            Loading dashboard...
+          </div>
         </div>
-      </div>
+      </AuroraShell>
+    );
+  }
+
+  // Show empty state for new users
+  if (hasNoActivity) {
+    return (
+      <AuroraShell>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 py-8 px-4">
+          <div className="max-w-7xl mx-auto">
+            <EmptyDashboardState onSampleDataCreated={() => {
+              setIsLoadingStats(true);
+              setIsLoadingActivity(true);
+              fetchData();
+            }} />
+          </div>
+        </div>
+      </AuroraShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8 px-4">
+    <AuroraShell>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 py-8 px-4">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-            Welcome back, {session?.user?.name || 'User'}!
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            Your personal Aurora dashboard
-          </p>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-6 space-y-2">
-            <div className="text-sm text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-              Posts
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-300 bg-clip-text text-transparent">
+                Welcome back, {session?.user?.name || 'User'}!
+              </h1>
+              <p className="text-slate-600 dark:text-slate-400 mt-2">
+                {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
             </div>
-            {isLoadingStats ? (
-              <div className="h-10 w-16 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
-            ) : (
-              <div className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-                {stats.posts}
-              </div>
-            )}
-            <Link
-              href="/social"
-              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              View all →
-            </Link>
-          </Card>
-
-          <Card className="p-6 space-y-2">
-            <div className="text-sm text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-              Communities
-            </div>
-            {isLoadingStats ? (
-              <div className="h-10 w-16 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
-            ) : (
-              <div className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-                {stats.communities}
-              </div>
-            )}
-            <Link
-              href="/guilds"
-              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              Explore →
-            </Link>
-          </Card>
-
-          <Card className="p-6 space-y-2">
-            <div className="text-sm text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-              Messages
-            </div>
-            {isLoadingStats ? (
-              <div className="h-10 w-16 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
-            ) : (
-              <div className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-                {stats.messages}
-              </div>
-            )}
-            <Link
-              href="/guilds"
-              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              Open chats →
-            </Link>
-          </Card>
-
-          <Card className="p-6 space-y-2">
-            <div className="text-sm text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-              Connections
-            </div>
-            {isLoadingStats ? (
-              <div className="h-10 w-16 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
-            ) : (
-              <div className="text-3xl font-bold text-slate-900 dark:text-slate-50">
-                {stats.connections}
-              </div>
-            )}
-            <Link
-              href="/social"
-              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              See network →
-            </Link>
-          </Card>
-        </div>
-
-        {/* Quick Actions */}
-        <Card className="p-6">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-4">
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link
-              href="/social"
-              className={clsx(
-                'p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700',
-                'hover:border-blue-500 dark:hover:border-blue-400',
-                'hover:bg-blue-50 dark:hover:bg-blue-950/20',
-                'transition-all duration-200 group'
-              )}
-            >
-              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
-                Create Post
-              </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
-                Share something with your network
-              </div>
-            </Link>
-
-            <Link
-              href="/guilds"
-              className={clsx(
-                'p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700',
-                'hover:border-blue-500 dark:hover:border-blue-400',
-                'hover:bg-blue-50 dark:hover:bg-blue-950/20',
-                'transition-all duration-200 group'
-              )}
-            >
-              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
-                Join Community
-              </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
-                Discover new communities
-              </div>
-            </Link>
-
-            <Link
-              href="/learning"
-              className={clsx(
-                'p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700',
-                'hover:border-blue-500 dark:hover:border-blue-400',
-                'hover:bg-blue-50 dark:hover:bg-blue-950/20',
-                'transition-all duration-200 group'
-              )}
-            >
-              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
-                Start Learning
-              </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
-                Browse courses and lessons
-              </div>
+            <Link href="/settings">
+              <Button variant="secondary" size="sm">
+                ⚙️ Settings
+              </Button>
             </Link>
           </div>
-        </Card>
+        </div>
+
+        {/* Quick Stats */}
+        {isLoadingStats ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <Card key={i} className="p-6 space-y-3 animate-pulse">
+                <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded" />
+                <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-16" />
+                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24" />
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <QuickStatsWidget stats={stats} />
+        )}
+
+        {/* Universe Quick Access */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+            Your Universes
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <UniverseCard
+              name="Entertainment"
+              href="/entertainment"
+              icon="🎬"
+              color="from-purple-500 to-pink-500"
+              description="Music, movies, shows, podcasts, and books"
+            />
+            <UniverseCard
+              name="Commerce"
+              href="/commerce"
+              icon="🛍️"
+              color="from-emerald-500 to-teal-500"
+              description="Shop from multiple providers in one place"
+            />
+            <UniverseCard
+              name="Social"
+              href="/social"
+              icon="👥"
+              color="from-blue-500 to-cyan-500"
+              description="Connect with friends and communities"
+            />
+            <UniverseCard
+              name="Learning"
+              href="/learning"
+              icon="📚"
+              color="from-amber-500 to-orange-500"
+              description="Courses, tutorials, and knowledge"
+            />
+            <UniverseCard
+              name="Create"
+              href="/create"
+              icon="🎨"
+              color="from-rose-500 to-pink-500"
+              description="Design, art, and creative tools"
+            />
+            <UniverseCard
+              name="Productivity"
+              href="/productivity"
+              icon="📊"
+              color="from-indigo-500 to-purple-500"
+              description="Tasks, notes, and workflow management"
+            />
+          </div>
+        </div>
+
+        {/* Commerce & Activity Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Cart Summary */}
+          <div className="lg:col-span-1">
+            <CartSummaryWidget />
+          </div>
+          
+          {/* Recent Orders */}
+          <div className="lg:col-span-2">
+            <RecentOrdersWidget />
+          </div>
+        </div>
+
+        {/* AI Companion & Widgets Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <CompanionWidget />
+          </div>
+          <div className="space-y-6">
+            <WeatherWidget />
+            <NotificationsWidget />
+          </div>
+        </div>
 
         {/* Recent Activity */}
-        <Card className="p-6">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-4">
-            Recent Activity
-          </h2>
-          {isLoadingActivity ? (
+        {isLoadingActivity ? (
+          <Card className="p-6">
+            <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-32 mb-4 animate-pulse" />
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
                 <div
@@ -252,62 +252,93 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-          ) : activities.length === 0 ? (
-            <div className="text-center py-8 text-slate-600 dark:text-slate-400">
-              No recent activity. Start exploring Aurora!
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {activities.map((activity) => {
-                const colors = {
-                  post: 'bg-blue-500',
-                  community_join: 'bg-purple-500',
-                  message: 'bg-green-500',
-                };
-                const icons = {
-                  post: 'P',
-                  community_join: 'C',
-                  message: 'M',
-                };
-                const color = colors[activity.type] || 'bg-slate-500';
-                const icon = icons[activity.type] || '?';
-                
-                const timeAgo = formatTimeAgo(activity.timestamp);
+          </Card>
+        ) : (
+          <ActivityFeedWidget activities={activities} />
+        )}
 
-                return (
-                  <div
-                    key={activity.id}
-                    className="flex items-center gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
-                  >
-                    <div
-                      className={clsx(
-                        'w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-semibold',
-                        color
-                      )}
-                    >
-                      {icon}
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-sm font-medium text-slate-900 dark:text-slate-50">
-                        {activity.title}
-                      </div>
-                      {activity.description && (
-                        <div className="text-xs text-slate-600 dark:text-slate-400 line-clamp-1">
-                          {activity.description}
-                        </div>
-                      )}
-                      <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                        {timeAgo}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+        {/* Quick Actions */}
+        <Card className="p-6">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+            Quick Actions
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <Link
+              href="/social"
+              className={clsx(
+                'p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700',
+                'hover:border-blue-500 dark:hover:border-blue-400',
+                'hover:bg-blue-50 dark:hover:bg-blue-950/20',
+                'transition-all duration-200 group'
+              )}
+            >
+              <div className="text-2xl mb-2">📝</div>
+              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
+                Create Post
+              </div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Share with your network
+              </div>
+            </Link>
+
+            <Link
+              href="/guilds"
+              className={clsx(
+                'p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700',
+                'hover:border-purple-500 dark:hover:border-purple-400',
+                'hover:bg-purple-50 dark:hover:bg-purple-950/20',
+                'transition-all duration-200 group'
+              )}
+            >
+              <div className="text-2xl mb-2">👥</div>
+              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
+                Join Community
+              </div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Discover new groups
+              </div>
+            </Link>
+
+            <Link
+              href="/learning"
+              className={clsx(
+                'p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700',
+                'hover:border-amber-500 dark:hover:border-amber-400',
+                'hover:bg-amber-50 dark:hover:bg-amber-950/20',
+                'transition-all duration-200 group'
+              )}
+            >
+              <div className="text-2xl mb-2">📚</div>
+              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
+                Start Learning
+              </div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Browse courses
+              </div>
+            </Link>
+
+            <Link
+              href="/commerce"
+              className={clsx(
+                'p-4 rounded-lg border-2 border-slate-200 dark:border-slate-700',
+                'hover:border-emerald-500 dark:hover:border-emerald-400',
+                'hover:bg-emerald-50 dark:hover:bg-emerald-950/20',
+                'transition-all duration-200 group'
+              )}
+            >
+              <div className="text-2xl mb-2">🛒</div>
+              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
+                Shop Now
+              </div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Browse products
+              </div>
+            </Link>
+          </div>
         </Card>
       </div>
     </div>
+    </AuroraShell>
   );
 }
 

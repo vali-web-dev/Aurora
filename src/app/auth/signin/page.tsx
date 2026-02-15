@@ -91,7 +91,7 @@ export default function SignInPage() {
 
           <Button
             type="submit"
-            variant="primary"
+            variant="aurora"
             size="md"
             disabled={isLoading}
             className="w-full"

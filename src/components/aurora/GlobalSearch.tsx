@@ -2,35 +2,51 @@
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import clsx from 'clsx';
-import { primaryNav, secondaryNav, utilityNav } from '@/lib/navigation';
+import { flattenedNavigation } from '@/lib/expandable-navigation';
 import { AuroraModal } from '@/components/aurora/Modal';
 import { Badge } from '@/components/aurora/Badge';
+import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
 
 interface SearchItem {
   href: string;
   label: string;
   group: 'Primary' | 'Explore' | 'Support';
+  description?: string;
 }
 
-const searchItems: SearchItem[] = [
-  ...primaryNav.map((item) => ({ ...item, group: 'Primary' as const })),
-  ...secondaryNav.map((item) => ({ ...item, group: 'Explore' as const })),
-  ...utilityNav.map((item) => ({ ...item, group: 'Support' as const })),
-];
+// Use the comprehensive flattened navigation
+const searchItems: SearchItem[] = flattenedNavigation.map((item) => ({
+  href: item.href,
+  label: item.label,
+  group: item.group || 'Explore',
+  description: item.description,
+}));
 
 interface GlobalSearchProps {
   onOpenChange?: (open: boolean) => void;
   externalOpen?: boolean;
+  triggerMode?: 'button' | 'input' | 'none';
+  className?: string;
+  placeholder?: string;
 }
 
-export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps = {}) {
+export function GlobalSearch({
+  onOpenChange,
+  externalOpen,
+  triggerMode = 'button',
+  className,
+  placeholder = 'Search Aurora',
+}: GlobalSearchProps = {}) {
   const router = useRouter();
+  const pathname = usePathname();
   const [internalOpen, setInternalOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [inlineOpen, setInlineOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const blurTimerRef = useRef<number | null>(null);
   const dialogId = useId();
 
   const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
@@ -52,9 +68,28 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
     if (isOpen) {
       setQuery('');
       setActiveIndex(0);
-      requestAnimationFrame(() => inputRef.current?.focus());
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsOpen(false);
+    }
+  }, [pathname, isOpen]);
+
+  useEffect(() => {
+    if (inlineOpen) {
+      setInlineOpen(false);
+    }
+  }, [pathname, inlineOpen]);
+
+  useEffect(() => {
+    return () => {
+      if (blurTimerRef.current !== null) {
+        window.clearTimeout(blurTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -73,6 +108,7 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
   const handleSelect = useCallback(
     (href: string) => {
       setIsOpen(false);
+      setInlineOpen(false);
       router.push(href);
     },
     [router]
@@ -88,9 +124,13 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
         event.preventDefault();
         setActiveIndex((prev) => Math.max(prev - 1, 0));
       }
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setInlineOpen(false);
+      }
       if (event.key === 'Enter') {
         event.preventDefault();
-        const selected = results[activeIndex];
+        const selected = results[activeIndex] || results[0];
         if (selected) {
           handleSelect(selected.href);
         }
@@ -100,102 +140,217 @@ export function GlobalSearch({ onOpenChange, externalOpen }: GlobalSearchProps =
   );
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(true)}
-        className={clsx(
-          'hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg',
-          'text-sm font-medium transition-all duration-200',
-          'text-slate-600 dark:text-slate-300',
-          'bg-slate-100/70 dark:bg-slate-900/60',
-          'border border-slate-200 dark:border-slate-800',
-          'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
-        )}
-        aria-label="Open search"
-        aria-haspopup="dialog"
-        aria-expanded={isOpen}
-        aria-controls={dialogId}
-      >
-        <span>Search</span>
-        <span className="text-xs text-slate-400">Ctrl K</span>
-      </button>
-
-      <button
-        onClick={() => setIsOpen(true)}
-        className={clsx(
-          'md:hidden w-10 h-10 rounded-lg flex items-center justify-center',
-          'text-slate-600 dark:text-slate-300',
-          'bg-slate-100/70 dark:bg-slate-900/60',
-          'border border-slate-200 dark:border-slate-800',
-          'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
-        )}
-        aria-label="Open search"
-        aria-haspopup="dialog"
-        aria-expanded={isOpen}
-        aria-controls={dialogId}
-      >
-        S
-      </button>
-
-      <AuroraModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        size="md"
-        id={dialogId}
-        footerContent="Tip: Use arrow keys to navigate, Enter to open."
-        headerContent={
+    <div className={clsx('relative', className)}>
+      {triggerMode === 'input' && (
+        <div className="relative w-full">
           <input
             ref={inputRef}
+            type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(event) => setQuery(event.target.value)}
             onKeyDown={handleInputKeyDown}
-            placeholder="Search pages and universes"
+            onFocus={() => setInlineOpen(true)}
+            onClick={() => setInlineOpen(true)}
+            onBlur={() => {
+              if (blurTimerRef.current !== null) {
+                window.clearTimeout(blurTimerRef.current);
+              }
+              blurTimerRef.current = window.setTimeout(() => {
+                setInlineOpen(false);
+              }, 120);
+            }}
+            placeholder={placeholder}
             className={clsx(
-              'w-full bg-transparent text-slate-900 dark:text-slate-50',
-              'placeholder:text-slate-400 outline-none text-lg'
+              'w-full rounded-lg border px-10 py-2 text-sm',
+              'bg-white/90 dark:bg-slate-900/70',
+              'border-slate-200 dark:border-slate-800',
+              'text-slate-700 dark:text-slate-200',
+              'placeholder:text-slate-400',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500/40'
             )}
             aria-label="Search"
-            aria-activedescendant={
-              results[activeIndex] ? `${dialogId}-option-${activeIndex}` : undefined
-            }
+            aria-expanded={inlineOpen}
+            aria-controls="global-search-inline-results"
           />
-        }
-      >
-        <div className="max-h-[50vh] overflow-y-auto">
-          {results.length === 0 && (
-            <div className="px-2 py-6 text-sm text-slate-500">
-              No results found.
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.3-4.3" />
+            </svg>
+          </span>
+          {inlineOpen && (
+            <div
+              id="global-search-inline-results"
+              className={clsx(
+                'absolute left-0 right-0 top-full z-40 mt-2 max-h-72 overflow-y-auto rounded-xl',
+                'border border-slate-200 bg-white shadow-xl',
+                'dark:border-slate-800 dark:bg-slate-950'
+              )}
+              role="listbox"
+              aria-label="Search results"
+            >
+              {results.length === 0 ? (
+                <div className="px-4 py-3 text-sm text-slate-500">
+                  No results found.
+                </div>
+              ) : (
+                results.map((item, index) => (
+                  <button
+                    key={`${item.group}-${item.href}`}
+                    type="button"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => handleSelect(item.href)}
+                    className={clsx(
+                      'flex w-full items-start gap-3 px-4 py-2.5 text-left text-sm',
+                      index === activeIndex
+                        ? 'bg-blue-600 text-white'
+                        : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900'
+                    )}
+                    role="option"
+                    aria-selected={index === activeIndex}
+                  >
+                    <span className={clsx('w-4 h-4 flex-shrink-0 mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(item.label))}>
+                      <PageIcon pageName={item.label} className="w-full h-full" />
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium">{item.label}</div>
+                      {item.description && (
+                        <div className={clsx('text-xs truncate', index === activeIndex ? 'text-white/80' : 'text-slate-500 dark:text-slate-400')}>
+                          {item.description}
+                        </div>
+                      )}
+                    </div>
+                    <span className={clsx('text-xs uppercase tracking-wide flex-shrink-0', index === activeIndex ? 'text-white/70' : 'text-slate-400')}>
+                      {item.group}
+                    </span>
+                  </button>
+                ))
+              )}
             </div>
           )}
-          <div className="space-y-2" role="listbox" aria-label="Search results">
-            {results.map((item, index) => (
-              <button
-                key={`${item.group}-${item.href}`}
-                id={`${dialogId}-option-${index}`}
-                onClick={() => handleSelect(item.href)}
-                className={clsx(
-                  'w-full flex items-center justify-between px-4 py-3 rounded-lg text-left',
-                  'transition-colors',
-                  index === activeIndex
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                )}
-                role="option"
-                aria-selected={index === activeIndex}
-              >
-                <span className="font-medium">{item.label}</span>
-                <Badge
-                  size="sm"
-                  variant={index === activeIndex ? 'primary' : 'default'}
-                  className={index === activeIndex ? 'bg-white/20 text-white' : ''}
-                >
-                  {item.group}
-                </Badge>
-              </button>
-            ))}
-          </div>
         </div>
-      </AuroraModal>
+      )}
+
+      {triggerMode === 'button' && (
+        <>
+          <button
+            onClick={() => setIsOpen(true)}
+            className={clsx(
+              'hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg',
+              'text-sm font-medium transition-all duration-200',
+              'text-slate-600 dark:text-slate-300',
+              'bg-slate-100/70 dark:bg-slate-900/60',
+              'border border-slate-200 dark:border-slate-800',
+              'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
+            )}
+            aria-label="Open search"
+            aria-haspopup="dialog"
+            aria-expanded={isOpen}
+            aria-controls={dialogId}
+          >
+            <span>Search</span>
+            <span className="text-xs text-slate-400">Ctrl K</span>
+          </button>
+
+          <button
+            onClick={() => setIsOpen(true)}
+            className={clsx(
+              'md:hidden w-10 h-10 rounded-lg flex items-center justify-center',
+              'text-slate-600 dark:text-slate-300',
+              'bg-slate-100/70 dark:bg-slate-900/60',
+              'border border-slate-200 dark:border-slate-800',
+              'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
+            )}
+            aria-label="Open search"
+            aria-haspopup="dialog"
+            aria-expanded={isOpen}
+            aria-controls={dialogId}
+          >
+            S
+          </button>
+        </>
+      )}
+
+      {triggerMode === 'button' && (
+        <AuroraModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          size="md"
+          id={dialogId}
+          footerContent="Tip: Use arrow keys to navigate, Enter to open."
+          headerContent={
+            <input
+              ref={inputRef}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleInputKeyDown}
+              placeholder="Search pages and universes"
+              className={clsx(
+                'w-full bg-transparent text-slate-900 dark:text-slate-50',
+                'placeholder:text-slate-400 outline-none text-lg'
+              )}
+              aria-label="Search"
+              aria-activedescendant={
+                results[activeIndex] ? `${dialogId}-option-${activeIndex}` : undefined
+              }
+            />
+          }
+        >
+          <div className="max-h-[50vh] overflow-y-auto">
+            {results.length === 0 && (
+              <div className="px-2 py-6 text-sm text-slate-500">
+                No results found.
+              </div>
+            )}
+            <div className="space-y-2" role="listbox" aria-label="Search results">
+              {results.map((item, index) => (
+                <button
+                  key={`${item.group}-${item.href}`}
+                  id={`${dialogId}-option-${index}`}
+                  onClick={() => handleSelect(item.href)}
+                  className={clsx(
+                    'w-full flex items-start gap-3 px-4 py-3 rounded-lg text-left',
+                    'transition-colors',
+                    index === activeIndex
+                      ? 'bg-blue-600 text-white'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  )}
+                  role="option"
+                  aria-selected={index === activeIndex}
+                >
+                  <span className={clsx('w-5 h-5 flex-shrink-0 mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(item.label))}>
+                    <PageIcon pageName={item.label} className="w-full h-full" />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium">{item.label}</div>
+                    {item.description && (
+                      <div className={clsx('text-sm truncate', index === activeIndex ? 'text-white/80' : 'text-slate-500 dark:text-slate-400')}>
+                        {item.description}
+                      </div>
+                    )}
+                  </div>
+                  <Badge
+                    size="sm"
+                    variant={index === activeIndex ? 'primary' : 'default'}
+                    className={index === activeIndex ? 'bg-white/20 text-white flex-shrink-0' : 'flex-shrink-0'}
+                  >
+                    {item.group}
+                  </Badge>
+                </button>
+              ))}
+            </div>
+          </div>
+        </AuroraModal>
+      )}
     </div>
   );
 }
