@@ -50,13 +50,16 @@ export function GlobalSearch({
   const dialogId = useId();
 
   const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
-  const setIsOpen = (open: boolean) => {
-    if (onOpenChange) {
-      onOpenChange(open);
-    } else {
-      setInternalOpen(open);
-    }
-  };
+  const setIsOpen = useCallback(
+    (open: boolean) => {
+      if (onOpenChange) {
+        onOpenChange(open);
+      } else {
+        setInternalOpen(open);
+      }
+    },
+    [onOpenChange]
+  );
 
   const results = useMemo(() => {
     const trimmed = query.trim().toLowerCase();
@@ -69,7 +72,7 @@ export function GlobalSearch({
       setQuery('');
       setActiveIndex(0);
     }
-  }, [isOpen, setQuery, setActiveIndex]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -81,7 +84,7 @@ export function GlobalSearch({
     if (inlineOpen) {
       setInlineOpen(false);
     }
-  }, [pathname, inlineOpen, setInlineOpen]);
+  }, [pathname, inlineOpen]);
 
   useEffect(() => {
     return () => {

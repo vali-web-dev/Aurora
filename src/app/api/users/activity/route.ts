@@ -4,6 +4,8 @@ import { db } from '@/lib/db';
 import * as schema from '@/lib/schema';
 import { eq, desc, or, sql } from 'drizzle-orm';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/users/activity
  * Get current user's recent activity feed

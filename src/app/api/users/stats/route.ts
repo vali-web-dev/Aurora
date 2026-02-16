@@ -4,6 +4,8 @@ import { db } from '@/lib/db';
 import * as schema from '@/lib/schema';
 import { eq, sql } from 'drizzle-orm';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/users/stats
  * Get current user's dashboard statistics
