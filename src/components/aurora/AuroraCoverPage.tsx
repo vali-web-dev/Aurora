@@ -80,7 +80,8 @@ const floatingParticles = Array.from({ length: 20 }, (_, index) => {
   const left = (seed * 17) % 100;
   const delay = (seed * 7) % 5;
   const duration = 8 + ((seed * 11) % 4);
-  return { left, delay, duration };
+  const drift = Math.round(((seed * 19) % 100) - 50);
+  return { left, delay, duration, drift };
 });
 
 export function AuroraCoverPage() {
@@ -238,9 +239,9 @@ export function AuroraCoverPage() {
       {/* Animated Background */}
       <div className="absolute inset-0">
         {/* Gradient Orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse transform-gpu" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse transform-gpu" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500/20 rounded-full blur-3xl animate-pulse transform-gpu" style={{ animationDelay: '2s' }} />
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -260,7 +261,8 @@ export function AuroraCoverPage() {
                 left: `${particle.left}%`,
                 animationDelay: `${particle.delay}s`,
                 animationDuration: `${particle.duration}s`,
-              }}
+                '--float-x': `${particle.drift}px`,
+              } as CSSProperties}
             />
           ))}
         </div>
@@ -317,7 +319,7 @@ export function AuroraCoverPage() {
               <div
                 ref={menuPanelRef}
                 className={clsx(
-                  'relative max-h-full overflow-y-auto rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-purple-500/30',
+                  'aurora-menu-panel relative max-h-full overflow-y-auto rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-purple-500/30',
                   'transition-all duration-300 ease-out',
                   isAuroraMenuOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'
                 )}
@@ -653,14 +655,15 @@ export function AuroraCoverPage() {
       <style jsx>{`
         @keyframes scan {
           0% {
-            transform: translateY(-100%);
+            transform: translate3d(0, -100%, 0);
           }
           100% {
-            transform: translateY(100vh);
+            transform: translate3d(0, 100vh, 0);
           }
         }
         .animate-scan {
           animation: scan 8s linear infinite;
+          will-change: transform;
         }
         @keyframes gradient {
           0% {
@@ -673,10 +676,11 @@ export function AuroraCoverPage() {
         .animate-gradient {
           background-size: 200% 200%;
           animation: gradient 3s ease infinite;
+          will-change: background-position;
         }
         @keyframes float {
           0% {
-            transform: translateY(100vh) translateX(0) scale(0);
+            transform: translate3d(0, 100vh, 0) scale(0);
             opacity: 0;
           }
           10% {
@@ -686,45 +690,47 @@ export function AuroraCoverPage() {
             opacity: 1;
           }
           100% {
-            transform: translateY(-100px) translateX(${Math.random() * 100 - 50}px) scale(1);
+            transform: translate3d(var(--float-x, 0px), -100px, 0) scale(1);
             opacity: 0;
           }
         }
         .animate-float {
           animation: float 10s ease-in-out infinite;
+          will-change: transform, opacity;
         }
         @keyframes gateway-breathe {
           0% {
-            transform: scale(1);
+            transform: scale3d(1, 1, 1);
             box-shadow: 0 0 0 rgba(168, 85, 247, 0);
           }
           50% {
-            transform: scale(1.4);
+            transform: scale3d(1.4, 1.4, 1);
             box-shadow: 0 0 28px rgba(168, 85, 247, 0.35);
           }
             100% {
-            transform: scale(1.9);
+            transform: scale3d(1.9, 1.9, 1);
             box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
           }
         }
         .animate-gateway-breathe {
           animation: gateway-breathe 2.6s ease-in-out infinite;
+          will-change: transform, box-shadow;
         }
         @keyframes udc-breathe {
           0% {
-            transform: translateX(6px) scale(0.94);
+            transform: translate3d(6px, 0, 0) scale3d(0.94, 0.94, 1);
             border-color: rgba(139, 92, 246, 0.35);
             background-color: rgba(139, 92, 246, 0.08);
             box-shadow: 0 0 6px rgba(139, 92, 246, 0.25);
           }
           33% {
-            transform: translateX(6px) scale(1.14);
+            transform: translate3d(6px, 0, 0) scale3d(1.14, 1.14, 1);
             border-color: rgba(59, 130, 246, 0.4);
             background-color: rgba(59, 130, 246, 0.1);
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.35);
           }
           66% {
-            transform: translateX(6px) scale(1.06);
+            transform: translate3d(6px, 0, 0) scale3d(1.06, 1.06, 1);
             border-color: rgba(236, 72, 153, 0.4);
             background-color: rgba(236, 72, 153, 0.1);
             box-shadow: 0 0 10px rgba(236, 72, 153, 0.35);
@@ -734,6 +740,7 @@ export function AuroraCoverPage() {
           animation: udc-breathe 1.8s ease-in-out infinite !important;
           text-shadow: 0 0 18px rgba(139, 92, 246, 0.7);
           filter: drop-shadow(0 0 14px rgba(236, 72, 153, 0.55));
+          will-change: transform, filter;
         }
         @keyframes udc-letter-shift {
           0%, 100% {
@@ -750,6 +757,7 @@ export function AuroraCoverPage() {
           display: inline-block;
           animation: udc-letter-shift 1.1s ease-in-out infinite !important;
           text-shadow: 0 0 14px currentColor;
+          will-change: color;
         }
         .aurora-udc-letter:nth-child(1) {
           animation-delay: 0s;
@@ -778,6 +786,7 @@ export function AuroraCoverPage() {
         }
         .aurora-pulse-ring {
           animation: aurora-pulse-ring 2.2s ease-in-out infinite;
+          will-change: box-shadow;
         }
         @keyframes aurora-shimmer {
           0% {
@@ -801,6 +810,7 @@ export function AuroraCoverPage() {
           opacity: 0.9;
           pointer-events: none;
           mix-blend-mode: screen;
+          will-change: background-position, opacity;
         }
         .life-gateway-backdrop {
           position: absolute;
@@ -822,6 +832,7 @@ export function AuroraCoverPage() {
           filter: blur(60px);
           animation: life-gateway-hue 10s linear infinite,
             life-gateway-breathe 4.4s ease-in-out infinite;
+          will-change: transform, opacity, filter;
         }
         .life-gateway-glaze {
           position: absolute;
@@ -829,6 +840,7 @@ export function AuroraCoverPage() {
           background: linear-gradient(120deg, rgba(255, 255, 255, 0.12), transparent 45%, rgba(255, 255, 255, 0.1));
           mix-blend-mode: screen;
           animation: life-gateway-glaze 3.2s ease-in-out infinite;
+          will-change: opacity;
         }
         .life-gateway-button {
           position: relative;
@@ -851,6 +863,7 @@ export function AuroraCoverPage() {
           animation: life-gateway-button-hue 8s linear infinite,
             life-gateway-button-breathe 4s ease-in-out infinite;
           z-index: 0;
+          will-change: transform, opacity, filter;
         }
         .life-gateway-button::after {
           content: '';
@@ -861,6 +874,7 @@ export function AuroraCoverPage() {
           opacity: 0.35;
           animation: life-gateway-button-glaze 3.1s ease-in-out infinite;
           z-index: 0;
+          will-change: opacity;
         }
         .life-gateway-button > * {
           position: relative;
@@ -876,11 +890,11 @@ export function AuroraCoverPage() {
         }
         @keyframes life-gateway-button-breathe {
           0%, 100% {
-            transform: scale(0.98);
+            transform: scale3d(0.98, 0.98, 1);
             opacity: 0.45;
           }
           50% {
-            transform: scale(1.06);
+            transform: scale3d(1.06, 1.06, 1);
             opacity: 0.75;
           }
         }
@@ -902,11 +916,11 @@ export function AuroraCoverPage() {
         }
         @keyframes life-gateway-breathe {
           0%, 100% {
-            transform: scale(0.98);
+            transform: scale3d(0.98, 0.98, 1);
             opacity: 0.6;
           }
           50% {
-            transform: scale(1.06);
+            transform: scale3d(1.06, 1.06, 1);
             opacity: 0.95;
           }
         }
@@ -920,10 +934,10 @@ export function AuroraCoverPage() {
         }
         @keyframes aurora-title-float {
           0%, 100% {
-            transform: translateY(0) scale(0.98);
+            transform: translate3d(0, 0, 0) scale3d(0.98, 0.98, 1);
           }
           50% {
-            transform: translateY(-10px) scale(1.06);
+            transform: translate3d(0, -10px, 0) scale3d(1.06, 1.06, 1);
           }
         }
         @keyframes aurora-title-glow {
@@ -953,6 +967,7 @@ export function AuroraCoverPage() {
           border: 1px solid rgba(255, 255, 255, 0.15);
           box-shadow: 0 0 40px rgba(168, 85, 247, 0.5), 0 0 120px rgba(59, 130, 246, 0.35);
           animation: aurora-gateway-float 5.2s ease-in-out infinite;
+          will-change: transform, box-shadow;
         }
         .aurora-gateway-logo:hover {
           box-shadow: 0 0 60px rgba(236, 72, 153, 0.6), 0 0 160px rgba(59, 130, 246, 0.45);
@@ -969,6 +984,7 @@ export function AuroraCoverPage() {
           place-items: center;
           animation: aurora-core-pulse 3.6s ease-in-out infinite;
           z-index: 10;
+          will-change: transform, box-shadow;
         }
         .aurora-gateway-core-inner {
           width: 180px;
@@ -1003,10 +1019,12 @@ export function AuroraCoverPage() {
         }
         .aurora-orbit-ring--primary {
           animation: aurora-orbit-spin 28s linear infinite;
+          will-change: transform;
         }
         .aurora-orbit-ring--secondary {
           inset: 40px;
           animation: aurora-orbit-spin-reverse 34s linear infinite;
+          will-change: transform;
         }
         .aurora-orbit-item {
           position: absolute;
@@ -1016,6 +1034,7 @@ export function AuroraCoverPage() {
           transform-origin: 0 0;
           animation: aurora-orbit-item-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
           animation-delay: var(--orbit-stagger);
+          will-change: transform, opacity;
         }
         .aurora-orbit-item--sub {
           transform: rotate(calc(360deg * var(--orbit-index) / var(--orbit-count))) translateX(150px);
@@ -1036,6 +1055,7 @@ export function AuroraCoverPage() {
           cursor: pointer;
           padding: 0;
           color: currentColor;
+          will-change: transform, box-shadow;
         }
         .aurora-orbit-icon--interactive {
           cursor: pointer;
@@ -1087,21 +1107,21 @@ export function AuroraCoverPage() {
         @keyframes aurora-orbit-item-enter {
           0% {
             opacity: 0;
-            transform: rotate(calc(360deg * var(--orbit-index) / var(--orbit-count))) translateX(0px) scale(0.6);
+            transform: rotate(calc(360deg * var(--orbit-index) / var(--orbit-count))) translate3d(0, 0, 0) scale3d(0.6, 0.6, 1);
           }
           100% {
             opacity: 1;
-            transform: rotate(calc(360deg * var(--orbit-index) / var(--orbit-count))) translateX(220px) scale(1);
+            transform: rotate(calc(360deg * var(--orbit-index) / var(--orbit-count))) translate3d(220px, 0, 0) scale3d(1, 1, 1);
           }
         }
         @keyframes aurora-icon-glide {
           0%, 100% {
             filter: brightness(1);
-            transform: scale(1);
+            transform: scale3d(1, 1, 1);
           }
           50% {
             filter: brightness(1.1);
-            transform: scale(1.04);
+            transform: scale3d(1.04, 1.04, 1);
           }
         }
         @keyframes aurora-orbit-spin {
@@ -1122,26 +1142,20 @@ export function AuroraCoverPage() {
         }
         @keyframes aurora-core-pulse {
           0%, 100% {
-            transform: scale(1);
+            transform: scale3d(1, 1, 1);
             box-shadow: 0 0 45px rgba(168, 85, 247, 0.6), 0 0 120px rgba(59, 130, 246, 0.35);
           }
           50% {
-            transform: scale(1.02);
+            transform: scale3d(1.02, 1.02, 1);
             box-shadow: 0 0 60px rgba(236, 72, 153, 0.7), 0 0 140px rgba(59, 130, 246, 0.45);
           }
         }
         @keyframes aurora-gateway-float {
           0%, 100% {
-            transform: translateY(0px);
+            transform: translate3d(0, 0, 0);
           }
           50% {
-            transform: translateY(8px);
-          }
-        }
-          }
-          50% {
-            transform: scale(1.02);
-            box-shadow: 0 0 60px rgba(236, 72, 153, 0.7), 0 0 140px rgba(59, 130, 246, 0.45);
+            transform: translate3d(0, 8px, 0);
           }
         }
       `}</style>

@@ -138,7 +138,6 @@ export const expandableNavigation: NavItem[] = [
     group: 'Explore',
     description: 'Tasks & workflow',
     children: [
-      { href: '/productivity', label: 'Task Manager', description: 'Organize work' },
       { href: '/productivity/calendar', label: 'Calendar', description: 'Schedule events' },
       { href: '/productivity/notes', label: 'Notes', description: 'Quick capture' },
       { href: '/productivity/projects', label: 'Projects', description: 'Team work' },
@@ -150,7 +149,6 @@ export const expandableNavigation: NavItem[] = [
     group: 'Explore',
     description: 'Plan & explore',
     children: [
-      { href: '/travel', label: 'Destinations', description: 'Explore places' },
       { href: '/travel/bookings', label: 'My Trips', description: 'Planned travel' },
       { href: '/travel/guides', label: 'Travel Guides', description: 'Recommendations' },
     ],

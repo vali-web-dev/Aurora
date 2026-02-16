@@ -51,7 +51,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
         <p className="text-slate-600 dark:text-slate-400 mb-6">
           Your dashboard is now populated with sample content. Refreshing...
         </p>
-        <div className="inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        <div className="inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin transform-gpu" />
       </Card>
     );
   }
@@ -135,7 +135,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
             >
               {isCreating ? (
                 <>
-                  <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin transform-gpu mr-2" />
                   Creating...
                 </>
               ) : (

@@ -44,7 +44,7 @@ export function RealtimeToasts() {
             </button>
           </div>
           <div className="h-1 bg-white/20">
-            <div className="h-full bg-white/60 animate-pulse" />
+            <div className="h-full bg-white/60 animate-pulse transform-gpu" />
           </div>
         </div>
       ))}

@@ -12,6 +12,7 @@ import { MemoryTracker } from '@/components/aurora/MemoryTracker';
 import { CompanionPanel } from '@/components/aurora/CompanionPanel';
 import { RealtimeToasts } from '@/components/aurora/RealtimeToasts';
 import { CompanionHint } from '@/components/aurora/CompanionHint';
+import { MotionGate } from '@/components/aurora/MotionGate';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -66,6 +67,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 antialiased">
+        <MotionGate />
         <AuthSessionProvider>
           <ThemeProvider>
             <AccessibilityProvider>

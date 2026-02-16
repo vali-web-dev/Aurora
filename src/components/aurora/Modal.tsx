@@ -122,7 +122,7 @@ export function AuroraModal({
         ref={dialogRef}
         tabIndex={-1}
         className={clsx(
-          'relative w-full rounded-2xl overflow-hidden',
+          'aurora-menu-panel relative w-full rounded-2xl overflow-hidden',
           'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
           'border border-slate-200 dark:border-slate-800',
           'shadow-2xl',

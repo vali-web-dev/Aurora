@@ -131,6 +131,7 @@ export function DialogContent({
   return (
     <div
       className={clsx(
+        'aurora-menu-panel',
         'bg-white dark:bg-slate-900',
         'rounded-lg shadow-xl',
         'border border-slate-200 dark:border-slate-800',

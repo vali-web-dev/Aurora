@@ -70,6 +70,7 @@ export function LifeModal({
           filter: blur(60px);
           opacity: 0.7;
           animation: life-hue 10s linear infinite;
+          will-change: transform, opacity, filter;
         }
 
         .life-glaze {
@@ -80,6 +81,7 @@ export function LifeModal({
           mix-blend-mode: screen;
           animation: life-glaze 4.2s ease-in-out infinite;
           pointer-events: none;
+          will-change: opacity;
         }
 
         .life-core {
@@ -91,6 +93,7 @@ export function LifeModal({
           text-align: center;
           color: rgba(248, 250, 252, 0.9);
           animation: life-breathe 2.4s ease-in-out infinite;
+          will-change: transform;
         }
 
         .life-core-orb {
@@ -100,6 +103,7 @@ export function LifeModal({
           background: radial-gradient(circle at 30% 30%, rgba(236, 72, 153, 0.7), rgba(59, 130, 246, 0.2) 55%, rgba(15, 23, 42, 0.9) 100%);
           box-shadow: 0 0 40px rgba(236, 72, 153, 0.45), 0 0 80px rgba(59, 130, 246, 0.35);
           animation: life-pulse 2s ease-in-out infinite;
+          will-change: transform, box-shadow;
         }
 
         .life-core-ring {
@@ -110,6 +114,7 @@ export function LifeModal({
           border: 1px solid rgba(148, 163, 184, 0.25);
           box-shadow: 0 0 30px rgba(139, 92, 246, 0.25);
           animation: life-expand 3.6s ease-in-out infinite;
+          will-change: transform, opacity;
         }
 
         .life-core-text {
@@ -148,31 +153,31 @@ export function LifeModal({
 
         @keyframes life-breathe {
           0%, 100% {
-            transform: scale(0.96);
+            transform: scale3d(0.96, 0.96, 1);
           }
           50% {
-            transform: scale(1.05);
+            transform: scale3d(1.05, 1.05, 1);
           }
         }
 
         @keyframes life-pulse {
           0%, 100% {
-            transform: scale(0.94);
+            transform: scale3d(0.94, 0.94, 1);
             box-shadow: 0 0 26px rgba(236, 72, 153, 0.4), 0 0 60px rgba(59, 130, 246, 0.3);
           }
           50% {
-            transform: scale(1.08);
+            transform: scale3d(1.08, 1.08, 1);
             box-shadow: 0 0 40px rgba(236, 72, 153, 0.7), 0 0 90px rgba(59, 130, 246, 0.55);
           }
         }
 
         @keyframes life-expand {
           0%, 100% {
-            transform: scale(0.92);
+            transform: scale3d(0.92, 0.92, 1);
             opacity: 0.5;
           }
           50% {
-            transform: scale(1.08);
+            transform: scale3d(1.08, 1.08, 1);
             opacity: 0.9;
           }
         }

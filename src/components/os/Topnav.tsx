@@ -226,7 +226,7 @@ export function TopNav() {
               {menuOpen && (
                 <div
                   className={clsx(
-                    'absolute left-0 top-12 z-50 w-80 rounded-xl shadow-xl',
+                    'aurora-menu-panel absolute left-0 top-12 z-50 w-80 rounded-xl shadow-xl',
                     'border border-slate-200 dark:border-slate-800',
                     'bg-white dark:bg-slate-950',
                     'max-h-[80vh] overflow-y-auto'
@@ -370,7 +370,7 @@ export function TopNav() {
                     onClick={() => setUserMenuOpen(false)}
                   />
                   <div className={clsx(
-                    'absolute right-0 mt-2 w-56 rounded-lg shadow-xl z-50',
+                    'aurora-menu-panel absolute right-0 mt-2 w-56 rounded-lg shadow-xl z-50',
                     'bg-white dark:bg-slate-900',
                     'border border-slate-200 dark:border-slate-700',
                     'py-1'
@@ -479,6 +479,7 @@ export function TopNav() {
           filter: blur(50px);
           animation: life-topnav-hue 9s linear infinite,
             life-topnav-breathe 4.6s ease-in-out infinite;
+          will-change: transform, opacity, filter;
         }
         .life-topnav-glaze {
           position: absolute;
@@ -491,6 +492,7 @@ export function TopNav() {
           );
           mix-blend-mode: screen;
           animation: life-topnav-glaze 3.6s ease-in-out infinite;
+          will-change: opacity;
         }
         @keyframes life-topnav-hue {
           0% {
@@ -502,11 +504,11 @@ export function TopNav() {
         }
         @keyframes life-topnav-breathe {
           0%, 100% {
-            transform: scale(0.98);
+            transform: scale3d(0.98, 0.98, 1);
             opacity: 0.65;
           }
           50% {
-            transform: scale(1.05);
+            transform: scale3d(1.05, 1.05, 1);
             opacity: 0.95;
           }
         }

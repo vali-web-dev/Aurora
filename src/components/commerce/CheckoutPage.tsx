@@ -782,7 +782,7 @@ export function CheckoutPage() {
                           status === 'complete'
                             ? 'bg-emerald-500'
                             : status === 'active'
-                            ? 'bg-blue-500 animate-pulse'
+                            ? 'bg-blue-500 animate-pulse transform-gpu'
                             : 'bg-slate-300 dark:bg-slate-700'
                         }`}
                       />

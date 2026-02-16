@@ -247,6 +247,7 @@ export function RealmsUniverse() {
           border: 1px solid rgba(255, 255, 255, 0.15);
           box-shadow: 0 0 40px rgba(168, 85, 247, 0.5), 0 0 120px rgba(59, 130, 246, 0.35);
           animation: aurora-logo-float 5.2s ease-in-out infinite;
+          will-change: transform, box-shadow;
         }
         .aurora-portals-logo:hover {
           box-shadow: 0 0 60px rgba(236, 72, 153, 0.6), 0 0 160px rgba(59, 130, 246, 0.45);
@@ -262,6 +263,7 @@ export function RealmsUniverse() {
           background: radial-gradient(circle at 30% 30%, rgba(236, 72, 153, 0.55), rgba(59, 130, 246, 0.2) 60%, rgba(15, 23, 42, 0.9) 100%);
           box-shadow: 0 0 30px rgba(168, 85, 247, 0.55), inset 0 0 24px rgba(255, 255, 255, 0.08);
           animation: aurora-core-breathe 3.4s ease-in-out infinite;
+          will-change: transform, box-shadow;
         }
         .aurora-portals-core-ring {
           position: absolute;
@@ -270,6 +272,7 @@ export function RealmsUniverse() {
           border: 1px solid rgba(255, 255, 255, 0.2);
           box-shadow: 0 0 24px rgba(59, 130, 246, 0.3);
           animation: aurora-ring-spin 14s linear infinite;
+          will-change: transform;
         }
         .aurora-portals-core-mark {
           font-size: 44px;
@@ -290,10 +293,12 @@ export function RealmsUniverse() {
           inset: 0;
           border-radius: 50%;
           animation: aurora-orbit-spin 26s linear infinite;
+          will-change: transform;
         }
         .aurora-portals-orbit--inner {
           inset: 58px;
           animation: aurora-orbit-spin-reverse 32s linear infinite;
+          will-change: transform;
         }
         .aurora-portals-orbit-item {
           position: absolute;
@@ -317,6 +322,7 @@ export function RealmsUniverse() {
           animation: aurora-icon-glide 12s ease-in-out infinite;
           animation-delay: var(--orbit-delay);
           transition: transform 220ms ease, box-shadow 220ms ease;
+          will-change: transform, box-shadow;
         }
         .aurora-portals-icon--small {
           width: 28px;
@@ -353,29 +359,29 @@ export function RealmsUniverse() {
         }
         @keyframes aurora-core-breathe {
           0%, 100% {
-            transform: scale(1);
+            transform: scale3d(1, 1, 1);
             box-shadow: 0 0 30px rgba(168, 85, 247, 0.55), inset 0 0 24px rgba(255, 255, 255, 0.08);
           }
           50% {
-            transform: scale(1.03);
+            transform: scale3d(1.03, 1.03, 1);
             box-shadow: 0 0 45px rgba(236, 72, 153, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.12);
           }
         }
         @keyframes aurora-logo-float {
           0%, 100% {
-            transform: translateY(0px);
+            transform: translate3d(0, 0, 0);
           }
           50% {
-            transform: translateY(8px);
+            transform: translate3d(0, 8px, 0);
           }
         }
         @keyframes aurora-icon-glide {
           0%, 100% {
-            transform: scale(0.92) rotate(0deg);
+            transform: scale3d(0.92, 0.92, 1) rotate(0deg);
             filter: brightness(0.9);
           }
           50% {
-            transform: scale(1.1) rotate(8deg);
+            transform: scale3d(1.1, 1.1, 1) rotate(8deg);
             filter: brightness(1.25);
           }
         }

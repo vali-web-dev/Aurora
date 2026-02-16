@@ -297,7 +297,7 @@ export function SocialUniverse() {
             {isLoading ? (
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
-                  <Card key={i} className="h-48 animate-pulse bg-slate-100 dark:bg-slate-800">
+                  <Card key={i} className="h-48 animate-pulse transform-gpu bg-slate-100 dark:bg-slate-800">
                     <span className="sr-only">Loading post</span>
                   </Card>
                 ))}
@@ -389,7 +389,7 @@ export function SocialUniverse() {
                   🔔 Notifications {unreadCount > 0 ? `(${unreadCount})` : ''}
                   {unreadCount > 0 && (
                     <span className="ml-2 relative flex h-2 w-2" aria-hidden="true">
-                      <span className="absolute inline-flex h-2 w-2 rounded-full bg-amber-400 opacity-75 animate-ping"></span>
+                      <span className="absolute inline-flex h-2 w-2 rounded-full bg-amber-400 opacity-75 animate-ping transform-gpu"></span>
                       <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500"></span>
                     </span>
                   )}
@@ -450,7 +450,7 @@ export function SocialUniverse() {
                     Recent Notifications
                     {unreadCount > 0 && (
                       <span className="relative flex h-2 w-2" aria-hidden="true">
-                        <span className="absolute inline-flex h-2 w-2 rounded-full bg-amber-400 opacity-75 animate-ping"></span>
+                        <span className="absolute inline-flex h-2 w-2 rounded-full bg-amber-400 opacity-75 animate-ping transform-gpu"></span>
                         <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500"></span>
                       </span>
                     )}
@@ -470,7 +470,7 @@ export function SocialUniverse() {
                           {item.kind}
                           {!item.read && (
                             <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-                              <span className="absolute inline-flex h-1.5 w-1.5 rounded-full bg-amber-400 opacity-75 animate-ping"></span>
+                              <span className="absolute inline-flex h-1.5 w-1.5 rounded-full bg-amber-400 opacity-75 animate-ping transform-gpu"></span>
                               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-amber-500"></span>
                             </span>
                           )}

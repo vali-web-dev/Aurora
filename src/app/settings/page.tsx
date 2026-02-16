@@ -131,7 +131,7 @@ export default function SettingsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-slate-600 dark:text-slate-400">
+        <div className="animate-pulse transform-gpu text-slate-600 dark:text-slate-400">
           Loading settings...
         </div>
       </div>

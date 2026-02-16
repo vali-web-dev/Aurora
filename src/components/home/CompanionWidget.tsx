@@ -127,9 +127,9 @@ export function CompanionWidget() {
             {isTyping ? (
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce transform-gpu" style={{ animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce transform-gpu" style={{ animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce transform-gpu" style={{ animationDelay: '300ms' }} />
                 </div>
                 <span className="text-sm text-slate-600 dark:text-slate-400">
                   Companion is thinking...

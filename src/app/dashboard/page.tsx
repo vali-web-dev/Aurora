@@ -96,7 +96,7 @@ export default function DashboardPage() {
     return (
       <AuroraShell>
         <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-pulse text-slate-600 dark:text-slate-400">
+          <div className="animate-pulse transform-gpu text-slate-600 dark:text-slate-400">
             Loading dashboard...
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function DashboardPage() {
         {isLoadingStats ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <Card key={i} className="p-6 space-y-3 animate-pulse">
+              <Card key={i} className="p-6 space-y-3 animate-pulse transform-gpu">
                 <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded" />
                 <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-16" />
                 <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24" />
@@ -237,12 +237,12 @@ export default function DashboardPage() {
         {/* Recent Activity */}
         {isLoadingActivity ? (
           <Card className="p-6">
-            <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-32 mb-4 animate-pulse" />
+            <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-32 mb-4 animate-pulse transform-gpu" />
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 animate-pulse"
+                  className="flex items-center gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 animate-pulse transform-gpu"
                 >
                   <div className="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700" />
                   <div className="flex-1 space-y-2">

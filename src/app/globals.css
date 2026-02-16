@@ -8,19 +8,25 @@
 
 body {
   @apply bg-aurora-bg text-aurora-text antialiased;
-  position: relative;
 }
 
-body::before,
-body::after {
+/* Simple scroll + focus styling */
+* {
+  scroll-behavior: smooth;
+  position: relative;
+  isolation: isolate;
+}
+
+html.aurora-motion-ready *::before,
+html.aurora-motion-ready *::after {
   content: '';
-  position: fixed;
-  inset: -40% -10% -40% -10%;
+  position: absolute;
+  inset: -60% -20% -60% -20%;
   pointer-events: none;
   z-index: 0;
 }
 
-body::before {
+html.aurora-motion-ready *::before {
   background: conic-gradient(
     from 120deg,
     rgba(139, 92, 246, 0.12),
@@ -28,28 +34,28 @@ body::before {
     rgba(236, 72, 153, 0.1),
     rgba(139, 92, 246, 0.12)
   );
-  filter: blur(60px);
-  opacity: 0.6;
+  filter: blur(24px);
+  opacity: 0.35;
   animation: aurora-life-hue 18s linear infinite,
     aurora-life-breathe 10s ease-in-out infinite;
 }
 
-body::after {
+html.aurora-motion-ready *::after {
   inset: 0;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 45%, rgba(255, 255, 255, 0.05));
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.04), transparent 45%, rgba(255, 255, 255, 0.03));
   mix-blend-mode: screen;
-  opacity: 0.35;
+  opacity: 0.25;
   animation: aurora-life-glaze 8s ease-in-out infinite;
 }
 
-body > * {
+* > * {
   position: relative;
   z-index: 1;
 }
 
-/* Simple scroll + focus styling */
-* {
-  scroll-behavior: smooth;
+html:not(.aurora-motion-ready) * {
+  animation-play-state: paused !important;
+  transition-property: none !important;
 }
 
 :focus-visible {
@@ -145,48 +151,6 @@ html.theme-creative {
     box-shadow: var(--btn-aurora-shadow-hover);
   }
   
-  .btn-aurora-secondary {
-    @apply relative inline-flex items-center justify-center gap-2;
-    @apply px-8 py-6 text-lg font-semibold rounded-2xl;
-    @apply bg-white/10 backdrop-blur-sm;
-    @apply border-2 border-white/20;
-    @apply hover:bg-white/20;
-    @apply text-white;
-    @apply transform transition-all duration-300;
-    @apply hover:scale-105;
-  }
-  
-  .btn-aurora-ghost {
-    @apply relative inline-flex items-center justify-center gap-2;
-    @apply text-white hover:bg-white/10;
-    @apply transition-all duration-200;
-    @apply rounded-lg;
-  }
-  
-  /* Size variants */
-  .btn-aurora-sm {
-    @apply px-4 py-2 text-sm rounded-lg;
-  }
-  
-  .btn-aurora-md {
-    @apply px-6 py-3 text-base rounded-xl;
-  }
-  
-  .btn-aurora-lg {
-    @apply px-8 py-6 text-lg rounded-2xl;
-  }
-  
-  /* Gradient text utility for Aurora theme */
-  .text-aurora-gradient {
-    @apply bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400;
-    @apply bg-clip-text text-transparent;
-  }
-  
-  /* Aurora glow effect */
-  .aurora-glow {
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4),
-                0 0 40px rgba(168, 85, 247, 0.2);
-  }
   
   .aurora-glow-strong {
     box-shadow: 0 0 30px rgba(168, 85, 247, 0.6),
@@ -235,15 +199,52 @@ html.theme-creative {
     position: relative;
     z-index: 1;
   }
+
+  .aurora-menu-panel {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: rgba(15, 23, 42, 0.5) !important;
+    backdrop-filter: blur(16px);
+  }
+
+  .aurora-menu-panel::before {
+    content: '';
+    position: absolute;
+    inset: -70% -25% -70% -25%;
+    background: conic-gradient(
+      from 120deg,
+      rgba(139, 92, 246, 0.2),
+      rgba(59, 130, 246, 0.18),
+      rgba(236, 72, 153, 0.16),
+      rgba(139, 92, 246, 0.2)
+    );
+    opacity: 0.7;
+    filter: blur(36px);
+    animation: aurora-life-hue 12s linear infinite,
+      aurora-life-breathe 6s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .aurora-menu-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.1), transparent 45%, rgba(255, 255, 255, 0.08));
+    mix-blend-mode: screen;
+    opacity: 0.4;
+    animation: aurora-life-glaze 4.8s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .aurora-menu-panel > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
-input,
-textarea,
-select {
-  background-image: linear-gradient(120deg, rgba(139, 92, 246, 0.08), transparent 50%, rgba(59, 130, 246, 0.08));
-  background-size: 200% 200%;
-  animation: aurora-life-input 8s ease-in-out infinite;
-}
 
 @keyframes aurora-life-hue {
   0% {
@@ -274,15 +275,6 @@ select {
   }
 }
 
-@keyframes aurora-life-input {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
 /* Motion Animations */
 @keyframes fadeIn {
   from {
@@ -295,22 +287,22 @@ select {
 
 @keyframes slideInDown {
   from {
-    transform: translateY(-10px);
+    transform: translate3d(0, -10px, 0);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
 }
 
 @keyframes slideInUp {
   from {
-    transform: translateY(10px);
+    transform: translate3d(0, 10px, 0);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
 }
@@ -365,6 +357,30 @@ select {
 
 .animate-pulse-glow {
   animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+html.aurora-motion-ready .animate-fade-in,
+html.aurora-motion-ready .animate-slide-in-down,
+html.aurora-motion-ready .animate-slide-in-up,
+html.aurora-motion-ready .animate-scale-in,
+html.aurora-motion-ready .animate-pulse,
+html.aurora-motion-ready .animate-bounce,
+html.aurora-motion-ready .animate-ping,
+html.aurora-motion-ready .animate-spin,
+html.aurora-motion-ready .animate-in,
+html.aurora-motion-ready .animate-out,
+html.aurora-motion-ready [class*='slide-in-from-'],
+html.aurora-motion-ready [class*='fade-in'],
+html.aurora-motion-ready [class*='fade-out'],
+html.aurora-motion-ready [class*='zoom-in'],
+html.aurora-motion-ready [class*='zoom-out'] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+html.aurora-motion-ready .animate-pulse-glow {
+  will-change: box-shadow, opacity;
 }
 
 /* Smooth transitions for theme changes */
