@@ -204,7 +204,7 @@ export function GlobalSearch({
               ) : (
                 results.map((item, index) => (
                   <button
-                    key={`${item.group}-${item.href}`}
+                    key={`${item.group}-${item.href}-${index}`}
                     type="button"
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => handleSelect(item.href)}
@@ -228,7 +228,7 @@ export function GlobalSearch({
                         </div>
                       )}
                     </div>
-                    <span className={clsx('text-xs uppercase tracking-wide flex-shrink-0', index === activeIndex ? 'text-white/70' : 'text-slate-400')}>
+                    <span className={clsx('aurora-label flex-shrink-0', index === activeIndex ? 'text-white/70' : 'text-slate-400')}>
                       {item.group}
                     </span>
                   </button>
@@ -313,7 +313,7 @@ export function GlobalSearch({
             <div className="space-y-2" role="listbox" aria-label="Search results">
               {results.map((item, index) => (
                 <button
-                  key={`${item.group}-${item.href}`}
+                  key={`${item.group}-${item.href}-${index}`}
                   id={`${dialogId}-option-${index}`}
                   onClick={() => handleSelect(item.href)}
                   className={clsx(

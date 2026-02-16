@@ -129,7 +129,7 @@ export default function DashboardPage() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-300 bg-clip-text text-transparent">
+              <h1 className="aurora-heading-1">
                 Welcome back, {session?.user?.name || 'User'}!
               </h1>
               <p className="text-slate-600 dark:text-slate-400 mt-2">

@@ -319,7 +319,7 @@ export function AuroraCoverPage() {
               <div
                 ref={menuPanelRef}
                 className={clsx(
-                  'aurora-menu-panel relative max-h-full overflow-y-auto rounded-3xl border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-purple-500/30',
+                  'aurora-menu-panel aurora-menu-panel--clear relative z-[9999] max-h-full overflow-y-auto rounded-3xl border border-white/10 p-8 shadow-2xl shadow-purple-500/30',
                   'transition-all duration-300 ease-out',
                   isAuroraMenuOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'
                 )}
@@ -335,7 +335,7 @@ export function AuroraCoverPage() {
 
                 <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
                   <div className="space-y-3">
-                    <div className="text-xs uppercase tracking-[0.3em] text-purple-200/70">Aurora Portals</div>
+                    <div className="aurora-label tracking-[0.3em] text-purple-200/70">Aurora Portals</div>
                     {primaryNav.map((item, index) => (
                       <button
                         key={item.href}
@@ -369,7 +369,7 @@ export function AuroraCoverPage() {
                   <div>
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                       <div>
-                        <div className="text-xs uppercase tracking-[0.3em] text-purple-200/70">Gateway Preview</div>
+                        <div className="aurora-label tracking-[0.3em] text-purple-200/70">Gateway Preview</div>
                         <div className="text-2xl font-semibold text-white mt-2">
                           {activeMenu?.label ?? 'Aurora'} Universe
                         </div>
@@ -437,13 +437,13 @@ export function AuroraCoverPage() {
                     <span className="aurora-udc-letter">D</span>
                     <span className="aurora-udc-letter">C</span>
                   </span>
-                  <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
+                  <span className="aurora-text-shimmer">
                     AURORA
                   </span>
                 </span>
               </h1>
               <p className="text-2xl md:text-4xl font-light text-white/90 tracking-wide">
-                Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 font-semibold">Unified</span> Digital Civilization
+                Your <span className="aurora-text aurora-text-semibold">Unified</span> Digital Civilization
               </p>
               <p className="text-lg md:text-xl text-purple-300/80 max-w-3xl mx-auto leading-relaxed">
                 Experience the future of digital living. 15 interconnected universes, one seamless reality. 
@@ -554,7 +554,7 @@ export function AuroraCoverPage() {
           )}>
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-                Powered by <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Advanced AI</span>
+                Powered by <span className="aurora-text-warm">Advanced AI</span>
               </h2>
               <p className="text-purple-300/80 text-lg">
                 Experience the next generation of digital intelligence
@@ -599,25 +599,25 @@ export function AuroraCoverPage() {
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="text-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <div className="text-4xl font-bold aurora-text-warm">
                   15
                 </div>
                 <div className="text-sm text-purple-300/70 mt-2">Universes</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                <div className="text-4xl font-bold aurora-text-cool">
                   ∞
                 </div>
                 <div className="text-sm text-purple-300/70 mt-2">Possibilities</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                <div className="text-4xl font-bold aurora-text-nature">
                   100%
                 </div>
                 <div className="text-sm text-purple-300/70 mt-2">Open</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">
+                <div className="text-4xl font-bold aurora-text-warm">
                   24/7
                 </div>
                 <div className="text-sm text-purple-300/70 mt-2">Active</div>

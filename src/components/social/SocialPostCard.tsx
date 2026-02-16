@@ -415,14 +415,14 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
       ? 'bg-white/70 dark:bg-slate-900/70 rounded-lg p-3 border border-slate-200/60 dark:border-slate-700/60'
       : 'bg-slate-50 dark:bg-slate-800 rounded-lg p-3';
     const nameClass = depth > 0
-      ? 'font-semibold text-[11px] uppercase tracking-wide text-slate-700 dark:text-slate-300'
-      : 'font-semibold text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400';
+      ? 'aurora-label aurora-text-xs text-slate-700 dark:text-slate-300'
+      : 'aurora-label aurora-text-xs text-slate-600 dark:text-slate-400';
     const bodyClass = depth > 0
       ? 'text-[13px] leading-relaxed text-slate-800 dark:text-slate-200'
       : 'text-[15px] leading-relaxed text-slate-900 dark:text-slate-50';
     const metaClass = depth > 0
-      ? 'text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400'
-      : 'text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400';
+      ? 'aurora-label aurora-text-xs text-slate-500 dark:text-slate-400'
+      : 'aurora-label aurora-text-xs text-slate-500 dark:text-slate-400';
     const reactionButtonClass = depth > 0
       ? 'px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors'
       : 'px-2.5 py-1 rounded-full text-xs font-medium transition-colors';

@@ -28,8 +28,21 @@ interface ThemeSelectorProps {
 export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSelectorProps) {
   const { mode, family, setMode, setFamily } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const [isVeilEnabled, setIsVeilEnabled] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const storedValue = window.localStorage.getItem('aurora-veil-typography');
+    if (storedValue === 'true') {
+      setIsVeilEnabled(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('aurora-veil-enabled', isVeilEnabled);
+    window.localStorage.setItem('aurora-veil-typography', String(isVeilEnabled));
+  }, [isVeilEnabled]);
 
   // Close on outside click
   useEffect(() => {
@@ -107,6 +120,53 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
             </h3>
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+
+        {/* Typography Section */}
+        <div className="space-y-4">
+          {showLabel && (
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 flex items-center gap-2">
+              <span className="text-lg">🫧</span> Typography
+            </h3>
+          )}
+          <button
+            type="button"
+            onClick={() => setIsVeilEnabled((prev) => !prev)}
+            aria-pressed={isVeilEnabled}
+            className={clsx(
+              'flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-300',
+              'border border-slate-200 dark:border-slate-800',
+              isVeilEnabled
+                ? 'bg-blue-500/10 text-blue-700 dark:text-blue-200 border-blue-400/60'
+                : 'bg-slate-50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300'
+            )}
+          >
+            <div className="text-left">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold">Aurora Veil</span>
+                {isVeilEnabled && (
+                  <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-blue-600 text-white">
+                    Active
+                  </span>
+                )}
+              </div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">90% fill + blur(5px) backdrop</div>
+            </div>
+            <span
+              aria-hidden="true"
+              className={clsx(
+                'h-6 w-11 rounded-full p-1 transition-colors duration-300',
+                isVeilEnabled ? 'bg-blue-600' : 'bg-slate-300 dark:bg-slate-700'
+              )}
+            >
+              <span
+                className={clsx(
+                  'block h-4 w-4 rounded-full bg-white transition-transform duration-300',
+                  isVeilEnabled ? 'translate-x-5' : 'translate-x-0'
+                )}
+              />
+            </span>
+          </button>
+        </div>
             {families.map((f) => (
               <button
                 key={f.value}
@@ -171,11 +231,10 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
         <div
           ref={panelRef}
           className={clsx(
-            'absolute right-0 top-full mt-3 w-80 rounded-xl',
-            'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
+            'aurora-menu-panel aurora-menu-panel--clear absolute right-0 top-full mt-3 w-80 rounded-xl',
             'border border-slate-200 dark:border-slate-800',
             'shadow-2xl dark:shadow-2xl',
-            'z-50 overflow-hidden',
+            'z-[9999] overflow-hidden',
             'animate-slide-in-down duration-300'
           )}
         >
@@ -197,7 +256,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
           <div className="p-4 space-y-5">
             {/* Mode Selection */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-500">
+              <label className="aurora-label text-slate-500 dark:text-slate-500">
                 💡 Mode
               </label>
               <div className="grid grid-cols-4 gap-2">
@@ -224,9 +283,54 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
               </div>
             </div>
 
+            {/* Typography Selection */}
+            <div className="space-y-2">
+              <label className="aurora-label text-slate-500 dark:text-slate-500">
+                🫧 Typography
+              </label>
+              <button
+                type="button"
+                onClick={() => setIsVeilEnabled((prev) => !prev)}
+                aria-pressed={isVeilEnabled}
+                className={clsx(
+                  'flex items-center justify-between w-full px-3 py-2 rounded-lg transition-all duration-200',
+                  'border border-slate-200 dark:border-slate-800',
+                  isVeilEnabled
+                    ? 'bg-blue-500/10 text-blue-700 dark:text-blue-200 border-blue-400/60'
+                    : 'bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300'
+                )}
+              >
+                <span className="flex items-center gap-2 text-sm font-medium">
+                  Aurora Veil
+                  {isVeilEnabled && (
+                    <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-blue-600 text-white">
+                      Active
+                    </span>
+                  )}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className={clsx(
+                    'h-5 w-9 rounded-full p-1 transition-colors duration-200',
+                    isVeilEnabled ? 'bg-blue-600' : 'bg-slate-300 dark:bg-slate-700'
+                  )}
+                >
+                  <span
+                    className={clsx(
+                      'block h-3 w-3 rounded-full bg-white transition-transform duration-200',
+                      isVeilEnabled ? 'translate-x-4' : 'translate-x-0'
+                    )}
+                  />
+                </span>
+              </button>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                90% fill transparency + blur(5px) backdrop
+              </p>
+            </div>
+
             {/* Family Selection */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-500">
+              <label className="aurora-label text-slate-500 dark:text-slate-500">
                 🎭 Family
               </label>
               <div className="grid grid-cols-5 gap-2">

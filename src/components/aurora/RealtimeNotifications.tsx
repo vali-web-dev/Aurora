@@ -152,12 +152,11 @@ export function RealtimeNotifications() {
           role="region"
           aria-label="Live notifications"
           className={clsx(
-            'fixed right-0 top-[80px]',
+            'aurora-menu-panel aurora-menu-panel--clear fixed right-0 top-[80px]',
             'w-full sm:w-80 max-w-md sm:max-w-none',
             'sm:rounded-xl rounded-none',
-            'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
             'border-t sm:border border-slate-200 dark:border-slate-800',
-            'shadow-2xl z-50 overflow-hidden',
+            'shadow-2xl z-[9999] overflow-hidden',
             'animate-slide-in-down duration-300',
             'max-h-[80vh] flex flex-col'
           )}

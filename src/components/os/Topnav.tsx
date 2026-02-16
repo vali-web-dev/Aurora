@@ -18,8 +18,9 @@ import { Button } from '@/components/aurora/Button';
 import { useTheme } from '@/lib/design-system/theme-provider';
 import { useCompanion } from '@/lib/companion/companion-provider';
 import { useKeyboardShortcuts } from '@/lib/hooks/useKeyboardShortcuts';
-import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
 import { ExpandableMenuItem } from '@/components/aurora/ExpandableMenuItem';
+import { AuroraLogoMenu } from '@/components/os/AuroraLogoMenu';
+import { AuroraContextMenu } from '@/components/os/AuroraContextMenu';
 import clsx from 'clsx';
 
 const formatMoney = (cents: number) => `$${(cents / 100).toFixed(2)}`;
@@ -33,11 +34,9 @@ export function TopNav() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const { itemCount, savedCount, total } = useCartStore();
   const { orderCount, pendingCount } = useOrderStore();
-  const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isBlockingOpen = menuOpen || userMenuOpen || searchOpen || docsOpen || helpOpen;
+  const isBlockingOpen = userMenuOpen || searchOpen || docsOpen || helpOpen;
 
   const isIlluminated = mode === 'illuminated';
   const isLoading = status === 'loading';
@@ -50,51 +49,14 @@ export function TopNav() {
     () => setHelpOpen(true)
   );
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
 
-  useEffect(() => {
-    return () => {
-      if (menuTimeoutRef.current) {
-        clearTimeout(menuTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const handleMenuMouseEnter = () => {
-    if (menuTimeoutRef.current) {
-      clearTimeout(menuTimeoutRef.current);
-    }
-    setMenuOpen(true);
-  };
-
-  const handleMenuMouseLeave = () => {
-    menuTimeoutRef.current = setTimeout(() => {
-      setMenuOpen(false);
-    }, 200);
-  };
-
-  // Get current page name from pathname
-  const currentPageName = (() => {
-    if (pathname === '/') return 'Home';
-    const matchedItem = flattenedNavigation.find((item) => item.href === pathname);
-    if (matchedItem) return matchedItem.label;
-    // Fallback: extract from pathname
-    const segments = pathname.split('/').filter(Boolean);
-    if (segments.length > 0) {
-      const lastSegment = segments[segments.length - 1];
-      return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).replace(/-/g, ' ');
-    }
-    return 'Home';
-  })();
 
   return (
     <header
       id="navigation"
       role="banner"
       className={clsx(
-        'sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800',
+        'sticky top-0 z-[100] border-b border-slate-200 dark:border-slate-800',
         'relative overflow-visible',
         'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl',
         'transition-all duration-300',
@@ -105,7 +67,6 @@ export function TopNav() {
         <div
           className="fixed inset-0 z-30 bg-black/10"
           onClick={() => {
-            setMenuOpen(false);
             setUserMenuOpen(false);
           }}
           role="presentation"
@@ -172,90 +133,15 @@ export function TopNav() {
           </div>
 
           <div className="flex items-center justify-between gap-4">
-            {/* Logo Menu Button + Aurora Home Button */}
-            <div 
-              className="relative flex items-center gap-2"
-              onMouseEnter={handleMenuMouseEnter}
-              onMouseLeave={handleMenuMouseLeave}
-            >
-              <button
-                type="button"
-                className={clsx(
-                  'relative flex items-center justify-center h-9 w-9 rounded-lg overflow-hidden',
-                  'transition-all duration-300',
-                  'hover:opacity-90 hover:translate-x-0.5 hover:scale-105',
-                  isIlluminated && 'hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]'
-                )}
-                aria-label="Open navigation menu"
-                aria-haspopup="menu"
-                aria-expanded={menuOpen}
-              >
-                {/* Gradient Background */}
-                <span
-                  className={clsx(
-                    'absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600',
-                    'shadow-lg transition-all duration-300',
-                    isIlluminated && 'shadow-[0_0_20px_rgba(59,130,246,0.6)]'
-                  )}
-                />
-                {/* Page Icon Overlay */}
-                <span className="relative z-10 w-5 h-5">
-                  <PageIcon 
-                    pageName={currentPageName} 
-                    className={clsx(
-                      'w-full h-full drop-shadow-lg transition-all duration-300',
-                      'text-white/90'
-                    )} 
-                  />
-                </span>
-              </button>
-              <Link
-                href="/"
-                className={clsx(
-                  'flex flex-col items-start justify-center hidden sm:flex',
-                  'transition-all duration-300 hover:opacity-80'
-                )}
-              >
-                <span className="text-sm font-bold tracking-wider uppercase text-slate-900 dark:text-slate-50">
-                  Aurora
-                </span>
-                <span className="text-[10px] font-medium text-slate-900/50 dark:text-slate-50/50 tracking-wide">
-                  {currentPageName}
-                </span>
-              </Link>
-              {menuOpen && (
-                <div
-                  className={clsx(
-                    'aurora-menu-panel absolute left-0 top-12 z-50 w-80 rounded-xl shadow-xl',
-                    'border border-slate-200 dark:border-slate-800',
-                    'bg-white dark:bg-slate-950',
-                    'max-h-[80vh] overflow-y-auto'
-                  )}
-                  role="menu"
-                >
-                  <div className="py-2">
-                    {['Primary', 'Explore', 'Support'].map((groupName) => {
-                      const groupItems = expandableNavigation.filter((item) => item.group === groupName);
-                      if (groupItems.length === 0) return null;
-                      return (
-                        <div key={groupName} className="mb-2 last:mb-0">
-                          <div className="px-4 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                            {groupName}
-                          </div>
-                          {groupItems.map((item) => (
-                            <ExpandableMenuItem
-                              key={item.href}
-                              item={item}
-                              onNavigate={() => setMenuOpen(false)}
-                              variant="cascading"
-                            />
-                          ))}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+            {/* Aurora Navigation - Clean Architecture */}
+            <div className="flex items-center gap-3">
+              {/* Aurora Logo Menu - All Universes */}
+              <AuroraLogoMenu />
+              
+              {/* Aurora Context Menu - Current Page */}
+              <div className="hidden sm:block">
+                <AuroraContextMenu />
+              </div>
             </div>
 
             {/* Primary Navigation - Hidden on Mobile */}
@@ -370,7 +256,7 @@ export function TopNav() {
                     onClick={() => setUserMenuOpen(false)}
                   />
                   <div className={clsx(
-                    'aurora-menu-panel absolute right-0 mt-2 w-56 rounded-lg shadow-xl z-50',
+                    'aurora-menu-panel absolute right-0 mt-2 w-56 rounded-lg shadow-xl z-[9999]',
                     'bg-white dark:bg-slate-900',
                     'border border-slate-200 dark:border-slate-700',
                     'py-1'

@@ -37,7 +37,7 @@ export function HealthUniverse() {
         <Card className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              <p className="aurora-label text-slate-500 dark:text-slate-400">
                 Current Status
               </p>
               <CardTitle>Vitals</CardTitle>
@@ -47,7 +47,7 @@ export function HealthUniverse() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Vitals">
             {vitals.map((vital) => (
               <div key={vital.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
-                <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                <p className="aurora-label text-slate-500 dark:text-slate-400">
                   {vital.type.replace('_', ' ')}
                 </p>
                 <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">{vital.value}</p>

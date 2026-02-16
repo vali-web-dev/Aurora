@@ -119,18 +119,17 @@ export function CollapsibleNav() {
             ref={panelRef}
             id={panelId}
             className={clsx(
-              'absolute top-full right-0 mt-2 w-64 rounded-xl border',
-              'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
+              'aurora-menu-panel aurora-menu-panel--clear absolute top-full right-0 mt-2 w-64 rounded-xl border',
               'border-slate-200 dark:border-slate-800',
               'shadow-xl dark:shadow-2xl',
-              'z-50 overflow-hidden',
+              'z-[9999] overflow-hidden',
               'animate-slide-in-down duration-300'
             )}
           >
             {/* Secondary Navigation Section */}
             <div className="border-b border-slate-100 dark:border-slate-800">
               <div className="px-2 py-3">
-                <p className="px-3 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-500 mb-2">
+                <p className="aurora-label px-3 text-slate-500 dark:text-slate-500 mb-2">
                   Explore
                 </p>
                 <div className="space-y-1">
@@ -164,7 +163,7 @@ export function CollapsibleNav() {
 
             {/* Utility Navigation Section */}
             <div className="px-2 py-3">
-              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-500 mb-2">
+              <p className="aurora-label px-3 text-slate-500 dark:text-slate-500 mb-2">
                 Support
               </p>
               <div className="space-y-1">

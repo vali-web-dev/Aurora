@@ -17,6 +17,7 @@ body {
   isolation: isolate;
 }
 
+/*
 html.aurora-motion-ready *::before,
 html.aurora-motion-ready *::after {
   content: '';
@@ -52,16 +53,609 @@ html.aurora-motion-ready *::after {
   position: relative;
   z-index: 1;
 }
+*/
 
 html:not(.aurora-motion-ready) * {
   animation-play-state: paused !important;
   transition-property: none !important;
 }
 
+
+.aurora-global-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -9999;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  background: transparent;
+}
+
+.aurora-global-life {
+  position: relative;
+  width: min(520px, 90vw);
+  height: min(520px, 90vw);
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 20%, rgba(76, 29, 149, 0.2), transparent 55%),
+    radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.2), transparent 60%),
+    rgba(10, 15, 28, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.aurora-global-life .life-ambient {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(
+    from 120deg,
+    rgba(139, 92, 246, 0.2),
+    rgba(59, 130, 246, 0.22),
+    rgba(236, 72, 153, 0.2),
+    rgba(139, 92, 246, 0.2)
+  );
+  filter: blur(60px);
+  opacity: 0.7;
+  animation: life-hue 10s linear infinite;
+  will-change: transform, opacity, filter;
+}
+
+.aurora-global-life .life-glaze {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 45%, rgba(255, 255, 255, 0.08));
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  animation: life-glaze 4.2s ease-in-out infinite;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.aurora-global-life .life-core {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: rgba(248, 250, 252, 0.9);
+  animation: life-breathe 2.4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.aurora-global-life .life-core-orb {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(236, 72, 153, 0.7), rgba(59, 130, 246, 0.2) 55%, rgba(15, 23, 42, 0.9) 100%);
+  box-shadow: 0 0 40px rgba(236, 72, 153, 0.45), 0 0 80px rgba(59, 130, 246, 0.35);
+  animation: life-pulse 2s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+
+.aurora-global-life .life-core-ring {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.25);
+  animation: life-expand 3.6s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.aurora-global-life .life-core-text {
+  margin-top: 16px;
+  font-size: 22px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+@keyframes life-breathe {
+  0%, 100% {
+    transform: scale3d(0.96, 0.96, 1);
+  }
+  50% {
+    transform: scale3d(1.05, 1.05, 1);
+  }
+}
+
+@keyframes life-pulse {
+  0%, 100% {
+    transform: scale3d(0.94, 0.94, 1);
+    box-shadow: 0 0 26px rgba(236, 72, 153, 0.4), 0 0 60px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    transform: scale3d(1.08, 1.08, 1);
+    box-shadow: 0 0 40px rgba(236, 72, 153, 0.7), 0 0 90px rgba(59, 130, 246, 0.55);
+  }
+}
+
+@keyframes life-expand {
+  0%, 100% {
+    transform: scale3d(0.92, 0.92, 1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale3d(1.08, 1.08, 1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes life-hue {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes life-glaze {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
 :focus-visible {
   outline: 2px solid var(--color-accent, #7df9ff);
   outline-offset: 3px;
 }
+
+/* ========================================
+   AURORA TYPOGRAPHY SYSTEM
+   Comprehensive text styling with gradient fills,
+   animations, and semantic variants
+   
+   FULL CHARACTER SET SUPPORT:
+   ✓ Latin Alphabet: A-Z, a-z
+   ✓ Numbers: 0-9
+   ✓ Punctuation: . , ! ? ; : ' " - – — ( ) [ ] { } / \ @ # $ % ^ & * + = < > | ~ ` _
+   ✓ Currency: $ € £ ¥ ₹ ₽ ฿ ₩ ₪ ₦ ₨ ₱ ₡ ₴ ₵ ₸ ₹ ₺ ₼ ₾ ₿
+   ✓ Math Symbols: + - × ÷ = ≠ ≈ ≤ ≥ ± ∞ √ ∑ ∏ ∫ ∂ ∇ ∆ π
+   ✓ Accented Latin: À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ñ Ò Ó Ô Õ Ö Ø Ù Ú Û Ü Ý
+   ✓ Arrows: ← → ↑ ↓ ↔ ↕ ⇐ ⇒ ⇑ ⇓ ⇔ ⇕ ⤴ ⤵
+   ✓ Shapes: ○ ● ◯ ◉ □ ■ ◇ ◆ △ ▲ ▽ ▼ ☆ ★ ❤ ✓ ✗ ✕
+   ✓ Special: © ® ™ § ¶ † ‡ • … ‰ ¢ ° º ª µ
+   ✓ Greek: Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω α β γ δ ε ζ η θ
+   ✓ Cyrillic: А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ а б в г
+   ✓ CJK Support: Compatible with Chinese, Japanese, Korean characters
+   ✓ Emoji: 😀 🎉 🚀 ⭐ 💎 🔥 ❄️ 🌟 💫 ✨ (Full emoji support)
+   ✓ Ligatures: ff fi fl ffi ffl (when font supports)
+   
+   The gradient styling applies to ANY Unicode character
+   rendered by the system font, ensuring complete
+   character coverage across all languages and symbols.
+   ======================================== */
+
+/* Base Aurora Text - Static gradient */
+.aurora-text {
+  background: linear-gradient(
+    135deg,
+    #a78bfa 0%,
+    #ec4899 25%,
+    #3b82f6 50%,
+    #a78bfa 75%,
+    #ec4899 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Aurora Text - Veil variant with 90% fill and blur backdrop */
+.aurora-text-veil {
+  background: linear-gradient(
+    135deg,
+    rgba(167, 139, 250, 0.9) 0%,
+    rgba(236, 72, 153, 0.9) 25%,
+    rgba(59, 130, 246, 0.9) 50%,
+    rgba(167, 139, 250, 0.9) 75%,
+    rgba(236, 72, 153, 0.9) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  opacity: 0.9;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+/* Global Aurora Typography - applied to all text-bearing elements */
+:where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  small,
+  strong,
+  em,
+  b,
+  i,
+  u,
+  s,
+  del,
+  ins,
+  sub,
+  sup,
+  abbr,
+  cite,
+  q,
+  time,
+  li,
+  dt,
+  dd,
+  th,
+  td,
+  label,
+  legend,
+  summary,
+  figcaption,
+  blockquote,
+  mark,
+  code,
+  pre,
+  kbd,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  option
+) {
+  @apply aurora-text;
+}
+
+/* Aurora Veil override - enables 90% fill + blur variant */
+.aurora-veil-enabled :where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  small,
+  strong,
+  em,
+  b,
+  i,
+  u,
+  s,
+  del,
+  ins,
+  sub,
+  sup,
+  abbr,
+  cite,
+  q,
+  time,
+  li,
+  dt,
+  dd,
+  th,
+  td,
+  label,
+  legend,
+  summary,
+  figcaption,
+  blockquote,
+  mark,
+  code,
+  pre,
+  kbd,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  option
+) {
+  @apply aurora-text-veil;
+}
+
+/* Veil mode prefers static gradients for readability/perf */
+.aurora-veil-enabled .aurora-text-animated,
+.aurora-veil-enabled .aurora-text-breathe,
+.aurora-veil-enabled .aurora-text-shimmer {
+  animation: none;
+}
+
+/* Aurora placeholder styling for maximum coverage */
+@supports (-webkit-background-clip: text) {
+  :where(input::placeholder, textarea::placeholder) {
+    @apply aurora-text;
+    opacity: 0.7;
+  }
+  .aurora-veil-enabled :where(input::placeholder, textarea::placeholder) {
+    @apply aurora-text-veil;
+    opacity: 0.7;
+  }
+}
+
+/* Optional opt-out for non-gradient text zones */
+.aurora-text-exempt,
+.aurora-text-exempt * {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: inherit;
+}
+
+/* Aurora Text - Animated gradient shift */
+.aurora-text-animated {
+  background: linear-gradient(
+    135deg,
+    #a78bfa 0%,
+    #ec4899 25%,
+    #3b82f6 50%,
+    #a78bfa 75%,
+    #ec4899 100%
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  animation: aurora-text-flow 8s ease-in-out infinite;
+}
+
+/* Aurora Text - Breathing effect */
+.aurora-text-breathe {
+  background: linear-gradient(
+    135deg,
+    #a78bfa 0%,
+    #ec4899 25%,
+    #3b82f6 50%,
+    #a78bfa 75%,
+    #ec4899 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  animation: aurora-text-flow 8s ease-in-out infinite,
+             aurora-text-breathe 4s ease-in-out infinite;
+}
+
+/* Aurora Text - Subtle shimmer */
+.aurora-text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #a78bfa 0%,
+    #f0abfc 20%,
+    #fbbf24 40%,
+    #60a5fa 60%,
+    #a78bfa 80%,
+    #ec4899 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  animation: aurora-text-shimmer 3s linear infinite;
+}
+
+/* Aurora Text Color Variants */
+.aurora-text-warm {
+  background: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #a78bfa 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aurora-text-cool {
+  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aurora-text-nature {
+  background: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Aurora Heading Styles */
+.aurora-heading-1 {
+  @apply aurora-text-animated;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.aurora-heading-2 {
+  @apply aurora-text;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.aurora-heading-3 {
+  @apply aurora-text;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.aurora-heading-4 {
+  @apply aurora-text;
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Aurora Display Text - For hero sections */
+.aurora-display {
+  @apply aurora-text-breathe;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+/* Aurora Label Text - For UI elements */
+.aurora-label {
+  @apply aurora-text;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Aurora Badge Text - For tags and badges */
+.aurora-badge {
+  @apply aurora-text-shimmer;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Typography Animations */
+@keyframes aurora-text-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes aurora-text-breathe {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.85;
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes aurora-text-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Size Modifiers - Can be combined with aurora-text-* */
+.aurora-text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.aurora-text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.aurora-text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.aurora-text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.aurora-text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.aurora-text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.aurora-text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.aurora-text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+/* Weight Modifiers */
+.aurora-text-normal {
+  font-weight: 400;
+}
+
+.aurora-text-medium {
+  font-weight: 500;
+}
+
+.aurora-text-semibold {
+  font-weight: 600;
+}
+
+.aurora-text-bold {
+  font-weight: 700;
+}
+
+.aurora-text-extrabold {
+  font-weight: 800;
+}
+
+/* Dark mode adjustments */
+html.dark .aurora-text,
+html.dark .aurora-text-animated,
+html.dark .aurora-text-breathe,
+html.dark .aurora-text-shimmer {
+  filter: brightness(1.15) saturate(1.1);
+}
+
+/* Accessibility - Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-text-animated,
+  .aurora-text-breathe,
+  .aurora-text-shimmer {
+    animation: none;
+  }
+}
+
+/* ======================================== */
 
 /* Illuminated Mode Styles */
 html.illuminated {
@@ -204,8 +798,18 @@ html.theme-creative {
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    background-color: rgba(15, 23, 42, 0.5) !important;
+    background-color: transparent !important;
     backdrop-filter: blur(16px);
+  }
+
+  .aurora-menu-panel--clear {
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+  }
+
+  .aurora-menu-panel--clear::before,
+  .aurora-menu-panel--clear::after {
+    content: none !important;
   }
 
   .aurora-menu-panel::before {

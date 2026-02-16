@@ -70,7 +70,7 @@ export function EconomyUniverse() {
         <Card className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              <p className="aurora-label text-slate-500 dark:text-slate-400">
                 Revenue Snapshot
               </p>
               <CardTitle>Marketplace Momentum</CardTitle>
@@ -90,7 +90,7 @@ export function EconomyUniverse() {
               <div className="space-y-2" role="list" aria-label="Category mix">
                 {categoryBreakdown.map((entry) => (
                   <div key={entry.category} role="listitem" className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
-                    <span className="uppercase tracking-wide">{entry.category}</span>
+                    <span className="aurora-label aurora-text-xs">{entry.category}</span>
                     <span>{entry.count} items</span>
                   </div>
                 ))}

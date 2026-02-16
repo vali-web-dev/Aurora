@@ -47,7 +47,7 @@ export function GamingUniverse() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" role="list" aria-label="Game library">
           {games.map((game) => (
             <Card key={game.id} role="listitem" className="space-y-2">
-              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">{platformLabel[game.platform]}</p>
+              <p className="aurora-label text-slate-500 dark:text-slate-400">{platformLabel[game.platform]}</p>
               <CardTitle className="text-base">{game.title}</CardTitle>
               <div className="flex items-center justify-between">
                 <p className="text-xs text-slate-600 dark:text-slate-400">{game.hoursPlayed}h played</p>

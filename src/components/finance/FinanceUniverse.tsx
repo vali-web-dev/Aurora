@@ -40,7 +40,7 @@ export function FinanceUniverse() {
         <Card className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              <p className="aurora-label text-slate-500 dark:text-slate-400">
                 Portfolio Snapshot
               </p>
               <CardTitle>Asset Allocation</CardTitle>

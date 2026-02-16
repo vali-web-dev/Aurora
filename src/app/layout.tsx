@@ -67,6 +67,17 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 antialiased">
+        <div className="aurora-global-overlay" aria-hidden="true">
+          <div className="aurora-global-life">
+            <div className="life-ambient" />
+            <div className="life-glaze" />
+            <div className="life-core">
+              <div className="life-core-orb" />
+              <div className="life-core-ring" />
+              <div className="life-core-text">Life</div>
+            </div>
+          </div>
+        </div>
         <MotionGate />
         <AuthSessionProvider>
           <ThemeProvider>

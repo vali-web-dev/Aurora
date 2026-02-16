@@ -66,13 +66,13 @@ export function HomeWidgets() {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
       <Card className="space-y-3">
-        <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Time</p>
+        <p className="aurora-label text-slate-500 dark:text-slate-400">Time</p>
         <p className="text-4xl font-bold text-slate-900 dark:text-slate-50">{timeString}</p>
         <p className="text-sm text-slate-600 dark:text-slate-400">{dateString}</p>
       </Card>
 
       <Card className="space-y-3">
-        <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Mood</p>
+        <p className="aurora-label text-slate-500 dark:text-slate-400">Mood</p>
         <div className="flex flex-wrap gap-2">
           {moodOptions.map((option) => {
             const isActive = mood.label === option.label;
@@ -109,7 +109,7 @@ export function HomeWidgets() {
 
       <Card className="space-y-3">
         <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Finance</p>
+          <p className="aurora-label text-slate-500 dark:text-slate-400">Finance</p>
           <Button variant="ghost" size="sm">View</Button>
         </div>
         <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">
@@ -125,7 +125,7 @@ export function HomeWidgets() {
 
       <Card className="space-y-3">
         <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Trending</p>
+          <p className="aurora-label text-slate-500 dark:text-slate-400">Trending</p>
           <Button variant="ghost" size="sm">Explore</Button>
         </div>
         <div className="space-y-2">

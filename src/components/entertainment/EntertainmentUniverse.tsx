@@ -34,7 +34,7 @@ export function EntertainmentUniverse() {
           <Card className="bg-gradient-to-r from-slate-50 to-purple-50 dark:from-slate-900 dark:to-slate-900">
             <div className="grid grid-cols-1 md:grid-cols-[1.5fr,1fr] gap-6 items-center">
               <div className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                <p className="aurora-label text-slate-500 dark:text-slate-400">
                   Featured
                 </p>
                 <CardTitle className="text-3xl">{featured.title}</CardTitle>

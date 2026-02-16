@@ -59,7 +59,7 @@ export function SecurityUniverse() {
         <Card className="bg-gradient-to-r from-slate-50 to-emerald-50 dark:from-slate-900 dark:to-slate-900">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Encryption</p>
+              <p className="aurora-label text-slate-500 dark:text-slate-400">Encryption</p>
               <p className="text-xl font-semibold text-slate-900 dark:text-slate-50">End-to-end active</p>
               <p className="text-xs text-slate-600 dark:text-slate-400">All sessions encrypted • Zero-trust enforced</p>
             </div>

@@ -30,7 +30,7 @@ export function NavigationUniverse() {
         <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Live Insight</p>
+              <p className="aurora-label text-slate-500 dark:text-slate-400">Live Insight</p>
               <p className="text-lg font-semibold text-slate-900 dark:text-slate-50">
                 Typical commute: 24 min • Traffic light today
               </p>

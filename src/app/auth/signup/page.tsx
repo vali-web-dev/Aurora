@@ -63,7 +63,7 @@ export default function SignUpPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-4">
       <Card className="w-full max-w-md space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+          <h1 className="aurora-heading-2">
             Join Aurora
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -79,7 +79,7 @@ export default function SignUpPage() {
           )}
 
           <div className="space-y-1">
-            <label htmlFor="displayName" className="block text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400">
+            <label htmlFor="displayName" className="aurora-label block text-slate-600 dark:text-slate-400">
               Display Name
             </label>
             <input
@@ -95,7 +95,7 @@ export default function SignUpPage() {
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="email" className="block text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400">
+            <label htmlFor="email" className="aurora-label block text-slate-600 dark:text-slate-400">
               Email Address
             </label>
             <input
@@ -110,7 +110,7 @@ export default function SignUpPage() {
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="password" className="block text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400">
+            <label htmlFor="password" className="aurora-label block text-slate-600 dark:text-slate-400">
               Password
             </label>
             <input
@@ -125,7 +125,7 @@ export default function SignUpPage() {
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="confirmPassword" className="block text-xs uppercase tracking-widest text-slate-600 dark:text-slate-400">
+            <label htmlFor="confirmPassword" className="aurora-label block text-slate-600 dark:text-slate-400">
               Confirm Password
             </label>
             <input

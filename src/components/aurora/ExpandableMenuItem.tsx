@@ -144,10 +144,9 @@ export function ExpandableMenuItem({
         {hasChildren && isExpanded && (
           <div
             className={clsx(
-              'absolute top-full left-0 mt-1 z-50',
+              'aurora-menu-panel aurora-menu-panel--clear absolute top-full left-0 mt-1 z-[9999]',
               'min-w-[220px] rounded-xl shadow-xl',
               'border border-slate-200 dark:border-slate-800',
-              'bg-white dark:bg-slate-950',
               'py-2 animate-in fade-in slide-in-from-top-2 duration-200'
             )}
           >
@@ -228,10 +227,9 @@ export function ExpandableMenuItem({
         {hasChildren && isExpanded && (
           <div
             className={clsx(
-              'fixed z-[60]',
+              'aurora-menu-panel aurora-menu-panel--clear fixed z-[9999]',
               'min-w-[280px] max-w-[320px] rounded-xl shadow-2xl',
               'border border-slate-200 dark:border-slate-800',
-              'bg-white dark:bg-slate-950',
               'py-2 animate-in fade-in slide-in-from-left-2 duration-200',
               'max-h-[70vh] overflow-y-auto'
             )}

@@ -51,7 +51,7 @@ export function BrandUniverse() {
       <SurfaceSection title="Story & Values">
         <Card className="space-y-4">
           <div>
-            <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Brand Story</p>
+            <p className="aurora-label text-slate-500 dark:text-slate-400">Brand Story</p>
             <CardTitle>{brand.name}</CardTitle>
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-400">{brand.story}</p>
@@ -71,11 +71,11 @@ export function BrandUniverse() {
             <CardTitle>Voice & Archetype</CardTitle>
             <div className="space-y-2">
               <div>
-                <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Tone</p>
+                <p className="aurora-label text-slate-500 dark:text-slate-400">Tone</p>
                 <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{brand.tone}</p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">Archetype</p>
+                <p className="aurora-label text-slate-500 dark:text-slate-400">Archetype</p>
                 <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{brand.archetype}</p>
               </div>
             </div>
@@ -97,7 +97,7 @@ export function BrandUniverse() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" role="list" aria-label="Brand assets">
           {brandAssets.map((asset) => (
             <Card key={asset.id} className="space-y-2" role="listitem">
-              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">{asset.kind}</p>
+              <p className="aurora-label text-slate-500 dark:text-slate-400">{asset.kind}</p>
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{asset.label}</p>
               <p className="text-xs text-slate-600 dark:text-slate-400">
                 Updated {asset.updatedAt.toLocaleDateString()}

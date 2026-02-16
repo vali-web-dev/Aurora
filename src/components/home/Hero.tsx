@@ -9,7 +9,7 @@ export function Hero() {
           <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
             Aurora — Digital Civilization
           </p>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-slate-900 dark:text-slate-50">
+          <h1 className="aurora-display">
             A calm, beautifully designed digital world for your creative life.
           </h1>
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
@@ -53,7 +53,7 @@ export function Hero() {
         
         <div className="relative flex h-full flex-col justify-between p-6">
           <div className="space-y-2">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <p className="aurora-label text-slate-500 dark:text-slate-400">
               Aurora OS Sample
             </p>
             <p className="text-sm text-slate-700 dark:text-slate-300">

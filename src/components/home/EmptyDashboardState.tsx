@@ -64,7 +64,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
         
         {/* Heading */}
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+          <h2 className="aurora-heading-1 mb-3">
             Welcome to Your Aurora Dashboard!
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-400">

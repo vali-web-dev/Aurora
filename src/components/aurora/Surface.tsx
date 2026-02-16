@@ -33,7 +33,7 @@ export function SurfaceHeader({ title, description, actions, className }: Surfac
   return (
     <div className={clsx('flex flex-col gap-3 md:flex-row md:items-end md:justify-between', className)}>
       <div className="space-y-2">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-50">
+        <h1 className="aurora-heading-1">
           {title}
         </h1>
         {description && (

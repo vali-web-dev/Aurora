@@ -22,7 +22,7 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600" />
-              <span className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-slate-50">
+              <span className="aurora-label text-slate-900 dark:text-slate-50">
                 Aurora
               </span>
             </div>
@@ -87,7 +87,7 @@ export function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {Object.entries(footerNav).map(([group, links]) => (
               <div key={group} className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-50 capitalize">
+                <p className="aurora-label text-slate-900 dark:text-slate-50 capitalize">
                   {group}
                 </p>
                 <ul className="space-y-2">

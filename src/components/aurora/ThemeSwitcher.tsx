@@ -23,7 +23,7 @@ export function ThemeSwitcher() {
       </Button>
 
       {showMenu && (
-        <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-lg p-4 z-50">
+        <div className="aurora-menu-panel aurora-menu-panel--clear absolute right-0 mt-2 w-56 border border-slate-200 dark:border-slate-800 rounded-lg shadow-lg p-4 z-[9999]">
           <div className="space-y-4">
             {/* Mode */}
             <div>
