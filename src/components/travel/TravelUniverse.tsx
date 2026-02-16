@@ -63,8 +63,8 @@ export function TravelUniverse() {
           </Card>
 
           <Card className="space-y-4">
-            <CardTitle>Today's Itinerary</CardTitle>
-            <div className="space-y-3" role="list" aria-label="Today's itinerary">
+            <CardTitle>Today&apos;s Itinerary</CardTitle>
+            <div className="space-y-3" role="list" aria-label="Today&apos;s itinerary">
               {itinerary.map((item) => (
                 <div key={item.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">

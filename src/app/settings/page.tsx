@@ -348,7 +348,7 @@ export default function SettingsPage() {
                   Show Activity Status
                 </div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">
-                  Let others see when you're online
+                  Let others see when you&apos;re online
                 </div>
               </div>
               <input

@@ -93,7 +93,7 @@ export function KeyboardShortcutsHelp({
         
         <div className="mt-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900">
           <p className="text-xs text-blue-900 dark:text-blue-100">
-            <strong>Tip:</strong> Most shortcuts work globally, but some navigation shortcuts won't work when you're typing in an input field.
+            <strong>Tip:</strong> Most shortcuts work globally, but some navigation shortcuts won&apos;t work when you&apos;re typing in an input field.
           </p>
         </div>
       </div>

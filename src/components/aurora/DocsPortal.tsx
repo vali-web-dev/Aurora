@@ -213,7 +213,7 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
             <span id={titleId}>Aurora Documentation Portal</span>
           </DialogTitle>
           <p id={descriptionId} className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            Explore Aurora's docs by topic, role, or feature
+            Explore Aurora&apos;s docs by topic, role, or feature
           </p>
         </DialogHeader>
 
@@ -270,7 +270,7 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
         {/* Footer */}
         <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-400">
           <p>
-            💭 <strong>Pro tip:</strong> Most pages have "Learn more" links that take you to relevant docs
+            💭 <strong>Pro tip:</strong> Most pages have &quot;Learn more&quot; links that take you to relevant docs
           </p>
           <p className="mt-2">
             📖 <strong>Developer note:</strong> Read{' '}

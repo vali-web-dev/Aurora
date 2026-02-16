@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Card, CardDescription } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
@@ -90,10 +90,86 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
     return d.toLocaleDateString();
   };
 
+  const buildReactionSummary = useCallback(
+    (allReactions: any[], summary: Record<string, number>) => {
+      const userReactions = allReactions
+        .filter((reaction: any) => reaction.userId.toString() === session?.user?.id)
+        .map((reaction: any) => reaction.emoji);
+
+      return Object.entries(summary).map(([emoji, count]) => ({
+        emoji,
+        count: count as number,
+        userReacted: userReactions.includes(emoji),
+      }));
+    },
+    [session?.user?.id]
+  );
+
+  const fetchCommentReactions = useCallback(
+    async (commentId: number) => {
+      setIsLoadingCommentReactions((prev) => ({ ...prev, [commentId]: true }));
+      try {
+        const response = await fetch(`/api/social/comment-reactions?commentId=${commentId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setCommentReactions((prev) => ({
+            ...prev,
+            [commentId]: buildReactionSummary(data.reactions || [], data.summary || {}),
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching comment reactions:', error);
+      } finally {
+        setIsLoadingCommentReactions((prev) => ({ ...prev, [commentId]: false }));
+      }
+    },
+    [buildReactionSummary]
+  );
+
+  const loadCommentReactions = useCallback(
+    async (commentList: Comment[]) => {
+      const missing = commentList.filter((comment) => !commentReactions[comment.id]);
+      await Promise.all(missing.map((comment) => fetchCommentReactions(comment.id)));
+    },
+    [commentReactions, fetchCommentReactions]
+  );
+
+  const fetchComments = useCallback(async () => {
+    setIsLoadingComments(true);
+    try {
+      const response = await fetch(`/api/social/comments?postId=${post.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        const nextComments = data.comments || [];
+        setComments(nextComments);
+        await loadCommentReactions(nextComments);
+      }
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    } finally {
+      setIsLoadingComments(false);
+    }
+  }, [post.id, loadCommentReactions]);
+
+  const fetchReactions = useCallback(async () => {
+    setIsLoadingReactions(true);
+    try {
+      const response = await fetch(`/api/social/reactions?postId=${post.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setReactions(buildReactionSummary(data.reactions || [], data.summary || {}));
+      }
+    } catch (error) {
+      console.error('Error fetching reactions:', error);
+    } finally {
+      setIsLoadingReactions(false);
+    }
+  }, [post.id, buildReactionSummary]);
+
   // Preload comments so counts are accurate before expanding.
   useEffect(() => {
     fetchComments();
-  }, [post.id]);
+  }, [fetchComments]);
 
 
   // Fetch comments when expanded if not already loaded.
@@ -101,7 +177,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
     if (showComments && comments.length === 0) {
       fetchComments();
     }
-  }, [showComments]);
+  }, [showComments, comments.length, fetchComments]);
 
   useEffect(() => {
     if (!showComments) return;
@@ -140,7 +216,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
   // Fetch reactions on mount
   useEffect(() => {
     fetchReactions();
-  }, [post.id]);
+  }, [fetchReactions]);
 
   // Listen for real-time comment updates
   useEffect(() => {
@@ -164,80 +240,12 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
     });
 
     return () => unsubscribe();
-  }, [post.id]);
-
-  const fetchComments = async () => {
-    setIsLoadingComments(true);
-    try {
-      const response = await fetch(`/api/social/comments?postId=${post.id}`);
-      if (response.ok) {
-        const data = await response.json();
-        const nextComments = data.comments || [];
-        setComments(nextComments);
-        await loadCommentReactions(nextComments);
-      }
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-    } finally {
-      setIsLoadingComments(false);
-    }
-  };
-
-
-  const fetchReactions = async () => {
-    setIsLoadingReactions(true);
-    try {
-      const response = await fetch(`/api/social/reactions?postId=${post.id}`);
-      if (response.ok) {
-        const data = await response.json();
-        setReactions(buildReactionSummary(data.reactions || [], data.summary || {}));
-      }
-    } catch (error) {
-      console.error('Error fetching reactions:', error);
-    } finally {
-      setIsLoadingReactions(false);
-    }
-  };
-
-  const buildReactionSummary = (allReactions: any[], summary: Record<string, number>) => {
-    const userReactions = allReactions
-      .filter((r: any) => r.userId.toString() === session?.user?.id)
-      .map((r: any) => r.emoji);
-
-    return Object.entries(summary).map(([emoji, count]) => ({
-      emoji,
-      count: count as number,
-      userReacted: userReactions.includes(emoji),
-    }));
-  };
-
-  const fetchCommentReactions = async (commentId: number) => {
-    setIsLoadingCommentReactions((prev) => ({ ...prev, [commentId]: true }));
-    try {
-      const response = await fetch(`/api/social/comment-reactions?commentId=${commentId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setCommentReactions((prev) => ({
-          ...prev,
-          [commentId]: buildReactionSummary(data.reactions || [], data.summary || {}),
-        }));
-      }
-    } catch (error) {
-      console.error('Error fetching comment reactions:', error);
-    } finally {
-      setIsLoadingCommentReactions((prev) => ({ ...prev, [commentId]: false }));
-    }
-  };
-
-  const loadCommentReactions = async (commentList: Comment[]) => {
-    const missing = commentList.filter((comment) => !commentReactions[comment.id]);
-    await Promise.all(missing.map((comment) => fetchCommentReactions(comment.id)));
-  };
+  }, [post.id, fetchReactions]);
 
   useEffect(() => {
     if (comments.length === 0) return;
     loadCommentReactions(comments);
-  }, [comments.length]);
+  }, [comments, loadCommentReactions]);
 
   const handleAddComment = async (content: string, parentCommentId?: number | null) => {
     if (!content.trim() || isSubmittingComment) return;

@@ -154,6 +154,7 @@ export function HomeUpgrades() {
             <div className="space-y-2">
               {recentOrders.map((order) => {
                 const statusColors = {
+                  pending: 'info',
                   processing: 'info',
                   shipped: 'warning',
                   delivered: 'default',

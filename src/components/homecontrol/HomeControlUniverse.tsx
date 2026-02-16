@@ -114,7 +114,7 @@ export function HomeControlUniverse() {
             <Card className="space-y-3">
               <CardTitle>Energy Efficiency</CardTitle>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                You're using {((currentEnergyUsage / 3000) * 100).toFixed(0)}% of typical peak usage.
+                You&apos;re using {((currentEnergyUsage / 3000) * 100).toFixed(0)}% of typical peak usage.
               </p>
               <Button variant="primary" size="sm">Optimize Settings</Button>
             </Card>

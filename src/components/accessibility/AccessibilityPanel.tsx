@@ -146,7 +146,7 @@ export function AccessibilityPanel({ showHeader = true }: AccessibilityPanelProp
           <div className="text-2xl">ℹ️</div>
           <div className="space-y-2">
             <h3 className="font-semibold text-blue-900 dark:text-blue-100">
-              About Aurora's Accessibility
+              About Aurora&apos;s Accessibility
             </h3>
             <p className="text-sm text-blue-800 dark:text-blue-200">
               Aurora is designed to meet WCAG 2.1 AA+ standards. We support keyboard navigation,

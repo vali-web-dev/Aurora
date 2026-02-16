@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Button } from '@/components/aurora/Button';
 import { AuroraShell } from '@/components/os/AuroraShell';
@@ -48,7 +48,7 @@ export default function DashboardPage() {
     stats.posts === 0 && stats.communities === 0 && 
     stats.messages === 0 && activities.length === 0;
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     // Fetch user stats
     async function fetchStats() {
       try {
@@ -86,11 +86,11 @@ export default function DashboardPage() {
       fetchStats();
       fetchActivity();
     }
-  };
+  }, [session?.user]);
 
   useEffect(() => {
     fetchData();
-  }, [session]);
+  }, [fetchData]);
 
   if (isLoading) {
     return (

@@ -69,19 +69,19 @@ export function GlobalSearch({
       setQuery('');
       setActiveIndex(0);
     }
-  }, [isOpen]);
+  }, [isOpen, setQuery, setActiveIndex]);
 
   useEffect(() => {
     if (isOpen) {
       setIsOpen(false);
     }
-  }, [pathname, isOpen]);
+  }, [pathname, isOpen, setIsOpen]);
 
   useEffect(() => {
     if (inlineOpen) {
       setInlineOpen(false);
     }
-  }, [pathname, inlineOpen]);
+  }, [pathname, inlineOpen, setInlineOpen]);
 
   useEffect(() => {
     return () => {
@@ -103,7 +103,7 @@ export function GlobalSearch({
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isOpen]);
+  }, [isOpen, setIsOpen]);
 
   const handleSelect = useCallback(
     (href: string) => {
@@ -111,7 +111,7 @@ export function GlobalSearch({
       setInlineOpen(false);
       router.push(href);
     },
-    [router]
+    [router, setIsOpen, setInlineOpen]
   );
 
   const handleInputKeyDown = useCallback(
@@ -169,7 +169,6 @@ export function GlobalSearch({
               'focus:outline-none focus:ring-2 focus:ring-blue-500/40'
             )}
             aria-label="Search"
-            aria-expanded={inlineOpen}
             aria-controls="global-search-inline-results"
           />
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">

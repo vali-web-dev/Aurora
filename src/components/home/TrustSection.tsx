@@ -60,7 +60,7 @@ export function TrustSection() {
 
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8">
         <p className="text-sm text-slate-600 dark:text-slate-300">
-          Aurora is built with clarity, not hype. We're transparent about what's ready and what's coming.
+          Aurora is built with clarity, not hype. We&apos;re transparent about what&apos;s ready and what&apos;s coming.
           {' '}
           <span className="font-semibold text-slate-900 dark:text-slate-50">
             Your trust is everything to us.

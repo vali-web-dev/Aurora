@@ -64,7 +64,7 @@ export function CompanionPanel() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                Aurora's Personality
+                Aurora&apos;s Personality
               </h3>
               <Badge variant="primary" size="sm" className="bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100">
                 Adaptive
@@ -205,7 +205,7 @@ export function CompanionPanel() {
                 onClick={() => addSignal('focus')}
                 className="ml-1 underline hover:no-underline"
               >
-                Try "focus"
+                Try &quot;focus&quot;
               </button>
             </p>
           </section>
