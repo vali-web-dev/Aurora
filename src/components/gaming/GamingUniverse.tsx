@@ -50,12 +50,12 @@ export function GamingUniverse() {
               <p className="aurora-label text-slate-500 dark:text-slate-400">{platformLabel[game.platform]}</p>
               <CardTitle className="text-base">{game.title}</CardTitle>
               <div className="flex items-center justify-between">
-                <p className="text-xs text-slate-600 dark:text-slate-400">{game.hoursPlayed}h played</p>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{game.hoursPlayed}h played</p>
                 <Badge size="sm" variant={game.status === 'playing' ? 'success' : game.status === 'queued' ? 'warning' : 'default'}>
                   {game.status}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-500">Last played {formatDateTime(game.lastPlayedAt)}</p>
+              <p className="aurora-label text-xs text-slate-500 dark:text-slate-500">Last played {formatDateTime(game.lastPlayedAt)}</p>
             </Card>
           ))}
         </div>
@@ -66,7 +66,7 @@ export function GamingUniverse() {
           {clips.map((clip) => (
             <Card key={clip.id} role="listitem" className="space-y-2">
               <CardTitle className="text-base">{clip.title}</CardTitle>
-              <p className="text-xs text-slate-600 dark:text-slate-400">{clip.durationSeconds}s</p>
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{clip.durationSeconds}s</p>
               <div className="flex flex-wrap gap-2">
                 {clip.highlights.map((tag) => (
                   <Badge key={tag} size="sm" variant="info">
@@ -74,7 +74,7 @@ export function GamingUniverse() {
                   </Badge>
                 ))}
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-500">Saved {formatDateTime(clip.createdAt)}</p>
+              <p className="aurora-label text-xs text-slate-500 dark:text-slate-500">Saved {formatDateTime(clip.createdAt)}</p>
             </Card>
           ))}
         </div>
@@ -85,8 +85,8 @@ export function GamingUniverse() {
           {tournaments.map((tourney) => (
             <div key={tourney.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-between">
               <div>
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{tourney.title}</p>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{tourney.title}</p>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                   {formatDateTime(tourney.startsAt)} · {tourney.participants} players
                 </p>
               </div>
@@ -105,8 +105,8 @@ export function GamingUniverse() {
               <div className="flex items-center gap-3">
                 <Badge size="sm" variant="default">#{entry.rank}</Badge>
                 <div>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{entry.player}</p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">Score {entry.score}</p>
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">{entry.player}</p>
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">Score {entry.score}</p>
                 </div>
               </div>
               <Badge size="sm" variant={entry.change === 'up' ? 'success' : entry.change === 'down' ? 'warning' : 'default'}>

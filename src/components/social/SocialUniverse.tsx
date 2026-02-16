@@ -212,7 +212,7 @@ export function SocialUniverse() {
     return (
       <Surface className="py-8">
         <div className="text-center py-12">
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-slate-600 dark:text-slate-400">
             Please sign in to view the Social Universe
           </p>
         </div>
@@ -239,7 +239,7 @@ export function SocialUniverse() {
         <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-8">
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+              <h2 className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">
                 Unified Feed
               </h2>
               <Button
@@ -262,7 +262,7 @@ export function SocialUniverse() {
               <div ref={composeCardRef}>
                 <Card className="space-y-4">
                 <textarea
-                  className="w-full min-h-32 p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="aurora-label w-full min-h-32 p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder:opacity-70"
                   placeholder="What's on your mind?"
                   value={newPostContent}
                   onChange={(e) => setNewPostContent(e.target.value)}
@@ -304,7 +304,7 @@ export function SocialUniverse() {
               </div>
             ) : posts.length === 0 ? (
               <Card className="text-center py-12">
-                <p className="text-slate-600 dark:text-slate-400">
+                <p className="aurora-label text-slate-600 dark:text-slate-400">
                   No posts yet. Be the first to share something!
                 </p>
               </Card>
@@ -405,10 +405,10 @@ export function SocialUniverse() {
                     {suggestedProfiles.map((profile) => (
                       <div key={profile.id} role="listitem" className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                          <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">
                             {profile.displayName}
                           </p>
-                          <p className="text-xs text-slate-600 dark:text-slate-400">
+                          <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                             @{profile.handle} • {profile.followers.toLocaleString()} followers
                           </p>
                         </div>
@@ -428,10 +428,10 @@ export function SocialUniverse() {
                   {activeChannels.map((channel) => (
                     <div key={channel.id} role="listitem" className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                        <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">
                           {channel.name}
                         </p>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                        <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                           {channel.members.toLocaleString()} members
                         </p>
                       </div>
@@ -459,10 +459,10 @@ export function SocialUniverse() {
                     {recentNotifications.map((item) => (
                       <div key={item.id} role="listitem" className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                          <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">
                             {item.title}
                           </p>
-                          <p className="text-xs text-slate-600 dark:text-slate-400">
+                          <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                             {item.body}
                           </p>
                         </div>
@@ -485,14 +485,14 @@ export function SocialUniverse() {
             <Card className="space-y-3">
               <CardTitle>Your Profile</CardTitle>
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg">
+                <div className="aurora-label h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg">
                   {session?.user?.name?.charAt(0) || 'U'}
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">
                     {session?.user?.name || 'User'}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {session?.user?.email}
                   </p>
                 </div>

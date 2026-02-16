@@ -81,32 +81,32 @@ export function TopNav() {
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex flex-wrap items-center gap-4 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="flex flex-col leading-tight">
-                <span className="text-[0.65rem] uppercase tracking-wide text-slate-400">Cart total</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label aurora-text-xs text-slate-400">Cart total</span>
+                <span className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                   {formatMoney(total)}
                 </span>
               </div>
               <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
               <div className="flex flex-col leading-tight">
-                <span className="text-[0.65rem] uppercase tracking-wide text-slate-400">Items</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label aurora-text-xs text-slate-400">Items</span>
+                <span className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                   {itemCount}
                 </span>
               </div>
               <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
               <Link href="/commerce/cart#saved" className="flex flex-col leading-tight">
-                <span className="text-[0.65rem] uppercase tracking-wide text-slate-400">Saved</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label aurora-text-xs text-slate-400">Saved</span>
+                <span className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                   {savedCount}
                 </span>
               </Link>
               <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
               <Link href="/commerce/orders" className="flex flex-col leading-tight">
-                <span className="text-[0.65rem] uppercase tracking-wide text-slate-400">Orders</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label aurora-text-xs text-slate-400">Orders</span>
+                <span className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                   {orderCount}
                   {pendingCount > 0 && (
-                    <span className="ml-1 text-xs text-blue-600 dark:text-blue-400">
+                    <span className="aurora-label ml-1 text-xs text-blue-600 dark:text-blue-400">
                       ({pendingCount})
                     </span>
                   )}
@@ -167,7 +167,7 @@ export function TopNav() {
               <Link
                 href="/commerce/cart"
                 className={clsx(
-                  'relative inline-flex items-center justify-center rounded-lg p-2',
+                  'aurora-label relative inline-flex items-center justify-center rounded-lg p-2',
                   'text-slate-600 dark:text-slate-300',
                   'hover:bg-slate-100 dark:hover:bg-slate-800',
                   'transition-all duration-200'
@@ -189,7 +189,7 @@ export function TopNav() {
                   <path d="M1 1h4l2.5 12.5a1 1 0 0 0 1 .8h9.5a1 1 0 0 0 1-.8L21 6H6" />
                 </svg>
                 {itemCount > 0 && (
-                  <span className="absolute -right-1 -top-1 inline-flex min-w-[1.1rem] items-center justify-center rounded-full bg-amber-400 px-1.5 py-0.5 text-[0.65rem] font-semibold text-slate-900 shadow">
+                  <span className="aurora-label absolute -right-1 -top-1 inline-flex min-w-[1.1rem] items-center justify-center rounded-full bg-amber-400 px-1.5 py-0.5 text-[0.65rem] font-semibold text-slate-900 shadow">
                     {itemCount}
                   </span>
                 )}
@@ -202,7 +202,7 @@ export function TopNav() {
                 href="/auth/signin"
                 className={clsx(
                   'hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg',
-                  'text-slate-600 dark:text-slate-300',
+                  'aurora-label text-slate-600 dark:text-slate-300',
                   'hover:bg-slate-100 dark:hover:bg-slate-800',
                   'transition-all duration-200'
                 )}
@@ -212,7 +212,7 @@ export function TopNav() {
               <Link
                 href="/auth/signup"
                 className={clsx(
-                  'hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg',
+                  'aurora-label hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg',
                   'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
                   'text-white shadow-lg',
                   'transition-all duration-200',
@@ -237,13 +237,13 @@ export function TopNav() {
                 )}
                 type="button"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
+                <div className="aurora-label w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
                   {session.user.name?.charAt(0)?.toUpperCase() || session.user.email?.charAt(0)?.toUpperCase() || 'U'}
                 </div>
-                <span className="hidden sm:inline text-sm font-medium text-slate-900 dark:text-slate-50">
+                <span className="aurora-label hidden sm:inline text-sm font-medium text-slate-900 dark:text-slate-50">
                   {session.user.name || 'User'}
                 </span>
-                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="aurora-label w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -263,21 +263,21 @@ export function TopNav() {
                   )}>
                     <Link
                       href="/dashboard"
-                      className="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      className="aurora-label block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                       onClick={() => setUserMenuOpen(false)}
                     >
                       Dashboard
                     </Link>
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      className="aurora-label block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                       onClick={() => setUserMenuOpen(false)}
                     >
                       Profile
                     </Link>
                     <Link
                       href="/settings"
-                      className="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      className="aurora-label block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                       onClick={() => setUserMenuOpen(false)}
                     >
                       Settings
@@ -288,7 +288,7 @@ export function TopNav() {
                         setUserMenuOpen(false);
                         signOut({ callbackUrl: '/' });
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      className="aurora-label block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                       type="button"
                     >
                       Sign Out
@@ -302,7 +302,7 @@ export function TopNav() {
           <button
             onClick={() => setDocsOpen(true)}
             className={clsx(
-              'relative w-10 h-10 rounded-lg flex items-center justify-center',
+              'aurora-label relative w-10 h-10 rounded-lg flex items-center justify-center',
               'text-slate-600 dark:text-slate-300',
               'bg-slate-100/70 dark:bg-slate-900/60',
               'border border-slate-200 dark:border-slate-800',
@@ -312,12 +312,12 @@ export function TopNav() {
             title="Docs"
             type="button"
           >
-            <span className="text-xs font-semibold">?</span>
+            <span className="aurora-label text-xs font-semibold">?</span>
           </button>
           <button
             onClick={toggle}
             className={clsx(
-              'relative w-10 h-10 rounded-lg flex items-center justify-center',
+              'aurora-label relative w-10 h-10 rounded-lg flex items-center justify-center',
               'text-slate-600 dark:text-slate-300',
               'bg-slate-100/70 dark:bg-slate-900/60',
               'border border-slate-200 dark:border-slate-800',
@@ -327,7 +327,7 @@ export function TopNav() {
             title="Companion"
             type="button"
           >
-            <span className="text-xs font-semibold">CP</span>
+            <span className="aurora-label text-xs font-semibold">CP</span>
           </button>
           {/* Theme Selector */}
           <ThemeSelector variant="compact" showLabel={false} />

@@ -91,7 +91,7 @@ export function OrderDetailPage({ orderId }: { orderId: string }) {
           }
         />
         <Card>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-slate-600 dark:text-slate-400">
             Check the order id or return to order history.
           </p>
         </Card>
@@ -187,20 +187,20 @@ export function OrderDetailPage({ orderId }: { orderId: string }) {
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Items</p>
-              <p className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+              <p className="aurora-label aurora-text-xs text-slate-500 dark:text-slate-400">Items</p>
+              <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
                 {orderLines.length}
               </p>
             </div>
             <div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Delivery window</p>
-              <p className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+              <p className="aurora-label aurora-text-xs text-slate-500 dark:text-slate-400">Delivery window</p>
+              <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
                 {deliveryWindow ? `${deliveryWindow.min}-${deliveryWindow.max} days` : 'TBD'}
               </p>
             </div>
             <div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Providers</p>
-              <p className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+              <p className="aurora-label aurora-text-xs text-slate-500 dark:text-slate-400">Providers</p>
+              <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
                 {Object.keys(providerReceipts).length}
               </p>
             </div>
@@ -212,10 +212,10 @@ export function OrderDetailPage({ orderId }: { orderId: string }) {
         <Card className="space-y-3">
           {orderLines.map((line) => (
             <div key={line.product.id} className="flex justify-between text-sm">
-              <span className="text-slate-600 dark:text-slate-400">
+              <span className="aurora-label text-slate-600 dark:text-slate-400">
                 {line.product.title} • {line.quantity}x
               </span>
-              <span className="text-slate-900 dark:text-slate-50">
+              <span className="aurora-label text-slate-900 dark:text-slate-50">
                 {formatMoney(line.product.priceCents * line.quantity)}
               </span>
             </div>
@@ -234,10 +234,10 @@ export function OrderDetailPage({ orderId }: { orderId: string }) {
               <div className="space-y-2 text-sm">
                 {receipt.items.map((line) => (
                   <div key={line.product.id} className="flex justify-between">
-                    <span className="text-slate-600 dark:text-slate-400">
+                    <span className="aurora-label text-slate-600 dark:text-slate-400">
                       {line.product.title} • {line.quantity}x
                     </span>
-                    <span className="text-slate-900 dark:text-slate-50">
+                    <span className="aurora-label text-slate-900 dark:text-slate-50">
                       {formatMoney(line.product.priceCents * line.quantity)}
                     </span>
                   </div>
@@ -264,10 +264,10 @@ export function OrderDetailPage({ orderId }: { orderId: string }) {
                   }`}
                 />
                 <div>
-                  <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">
                     {step.title}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {step.detail}
                   </p>
                 </div>

@@ -27,13 +27,13 @@ export function PlaylistCard({ playlist }: PlaylistCardProps) {
           <Badge variant={moodVariant[playlist.mood]} size="sm">
             {playlist.mood}
           </Badge>
-          <span className="text-xs text-slate-500 dark:text-slate-400">
+          <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">
             {playlist.items.length} items
           </span>
         </div>
 
         <CardTitle>{playlist.title}</CardTitle>
-        <CardDescription className="text-xs">
+        <CardDescription className="aurora-label text-xs">
           {playlist.description}
         </CardDescription>
       </div>

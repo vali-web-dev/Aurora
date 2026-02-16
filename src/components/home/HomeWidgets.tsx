@@ -67,8 +67,8 @@ export function HomeWidgets() {
     <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
       <Card className="space-y-3">
         <p className="aurora-label text-slate-500 dark:text-slate-400">Time</p>
-        <p className="text-4xl font-bold text-slate-900 dark:text-slate-50">{timeString}</p>
-        <p className="text-sm text-slate-600 dark:text-slate-400">{dateString}</p>
+        <p className="aurora-label text-4xl font-bold text-slate-900 dark:text-slate-50">{timeString}</p>
+        <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">{dateString}</p>
       </Card>
 
       <Card className="space-y-3">
@@ -90,8 +90,8 @@ export function HomeWidgets() {
                 className={cn(
                   'rounded-full px-3 text-xs font-semibold',
                   isActive
-                    ? 'bg-blue-600 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-500'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                    ? 'aurora-label bg-blue-600 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-500'
+                    : 'aurora-label bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                 )}
               >
                 {option.label}
@@ -112,13 +112,13 @@ export function HomeWidgets() {
           <p className="aurora-label text-slate-500 dark:text-slate-400">Finance</p>
           <Button variant="ghost" size="sm">View</Button>
         </div>
-        <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+        <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">
           ${financeSummary.spent} / ${financeSummary.budget}
         </p>
         <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
           <div className="h-full bg-emerald-500" style={{ width: `${spendPct}%` }} />
         </div>
-        <p className="text-xs text-slate-600 dark:text-slate-400">
+        <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
           ${remaining} remaining • ${financeSummary.savings} saved
         </p>
       </Card>
@@ -130,9 +130,9 @@ export function HomeWidgets() {
         </div>
         <div className="space-y-2">
           {trending.map((item) => (
-            <div key={item.label} className="flex items-center justify-between text-sm">
-              <span className="text-slate-900 dark:text-slate-50">{item.label}</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">{item.type}</span>
+            <div key={item.label} className="aurora-label flex items-center justify-between text-sm">
+              <span className="aurora-label text-slate-900 dark:text-slate-50">{item.label}</span>
+              <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">{item.type}</span>
             </div>
           ))}
         </div>

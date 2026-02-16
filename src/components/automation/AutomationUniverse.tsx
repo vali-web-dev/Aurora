@@ -48,7 +48,7 @@ export function AutomationUniverse() {
             {workflows.map((workflow) => (
               <div key={workflow.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{workflow.name}</p>
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">{workflow.name}</p>
                   <Badge
                     size="sm"
                     variant={
@@ -62,19 +62,19 @@ export function AutomationUniverse() {
                     {workflow.status}
                   </Badge>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">{workflow.description}</p>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{workflow.description}</p>
                 <div className="grid grid-cols-3 gap-4 text-xs">
                   <div>
-                    <p className="text-slate-600 dark:text-slate-400">Executions</p>
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{workflow.executionCount}</p>
+                    <p className="aurora-label text-slate-600 dark:text-slate-400">Executions</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{workflow.executionCount}</p>
                   </div>
                   <div>
-                    <p className="text-slate-600 dark:text-slate-400">Success Rate</p>
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{(workflow.successRate * 100).toFixed(0)}%</p>
+                    <p className="aurora-label text-slate-600 dark:text-slate-400">Success Rate</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{(workflow.successRate * 100).toFixed(0)}%</p>
                   </div>
                   <div>
-                    <p className="text-slate-600 dark:text-slate-400">Next Run</p>
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">
+                    <p className="aurora-label text-slate-600 dark:text-slate-400">Next Run</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">
                       {workflow.nextRun ? formatDateTime(workflow.nextRun) : 'Manual'}
                     </p>
                   </div>
@@ -96,12 +96,12 @@ export function AutomationUniverse() {
               {triggers.map((trigger) => (
                 <div key={trigger.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">
                       {workflows.find((w) => w.id === trigger.workflowId)?.name ?? 'Unknown'}
                     </p>
                     <Badge size="sm" variant="default">{trigger.type}</Badge>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{trigger.condition}</p>
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{trigger.condition}</p>
                 </div>
               ))}
             </div>
@@ -117,12 +117,12 @@ export function AutomationUniverse() {
                 {bots.map((bot) => (
                   <div key={bot.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{bot.name}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{bot.name}</p>
                       <Badge size="sm" variant="success">
                         {(bot.uptime * 100).toFixed(2)}%
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       {bot.capability} • {bot.tasksCompleted} tasks • Last: {formatDateTime(bot.lastExecuted)}
                     </p>
                   </div>
@@ -132,7 +132,7 @@ export function AutomationUniverse() {
 
             <Card className="space-y-3">
               <CardTitle>System Health</CardTitle>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 All automation systems operating nominally with {bots.length} active agents.
               </p>
               <Button variant="primary" size="sm">View Dashboard</Button>
@@ -147,15 +147,15 @@ export function AutomationUniverse() {
             {actions.map((action) => (
               <div key={action.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">
                     Step {action.order}
                   </p>
                   <Badge size="sm" variant="default">{action.type}</Badge>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                   {workflows.find((w) => w.id === action.workflowId)?.name ?? 'Unknown Workflow'}
                 </p>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                   Config: {Object.keys(action.config).join(', ')}
                 </p>
               </div>

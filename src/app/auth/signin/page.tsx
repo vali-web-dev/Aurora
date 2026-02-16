@@ -46,14 +46,14 @@ export default function SignInPage() {
           <h1 className="aurora-heading-2">
             Sign In to Aurora
           </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
             Welcome back to your digital civilization platform
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-600 dark:text-red-400">
+            <div className="aurora-label p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-600 dark:text-red-400">
               {error}
             </div>
           )}
@@ -70,7 +70,7 @@ export default function SignInPage() {
               placeholder="you@example.com"
               required
               data-autofocus="true"
-              className="w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              className="aurora-label w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
           </div>
 
@@ -85,7 +85,7 @@ export default function SignInPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              className="aurora-label w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
           </div>
 
@@ -105,25 +105,25 @@ export default function SignInPage() {
             <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="px-2 bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400">
+            <span className="aurora-label px-2 bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400">
               Demo Credentials
             </span>
           </div>
         </div>
 
-        <div className="bg-slate-50 dark:bg-slate-900/50 rounded p-3 text-xs space-y-1 text-slate-600 dark:text-slate-400">
+        <div className="aurora-label bg-slate-50 dark:bg-slate-900/50 rounded p-3 text-xs space-y-1 text-slate-600 dark:text-slate-400">
           <p>
-            <span className="font-semibold">Email:</span> aurora@example.com
+            <span className="aurora-label font-semibold">Email:</span> aurora@example.com
           </p>
           <p>
-            <span className="font-semibold">Password:</span> password123
+            <span className="aurora-label font-semibold">Password:</span> password123
           </p>
         </div>
 
         <div className="text-center">
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
             Don&apos;t have an account?{' '}
-            <Link href="/auth/signup" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+            <Link href="/auth/signup" className="aurora-label font-semibold text-blue-600 dark:text-blue-400 hover:underline">
               Sign up
             </Link>
           </p>

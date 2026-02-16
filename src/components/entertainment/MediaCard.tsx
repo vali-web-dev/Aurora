@@ -34,14 +34,14 @@ export function MediaCard({ item }: MediaCardProps) {
           <Badge variant={item.type === 'live' ? 'error' : 'primary'} size="sm">
             {typeLabel(item.type)}
           </Badge>
-          <span className="text-xs text-slate-500 dark:text-slate-400">
+          <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">
             {item.provider}
           </span>
         </div>
 
         <CardTitle>{item.title}</CardTitle>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+        <div className="aurora-label flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
           <span>{item.durationMinutes} min</span>
           <span>★ {item.rating.toFixed(1)}</span>
         </div>

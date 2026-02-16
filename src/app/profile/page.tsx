@@ -52,7 +52,7 @@ export default function ProfilePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse transform-gpu text-slate-600 dark:text-slate-400">
+        <div className="aurora-label animate-pulse transform-gpu text-slate-600 dark:text-slate-400">
           Loading profile...
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function ProfilePage() {
           <div className="flex flex-col md:flex-row gap-8">
             {/* Avatar */}
             <div className="flex flex-col items-center gap-4">
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
+              <div className="aurora-label w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
                 {session?.user?.name?.charAt(0)?.toUpperCase() || session?.user?.email?.charAt(0)?.toUpperCase() || 'U'}
               </div>
               {isEditing && (
@@ -98,7 +98,7 @@ export default function ProfilePage() {
             <div className="flex-1 space-y-6">
               {/* Name */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="aurora-label text-slate-700 dark:text-slate-300">
                   Name
                 </label>
                 {isEditing ? (
@@ -108,10 +108,10 @@ export default function ProfilePage() {
                     onChange={(e) => setName(e.target.value)}
                     ref={nameInputRef}
                     data-autofocus="true"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="aurora-label w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 ) : (
-                  <div className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                  <div className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
                     {session?.user?.name || 'Not set'}
                   </div>
                 )}
@@ -119,17 +119,17 @@ export default function ProfilePage() {
 
               {/* Email */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="aurora-label text-slate-700 dark:text-slate-300">
                   Email
                 </label>
-                <div className="text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-slate-600 dark:text-slate-400">
                   {session?.user?.email}
                 </div>
               </div>
 
               {/* Bio */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="aurora-label text-slate-700 dark:text-slate-300">
                   Bio
                 </label>
                 {isEditing ? (
@@ -137,11 +137,11 @@ export default function ProfilePage() {
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     rows={4}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="aurora-label w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Tell us about yourself..."
                   />
                 ) : (
-                  <div className="text-slate-600 dark:text-slate-400">
+                  <div className="aurora-label text-slate-600 dark:text-slate-400">
                     {bio || 'No bio yet'}
                   </div>
                 )}
@@ -149,7 +149,7 @@ export default function ProfilePage() {
 
               {/* Location */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="aurora-label text-slate-700 dark:text-slate-300">
                   Location
                 </label>
                 {isEditing ? (
@@ -157,11 +157,11 @@ export default function ProfilePage() {
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="aurora-label w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="City, Country"
                   />
                 ) : (
-                  <div className="text-slate-600 dark:text-slate-400">
+                  <div className="aurora-label text-slate-600 dark:text-slate-400">
                     {location || 'Not specified'}
                   </div>
                 )}
@@ -169,7 +169,7 @@ export default function ProfilePage() {
 
               {/* Website */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="aurora-label text-slate-700 dark:text-slate-300">
                   Website
                 </label>
                 {isEditing ? (
@@ -177,17 +177,17 @@ export default function ProfilePage() {
                     type="url"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="aurora-label w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="https://yourwebsite.com"
                   />
                 ) : (
-                  <div className="text-slate-600 dark:text-slate-400">
+                  <div className="aurora-label text-slate-600 dark:text-slate-400">
                     {website ? (
                       <a 
                         href={website} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-blue-600 dark:text-blue-400 hover:underline"
+                        className="aurora-label text-blue-600 dark:text-blue-400 hover:underline"
                       >
                         {website}
                       </a>
@@ -226,16 +226,16 @@ export default function ProfilePage() {
 
         {/* Account Information */}
         <Card className="p-8">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
+          <h2 className="aurora-label text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
             Account Information
           </h2>
           <div className="space-y-4">
             <div className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-700">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Member Since
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   {new Date().toLocaleDateString()}
                 </div>
               </div>
@@ -243,10 +243,10 @@ export default function ProfilePage() {
 
             <div className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-700">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Account Status
                 </div>
-                <div className="text-sm text-green-600 dark:text-green-400">
+                <div className="aurora-label text-sm text-green-600 dark:text-green-400">
                   Active
                 </div>
               </div>
@@ -254,10 +254,10 @@ export default function ProfilePage() {
 
             <div className="flex justify-between items-center py-3">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Email Verified
                 </div>
-                <div className="text-sm text-green-600 dark:text-green-400">
+                <div className="aurora-label text-sm text-green-600 dark:text-green-400">
                   Verified
                 </div>
               </div>

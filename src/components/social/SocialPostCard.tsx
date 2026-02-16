@@ -409,8 +409,8 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
       ? 'flex gap-3 pl-6 border-l border-slate-200 dark:border-slate-700'
       : 'flex gap-3';
     const avatarClass = depth > 0
-      ? 'h-7 w-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs flex-shrink-0'
-      : 'h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0';
+      ? 'aurora-label h-7 w-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs flex-shrink-0'
+      : 'aurora-label h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0';
     const cardClass = depth > 0
       ? 'bg-white/70 dark:bg-slate-900/70 rounded-lg p-3 border border-slate-200/60 dark:border-slate-700/60'
       : 'bg-slate-50 dark:bg-slate-800 rounded-lg p-3';
@@ -418,14 +418,14 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
       ? 'aurora-label aurora-text-xs text-slate-700 dark:text-slate-300'
       : 'aurora-label aurora-text-xs text-slate-600 dark:text-slate-400';
     const bodyClass = depth > 0
-      ? 'text-[13px] leading-relaxed text-slate-800 dark:text-slate-200'
-      : 'text-[15px] leading-relaxed text-slate-900 dark:text-slate-50';
+      ? 'aurora-label text-[13px] leading-relaxed text-slate-800 dark:text-slate-200'
+      : 'aurora-label text-[15px] leading-relaxed text-slate-900 dark:text-slate-50';
     const metaClass = depth > 0
       ? 'aurora-label aurora-text-xs text-slate-500 dark:text-slate-400'
       : 'aurora-label aurora-text-xs text-slate-500 dark:text-slate-400';
     const reactionButtonClass = depth > 0
-      ? 'px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors'
-      : 'px-2.5 py-1 rounded-full text-xs font-medium transition-colors';
+      ? 'aurora-label px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors'
+      : 'aurora-label px-2.5 py-1 rounded-full text-xs font-medium transition-colors';
     const totalReactions = reactionsForComment.reduce((sum, reaction) => sum + reaction.count, 0);
     const heartReaction = reactionsForComment.find((reaction) => reaction.emoji === '❤️');
     const userHeart = heartReaction?.userReacted || false;
@@ -448,7 +448,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
               <div className={`flex items-center gap-3 ${metaClass}`}>
                 <span>{formatDate(comment.createdAt)}</span>
                 <button
-                  className="text-[11px] font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200"
+                  className="aurora-label text-[11px] font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200"
                   onClick={() => {
                     setReplyingTo(comment.id);
                     setReplyContent('');
@@ -459,10 +459,10 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
               </div>
               <button
                 type="button"
-                className={`flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide transition-colors ${
+                className={`aurora-label flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide transition-colors ${
                   userHeart
-                    ? 'text-white bg-rose-500/90 px-2 py-1 rounded-full'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
+                    ? 'aurora-label text-white bg-rose-500/90 px-2 py-1 rounded-full'
+                    : 'aurora-label text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
                 }`}
                 onClick={() => handleCommentReaction(comment.id, '❤️')}
                 disabled={isLoadingCommentReactions[comment.id]}
@@ -485,7 +485,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
             {commentReplyList.length > 0 && (
               <button
                 type="button"
-                className="group flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50"
+                className="group flex items-center gap-2 aurora-label aurora-text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50"
                 onClick={() =>
                   setCollapsedThreads((prev) => ({
                     ...prev,
@@ -500,7 +500,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                     ? `View ${commentReplyList.length} repl${commentReplyList.length === 1 ? 'y' : 'ies'}`
                     : 'Hide replies'}
                 </span>
-                <span className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200">
+                <span className="aurora-label text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200">
                   {isCollapsed ? 'v' : '^'}
                 </span>
               </button>
@@ -519,8 +519,8 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                     disabled={isLoadingCommentReactions[comment.id]}
                     className={`${reactionButtonClass} ${
                       userReacted
-                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border border-blue-500'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                        ? 'aurora-label bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border border-blue-500'
+                        : 'aurora-label bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
                     {emoji} {count > 0 && count}
@@ -534,7 +534,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="aurora-label flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:opacity-70"
                     placeholder="Write a reply..."
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
@@ -556,22 +556,22 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                     {isSubmittingComment ? '...' : 'Reply'}
                   </Button>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <div className="aurora-label flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
+                    className="aurora-label inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
                   >
                     @ Tag
                   </button>
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
+                    className="aurora-label inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
                   >
                     :) Emoji
                   </button>
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
+                    className="aurora-label inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
                   >
                     ... More
                   </button>
@@ -587,7 +587,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
             {commentReplyList.length > replyVisibleCount && (
               <button
                 type="button"
-                className="group flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50"
+                className="group flex items-center gap-2 aurora-label aurora-text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50"
                 onClick={() =>
                   setExpandedReplies((prev) => ({
                     ...prev,
@@ -604,7 +604,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                         commentReplyList.length - replyVisibleCount === 1 ? 'y' : 'ies'
                       }`}
                 </span>
-                <span className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200">
+                <span className="aurora-label text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200">
                   {isExpanded ? '^' : 'v'}
                 </span>
               </button>
@@ -620,14 +620,14 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
       {/* Author Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold">
+          <div className="aurora-label h-10 w-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold">
             {authorInitial}
           </div>
           <div>
-            <p className="font-semibold text-slate-900 dark:text-slate-50">
+            <p className="aurora-label text-slate-900 dark:text-slate-50">
               {authorName}
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="aurora-label text-xs text-slate-500 dark:text-slate-400">
               {formatDate(post.createdAt)}
             </p>
           </div>
@@ -644,7 +644,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
       )}
 
       {/* Content */}
-      <CardDescription className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+      <CardDescription className="aurora-label text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
         {post.content}
       </CardDescription>
 
@@ -659,10 +659,10 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
             <button
               key={emoji}
               onClick={() => handleReaction(emoji)}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+              className={`aurora-label px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                 userReacted
-                  ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'aurora-label bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-2 border-blue-500'
+                    : 'aurora-label bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {emoji} {count > 0 && count}
@@ -688,9 +688,9 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
           <div className="relative max-h-[60vh] overflow-y-auto pr-2">
             <div className="space-y-4 pb-28">
               {isLoadingComments ? (
-                <p className="text-sm text-slate-500">Loading comments...</p>
+                <p className="aurora-label text-sm text-slate-500">Loading comments...</p>
               ) : comments.length === 0 ? (
-                <p className="text-sm text-slate-500">No comments yet. Be the first!</p>
+                <p className="aurora-label text-sm text-slate-500">No comments yet. Be the first!</p>
               ) : (
                 <div className="space-y-4">
                   {(showAllComments
@@ -700,7 +700,7 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                   {topLevelComments.length > topLevelVisibleCount && (
                     <button
                       type="button"
-                      className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-50"
+                      className="aurora-label text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-50"
                       onClick={() => setShowAllComments((prev) => !prev)}
                       aria-expanded={showAllComments}
                     >
@@ -718,14 +718,14 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
             {/* Sticky Add Comment */}
             <div className="sticky bottom-0 z-10">
               <div className="flex gap-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/90 p-3 shadow-lg backdrop-blur">
-                <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                <div className="aurora-label h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                   {session?.user?.name?.charAt(0) || 'U'}
                 </div>
                 <div className="flex-1 space-y-2">
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      className="flex-1 px-3 py-2 bg-slate-50/80 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="aurora-label flex-1 px-3 py-2 bg-slate-50/80 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:opacity-70"
                       placeholder="Add a comment..."
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
@@ -748,22 +748,22 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                       {isSubmittingComment ? '...' : 'Send'}
                     </Button>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                  <div className="aurora-label flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                     <button
                       type="button"
-                      className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
+                      className="aurora-label inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
                     >
                       @ Tag
                     </button>
                     <button
                       type="button"
-                      className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
+                      className="aurora-label inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
                     >
                       :) Emoji
                     </button>
                     <button
                       type="button"
-                      className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
+                      className="aurora-label inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 px-2 py-1 hover:text-slate-900 dark:hover:text-slate-50"
                     >
                       ... More
                     </button>

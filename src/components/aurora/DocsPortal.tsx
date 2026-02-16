@@ -12,6 +12,14 @@ interface DocsSection {
 const DOCS_STRUCTURE: Record<string, DocsSection[]> = {
   'Start Here': [
     {
+      title: 'Aurora System and Brains Book',
+      description: 'Publishable, comprehensive manual (end-user + developer editions)',
+      links: [
+        { label: 'End-User Edition', href: '/docs/aurora-book/end-user' },
+        { label: 'Developer Edition', href: '/docs/aurora-book/developer' },
+      ],
+    },
+    {
       title: 'Quick Reference',
       description: '5-minute orientation to Aurora',
       links: [
@@ -23,7 +31,7 @@ const DOCS_STRUCTURE: Record<string, DocsSection[]> = {
     },
     {
       title: 'Complete Manual',
-      description: 'Full guide for users and developers',
+      description: 'Legacy full guide (single file)',
       links: [
         {
           label: 'Read the Manual',
@@ -47,6 +55,7 @@ const DOCS_STRUCTURE: Record<string, DocsSection[]> = {
       title: 'For Users',
       description: 'How to use Aurora, personalization, memory, privacy',
       links: [
+        { label: 'Aurora Book (End-User)', href: '/docs/aurora-book/end-user' },
         { label: 'Manual (User Sections)', href: '/docs/manual#universes' },
         { label: 'Quick Reference', href: '/docs/quick-reference' },
         { label: 'Privacy', href: '/docs/manual#privacy--rights' },
@@ -56,6 +65,7 @@ const DOCS_STRUCTURE: Record<string, DocsSection[]> = {
       title: 'For Developers',
       description: 'Architecture, API docs, feature development',
       links: [
+        { label: 'Aurora Book (Developer)', href: '/docs/aurora-book/developer' },
         { label: 'Manual (Tech Section)', href: '/docs/manual#platform-architecture' },
         { label: 'Feature Dev Guide', href: '/docs/feature-dev' },
         { label: 'Code Docs', href: '/docs/code-architecture' },
@@ -88,6 +98,8 @@ const DOCS_STRUCTURE: Record<string, DocsSection[]> = {
       title: 'Personality System',
       description: '5 tones, 19 universes, signals, memory, hints',
       links: [
+        { label: 'Companion System (User)', href: '/docs/aurora-book/end-user/companion-system' },
+        { label: 'Companion System (Dev)', href: '/docs/aurora-book/developer/companion-system' },
         { label: 'Companion Panel', href: '/docs/manual#companion-panel' },
         { label: 'Signals Guide', href: '/docs/quick-reference#signals' },
         { label: 'Personality Matrix', href: '/docs/design-culture#tone-of-voice' },
@@ -97,6 +109,7 @@ const DOCS_STRUCTURE: Record<string, DocsSection[]> = {
       title: 'Memory & Context',
       description: 'How Aurora remembers your sessions and preferences',
       links: [
+        { label: 'Memory and Privacy', href: '/docs/aurora-book/end-user/memory-privacy' },
         { label: 'Memory System', href: '/docs/manual#memory--context' },
         { label: 'Privacy (Data Handling)', href: '/docs/manual#privacy--rights' },
       ],
@@ -105,15 +118,17 @@ const DOCS_STRUCTURE: Record<string, DocsSection[]> = {
       title: 'Themes & Accessibility',
       description: 'Light/dark/illuminated modes, high contrast, keyboard nav',
       links: [
-        { label: 'Accessibility', href: '/docs/manual#accessibility--inclusivity' },
-        { label: 'Theming', href: '/docs/design-culture#visual-identity' },
+        { label: 'Accessibility', href: '/docs/aurora-book/end-user/accessibility' },
+        { label: 'Theming', href: '/docs/aurora-book/end-user/theming' },
+        { label: 'Accessibility (Legacy)', href: '/docs/manual#accessibility--inclusivity' },
       ],
     },
     {
       title: 'All 15 Universes',
       description: 'Home, Learning, Create, Productivity, and more',
       links: [
-        { label: 'Universes Guide', href: '/docs/manual#the-15-universes' },
+        { label: 'Universe Index', href: '/docs/aurora-book/end-user/universes' },
+        { label: 'Universes Guide (Legacy)', href: '/docs/manual#the-15-universes' },
         { label: 'Quick Ref', href: '/docs/quick-reference#universes' },
       ],
     },
@@ -212,7 +227,7 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
           <DialogTitle>
             <span id={titleId}>Aurora Documentation Portal</span>
           </DialogTitle>
-          <p id={descriptionId} className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          <p id={descriptionId} className="aurora-label text-sm text-slate-600 dark:text-slate-400 mt-1">
             Explore Aurora&apos;s docs by topic, role, or feature
           </p>
         </DialogHeader>
@@ -223,10 +238,10 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`aurora-label px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === tab
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                  ? 'aurora-label bg-blue-500 text-white'
+                  : 'aurora-label bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
               }`}
             >
               {tab}
@@ -241,10 +256,10 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
               key={section.title}
               className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">
+              <h3 className="aurora-label font-semibold text-slate-900 dark:text-slate-100 mb-1">
                 {section.title}
               </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-3">
                 {section.description}
               </p>
               <div className="flex flex-col gap-2">
@@ -254,11 +269,11 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
                     href={link.href}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"
+                    className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"
                   >
                     {link.label}
                     {link.external && (
-                      <span className="text-xs">↗</span>
+                      <span className="aurora-label text-xs">↗</span>
                     )}
                   </a>
                 ))}
@@ -268,13 +283,13 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-400">
+        <div className="aurora-label mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-400">
           <p>
             💭 <strong>Pro tip:</strong> Most pages have &quot;Learn more&quot; links that take you to relevant docs
           </p>
           <p className="mt-2">
             📖 <strong>Developer note:</strong> Read{' '}
-            <a href="/docs/feature-dev" className="text-blue-600 dark:text-blue-400 hover:underline">
+            <a href="/docs/feature-dev" className="aurora-label text-blue-600 dark:text-blue-400 hover:underline">
               Feature Development Guide
             </a>
             {' '}to add docs to new features

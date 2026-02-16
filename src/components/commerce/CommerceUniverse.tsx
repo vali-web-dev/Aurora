@@ -62,32 +62,32 @@ export function CommerceUniverse() {
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-4 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="flex flex-col leading-tight">
-                <span className="text-xs text-slate-500 dark:text-slate-400">Cart total</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">Cart total</span>
+                <span className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                   {formatMoney(total)}
                 </span>
               </div>
               <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
               <div className="flex flex-col leading-tight">
-                <span className="text-xs text-slate-500 dark:text-slate-400">Items</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">Items</span>
+                <span className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                   {itemCount}
                 </span>
               </div>
               <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
               <Link href="/commerce/cart#saved" className="flex flex-col leading-tight">
-                <span className="text-xs text-slate-500 dark:text-slate-400">Saved</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">Saved</span>
+                <span className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                   {savedCount}
                 </span>
               </Link>
               <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
               <Link href="/commerce/orders" className="flex flex-col leading-tight">
-                <span className="text-xs text-slate-500 dark:text-slate-400">Orders</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">Orders</span>
+                <span className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                   {orderCount}
                   {pendingCount > 0 && (
-                    <span className="ml-1 text-xs text-blue-600 dark:text-blue-400">
+                    <span className="aurora-label ml-1 text-xs text-blue-600 dark:text-blue-400">
                       ({pendingCount})
                     </span>
                   )}
@@ -137,7 +137,7 @@ export function CommerceUniverse() {
                   <div
                     key={provider}
                     role="listitem"
-                    className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium text-slate-900 dark:text-slate-50"
+                    className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium aurora-label text-slate-900 dark:text-slate-50"
                   >
                     {provider}
                   </div>

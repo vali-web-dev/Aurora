@@ -126,8 +126,8 @@ export function RealtimeNotifications() {
           setUnreadCount(0);
         }}
         className={clsx(
-          'relative w-10 h-10 rounded-lg flex items-center justify-center',
-          'text-slate-600 dark:text-slate-300',
+          'aurora-label relative w-10 h-10 rounded-lg flex items-center justify-center',
+          'aurora-label text-slate-600 dark:text-slate-300',
           'bg-slate-100/70 dark:bg-slate-900/60',
           'border border-slate-200 dark:border-slate-800',
           'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
@@ -137,9 +137,9 @@ export function RealtimeNotifications() {
         aria-expanded={isOpen}
         aria-controls={panelId}
       >
-        <span className="text-lg">🔔</span>
+        <span className="aurora-label text-lg">🔔</span>
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] flex items-center justify-center">
+          <span className="aurora-label absolute -top-1 -right-1 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] flex items-center justify-center">
             {unreadCount}
           </span>
         )}
@@ -163,17 +163,17 @@ export function RealtimeNotifications() {
         >
           <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
                 Live Updates
               </h3>
-              <span className="text-xs text-slate-500 dark:text-slate-400">Realtime</span>
+              <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">Realtime</span>
             </div>
             <button
               onClick={() => setIsOpen(false)}
               className={clsx(
                 'flex-shrink-0 w-7 h-7 rounded-lg',
                 'flex items-center justify-center',
-                'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
+                'aurora-label text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
                 'hover:bg-slate-100 dark:hover:bg-slate-800',
                 'transition-all duration-200',
                 'focus:outline-none focus:ring-2 focus:ring-blue-500'
@@ -205,17 +205,17 @@ export function RealtimeNotifications() {
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
-                      <p className="font-medium text-slate-900 dark:text-slate-50">
+                      <p className="aurora-label font-medium text-slate-900 dark:text-slate-50">
                         {item.title}
                       </p>
                       <Badge size="sm" variant={toneVariant(item.tone)} className="capitalize">
                         {item.tone}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-500 dark:text-slate-400">
                       {item.detail}
                     </p>
-                    <p className="text-[11px] text-slate-400 mt-2">{item.time}</p>
+                    <p className="aurora-label text-[11px] text-slate-400 mt-2">{item.time}</p>
                   </div>
                   <button
                     onClick={() =>
@@ -224,7 +224,7 @@ export function RealtimeNotifications() {
                     className={clsx(
                       'flex-shrink-0 w-6 h-6 rounded',
                       'flex items-center justify-center',
-                      'text-slate-300 hover:text-slate-500 dark:hover:text-slate-300',
+                      'aurora-label text-slate-300 hover:text-slate-500 dark:hover:text-slate-300',
                       'hover:bg-slate-100 dark:hover:bg-slate-800',
                       'transition-all duration-200 opacity-0 group-hover:opacity-100',
                       'focus:outline-none focus:ring-2 focus:ring-blue-500'
@@ -250,7 +250,7 @@ export function RealtimeNotifications() {
               </div>
             ))}
           </div>
-          <div className="px-4 py-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500">
+          <div className="aurora-label px-4 py-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500">
             Last sync: just now
           </div>
         </div>

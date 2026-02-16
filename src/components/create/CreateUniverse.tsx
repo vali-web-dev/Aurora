@@ -45,10 +45,10 @@ export function CreateUniverse() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-3 font-medium border-b-2 transition-colors ${
+              className={`aurora-label px-4 py-3 font-medium border-b-2 transition-colors ${
                 activeTab === tab
-                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
+                  ? 'aurora-label border-blue-600 text-blue-600 dark:text-blue-400'
+                  : 'aurora-label border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
               }`}
               role="tab"
               aria-selected={activeTab === tab}
@@ -71,7 +71,7 @@ export function CreateUniverse() {
             </Card>
 
             <div className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">
+              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">
                 Recent Surfaces
               </h3>
               <div className="space-y-2" role="list" aria-label="Recent surfaces">
@@ -83,10 +83,10 @@ export function CreateUniverse() {
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold text-slate-900 dark:text-slate-50">
+                        <p className="aurora-label text-slate-900 dark:text-slate-50">
                           {surface.name}
                         </p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                        <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                           {surface.blocks} blocks • Updated {surface.updated}
                         </p>
                       </div>
@@ -104,10 +104,10 @@ export function CreateUniverse() {
         {activeTab === 'library' && (
           <div className="space-y-6">
             <div className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">
+              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">
                 Block Library
               </h3>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-slate-600 dark:text-slate-400">
                 Choose blocks to compose your surfaces. Each block is designed for clarity and responsiveness.
               </p>
             </div>
@@ -133,12 +133,12 @@ export function CreateUniverse() {
                       <div className="text-4xl">{block.icon}</div>
                       <div>
                         <CardTitle>{block.name}</CardTitle>
-                        <CardDescription className="text-xs">
+                        <CardDescription className="aurora-label text-xs">
                           {block.description}
                         </CardDescription>
                       </div>
                       <div
-                        className={`h-1 rounded-full ${
+                        className={`aurora-label h-1 rounded-full ${
                           selectedBlocks.includes(block.name)
                             ? 'bg-blue-600'
                             : 'bg-slate-200 dark:bg-slate-800'
@@ -163,7 +163,7 @@ export function CreateUniverse() {
                         role="listitem"
                         size="sm"
                         variant="primary"
-                        className="bg-blue-600 text-white ring-0 dark:bg-blue-500 dark:text-white"
+                        className="aurora-label bg-blue-600 text-white ring-0 dark:bg-blue-500 dark:text-white"
                       >
                         {block} ✕
                       </Badge>
@@ -181,10 +181,10 @@ export function CreateUniverse() {
         {activeTab === 'templates' && (
           <div className="space-y-6">
             <div className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">
+              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">
                 Pre-built Templates
               </h3>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-slate-600 dark:text-slate-400">
                 Start with professionally designed templates and customize them for your needs.
               </p>
             </div>

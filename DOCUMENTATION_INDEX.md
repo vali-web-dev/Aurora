@@ -6,6 +6,16 @@ This repository contains Aurora's complete identity, design philosophy, and user
 
 ## The Aurora Documentation Suite
 
+### 📘 **[docs/aurora-system-and-brains-book.md](docs/aurora-system-and-brains-book.md)**
+**For:** End users and developers (two editions)
+**Contains:**
+- End-User Help Manual (free)
+- Developer Manual (paid)
+- Multi-file navigation with per-universe chapters
+- Cross-linked system chapters (companion, theming, accessibility, privacy)
+
+**Read this if:** You want the most complete, publishable, navigable manual.
+
 ### 🚀 **[AURORA_QUICK_REFERENCE.md](AURORA_QUICK_REFERENCE.md)**
 **For:** Anyone with 5 minutes  
 **Contains:**

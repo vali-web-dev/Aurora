@@ -164,17 +164,17 @@ export function GlobalSearch({
             }}
             placeholder={placeholder}
             className={clsx(
-              'w-full rounded-lg border px-10 py-2 text-sm',
+              'aurora-label w-full rounded-lg border px-10 py-2 text-sm',
               'bg-white/90 dark:bg-slate-900/70',
               'border-slate-200 dark:border-slate-800',
-              'text-slate-700 dark:text-slate-200',
-              'placeholder:text-slate-400',
+              'aurora-label text-slate-700 dark:text-slate-200',
+              'placeholder:opacity-70',
               'focus:outline-none focus:ring-2 focus:ring-blue-500/40'
             )}
             aria-label="Search"
             aria-controls="global-search-inline-results"
           />
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+          <span className="aurora-label pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
             <svg
               className="h-4 w-4"
               viewBox="0 0 24 24"
@@ -201,7 +201,7 @@ export function GlobalSearch({
               aria-label="Search results"
             >
               {results.length === 0 ? (
-                <div className="px-4 py-3 text-sm text-slate-500">
+                <div className="aurora-label px-4 py-3 text-sm text-slate-500">
                   No results found.
                 </div>
               ) : (
@@ -212,21 +212,21 @@ export function GlobalSearch({
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => handleSelect(item.href)}
                     className={clsx(
-                      'flex w-full items-start gap-3 px-4 py-2.5 text-left text-sm',
+                      'aurora-label flex w-full items-start gap-3 px-4 py-2.5 text-left text-sm',
                       index === activeIndex
-                        ? 'bg-blue-600 text-white'
-                        : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900'
+                        ? 'aurora-label bg-blue-600 text-white'
+                        : 'aurora-label text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900'
                     )}
                     role="option"
                     aria-selected={index === activeIndex}
                   >
-                    <span className={clsx('w-4 h-4 flex-shrink-0 mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(item.label))}>
+                    <span className={clsx('aurora-label w-4 h-4 flex-shrink-0 mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(item.label))}>
                       <PageIcon pageName={item.label} className="w-full h-full" />
                     </span>
                     <div className="flex-1 min-w-0">
                       <div className="font-medium">{item.label}</div>
                       {item.description && (
-                        <div className={clsx('text-xs truncate', index === activeIndex ? 'text-white/80' : 'text-slate-500 dark:text-slate-400')}>
+                        <div className={clsx('aurora-label text-xs truncate', index === activeIndex ? 'text-white/80' : 'text-slate-500 dark:text-slate-400')}>
                           {item.description}
                         </div>
                       )}
@@ -247,9 +247,9 @@ export function GlobalSearch({
           <button
             onClick={() => setIsOpen(true)}
             className={clsx(
-              'hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg',
+              'aurora-label hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg',
               'text-sm font-medium transition-all duration-200',
-              'text-slate-600 dark:text-slate-300',
+              'aurora-label text-slate-600 dark:text-slate-300',
               'bg-slate-100/70 dark:bg-slate-900/60',
               'border border-slate-200 dark:border-slate-800',
               'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
@@ -260,14 +260,14 @@ export function GlobalSearch({
             aria-controls={dialogId}
           >
             <span>Search</span>
-            <span className="text-xs text-slate-400">Ctrl K</span>
+            <span className="aurora-label text-xs text-slate-400">Ctrl K</span>
           </button>
 
           <button
             onClick={() => setIsOpen(true)}
             className={clsx(
-              'md:hidden w-10 h-10 rounded-lg flex items-center justify-center',
-              'text-slate-600 dark:text-slate-300',
+              'aurora-label md:hidden w-10 h-10 rounded-lg flex items-center justify-center',
+              'aurora-label text-slate-600 dark:text-slate-300',
               'bg-slate-100/70 dark:bg-slate-900/60',
               'border border-slate-200 dark:border-slate-800',
               'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
@@ -297,8 +297,8 @@ export function GlobalSearch({
               onKeyDown={handleInputKeyDown}
               placeholder="Search pages and universes"
               className={clsx(
-                'w-full bg-transparent text-slate-900 dark:text-slate-50',
-                'placeholder:text-slate-400 outline-none text-lg'
+                'aurora-label w-full bg-transparent text-slate-900 dark:text-slate-50',
+                'placeholder:opacity-70 outline-none text-lg'
               )}
               aria-label="Search"
               aria-activedescendant={
@@ -309,7 +309,7 @@ export function GlobalSearch({
         >
           <div className="max-h-[50vh] overflow-y-auto">
             {results.length === 0 && (
-              <div className="px-2 py-6 text-sm text-slate-500">
+              <div className="aurora-label px-2 py-6 text-sm text-slate-500">
                 No results found.
               </div>
             )}
@@ -320,22 +320,22 @@ export function GlobalSearch({
                   id={`${dialogId}-option-${index}`}
                   onClick={() => handleSelect(item.href)}
                   className={clsx(
-                    'w-full flex items-start gap-3 px-4 py-3 rounded-lg text-left',
+                    'aurora-label w-full flex items-start gap-3 px-4 py-3 rounded-lg text-left',
                     'transition-colors',
                     index === activeIndex
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      ? 'aurora-label bg-blue-600 text-white'
+                      : 'aurora-label text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   )}
                   role="option"
                   aria-selected={index === activeIndex}
                 >
-                  <span className={clsx('w-5 h-5 flex-shrink-0 mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(item.label))}>
+                  <span className={clsx('aurora-label w-5 h-5 flex-shrink-0 mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(item.label))}>
                     <PageIcon pageName={item.label} className="w-full h-full" />
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="font-medium">{item.label}</div>
                     {item.description && (
-                      <div className={clsx('text-sm truncate', index === activeIndex ? 'text-white/80' : 'text-slate-500 dark:text-slate-400')}>
+                      <div className={clsx('aurora-label text-sm truncate', index === activeIndex ? 'text-white/80' : 'text-slate-500 dark:text-slate-400')}>
                         {item.description}
                       </div>
                     )}
@@ -343,7 +343,7 @@ export function GlobalSearch({
                   <Badge
                     size="sm"
                     variant={index === activeIndex ? 'primary' : 'default'}
-                    className={index === activeIndex ? 'bg-white/20 text-white flex-shrink-0' : 'flex-shrink-0'}
+                    className={index === activeIndex ? 'aurora-label bg-white/20 text-white flex-shrink-0' : 'flex-shrink-0'}
                   >
                     {item.group}
                   </Badge>

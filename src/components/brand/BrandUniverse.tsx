@@ -24,7 +24,7 @@ export function BrandUniverse() {
       <Surface className="py-8">
         <SurfaceHeader title="Brand Universe" description="Define your identity, voice, and campaigns." />
         <Card>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
             No brand profiles yet. Create your first brand to begin.
           </p>
         </Card>
@@ -54,7 +54,7 @@ export function BrandUniverse() {
             <p className="aurora-label text-slate-500 dark:text-slate-400">Brand Story</p>
             <CardTitle>{brand.name}</CardTitle>
           </div>
-          <p className="text-sm text-slate-600 dark:text-slate-400">{brand.story}</p>
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">{brand.story}</p>
           <div className="flex flex-wrap gap-2">
             {brand.values.map((value) => (
               <Badge key={value} size="sm" variant="info">
@@ -72,11 +72,11 @@ export function BrandUniverse() {
             <div className="space-y-2">
               <div>
                 <p className="aurora-label text-slate-500 dark:text-slate-400">Tone</p>
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{brand.tone}</p>
+                <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{brand.tone}</p>
               </div>
               <div>
                 <p className="aurora-label text-slate-500 dark:text-slate-400">Archetype</p>
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{brand.archetype}</p>
+                <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{brand.archetype}</p>
               </div>
             </div>
           </Card>
@@ -98,8 +98,8 @@ export function BrandUniverse() {
           {brandAssets.map((asset) => (
             <Card key={asset.id} className="space-y-2" role="listitem">
               <p className="aurora-label text-slate-500 dark:text-slate-400">{asset.kind}</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{asset.label}</p>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{asset.label}</p>
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 Updated {asset.updatedAt.toLocaleDateString()}
               </p>
             </Card>
@@ -112,8 +112,8 @@ export function BrandUniverse() {
           {brandCampaigns.map((campaign) => (
             <div key={campaign.id} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
               <div>
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{campaign.title}</p>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{campaign.title}</p>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                   {campaign.channel} · Starts {campaign.startsAt.toLocaleDateString()}
                 </p>
               </div>

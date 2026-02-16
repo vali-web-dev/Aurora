@@ -33,7 +33,7 @@ export function CardHeader({ children, className }: CardSectionProps) {
 
 export function CardTitle({ children, className }: CardSectionProps) {
   return (
-    <h3 className={cn('text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-50', className)}>
+    <h3 className={cn('aurora-label text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-50', className)}>
       {children}
     </h3>
   );
@@ -41,7 +41,7 @@ export function CardTitle({ children, className }: CardSectionProps) {
 
 export function CardDescription({ children, className }: CardSectionProps) {
   return (
-    <p className={cn('text-sm text-slate-600 dark:text-slate-400', className)}>
+    <p className={cn('aurora-label text-sm text-slate-600 dark:text-slate-400', className)}>
       {children}
     </p>
   );

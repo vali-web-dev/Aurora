@@ -61,8 +61,8 @@ export function CommunitiesUniverse() {
                   {community.visibility}
                 </Badge>
               </div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">{community.description}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-500">/{community.slug}</p>
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">{community.description}</p>
+              <p className="aurora-label text-xs text-slate-500 dark:text-slate-500">/{community.slug}</p>
               <Button variant="ghost" size="sm">View Space</Button>
             </Card>
           ))}
@@ -74,13 +74,13 @@ export function CommunitiesUniverse() {
           {posts.map((post) => (
             <div key={post.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{post.title}</p>
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{post.title}</p>
                 <Badge size="sm" variant="default">
                   {communities.find((community) => community.id === post.communityId)?.name ?? 'Community'}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">{post.body}</p>
-              <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-500">
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{post.body}</p>
+              <div className="aurora-label flex items-center gap-4 text-xs text-slate-500 dark:text-slate-500">
                 <span>{post.likes} likes</span>
                 <span>{post.comments} comments</span>
                 <span>{formatDate(post.createdAt)}</span>
@@ -100,7 +100,7 @@ export function CommunitiesUniverse() {
                   {event.status}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">{formatDate(event.date)}</p>
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{formatDate(event.date)}</p>
               <Button variant="secondary" size="sm">Open Room</Button>
             </Card>
           ))}

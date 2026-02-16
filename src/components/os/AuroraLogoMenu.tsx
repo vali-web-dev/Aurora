@@ -128,7 +128,7 @@ export function AuroraLogoMenu() {
           )}
         />
         {/* Aurora Symbol */}
-        <span className="relative z-10 text-white text-xl font-bold">✨</span>
+        <span className="aurora-label relative z-10 text-white text-xl font-bold">✨</span>
       </button>
 
       {/* Full Navigation Menu */}
@@ -153,7 +153,7 @@ export function AuroraLogoMenu() {
             <h2 className="aurora-heading-3">
               Aurora Universes
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="aurora-label text-xs text-slate-500 dark:text-slate-400 mt-1">
               Navigate your digital civilization
             </p>
           </div>
@@ -176,8 +176,8 @@ export function AuroraLogoMenu() {
                       'transition-all duration-200',
                       'hover:bg-slate-100 dark:hover:bg-slate-800',
                       isExpanded
-                        ? 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30'
-                        : 'text-slate-500 dark:text-slate-400'
+                        ? 'aurora-label text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30'
+                        : 'aurora-label text-slate-500 dark:text-slate-400'
                     )}
                   >
                     <span>
@@ -235,11 +235,11 @@ export function AuroraLogoMenu() {
                               />
                             </span>
                             <div className="flex-1 min-w-0">
-                              <div className="font-semibold text-sm text-slate-900 dark:text-slate-50">
+                              <div className="aurora-label text-sm text-slate-900 dark:text-slate-50">
                                 {item.label}
                               </div>
                               {item.description && (
-                                <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                                <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 truncate">
                                   {item.description}
                                 </div>
                               )}
@@ -255,17 +255,17 @@ export function AuroraLogoMenu() {
                                   href={child.href}
                                   onClick={closeMenu}
                                   className={clsx(
-                                    'block px-3 py-1.5 rounded-md text-xs',
+                                    'aurora-label block px-3 py-1.5 rounded-md text-xs',
                                     'transition-all duration-200',
                                     'hover:bg-slate-100 dark:hover:bg-slate-800',
                                     pathname === child.href
-                                      ? 'bg-slate-100 dark:bg-slate-800 font-medium text-slate-900 dark:text-slate-50'
-                                      : 'text-slate-600 dark:text-slate-400'
+                                      ? 'aurora-label bg-slate-100 dark:bg-slate-800 font-medium text-slate-900 dark:text-slate-50'
+                                      : 'aurora-label text-slate-600 dark:text-slate-400'
                                   )}
                                 >
                                   <div className="font-medium">{child.label}</div>
                                   {child.description && (
-                                    <div className="text-[10px] text-slate-500 dark:text-slate-500 truncate mt-0.5">
+                                    <div className="aurora-label text-[10px] text-slate-500 dark:text-slate-500 truncate mt-0.5">
                                       {child.description}
                                     </div>
                                   )}
@@ -284,7 +284,7 @@ export function AuroraLogoMenu() {
 
           {/* Footer */}
           <div className="sticky bottom-0 px-5 py-3 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm">
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 text-center">
+            <p className="aurora-label text-[10px] text-slate-400 dark:text-slate-500 text-center">
               Press ESC to close • Navigate with keyboard
             </p>
           </div>

@@ -50,8 +50,8 @@ export function FinanceUniverse() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {accounts.map((account) => (
               <div key={account.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{account.name}</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{account.name}</p>
+                <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">
                   ${(account.balanceCents / 100).toFixed(0)}
                 </p>
                 <Badge size="sm" variant="default">{account.type}</Badge>
@@ -76,8 +76,8 @@ export function FinanceUniverse() {
                   className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800"
                 >
                   <div>
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{tx.description}</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{formatDate(tx.date)}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{tx.description}</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{formatDate(tx.date)}</p>
                   </div>
                   <Badge size="sm" variant={tx.category === 'income' ? 'success' : 'default'}>
                     {tx.category === 'income' ? '+' : ''} ${(tx.amountCents / 100).toFixed(2)}
@@ -96,8 +96,8 @@ export function FinanceUniverse() {
                   return (
                     <div key={budget.id} className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{budget.name}</p>
-                        <span className="text-xs text-slate-600 dark:text-slate-400">{percent}%</span>
+                        <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{budget.name}</p>
+                        <span className="aurora-label text-xs text-slate-600 dark:text-slate-400">{percent}%</span>
                       </div>
                       <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                         <div
@@ -117,12 +117,12 @@ export function FinanceUniverse() {
                 {insights.map((insight) => (
                   <div key={insight.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50 text-sm">{insight.title}</p>
+                      <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{insight.title}</p>
                       <Badge size="sm" variant={insight.priority === 'high' ? 'error' : 'default'}>
                         {insight.priority}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{insight.description}</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{insight.description}</p>
                   </div>
                 ))}
               </div>
@@ -138,8 +138,8 @@ export function FinanceUniverse() {
               const gainLossPct = ((inv.gainLoss / inv.costBasis) * 100).toFixed(1);
               return (
                 <div key={inv.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{inv.symbol}</p>
-                  <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">{inv.symbol}</p>
+                  <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">
                     ${(inv.currentValue / 100).toFixed(0)}
                   </p>
                   <Badge size="sm" variant={inv.gainLoss > 0 ? 'success' : 'error'}>

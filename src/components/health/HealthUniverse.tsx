@@ -50,8 +50,8 @@ export function HealthUniverse() {
                 <p className="aurora-label text-slate-500 dark:text-slate-400">
                   {vital.type.replace('_', ' ')}
                 </p>
-                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">{vital.value}</p>
-                <p className="text-xs text-slate-600 dark:text-slate-400">{vital.unit}</p>
+                <p className="aurora-label text-3xl font-bold text-slate-900 dark:text-slate-50">{vital.value}</p>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{vital.unit}</p>
               </div>
             ))}
           </div>
@@ -69,10 +69,10 @@ export function HealthUniverse() {
               {activities.map((activity) => (
                 <div key={activity.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50 capitalize">{activity.type}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50 capitalize">{activity.type}</p>
                     <Badge size="sm" variant="info">{activity.caloriesBurned} kcal</Badge>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {activity.duration} min • {activity.distance.toFixed(1)} mi
                   </p>
                 </div>
@@ -87,7 +87,7 @@ export function HealthUniverse() {
                 {goals.map((goal) => (
                   <div key={goal.id} role="listitem" className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{goal.category}</p>
+                      <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{goal.category}</p>
                       <Badge size="sm" variant={goal.status === 'completed' ? 'success' : 'default'}>
                         {goal.currentProgress}%
                       </Badge>
@@ -109,14 +109,14 @@ export function HealthUniverse() {
                 {sleep.map((record) => (
                   <div key={record.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">
                         {(record.duration / 60).toFixed(1)}h
                       </p>
                       <Badge size="sm" variant={record.quality === 'excellent' ? 'success' : record.quality === 'good' ? 'info' : 'warning'}>
                         {record.quality}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       {record.deepSleepPercent}% deep sleep
                     </p>
                   </div>
@@ -133,10 +133,10 @@ export function HealthUniverse() {
             {nutrition.map((entry) => (
               <div key={entry.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50 capitalize">{entry.mealType}</p>
+                  <p className="aurora-label text-slate-900 dark:text-slate-50 capitalize">{entry.mealType}</p>
                   <Badge size="sm" variant="info">{entry.caloriesEstimated} kcal</Badge>
                 </div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">{entry.items.join(' • ')}</p>
+                <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">{entry.items.join(' • ')}</p>
               </div>
             ))}
           </div>

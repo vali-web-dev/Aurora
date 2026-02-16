@@ -6,7 +6,7 @@ import { Footer } from './Footer';
 
 export function AuroraShell({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 flex flex-col">
+    <div className="aurora-label min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 flex flex-col">
       <TopNav />
       <main 
         id="main-content" 

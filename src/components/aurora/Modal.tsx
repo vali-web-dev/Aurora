@@ -140,7 +140,7 @@ export function AuroraModal({
                     {title && (
                       <h2
                         id={titleId}
-                        className="text-lg font-semibold text-slate-900 dark:text-slate-50"
+                        className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50"
                       >
                         {title}
                       </h2>
@@ -148,7 +148,7 @@ export function AuroraModal({
                     {description && (
                       <p
                         id={descriptionId}
-                        className="text-sm text-slate-500 dark:text-slate-400"
+                        className="aurora-label text-sm text-slate-500 dark:text-slate-400"
                       >
                         {description}
                       </p>
@@ -161,7 +161,7 @@ export function AuroraModal({
                 className={clsx(
                   'flex-shrink-0 w-8 h-8 rounded-lg',
                   'flex items-center justify-center',
-                  'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
+                  'aurora-label text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
                   'hover:bg-slate-100 dark:hover:bg-slate-800',
                   'transition-all duration-200',
                   'focus:outline-none focus:ring-2 focus:ring-blue-500'
@@ -190,7 +190,7 @@ export function AuroraModal({
           {children}
         </div>
         {footerContent && (
-          <div className="px-4 py-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500">
+          <div className="aurora-label px-4 py-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500">
             {footerContent}
           </div>
         )}

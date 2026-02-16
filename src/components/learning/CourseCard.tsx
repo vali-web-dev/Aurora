@@ -24,9 +24,9 @@ export function CourseCard({
   onEnroll,
 }: CourseCardProps) {
   const levelColors = {
-    beginner: 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300',
-    intermediate: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300',
-    advanced: 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300',
+    beginner: 'aurora-label bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300',
+    intermediate: 'aurora-label bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300',
+    advanced: 'aurora-label bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300',
   };
 
   return (
@@ -45,14 +45,14 @@ export function CourseCard({
           <Badge variant="default" size="sm" className={levelColors[level]}>
             {level.charAt(0).toUpperCase() + level.slice(1)}
           </Badge>
-          <span className="text-xs text-slate-600 dark:text-slate-400">
+          <span className="aurora-label text-xs text-slate-600 dark:text-slate-400">
             {duration}h • {lessons} lessons
           </span>
         </div>
 
         {progress > 0 && (
           <div className="space-y-1">
-            <div className="flex justify-between text-xs text-slate-600 dark:text-slate-400">
+            <div className="aurora-label flex justify-between text-xs text-slate-600 dark:text-slate-400">
               <span>Progress</span>
               <span>{progress}%</span>
             </div>

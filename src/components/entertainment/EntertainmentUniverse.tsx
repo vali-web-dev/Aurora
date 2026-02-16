@@ -38,7 +38,7 @@ export function EntertainmentUniverse() {
                   Featured
                 </p>
                 <CardTitle className="text-3xl">{featured.title}</CardTitle>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   {featured.provider} • {featured.durationMinutes} min • ★ {featured.rating.toFixed(1)}
                 </p>
                 <div className="flex gap-3">
@@ -83,7 +83,7 @@ export function EntertainmentUniverse() {
                 <div
                   key={provider}
                   role="listitem"
-                  className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium text-slate-900 dark:text-slate-50"
+                  className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium aurora-label text-slate-900 dark:text-slate-50"
                 >
                   {provider}
                 </div>

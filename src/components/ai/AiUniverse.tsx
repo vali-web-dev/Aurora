@@ -46,14 +46,14 @@ export function AiUniverse() {
             {models.map((model) => (
               <div key={model.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{model.name}</p>
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">{model.name}</p>
                   <Badge size="sm" variant="primary">{model.provider}</Badge>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                   {model.capability} • ${model.costPerRequest.toFixed(4)}/req
                 </p>
                 <div className="space-y-1">
-                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                  <div className="aurora-label flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                     <span>Performance</span>
                     <span>{(model.performanceScore * 10).toFixed(0)}%</span>
                   </div>
@@ -81,7 +81,7 @@ export function AiUniverse() {
               {conversations.slice(0, 5).map((conv) => (
                 <div key={conv.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{conv.title}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{conv.title}</p>
                     <Badge
                       size="sm"
                       variant={conv.status === 'active' ? 'success' : 'default'}
@@ -89,7 +89,7 @@ export function AiUniverse() {
                       {conv.status}
                     </Badge>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {conv.messageCount} messages • {formatDate(conv.lastMessageAt)}
                   </p>
                 </div>
@@ -107,12 +107,12 @@ export function AiUniverse() {
                 {agents.map((agent) => (
                   <div key={agent.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{agent.name}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{agent.name}</p>
                       <Badge size="sm" variant={agent.status === 'active' ? 'success' : 'warning'}>
                         {agent.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       {agent.taskCount} tasks • {(agent.accuracy * 100).toFixed(0)}% accuracy
                     </p>
                   </div>
@@ -122,7 +122,7 @@ export function AiUniverse() {
 
             <Card className="space-y-3">
               <CardTitle>Agent Insights</CardTitle>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 Your AI agents are performing 18% better than last week.
               </p>
               <Button variant="primary" size="sm">View Details</Button>

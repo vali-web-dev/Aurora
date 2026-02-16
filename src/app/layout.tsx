@@ -66,7 +66,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 antialiased">
+      <body className="aurora-label bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 antialiased">
         <div className="aurora-global-overlay" aria-hidden="true">
           <div className="aurora-global-life">
             <div className="life-ambient" />

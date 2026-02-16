@@ -537,6 +537,10 @@ html:not(.aurora-motion-ready) * {
   letter-spacing: 0.05em;
 }
 
+th {
+  @apply aurora-label;
+}
+
 /* Aurora Badge Text - For tags and badges */
 .aurora-badge {
   @apply aurora-text-shimmer;

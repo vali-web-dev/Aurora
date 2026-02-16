@@ -86,20 +86,20 @@ export function RealmsUniverse() {
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">This Week</p>
-                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+                <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-1">This Week</p>
+                <p className="aurora-label text-3xl font-bold text-slate-900 dark:text-slate-50">
                   {hours}h {minutes}m
                 </p>
               </div>
               <div>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Most Active</p>
-                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+                <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-1">Most Active</p>
+                <p className="aurora-label text-3xl font-bold text-slate-900 dark:text-slate-50">
                   {mostActiveRealm.name}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Realms Visited</p>
-                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">{mockRealms.length}</p>
+                <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-1">Realms Visited</p>
+                <p className="aurora-label text-3xl font-bold text-slate-900 dark:text-slate-50">{mockRealms.length}</p>
               </div>
             </div>
           </div>
@@ -137,21 +137,21 @@ export function RealmsUniverse() {
                       <CardTitle className="text-xl">
                         {realm.name}
                       </CardTitle>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                         {realm.description}
                       </p>
                     </div>
 
                     <div className="space-y-2">
                       {realm.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                        <div key={idx} className="aurora-label flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
                           <span className="text-lg">✓</span>
                           <span>{feature}</span>
                         </div>
                       ))}
                     </div>
 
-                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    <p className="aurora-label text-xs text-slate-500 dark:text-slate-400 font-medium">
                       📊 {mockRealmUsage[realm.id]?.timeLabel ?? '0h 0m this week'}
                     </p>
 
@@ -176,7 +176,7 @@ export function RealmsUniverse() {
                 </CardTitle>
                 <button
                   onClick={() => setActiveRealm(null)}
-                  className="text-3xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  className="aurora-label text-3xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                   aria-label="Close active realm"
                   type="button"
                 >
@@ -184,7 +184,7 @@ export function RealmsUniverse() {
                 </button>
               </div>
 
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-slate-600 dark:text-slate-400">
                 {mockRealms.find((r) => r.id === activeRealm)?.description}
               </p>
 
@@ -198,7 +198,7 @@ export function RealmsUniverse() {
               </div>
 
               <div className="bg-white dark:bg-slate-800 p-4 rounded-lg space-y-2">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">Session Options:</p>
+                <p className="aurora-label text-slate-900 dark:text-slate-50">Session Options:</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {['25m', '45m', '90m', 'Unlimited'].map((time) => (
                     <Button key={time} variant="ghost" size="sm" className="text-sm">
@@ -218,14 +218,14 @@ export function RealmsUniverse() {
             <CardTitle className="text-xl">Your Realm Insights</CardTitle>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 bg-blue-50 dark:bg-slate-800 rounded-lg">
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Most Focused Day</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">Tuesday</p>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">2.3h in Focus Realm</p>
+                <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-1">Most Focused Day</p>
+                <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">Tuesday</p>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400 mt-2">2.3h in Focus Realm</p>
               </div>
               <div className="p-4 bg-purple-50 dark:bg-slate-800 rounded-lg">
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Creative Peak</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">Evening</p>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Most Creation sessions</p>
+                <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-1">Creative Peak</p>
+                <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">Evening</p>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400 mt-2">Most Creation sessions</p>
               </div>
             </div>
           </div>

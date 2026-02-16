@@ -66,17 +66,17 @@ export function HomeUpgrades() {
           {notifications.map((item) => (
             <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">
+                <p className="aurora-label text-slate-900 dark:text-slate-50">
                   {item.title}
                 </p>
                 <Badge size="sm" variant={item.read ? 'default' : 'info'}>
                   {item.kind}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 {item.body}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-500">
+              <p className="aurora-label text-xs text-slate-500 dark:text-slate-500">
                 {formatDateTime(item.createdAt)}
               </p>
             </div>
@@ -100,14 +100,14 @@ export function HomeUpgrades() {
           {learningTimeline.map((item) => (
             <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">
+                <p className="aurora-label text-slate-900 dark:text-slate-50">
                   {item.title}
                 </p>
                 <Badge size="sm" variant="info">
                   {item.percent}%
                 </Badge>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 Course {item.courseId} • {item.dateLabel}
               </p>
             </div>
@@ -135,7 +135,7 @@ export function HomeUpgrades() {
         </div>
         {orderCount === 0 ? (
           <div className="space-y-3 text-center py-4">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
               No orders yet
             </p>
             <Button
@@ -148,7 +148,7 @@ export function HomeUpgrades() {
           </div>
         ) : (
           <div className="space-y-3">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
               {orderCount} total orders • {pendingCount} pending delivery
             </p>
             <div className="space-y-2">
@@ -167,17 +167,17 @@ export function HomeUpgrades() {
                     onClick={() => handleNavigate(`/commerce/orders/${order.id}`, `Order ${order.id}`)}
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50 text-sm">
+                      <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">
                         Order {order.id}
                       </p>
                       <Badge size="sm" variant={statusColors[order.status]}>
                         {order.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       {order.cartItems.length} items • ${(order.totalCents / 100).toFixed(2)}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
+                    <p className="aurora-label text-xs text-slate-500 dark:text-slate-500">
                       {formatDateTime(order.createdAt)}
                     </p>
                   </div>

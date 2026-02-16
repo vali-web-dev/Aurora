@@ -37,10 +37,10 @@ export function FeatureGrid() {
   return (
     <section className="space-y-8 py-12">
       <div className="space-y-3">
-        <h2 className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
+        <h2 className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
           Core Features
         </h2>
-        <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+        <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">
           Everything you need, beautifully unified.
         </p>
       </div>

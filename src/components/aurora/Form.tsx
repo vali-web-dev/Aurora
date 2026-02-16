@@ -10,15 +10,15 @@ export function Input({ label, error, className, ...props }: InputProps) {
   return (
     <div className="w-full space-y-1">
       {label && (
-        <label className="block text-sm font-medium text-slate-900 dark:text-slate-50">
+        <label className="aurora-label text-slate-900 dark:text-slate-50">
           {label}
         </label>
       )}
       <input
         className={cn(
-          'w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600',
-          'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50',
-          'placeholder-slate-400 dark:placeholder-slate-500',
+          'aurora-label w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600',
+          'aurora-label bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50',
+          'placeholder:opacity-70',
           'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
           'disabled:opacity-50 disabled:cursor-not-allowed',
           error && 'border-red-500 focus:ring-red-500',
@@ -26,7 +26,7 @@ export function Input({ label, error, className, ...props }: InputProps) {
         )}
         {...props}
       />
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="aurora-label text-sm text-red-500">{error}</p>}
     </div>
   );
 }
@@ -40,14 +40,14 @@ export function Select({ label, options, className, ...props }: SelectProps) {
   return (
     <div className="w-full space-y-1">
       {label && (
-        <label className="block text-sm font-medium text-slate-900 dark:text-slate-50">
+        <label className="aurora-label text-slate-900 dark:text-slate-50">
           {label}
         </label>
       )}
       <select
         className={cn(
-          'w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600',
-          'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50',
+          'aurora-label w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600',
+          'aurora-label bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50',
           'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
           className
         )}
@@ -72,15 +72,15 @@ export function Textarea({ label, error, className, ...props }: TextareaProps) {
   return (
     <div className="w-full space-y-1">
       {label && (
-        <label className="block text-sm font-medium text-slate-900 dark:text-slate-50">
+        <label className="aurora-label text-slate-900 dark:text-slate-50">
           {label}
         </label>
       )}
       <textarea
         className={cn(
-          'w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600',
-          'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50',
-          'placeholder-slate-400 dark:placeholder-slate-500',
+          'aurora-label w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600',
+          'aurora-label bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50',
+          'placeholder:opacity-70',
           'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
           'disabled:opacity-50 disabled:cursor-not-allowed',
           error && 'border-red-500 focus:ring-red-500',
@@ -88,7 +88,7 @@ export function Textarea({ label, error, className, ...props }: TextareaProps) {
         )}
         {...props}
       />
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="aurora-label text-sm text-red-500">{error}</p>}
     </div>
   );
 }

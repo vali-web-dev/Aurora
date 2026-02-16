@@ -96,7 +96,7 @@ export default function DashboardPage() {
     return (
       <AuroraShell>
         <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-pulse transform-gpu text-slate-600 dark:text-slate-400">
+          <div className="aurora-label animate-pulse transform-gpu text-slate-600 dark:text-slate-400">
             Loading dashboard...
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function DashboardPage() {
               <h1 className="aurora-heading-1">
                 Welcome back, {session?.user?.name || 'User'}!
               </h1>
-              <p className="text-slate-600 dark:text-slate-400 mt-2">
+              <p className="aurora-label text-slate-600 dark:text-slate-400 mt-2">
                 {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
               </p>
             </div>
@@ -161,7 +161,7 @@ export default function DashboardPage() {
 
         {/* Universe Quick Access */}
         <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+          <h2 className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">
             Your Universes
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -259,7 +259,7 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <Card className="p-6">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+          <h2 className="aurora-label text-xl font-bold text-slate-900 dark:text-slate-50 mb-4">
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -273,10 +273,10 @@ export default function DashboardPage() {
               )}
             >
               <div className="text-2xl mb-2">📝</div>
-              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
+              <div className="aurora-label text-slate-900 dark:text-slate-50 mb-1">
                 Create Post
               </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
+              <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 Share with your network
               </div>
             </Link>
@@ -291,10 +291,10 @@ export default function DashboardPage() {
               )}
             >
               <div className="text-2xl mb-2">👥</div>
-              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
+              <div className="aurora-label text-slate-900 dark:text-slate-50 mb-1">
                 Join Community
               </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
+              <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 Discover new groups
               </div>
             </Link>
@@ -309,10 +309,10 @@ export default function DashboardPage() {
               )}
             >
               <div className="text-2xl mb-2">📚</div>
-              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
+              <div className="aurora-label text-slate-900 dark:text-slate-50 mb-1">
                 Start Learning
               </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
+              <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 Browse courses
               </div>
             </Link>
@@ -327,10 +327,10 @@ export default function DashboardPage() {
               )}
             >
               <div className="text-2xl mb-2">🛒</div>
-              <div className="font-semibold text-slate-900 dark:text-slate-50 mb-1">
+              <div className="aurora-label text-slate-900 dark:text-slate-50 mb-1">
                 Shop Now
               </div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">
+              <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 Browse products
               </div>
             </Link>

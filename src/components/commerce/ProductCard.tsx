@@ -34,18 +34,18 @@ export function ProductCard({
       <div className="flex-grow space-y-2">
         <CardTitle className="line-clamp-2">{title}</CardTitle>
         
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="aurora-label text-xs text-slate-500 dark:text-slate-400">
           {provider}
         </p>
 
         <div className="flex items-center gap-1">
-          <span className="text-yellow-500">★</span>
-          <span className="text-sm text-slate-600 dark:text-slate-400">
+          <span className="aurora-label text-yellow-500">★</span>
+          <span className="aurora-label text-sm text-slate-600 dark:text-slate-400">
             {rating.toFixed(1)}
           </span>
         </div>
 
-        <p className="text-lg font-bold text-slate-900 dark:text-slate-50">
+        <p className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">
           ${(priceCents / 100).toFixed(2)}
         </p>
       </div>

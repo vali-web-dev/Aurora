@@ -143,7 +143,7 @@ export function CartPage() {
         <Card className="space-y-4">
           {items.length === 0 ? (
             <div className="space-y-3">
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-slate-600 dark:text-slate-400">
                 Your cart is empty. Add items from Commerce to begin.
               </p>
               <Link href="/commerce">
@@ -167,10 +167,10 @@ export function CartPage() {
                         className="h-16 w-16 rounded-lg object-cover bg-slate-100 dark:bg-slate-800"
                       />
                       <div>
-                        <p className="font-semibold text-slate-900 dark:text-slate-50">
+                        <p className="aurora-label text-slate-900 dark:text-slate-50">
                           {line.product.title}
                         </p>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                        <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                           {formatProvider(line.product.providerId)} • {formatMoney(line.product.priceCents)}
                           {` • Est ${getShippingWindow(line.product.providerId).min}-${getShippingWindow(line.product.providerId).max} days`}
                         </p>
@@ -191,7 +191,7 @@ export function CartPage() {
                         >
                           -
                         </Button>
-                        <span className="min-w-[2rem] text-center text-sm font-semibold text-slate-900 dark:text-slate-50">
+                        <span className="aurora-label min-w-[2rem] text-center text-sm font-semibold text-slate-900 dark:text-slate-50">
                           {line.quantity}
                         </span>
                         <Button
@@ -209,8 +209,8 @@ export function CartPage() {
                       </div>
 
                       <div className="text-right">
-                        <p className="text-sm text-slate-600 dark:text-slate-400">Line total</p>
-                        <p className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                        <p className="aurora-label aurora-text-xs text-slate-600 dark:text-slate-400">Line total</p>
+                        <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
                           {formatMoney(lineTotal)}
                         </p>
                       </div>
@@ -260,7 +260,7 @@ export function CartPage() {
         <SurfaceSection title="Saved for Later" description="Keep future picks here until you are ready.">
           <Card className="space-y-4 saved-highlight">
             {savedItems.length === 0 ? (
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-slate-600 dark:text-slate-400">
                 No saved items yet.
               </p>
             ) : (
@@ -278,10 +278,10 @@ export function CartPage() {
                         className="h-14 w-14 rounded-lg object-cover bg-slate-100 dark:bg-slate-800"
                       />
                       <div>
-                        <p className="font-semibold text-slate-900 dark:text-slate-50">
+                        <p className="aurora-label text-slate-900 dark:text-slate-50">
                           {line.product.title}
                         </p>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                        <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                           {formatProvider(line.product.providerId)} • {formatMoney(line.product.priceCents)}
                           {line.quantity > 1 ? ` • ${line.quantity}x` : ''}
                         </p>
@@ -334,21 +334,21 @@ export function CartPage() {
             <CardTitle>Order Summary</CardTitle>
             <div className="mt-4 space-y-3 text-sm">
               {items.length > 0 && (
-                <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                  <span>Delivery window</span>
+                <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
+                  <span className="aurora-label">Delivery window</span>
                   <span>{deliveryWindow.min}-{deliveryWindow.max} days</span>
                 </div>
               )}
-              <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                <span>Subtotal</span>
+              <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
+                <span className="aurora-label">Subtotal</span>
                 <span>{formatMoney(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                <span>Estimated tax</span>
+              <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
+                <span className="aurora-label">Estimated tax</span>
                 <span>{formatMoney(tax)}</span>
               </div>
-              <div className="flex justify-between text-base font-semibold text-slate-900 dark:text-slate-50">
-                <span>Total</span>
+              <div className="aurora-label flex justify-between text-base font-semibold text-slate-900 dark:text-slate-50">
+                <span className="aurora-label">Total</span>
                 <span>{formatMoney(total)}</span>
               </div>
             </div>
@@ -356,7 +356,7 @@ export function CartPage() {
 
           <Card className="space-y-3">
             <CardTitle>Next Step</CardTitle>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
               Review your cart priorities before checkout.
             </p>
             <Link href="/commerce/review">

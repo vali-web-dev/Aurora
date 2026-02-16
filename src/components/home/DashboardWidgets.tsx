@@ -56,15 +56,15 @@ export function UniverseCard({ name, href, icon, color, description, badge }: Un
         </div>
         
         <div>
-          <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-50 mb-1">
+          <h3 className="aurora-label text-lg text-slate-900 dark:text-slate-50 mb-1">
             {name}
           </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
             {description}
           </p>
         </div>
         
-        <div className="flex items-center text-sm text-blue-600 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform">
+        <div className="aurora-label flex items-center text-sm text-blue-600 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform">
           Explore →
         </div>
       </div>
@@ -79,12 +79,12 @@ export function RecentOrdersWidget() {
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+        <h3 className="aurora-label text-lg text-slate-900 dark:text-slate-50">
           Recent Orders
         </h3>
         <Link
           href="/commerce/orders"
-          className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+          className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline"
         >
           View all
         </Link>
@@ -92,8 +92,8 @@ export function RecentOrdersWidget() {
       
       {recentOrders.length === 0 ? (
         <div className="text-center py-8">
-          <div className="text-slate-400 dark:text-slate-600 mb-3">🛍️</div>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          <div className="aurora-label text-slate-400 dark:text-slate-600 mb-3">🛍️</div>
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-4">
             No orders yet
           </p>
           <Link href="/commerce">
@@ -117,7 +117,7 @@ export function RecentOrdersWidget() {
               )}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                <span className="aurora-label text-sm text-slate-900 dark:text-slate-50">
                   Order #{order.id.slice(0, 8)}
                 </span>
                 <Badge
@@ -133,10 +133,10 @@ export function RecentOrdersWidget() {
                 </Badge>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-600 dark:text-slate-400">
+                <span className="aurora-label text-slate-600 dark:text-slate-400">
                   {order.cartItems.length} item{order.cartItems.length !== 1 ? 's' : ''}
                 </span>
-                <span className="font-medium text-slate-900 dark:text-slate-50">
+                <span className="aurora-label text-slate-900 dark:text-slate-50">
                   ${(order.totalCents / 100).toFixed(2)}
                 </span>
               </div>
@@ -154,7 +154,7 @@ export function CartSummaryWidget() {
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+        <h3 className="aurora-label text-lg text-slate-900 dark:text-slate-50">
           Shopping Cart
         </h3>
         {items.length > 0 && (
@@ -164,8 +164,8 @@ export function CartSummaryWidget() {
       
       {items.length === 0 ? (
         <div className="text-center py-8">
-          <div className="text-slate-400 dark:text-slate-600 mb-3">🛒</div>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          <div className="aurora-label text-slate-400 dark:text-slate-600 mb-3">🛒</div>
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-4">
             Your cart is empty
           </p>
           <Link href="/commerce">
@@ -178,14 +178,14 @@ export function CartSummaryWidget() {
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-600 dark:text-slate-400">Items</span>
-              <span className="font-medium text-slate-900 dark:text-slate-50">
+              <span className="aurora-label text-slate-600 dark:text-slate-400">Items</span>
+              <span className="aurora-label text-slate-900 dark:text-slate-50">
                 {items.reduce((sum, item) => sum + item.quantity, 0)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-600 dark:text-slate-400">Total</span>
-              <span className="text-lg font-bold text-slate-900 dark:text-slate-50">
+              <span className="aurora-label text-slate-600 dark:text-slate-400">Total</span>
+              <span className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">
                 ${(total / 100).toFixed(2)}
               </span>
             </div>
@@ -219,13 +219,14 @@ export function ActivityFeedWidget({ activities }: { activities: any[] }) {
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+        <h3 className="aurora-label text-lg text-slate-900 dark:text-slate-50">
           Recent Activity
         </h3>
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value as any)}
           className={clsx(
+            'aurora-label',
             'px-3 py-1 rounded-lg text-sm',
             'bg-slate-100 dark:bg-slate-800',
             'border border-slate-200 dark:border-slate-700',
@@ -241,7 +242,7 @@ export function ActivityFeedWidget({ activities }: { activities: any[] }) {
       </div>
       
       {filteredActivities.length === 0 ? (
-        <div className="text-center py-8 text-slate-600 dark:text-slate-400">
+        <div className="aurora-label text-center py-8 text-slate-600 dark:text-slate-400">
           No activity found
         </div>
       ) : (
@@ -274,15 +275,15 @@ export function ActivityFeedWidget({ activities }: { activities: any[] }) {
                   {icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-slate-900 dark:text-slate-50 truncate">
+                  <div className="aurora-label text-sm text-slate-900 dark:text-slate-50 truncate">
                     {activity.title}
                   </div>
                   {activity.description && (
-                    <div className="text-xs text-slate-600 dark:text-slate-400 line-clamp-1">
+                    <div className="aurora-label text-xs text-slate-600 dark:text-slate-400 line-clamp-1">
                       {activity.description}
                     </div>
                   )}
-                  <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                  <div className="aurora-label text-xs text-slate-500 dark:text-slate-500 mt-1">
                     {formatTimeAgo(activity.timestamp)}
                   </div>
                 </div>
@@ -350,10 +351,10 @@ export function QuickStatsWidget({ stats }: { stats: any }) {
           
           <div className="relative space-y-2">
             <div className="text-3xl">{stat.icon}</div>
-            <div className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+            <div className="aurora-label text-3xl font-bold text-slate-900 dark:text-slate-50">
               {stat.value}
             </div>
-            <div className="text-sm text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+            <div className="aurora-label text-slate-600 dark:text-slate-400 uppercase tracking-wider">
               {stat.label}
             </div>
           </div>

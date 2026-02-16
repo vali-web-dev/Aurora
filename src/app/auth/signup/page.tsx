@@ -66,14 +66,14 @@ export default function SignUpPage() {
           <h1 className="aurora-heading-2">
             Join Aurora
           </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
             Create your Aurora account and discover your digital civilization
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-600 dark:text-red-400">
+            <div className="aurora-label p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-600 dark:text-red-400">
               {error}
             </div>
           )}
@@ -90,7 +90,7 @@ export default function SignUpPage() {
               placeholder="Your Name"
               required
               data-autofocus="true"
-              className="w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              className="aurora-label w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
           </div>
 
@@ -105,7 +105,7 @@ export default function SignUpPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              className="aurora-label w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
           </div>
 
@@ -120,7 +120,7 @@ export default function SignUpPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              className="aurora-label w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
           </div>
 
@@ -135,7 +135,7 @@ export default function SignUpPage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              className="aurora-label w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
           </div>
 
@@ -151,9 +151,9 @@ export default function SignUpPage() {
         </form>
 
         <div className="text-center">
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
             Already have an account?{' '}
-            <Link href="/auth/signin" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+            <Link href="/auth/signin" className="aurora-label font-semibold text-blue-600 dark:text-blue-400 hover:underline">
               Sign in
             </Link>
           </p>

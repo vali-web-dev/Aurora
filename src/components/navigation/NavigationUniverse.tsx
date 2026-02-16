@@ -31,7 +31,7 @@ export function NavigationUniverse() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="aurora-label text-slate-500 dark:text-slate-400">Live Insight</p>
-              <p className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+              <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
                 Typical commute: 24 min • Traffic light today
               </p>
             </div>
@@ -51,18 +51,18 @@ export function NavigationUniverse() {
               <Button variant="secondary" size="sm">New Route</Button>
             </div>
             <div className="h-64 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center">
-              <p className="text-sm text-slate-500 dark:text-slate-400">Map Preview</p>
+              <p className="aurora-label text-sm text-slate-500 dark:text-slate-400">Map Preview</p>
             </div>
             <div className="space-y-3" role="list" aria-label="Routes">
               {routes.map((route) => (
                 <div key={route.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">
                       {route.from} → {route.to}
                     </p>
                     <Badge size="sm" variant="info">{route.mode}</Badge>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {route.durationMinutes} min • {route.distanceMiles.toFixed(1)} mi
                   </p>
                 </div>
@@ -84,10 +84,10 @@ export function NavigationUniverse() {
                 {places.map((place) => (
                   <div key={place.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{place.name}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{place.name}</p>
                       <Badge size="sm" variant="default">{place.category}</Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{place.address}</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{place.address}</p>
                   </div>
                 ))}
               </div>
@@ -98,7 +98,7 @@ export function NavigationUniverse() {
               <div className="space-y-3" role="list" aria-label="Ride options">
                 {['Uber', 'Lyft', 'Waze'].map((provider) => (
                   <div key={provider} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{provider}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{provider}</p>
                     <Button variant="ghost" size="sm">Connect</Button>
                   </div>
                 ))}

@@ -60,8 +60,8 @@ export function SecurityUniverse() {
           <div className="flex items-center justify-between">
             <div>
               <p className="aurora-label text-slate-500 dark:text-slate-400">Encryption</p>
-              <p className="text-xl font-semibold text-slate-900 dark:text-slate-50">End-to-end active</p>
-              <p className="text-xs text-slate-600 dark:text-slate-400">All sessions encrypted • Zero-trust enforced</p>
+              <p className="aurora-label text-xl font-semibold text-slate-900 dark:text-slate-50">End-to-end active</p>
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">All sessions encrypted • Zero-trust enforced</p>
             </div>
             <Badge size="sm" variant="success">Secure</Badge>
           </div>
@@ -80,12 +80,12 @@ export function SecurityUniverse() {
                 {devices.map((device) => (
                   <div key={device.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{device.name}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{device.name}</p>
                       <Badge size="sm" variant={statusVariant(device.status) as 'default' | 'success' | 'warning' | 'error'}>
                         {device.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       {device.location} • Last active {formatDateTime(device.lastActiveAt)}
                     </p>
                   </div>
@@ -102,12 +102,12 @@ export function SecurityUniverse() {
                 {sessions.map((session) => (
                   <div key={session.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{session.ipAddress}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{session.ipAddress}</p>
                       <Badge size="sm" variant={session.status === 'active' ? 'success' : 'default'}>
                         {session.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       Device {session.deviceId} • Started {formatDateTime(session.startedAt)}
                     </p>
                   </div>
@@ -126,15 +126,15 @@ export function SecurityUniverse() {
                 {events.map((event) => (
                   <div key={event.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{event.type.toUpperCase()}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{event.type.toUpperCase()}</p>
                       <Badge size="sm" variant={severityVariant(event.severity) as 'default' | 'warning' | 'error'}>
                         {event.severity}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       {event.description}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
+                    <p className="aurora-label text-xs text-slate-500 dark:text-slate-500">
                       {formatDateTime(event.createdAt)}
                     </p>
                   </div>
@@ -151,12 +151,12 @@ export function SecurityUniverse() {
                 {policies.map((policy) => (
                   <div key={policy.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{policy.title}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{policy.title}</p>
                       <Badge size="sm" variant={policy.status === 'enabled' ? 'success' : 'default'}>
                         {policy.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       Updated {formatDate(policy.lastUpdated)}
                     </p>
                   </div>

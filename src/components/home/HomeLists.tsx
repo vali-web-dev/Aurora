@@ -62,10 +62,10 @@ export function HomeLists() {
           {watchlist.map((item) => (
             <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{item.title}</p>
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{item.title}</p>
                 <Badge size="sm" variant="info">{item.provider}</Badge>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 {item.type.toUpperCase()} {item.progressPercent ? `• ${item.progressPercent}%` : ''}
               </p>
             </div>
@@ -88,10 +88,10 @@ export function HomeLists() {
           {readingList.map((item) => (
             <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{item.title}</p>
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{item.title}</p>
                 <Badge size="sm" variant="default">{item.source}</Badge>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 {item.author} {item.progressPercent ? `• ${item.progressPercent}%` : ''}
               </p>
             </div>
@@ -114,7 +114,7 @@ export function HomeLists() {
           {shoppingList.map((item) => (
             <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{item.title}</p>
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{item.title}</p>
                 <Badge
                   size="sm"
                   variant={item.priority === 'high' ? 'error' : item.priority === 'medium' ? 'warning' : 'default'}
@@ -122,7 +122,7 @@ export function HomeLists() {
                   {item.priority}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 {item.providerId.toUpperCase()} • ${(item.priceCents / 100).toFixed(2)}
               </p>
             </div>

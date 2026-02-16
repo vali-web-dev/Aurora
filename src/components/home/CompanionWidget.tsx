@@ -97,10 +97,10 @@ export function CompanionWidget() {
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-slate-900" />
             </div>
             <div>
-              <h3 className="font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="aurora-label text-slate-900 dark:text-slate-50">
                 Aurora Companion
               </h3>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 Your AI assistant
               </p>
             </div>
@@ -131,13 +131,13 @@ export function CompanionWidget() {
                   <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce transform-gpu" style={{ animationDelay: '150ms' }} />
                   <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce transform-gpu" style={{ animationDelay: '300ms' }} />
                 </div>
-                <span className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   Companion is thinking...
                 </span>
               </div>
             ) : (
               <>
-                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                <p className="aurora-label text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                   {currentMessage.text}
                 </p>
                 {suggestion && (
@@ -159,7 +159,7 @@ export function CompanionWidget() {
         {/* Expanded content */}
         {isExpanded && (
           <div className="space-y-3 pt-2 border-t border-slate-200 dark:border-slate-800">
-            <div className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+            <div className="aurora-label text-xs text-slate-600 dark:text-slate-400 uppercase tracking-wider">
               Quick Actions
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -173,7 +173,7 @@ export function CompanionWidget() {
                 )}
               >
                 <div className="text-lg mb-1">🎤</div>
-                <div className="text-xs font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-xs text-slate-900 dark:text-slate-50">
                   Voice Chat
                 </div>
               </button>
@@ -188,7 +188,7 @@ export function CompanionWidget() {
                 )}
               >
                 <div className="text-lg mb-1">📅</div>
-                <div className="text-xs font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-xs text-slate-900 dark:text-slate-50">
                   My Schedule
                 </div>
               </button>
@@ -203,7 +203,7 @@ export function CompanionWidget() {
                 )}
               >
                 <div className="text-lg mb-1">✨</div>
-                <div className="text-xs font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-xs text-slate-900 dark:text-slate-50">
                   Suggestions
                 </div>
               </button>
@@ -218,7 +218,7 @@ export function CompanionWidget() {
                 )}
               >
                 <div className="text-lg mb-1">📊</div>
-                <div className="text-xs font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-xs text-slate-900 dark:text-slate-50">
                   Insights
                 </div>
               </button>
@@ -242,13 +242,13 @@ export function WeatherWidget() {
     <Card className="p-6">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+          <div className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-1">
             {weather.location}
           </div>
-          <div className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+          <div className="aurora-label text-3xl font-bold text-slate-900 dark:text-slate-50">
             {weather.temp}°F
           </div>
-          <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          <div className="aurora-label text-sm text-slate-600 dark:text-slate-400 mt-1">
             {weather.condition}
           </div>
         </div>
@@ -270,10 +270,10 @@ export function NotificationsWidget() {
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-slate-900 dark:text-slate-50">
+        <h3 className="aurora-label text-slate-900 dark:text-slate-50">
           Notifications
         </h3>
-        <span className="text-xs text-slate-600 dark:text-slate-400">
+        <span className="aurora-label text-xs text-slate-600 dark:text-slate-400">
           {notifications.length} new
         </span>
       </div>
@@ -291,10 +291,10 @@ export function NotificationsWidget() {
           >
             <span className="text-2xl">{notif.icon}</span>
             <div className="flex-1 min-w-0">
-              <div className="text-sm text-slate-900 dark:text-slate-50 truncate">
+              <div className="aurora-label text-sm text-slate-900 dark:text-slate-50 truncate">
                 {notif.text}
               </div>
-              <div className="text-xs text-slate-500 dark:text-slate-500">
+              <div className="aurora-label text-xs text-slate-500 dark:text-slate-500">
                 {notif.time}
               </div>
             </div>

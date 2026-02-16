@@ -66,7 +66,7 @@ export function DeveloperUniverse() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Build signal metrics">
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">API Usage (7d)</p>
+              <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">API Usage (7d)</p>
               <div className="flex items-end gap-2 h-20" role="list" aria-label="API usage trend">
                 {usageTrend.map((value, index) => (
                   <div key={`usage-${value}-${index}`} role="listitem" className="flex-1">
@@ -78,10 +78,10 @@ export function DeveloperUniverse() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">Peak 52k calls</p>
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">Peak 52k calls</p>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Release Velocity</p>
+              <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">Release Velocity</p>
               <div className="flex items-end gap-2 h-20" role="list" aria-label="Release velocity">
                 {releaseVelocity.map((value, index) => (
                   <div key={`release-${value}-${index}`} role="listitem" className="flex-1">
@@ -93,12 +93,12 @@ export function DeveloperUniverse() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400">Weekly plugin releases</p>
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">Weekly plugin releases</p>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Security Status</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">{activeKeys} active</p>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">Security Status</p>
+              <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">{activeKeys} active</p>
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 {revokedKeys} revoked • 0 compromised
               </p>
               <Button variant="secondary" size="sm">Rotate Keys</Button>
@@ -118,15 +118,15 @@ export function DeveloperUniverse() {
               {plugins.map((plugin) => (
                 <div key={plugin.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{plugin.name}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{plugin.name}</p>
                     <Badge size="sm" variant={plugin.status === 'active' ? 'success' : plugin.status === 'beta' ? 'warning' : 'default'}>
                       {plugin.status}
                     </Badge>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {plugin.description}
                   </p>
-                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                  <div className="aurora-label flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                     <span>v{plugin.version}</span>
                     <span>{formatNumber(plugin.installs)} installs</span>
                   </div>
@@ -145,12 +145,12 @@ export function DeveloperUniverse() {
                 {apiKeys.map((key) => (
                   <div key={key.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{key.label}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{key.label}</p>
                       <Badge size="sm" variant={key.status === 'active' ? 'success' : 'default'}>
                         {key.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       Created {formatDate(key.createdAt)}
                       {key.lastUsedAt ? ` • Last used ${formatDate(key.lastUsedAt)}` : ''}
                     </p>
@@ -168,12 +168,12 @@ export function DeveloperUniverse() {
                 {webhooks.map((hook) => (
                   <div key={hook.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{hook.url}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{hook.url}</p>
                       <Badge size="sm" variant={hook.status === 'active' ? 'success' : 'warning'}>
                         {hook.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       Events: {hook.events.join(', ')}
                     </p>
                   </div>
@@ -189,8 +189,8 @@ export function DeveloperUniverse() {
               <div className="space-y-3">
                 {latestActivity.map((item) => (
                   <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{item.title}</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{item.detail}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{item.title}</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{item.detail}</p>
                   </div>
                 ))}
               </div>

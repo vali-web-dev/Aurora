@@ -110,15 +110,15 @@ export function ExpandableMenuItem({
           href={item.href}
           onClick={handleClick}
           className={clsx(
-            'px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-2',
+            'aurora-label px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-2',
             'transition-all duration-200',
             isActive
               ? clsx(
-                  'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-md',
+                  'aurora-label bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-50 shadow-md',
                   isIlluminated && 'shadow-[0_0_15px_rgba(59,130,246,0.4)]'
                 )
               : clsx(
-                  'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50',
+                  'aurora-label text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50',
                   'hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:shadow-sm',
                   isIlluminated && 'hover:bg-blue-950/20 hover:shadow-[0_0_12px_rgba(59,130,246,0.3)]'
                 )
@@ -156,8 +156,8 @@ export function ExpandableMenuItem({
                 href={child.href}
                 onClick={handleClick}
                 className={clsx(
-                  'flex items-start gap-3 px-4 py-2.5 text-sm transition-colors',
-                  'text-slate-700 dark:text-slate-200',
+                  'aurora-label flex items-start gap-3 px-4 py-2.5 text-sm transition-colors',
+                  'aurora-label text-slate-700 dark:text-slate-200',
                   'hover:bg-slate-100 dark:hover:bg-slate-900',
                   pathname === child.href && 'bg-slate-100 dark:bg-slate-800 font-medium'
                 )}
@@ -166,9 +166,9 @@ export function ExpandableMenuItem({
                   <PageIcon pageName={child.label} className="w-full h-full" />
                 </span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium">{child.label}</div>
+                  <div className="aurora-label font-medium">{child.label}</div>
                   {child.description && (
-                    <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                    <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 truncate">
                       {child.description}
                     </div>
                   )}
@@ -194,8 +194,8 @@ export function ExpandableMenuItem({
           href={item.href}
           onClick={handleClick}
           className={clsx(
-            'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors group',
-            'text-slate-700 dark:text-slate-200',
+            'aurora-label flex items-center gap-3 px-4 py-2.5 text-sm transition-colors group',
+            'aurora-label text-slate-700 dark:text-slate-200',
             'hover:bg-slate-100 dark:hover:bg-slate-900',
             isActive && 'bg-slate-100 dark:bg-slate-800 font-medium'
           )}
@@ -206,7 +206,7 @@ export function ExpandableMenuItem({
           <div className="flex-1 min-w-0">
             <div className="font-medium">{item.label}</div>
             {item.description && (
-              <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
+              <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 truncate">
                 {item.description}
               </div>
             )}
@@ -246,8 +246,8 @@ export function ExpandableMenuItem({
                 href={child.href}
                 onClick={handleClick}
                 className={clsx(
-                  'flex items-start gap-3 px-4 py-2.5 text-sm transition-colors',
-                  'text-slate-700 dark:text-slate-200',
+                  'aurora-label flex items-start gap-3 px-4 py-2.5 text-sm transition-colors',
+                  'aurora-label text-slate-700 dark:text-slate-200',
                   'hover:bg-slate-100 dark:hover:bg-slate-900',
                   pathname === child.href && 'bg-slate-100 dark:bg-slate-800 font-medium'
                 )}
@@ -258,7 +258,7 @@ export function ExpandableMenuItem({
                 <div className="flex-1 min-w-0">
                   <div className="font-medium">{child.label}</div>
                   {child.description && (
-                    <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                    <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 truncate">
                       {child.description}
                     </div>
                   )}
@@ -282,8 +282,8 @@ export function ExpandableMenuItem({
         href={item.href}
         onClick={handleClick}
         className={clsx(
-          'flex items-center gap-3 px-4 py-2.5 text-sm transition-colors group',
-          'text-slate-700 dark:text-slate-200',
+          'aurora-label flex items-center gap-3 px-4 py-2.5 text-sm transition-colors group',
+          'aurora-label text-slate-700 dark:text-slate-200',
           'hover:bg-slate-100 dark:hover:bg-slate-900',
           isActive && 'bg-slate-100 dark:bg-slate-800 font-medium'
         )}
@@ -294,7 +294,7 @@ export function ExpandableMenuItem({
         <div className="flex-1 min-w-0">
           <div className="font-medium">{item.label}</div>
           {item.description && (
-            <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
+            <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 truncate">
               {item.description}
             </div>
           )}
@@ -328,8 +328,8 @@ export function ExpandableMenuItem({
               href={child.href}
               onClick={handleClick}
               className={clsx(
-                'flex items-start gap-3 px-4 py-2 text-sm transition-colors',
-                'text-slate-600 dark:text-slate-300',
+                'aurora-label flex items-start gap-3 px-4 py-2 text-sm transition-colors',
+                'aurora-label text-slate-600 dark:text-slate-300',
                 'hover:bg-slate-100 dark:hover:bg-slate-900',
                 pathname === child.href && 'bg-slate-100 dark:bg-slate-800 font-medium'
               )}
@@ -338,9 +338,9 @@ export function ExpandableMenuItem({
                 <PageIcon pageName={child.label} className="w-full h-full" />
               </span>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-medium">{child.label}</div>
+                <div className="aurora-label text-xs font-medium">{child.label}</div>
                 {child.description && (
-                  <div className="text-[10px] text-slate-500 dark:text-slate-500 truncate">
+                  <div className="aurora-label text-[10px] text-slate-500 dark:text-slate-500 truncate">
                     {child.description}
                   </div>
                 )}

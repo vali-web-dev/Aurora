@@ -36,10 +36,10 @@ export function IdentityUniverse() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Personas">
                 {personas.map((persona) => (
                   <div key={persona.id} role="listitem" className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-2">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">
                       {persona.name}
                     </p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       Mode: {persona.mode}
                     </p>
                     <div className="flex flex-wrap gap-2" role="list" aria-label="Persona preferences">
@@ -59,7 +59,7 @@ export function IdentityUniverse() {
 
             <Card className="space-y-4">
               <CardTitle>Life Graph</CardTitle>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 A living model of your interests, skills, habits, and rhythms.
               </p>
               <div className="flex flex-wrap gap-2" role="list" aria-label="Life graph nodes">
@@ -82,14 +82,14 @@ export function IdentityUniverse() {
                 {digitalTwin.map((suggestion) => (
                   <div key={suggestion.id} role="listitem" className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-2">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">
                         {suggestion.title}
                       </p>
                       <Badge variant="info" size="sm">
                         {Math.round(suggestion.confidence * 100)}%
                       </Badge>
                     </div>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                       {suggestion.description}
                     </p>
                     <Button variant="primary" size="sm">
@@ -104,7 +104,7 @@ export function IdentityUniverse() {
           <div className="space-y-6">
             <Card className="space-y-3">
               <CardTitle>Public Identity</CardTitle>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 {profile.publicBio}
               </p>
               <div className="flex flex-wrap gap-2" role="list" aria-label="Public values">
@@ -118,7 +118,7 @@ export function IdentityUniverse() {
 
             <Card className="space-y-3">
               <CardTitle>Private Context</CardTitle>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 {profile.privateBio}
               </p>
               <div className="flex flex-wrap gap-2" role="list" aria-label="Focus themes">
@@ -133,7 +133,7 @@ export function IdentityUniverse() {
             <Card className="space-y-3">
               <CardTitle>Privacy Mode</CardTitle>
               <div className="flex items-center justify-between">
-                <p className="text-sm text-slate-600 dark:text-slate-400">Current</p>
+                <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">Current</p>
                 <Badge variant="success" size="sm">
                   {profile.privacyMode}
                 </Badge>

@@ -18,7 +18,7 @@ export function HomePreviews() {
         <Card className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
+              <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
                 Commerce
               </p>
               <CardTitle>Curated for you</CardTitle>
@@ -35,10 +35,10 @@ export function HomePreviews() {
                 className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3"
               >
                 <div>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">
                     {product.title}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {product.providerId.toUpperCase()} • ${(product.priceCents / 100).toFixed(2)}
                   </p>
                 </div>
@@ -52,7 +52,7 @@ export function HomePreviews() {
         <Card className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
+              <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
                 Entertainment
               </p>
               <CardTitle>Trending now</CardTitle>
@@ -69,10 +69,10 @@ export function HomePreviews() {
                 className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3"
               >
                 <div>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">
                     {item.title}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {item.provider} • {item.durationMinutes} min
                   </p>
                 </div>
@@ -90,7 +90,7 @@ export function HomePreviews() {
         <Card className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
+              <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
                 Economy
               </p>
               <CardTitle>Marketplace momentum</CardTitle>
@@ -107,10 +107,10 @@ export function HomePreviews() {
                 className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3"
               >
                 <div>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">
                     {listing.title}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {listing.creator} • ${(listing.priceCents / 100).toFixed(2)}
                   </p>
                 </div>
@@ -124,7 +124,7 @@ export function HomePreviews() {
         <Card className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
+              <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
                 Developer
               </p>
               <CardTitle>Build surfaces faster</CardTitle>
@@ -141,10 +141,10 @@ export function HomePreviews() {
                 className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3"
               >
                 <div>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">
                     {plugin.name}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     v{plugin.version} • {formatNumber(plugin.installs)} installs
                   </p>
                 </div>

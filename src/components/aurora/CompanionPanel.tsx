@@ -63,37 +63,37 @@ export function CompanionPanel() {
         <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/40 dark:to-blue-900/20 p-4">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
                 Aurora&apos;s Personality
               </h3>
-              <Badge variant="primary" size="sm" className="bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100">
+              <Badge variant="primary" size="sm" className="aurora-label bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100">
                 Adaptive
               </Badge>
             </div>
 
             <dl className="grid gap-3 text-sm">
               <div className="flex items-start justify-between">
-                <dt className="text-slate-600 dark:text-slate-400">Current Universe</dt>
-                <dd className="text-right text-slate-900 dark:text-slate-100 font-medium capitalize">
+                <dt className="aurora-label text-slate-600 dark:text-slate-400">Current Universe</dt>
+                <dd className="aurora-label text-right text-slate-900 dark:text-slate-100 font-medium capitalize">
                   {currentUniverse || 'Home'}
                 </dd>
               </div>
               <div className="flex items-start justify-between">
-                <dt className="text-slate-600 dark:text-slate-400">Tone</dt>
-                <dd className="text-right text-slate-900 dark:text-slate-100 font-medium capitalize">
+                <dt className="aurora-label text-slate-600 dark:text-slate-400">Tone</dt>
+                <dd className="aurora-label text-right text-slate-900 dark:text-slate-100 font-medium capitalize">
                   {currentTone}
                 </dd>
               </div>
               <div className="flex items-start justify-between">
-                <dt className="text-slate-600 dark:text-slate-400">Scope</dt>
-                <dd className="text-right text-slate-900 dark:text-slate-100 font-medium capitalize">
+                <dt className="aurora-label text-slate-600 dark:text-slate-400">Scope</dt>
+                <dd className="aurora-label text-right text-slate-900 dark:text-slate-100 font-medium capitalize">
                   {currentScope}
                 </dd>
               </div>
               {guidanceTheme && (
                 <div className="flex items-start justify-between">
-                  <dt className="text-slate-600 dark:text-slate-400">Theme</dt>
-                  <dd className="text-right text-slate-900 dark:text-slate-100 text-xs">
+                  <dt className="aurora-label text-slate-600 dark:text-slate-400">Theme</dt>
+                  <dd className="aurora-label text-right text-slate-900 dark:text-slate-100 text-xs">
                     {guidanceTheme}
                   </dd>
                 </div>
@@ -101,8 +101,8 @@ export function CompanionPanel() {
             </dl>
 
             <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-600 dark:text-slate-400">
-                <span className="text-blue-600 dark:text-blue-400 font-medium">Current Tone:</span> {toneBehavior.greeting}
+              <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
+                <span className="aurora-label text-blue-600 dark:text-blue-400 font-medium">Current Tone:</span> {toneBehavior.greeting}
               </p>
             </div>
           </div>
@@ -111,29 +111,29 @@ export function CompanionPanel() {
         {/* Context Snapshot */}
         <section className="grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+            <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
               Context Snapshot
             </h3>
-            <dl className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+            <dl className="aurora-label mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
               <div className="flex items-center justify-between">
                 <dt>Universe</dt>
-                <dd className="text-slate-900 dark:text-slate-100">
+                <dd className="aurora-label text-slate-900 dark:text-slate-100">
                   {lastUniverse ?? 'Not set'}
                 </dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt>Route</dt>
-                <dd className="text-slate-900 dark:text-slate-100">
+                <dd className="aurora-label text-slate-900 dark:text-slate-100">
                   {lastRoute ?? 'Not set'}
                 </dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt>Visit Count</dt>
-                <dd className="text-slate-900 dark:text-slate-100">{visitCount}</dd>
+                <dd className="aurora-label text-slate-900 dark:text-slate-100">{visitCount}</dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt>Updated</dt>
-                <dd className="text-slate-900 dark:text-slate-100 text-xs">
+                <dd className="aurora-label text-slate-900 dark:text-slate-100 text-xs">
                   {formatTimestamp(lastVisitedAt)}
                 </dd>
               </div>
@@ -141,23 +141,23 @@ export function CompanionPanel() {
           </div>
 
           <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+            <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
               Memory Controls
             </h3>
             <div className="mt-3 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">Local Memory</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-500">
+                  <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">Local Memory</p>
+                  <p className="aurora-label text-xs text-slate-500 dark:text-slate-500">
                     Context tracking.
                   </p>
                 </div>
-                <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                <label className="aurora-label flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
                   <input
                     type="checkbox"
                     checked={enabled}
                     onChange={(event) => setEnabled(event.target.checked)}
-                    className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    className="aurora-label h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                     aria-label="Toggle memory storage"
                   />
                 </label>
@@ -177,7 +177,7 @@ export function CompanionPanel() {
         {/* Active Signals */}
         {signals.length > 0 && (
           <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-3">
+            <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50 mb-3">
               Current Signals
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -186,12 +186,12 @@ export function CompanionPanel() {
                   key={signal}
                   size="sm"
                   variant="primary"
-                  className="gap-2 pr-2 bg-blue-100 text-blue-700 ring-0 dark:bg-blue-900/40 dark:text-blue-200"
+                  className="aurora-label gap-2 pr-2 bg-blue-100 text-blue-700 ring-0 dark:bg-blue-900/40 dark:text-blue-200"
                 >
                   {signal}
                   <button
                     onClick={() => clearSignal(signal)}
-                    className="text-blue-500 hover:text-blue-600 dark:hover:text-blue-100 font-bold"
+                    className="aurora-label text-blue-500 hover:text-blue-600 dark:hover:text-blue-100 font-bold"
                     aria-label={`Remove ${signal} signal`}
                   >
                     ×
@@ -199,7 +199,7 @@ export function CompanionPanel() {
                 </Badge>
               ))}
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+            <p className="aurora-label text-xs text-slate-500 dark:text-slate-400 mt-2">
               Signals influence how Aurora adapts.
               <button
                 onClick={() => addSignal('focus')}
@@ -214,10 +214,10 @@ export function CompanionPanel() {
         {/* Quick Note */}
         <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+            <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
               Quick Note
             </h3>
-            <span className="text-xs text-slate-500 dark:text-slate-500">Saved locally</span>
+            <span className="aurora-label text-xs text-slate-500 dark:text-slate-500">Saved locally</span>
           </div>
           <textarea
             value={note}
@@ -225,8 +225,8 @@ export function CompanionPanel() {
             placeholder="Capture a thought for your companion"
             className={cn(
               'w-full min-h-[96px] rounded-lg border border-slate-200 dark:border-slate-800',
-              'bg-white/90 dark:bg-slate-950/70 px-3 py-2 text-sm text-slate-900 dark:text-slate-100',
-              'placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50'
+              'aurora-label bg-white/90 dark:bg-slate-950/70 px-3 py-2 text-sm text-slate-900 dark:text-slate-100',
+              'placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500/50'
             )}
           />
           <div className="flex items-center justify-end">
@@ -238,12 +238,12 @@ export function CompanionPanel() {
 
         {/* Recent Memory */}
         <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+          <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
             Recent Memory
           </h3>
           <div className="mt-3 space-y-3">
             {recentEvents.length === 0 && (
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-500 dark:text-slate-400">
                 No memory recorded yet.
               </p>
             )}
@@ -254,16 +254,16 @@ export function CompanionPanel() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                    <p className="aurora-label text-sm font-medium text-slate-900 dark:text-slate-100">
                       {event.label}
                     </p>
                     {event.detail && (
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                      <p className="aurora-label text-xs text-slate-500 dark:text-slate-400">
                         {event.detail}
                       </p>
                     )}
                   </div>
-                  <span className="text-xs text-slate-400">
+                  <span className="aurora-label text-xs text-slate-400">
                     {formatTimestamp(event.timestamp)}
                   </span>
                 </div>

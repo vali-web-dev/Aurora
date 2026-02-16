@@ -63,10 +63,10 @@ export function AccessibilityPanel({ showHeader = true }: AccessibilityPanelProp
     <div className="space-y-6">
       {showHeader && (
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+          <h2 className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">
             Accessibility Settings
           </h2>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-slate-600 dark:text-slate-400">
             Customize Aurora to meet your accessibility needs. Changes are applied immediately.
           </p>
         </div>
@@ -96,10 +96,10 @@ export function AccessibilityPanel({ showHeader = true }: AccessibilityPanelProp
                 <div className="flex-grow">
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1">
-                      <h3 className="font-semibold text-slate-900 dark:text-slate-50">
+                      <h3 className="aurora-label font-semibold text-slate-900 dark:text-slate-50">
                         {setting.label}
                       </h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                         {setting.description}
                       </p>
                     </div>
@@ -130,7 +130,7 @@ export function AccessibilityPanel({ showHeader = true }: AccessibilityPanelProp
                   </div>
                   
                   {isEnabled && (
-                    <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 font-medium">
+                    <div className="aurora-label mt-2 text-xs text-blue-600 dark:text-blue-400 font-medium">
                       ✓ Enabled
                     </div>
                   )}
@@ -145,22 +145,22 @@ export function AccessibilityPanel({ showHeader = true }: AccessibilityPanelProp
         <div className="flex items-start gap-3">
           <div className="text-2xl">ℹ️</div>
           <div className="space-y-2">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100">
+            <h3 className="aurora-label font-semibold text-blue-900 dark:text-blue-100">
               About Aurora&apos;s Accessibility
             </h3>
-            <p className="text-sm text-blue-800 dark:text-blue-200">
+            <p className="aurora-label text-sm text-blue-800 dark:text-blue-200">
               Aurora is designed to meet WCAG 2.1 AA+ standards. We support keyboard navigation,
               screen readers, high contrast modes, and customizable text sizes. Your preferences
               are saved automatically.
             </p>
             <div className="flex flex-wrap gap-2 mt-3">
-              <span className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded">
+              <span className="aurora-label px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded">
                 WCAG 2.1 AA+
               </span>
-              <span className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded">
+              <span className="aurora-label px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded">
                 Screen Reader Compatible
               </span>
-              <span className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded">
+              <span className="aurora-label px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded">
                 Keyboard Navigation
               </span>
             </div>

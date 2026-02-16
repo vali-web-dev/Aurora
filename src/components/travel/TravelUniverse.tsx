@@ -48,13 +48,13 @@ export function TravelUniverse() {
               {upcomingTrips.map((trip) => (
                 <div key={trip.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{trip.destination}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{trip.destination}</p>
                     <Badge size="sm" variant="info">{trip.status}</Badge>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {formatDate(trip.startDate)} - {formatDate(trip.endDate)}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     Budget ${(trip.budgetCents / 100).toFixed(0)}
                   </p>
                 </div>
@@ -68,10 +68,10 @@ export function TravelUniverse() {
               {itinerary.map((item) => (
                 <div key={item.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{item.title}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{item.title}</p>
                     <Badge size="sm" variant="default">{item.type}</Badge>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {item.time} • {item.location}
                   </p>
                 </div>
@@ -86,8 +86,8 @@ export function TravelUniverse() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Travel tools">
             {['Itinerary Builder', 'Packing List', 'Budget Planner'].map((tool) => (
               <div key={tool} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800">
-                <p className="font-semibold text-slate-900 dark:text-slate-50">{tool}</p>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Ready to customize</p>
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{tool}</p>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">Ready to customize</p>
               </div>
             ))}
           </div>
@@ -104,7 +104,7 @@ export function TravelUniverse() {
             <div className="space-y-3" role="list" aria-label="Packing list">
               {tripPacking.map((item) => (
                 <div key={item.id} role="listitem" className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{item.label}</p>
+                  <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{item.label}</p>
                   <Badge size="sm" variant={item.packed ? 'success' : 'default'}>
                     {item.packed ? 'Packed' : 'To pack'}
                   </Badge>
@@ -126,8 +126,8 @@ export function TravelUniverse() {
                 return (
                   <div key={item.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{item.label}</p>
-                      <span className="text-xs text-slate-600 dark:text-slate-400">
+                      <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{item.label}</p>
+                      <span className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                         ${(item.spentCents / 100).toFixed(0)} / ${(item.budgetCents / 100).toFixed(0)}
                       </span>
                     </div>

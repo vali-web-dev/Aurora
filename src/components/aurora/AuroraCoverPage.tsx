@@ -357,10 +357,10 @@ export function AuroraCoverPage() {
                       >
                         <div className="flex items-center justify-between">
                           <div>
-                            <div className="text-white font-semibold">{item.label}</div>
-                            <div className="text-xs text-purple-200/70">{item.description}</div>
+                            <div className="aurora-label text-white font-semibold">{item.label}</div>
+                            <div className="aurora-label text-xs text-purple-200/70">{item.description}</div>
                           </div>
-                          <span className="text-purple-200/70">&gt;</span>
+                          <span className="aurora-label text-purple-200/70">&gt;</span>
                         </div>
                       </button>
                     ))}
@@ -370,10 +370,10 @@ export function AuroraCoverPage() {
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                       <div>
                         <div className="aurora-label tracking-[0.3em] text-purple-200/70">Gateway Preview</div>
-                        <div className="text-2xl font-semibold text-white mt-2">
+                        <div className="aurora-label text-2xl font-semibold text-white mt-2">
                           {activeMenu?.label ?? 'Aurora'} Universe
                         </div>
-                        <p className="text-sm text-purple-200/80 mt-2 max-w-xl">
+                        <p className="aurora-label text-sm text-purple-200/80 mt-2 max-w-xl">
                           {activeMenu?.description ?? 'Step into your next digital frontier.'}
                         </p>
                       </div>
@@ -400,19 +400,19 @@ export function AuroraCoverPage() {
                         >
                           <div className="flex items-center justify-between">
                             <div>
-                              <div className="text-white font-medium group-hover:text-white">{child.label}</div>
-                              <div className="text-xs text-purple-200/70 mt-1">{child.description}</div>
+                              <div className="aurora-label text-white font-medium group-hover:text-white">{child.label}</div>
+                              <div className="aurora-label text-xs text-purple-200/70 mt-1">{child.description}</div>
                             </div>
-                            <span className="text-purple-200/70">&gt;</span>
+                            <span className="aurora-label text-purple-200/70">&gt;</span>
                           </div>
                         </Link>
                       ))}
                     </div>
 
-                    <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-purple-200/70">
-                      <span className="uppercase tracking-[0.3em]">15 Universes</span>
-                      <span className="uppercase tracking-[0.3em]">Unified Identity</span>
-                      <span className="uppercase tracking-[0.3em]">Instant Teleport</span>
+                    <div className="aurora-label mt-6 flex flex-wrap items-center gap-4 text-xs text-purple-200/70">
+                      <span className="aurora-label tracking-[0.3em] text-purple-200/70">15 Universes</span>
+                      <span className="aurora-label tracking-[0.3em] text-purple-200/70">Unified Identity</span>
+                      <span className="aurora-label tracking-[0.3em] text-purple-200/70">Instant Teleport</span>
                     </div>
                   </div>
                 </div>
@@ -442,10 +442,10 @@ export function AuroraCoverPage() {
                   </span>
                 </span>
               </h1>
-              <p className="text-2xl md:text-4xl font-light text-white/90 tracking-wide">
+              <p className="aurora-label text-2xl md:text-4xl font-light text-white/90 tracking-wide">
                 Your <span className="aurora-text aurora-text-semibold">Unified</span> Digital Civilization
               </p>
-              <p className="text-lg md:text-xl text-purple-300/80 max-w-3xl mx-auto leading-relaxed">
+              <p className="aurora-label text-lg md:text-xl text-purple-300/80 max-w-3xl mx-auto leading-relaxed">
                 Experience the future of digital living. 15 interconnected universes, one seamless reality. 
                 Welcome to the next evolution of the internet.
               </p>
@@ -506,18 +506,18 @@ export function AuroraCoverPage() {
                   </div>
                   
                   {/* Name */}
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="aurora-label text-xl font-bold text-white">
                     {universe.name}
                   </h3>
                   
                   {/* Tagline */}
-                  <p className="text-sm text-purple-300/80">
+                  <p className="aurora-label text-sm text-purple-300/80">
                     {universe.tagline}
                   </p>
                   
                   {/* Description - Shows on Hover */}
                   <p className={clsx(
-                    'text-xs text-white/60',
+                    'aurora-label text-xs text-white/60',
                     'opacity-0 group-hover:opacity-100',
                     'max-h-0 group-hover:max-h-20',
                     'transition-all duration-300'
@@ -535,7 +535,7 @@ export function AuroraCoverPage() {
 
                 {/* Arrow Icon */}
                 <div className={clsx(
-                  'absolute top-4 right-4 text-white/40',
+                  'aurora-label absolute top-4 right-4 text-white/40',
                   'transform translate-x-0 group-hover:translate-x-1',
                   'opacity-0 group-hover:opacity-100',
                   'transition-all duration-300'
@@ -553,10 +553,10 @@ export function AuroraCoverPage() {
             mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}>
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              <h2 className="aurora-label text-3xl md:text-5xl font-bold text-white mb-4">
                 Powered by <span className="aurora-text-warm">Advanced AI</span>
               </h2>
-              <p className="text-purple-300/80 text-lg">
+              <p className="aurora-label text-purple-300/80 text-lg">
                 Experience the next generation of digital intelligence
               </p>
             </div>
@@ -567,8 +567,8 @@ export function AuroraCoverPage() {
                 <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                   <span className="text-3xl">🤖</span>
                 </div>
-                <h3 className="text-xl font-bold text-white">AI Companion</h3>
-                <p className="text-purple-300/70 text-sm">
+                <h3 className="aurora-label text-xl font-bold text-white">AI Companion</h3>
+                <p className="aurora-label text-purple-300/70 text-sm">
                   Your personal assistant that learns and adapts to your preferences across all universes
                 </p>
               </div>
@@ -578,8 +578,8 @@ export function AuroraCoverPage() {
                 <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
                   <span className="text-3xl">🔗</span>
                 </div>
-                <h3 className="text-xl font-bold text-white">Unified Experience</h3>
-                <p className="text-purple-300/70 text-sm">
+                <h3 className="aurora-label text-xl font-bold text-white">Unified Experience</h3>
+                <p className="aurora-label text-purple-300/70 text-sm">
                   Seamlessly connect all your digital activities in one coherent ecosystem
                 </p>
               </div>
@@ -589,8 +589,8 @@ export function AuroraCoverPage() {
                 <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
                   <span className="text-3xl">🔒</span>
                 </div>
-                <h3 className="text-xl font-bold text-white">Privacy First</h3>
-                <p className="text-purple-300/70 text-sm">
+                <h3 className="aurora-label text-xl font-bold text-white">Privacy First</h3>
+                <p className="aurora-label text-purple-300/70 text-sm">
                   Your data, your control. Built with ethical AI and zero-knowledge architecture
                 </p>
               </div>
@@ -602,25 +602,25 @@ export function AuroraCoverPage() {
                 <div className="text-4xl font-bold aurora-text-warm">
                   15
                 </div>
-                <div className="text-sm text-purple-300/70 mt-2">Universes</div>
+                <div className="aurora-label text-sm text-purple-300/70 mt-2">Universes</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold aurora-text-cool">
                   ∞
                 </div>
-                <div className="text-sm text-purple-300/70 mt-2">Possibilities</div>
+                <div className="aurora-label text-sm text-purple-300/70 mt-2">Possibilities</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold aurora-text-nature">
                   100%
                 </div>
-                <div className="text-sm text-purple-300/70 mt-2">Open</div>
+                <div className="aurora-label text-sm text-purple-300/70 mt-2">Open</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold aurora-text-warm">
                   24/7
                 </div>
-                <div className="text-sm text-purple-300/70 mt-2">Active</div>
+                <div className="aurora-label text-sm text-purple-300/70 mt-2">Active</div>
               </div>
             </div>
           </div>
@@ -628,24 +628,24 @@ export function AuroraCoverPage() {
 
         {/* Footer */}
         <footer className="p-6 text-center">
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-purple-300/60">
-            <Link href="/about" className="hover:text-purple-300 transition-colors">
+          <div className="aurora-label flex flex-wrap justify-center gap-6 text-sm text-purple-300/60">
+            <Link href="/about" className="aurora-label hover:text-purple-300 transition-colors">
               About
             </Link>
-            <Link href="/roadmap" className="hover:text-purple-300 transition-colors">
+            <Link href="/roadmap" className="aurora-label hover:text-purple-300 transition-colors">
               Roadmap
             </Link>
-            <Link href="/developer" className="hover:text-purple-300 transition-colors">
+            <Link href="/developer" className="aurora-label hover:text-purple-300 transition-colors">
               Developer
             </Link>
-            <Link href="/legal" className="hover:text-purple-300 transition-colors">
+            <Link href="/legal" className="aurora-label hover:text-purple-300 transition-colors">
               Legal
             </Link>
-            <Link href="/contact" className="hover:text-purple-300 transition-colors">
+            <Link href="/contact" className="aurora-label hover:text-purple-300 transition-colors">
               Contact
             </Link>
           </div>
-          <div className="mt-4 text-xs text-purple-400/40">
+          <div className="aurora-label mt-4 text-xs text-purple-400/40">
             © 2026 Aurora. The Future of Digital Civilization.
           </div>
         </footer>

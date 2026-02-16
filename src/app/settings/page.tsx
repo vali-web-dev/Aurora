@@ -131,7 +131,7 @@ export default function SettingsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse transform-gpu text-slate-600 dark:text-slate-400">
+        <div className="aurora-label animate-pulse transform-gpu text-slate-600 dark:text-slate-400">
           Loading settings...
         </div>
       </div>
@@ -147,7 +147,7 @@ export default function SettingsPage() {
             <h1 className="aurora-heading-1">
               Settings
             </h1>
-            <p className="text-slate-600 dark:text-slate-400 mt-2">
+            <p className="aurora-label text-slate-600 dark:text-slate-400 mt-2">
               Manage your account settings and preferences
             </p>
           </div>
@@ -159,53 +159,53 @@ export default function SettingsPage() {
 
         {/* Password Change */}
         <Card className="p-8">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
+          <h2 className="aurora-label text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
             Change Password
           </h2>
           <form onSubmit={handlePasswordChange} className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-600 dark:text-red-400">
+              <div className="aurora-label p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-600 dark:text-red-400">
                 {error}
               </div>
             )}
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="aurora-label text-slate-700 dark:text-slate-300">
                 Current Password
               </label>
               <input
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="aurora-label w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
                 data-autofocus="true"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="aurora-label text-slate-700 dark:text-slate-300">
                 New Password
               </label>
               <input
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="aurora-label w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
                 minLength={6}
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="aurora-label text-slate-700 dark:text-slate-300">
                 Confirm New Password
               </label>
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="aurora-label w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
                 minLength={6}
               />
@@ -223,16 +223,16 @@ export default function SettingsPage() {
 
         {/* Notification Preferences */}
         <Card className="p-8">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
+          <h2 className="aurora-label text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
             Notification Preferences
           </h2>
           <div className="space-y-4">
             <label className="flex items-center justify-between py-3 cursor-pointer">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Email Notifications
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   Receive email updates about your activity
                 </div>
               </div>
@@ -240,16 +240,16 @@ export default function SettingsPage() {
                 type="checkbox"
                 checked={emailNotifications}
                 onChange={(e) => setEmailNotifications(e.target.checked)}
-                className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                className="aurora-label w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
               />
             </label>
 
             <label className="flex items-center justify-between py-3 cursor-pointer">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Push Notifications
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   Receive push notifications in your browser
                 </div>
               </div>
@@ -257,16 +257,16 @@ export default function SettingsPage() {
                 type="checkbox"
                 checked={pushNotifications}
                 onChange={(e) => setPushNotifications(e.target.checked)}
-                className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                className="aurora-label w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
               />
             </label>
 
             <label className="flex items-center justify-between py-3 cursor-pointer">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Message Notifications
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   Get notified when you receive new messages
                 </div>
               </div>
@@ -274,16 +274,16 @@ export default function SettingsPage() {
                 type="checkbox"
                 checked={messageNotifications}
                 onChange={(e) => setMessageNotifications(e.target.checked)}
-                className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                className="aurora-label w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
               />
             </label>
 
             <label className="flex items-center justify-between py-3 cursor-pointer">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Mention Notifications
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   Get notified when someone mentions you
                 </div>
               </div>
@@ -291,7 +291,7 @@ export default function SettingsPage() {
                 type="checkbox"
                 checked={mentionNotifications}
                 onChange={(e) => setMentionNotifications(e.target.checked)}
-                className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                className="aurora-label w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
               />
             </label>
 
@@ -307,18 +307,18 @@ export default function SettingsPage() {
 
         {/* Privacy Settings */}
         <Card className="p-8">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
+          <h2 className="aurora-label text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
             Privacy Settings
           </h2>
           <div className="space-y-4">
             <div className="py-3">
-              <label className="block font-medium text-slate-900 dark:text-slate-50 mb-2">
+              <label className="aurora-label text-slate-900 dark:text-slate-50 mb-2">
                 Profile Visibility
               </label>
               <select
                 value={profileVisibility}
                 onChange={(e) => setProfileVisibility(e.target.value as 'public' | 'private')}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="aurora-label w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="public">Public</option>
                 <option value="private">Private</option>
@@ -327,10 +327,10 @@ export default function SettingsPage() {
 
             <label className="flex items-center justify-between py-3 cursor-pointer">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Show Email Address
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   Display your email on your public profile
                 </div>
               </div>
@@ -338,16 +338,16 @@ export default function SettingsPage() {
                 type="checkbox"
                 checked={showEmail}
                 onChange={(e) => setShowEmail(e.target.checked)}
-                className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                className="aurora-label w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
               />
             </label>
 
             <label className="flex items-center justify-between py-3 cursor-pointer">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Show Activity Status
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   Let others see when you&apos;re online
                 </div>
               </div>
@@ -355,7 +355,7 @@ export default function SettingsPage() {
                 type="checkbox"
                 checked={showActivity}
                 onChange={(e) => setShowActivity(e.target.checked)}
-                className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                className="aurora-label w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
               />
             </label>
 
@@ -371,16 +371,16 @@ export default function SettingsPage() {
 
         {/* Danger Zone */}
         <Card className="p-8 border-2 border-red-200 dark:border-red-800">
-          <h2 className="text-xl font-bold text-red-600 dark:text-red-400 mb-6">
+          <h2 className="aurora-label text-xl font-bold text-red-600 dark:text-red-400 mb-6">
             Danger Zone
           </h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="font-medium text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-slate-900 dark:text-slate-50">
                   Delete Account
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                   Permanently delete your account and all associated data
                 </div>
               </div>

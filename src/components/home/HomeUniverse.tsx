@@ -121,14 +121,14 @@ export function HomeUniverse() {
 
       <SurfaceSection title="Daily Brief">
         <div>
-          <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
+          <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
             {dailyBrief.greeting}
           </p>
         </div>
         <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900">
           <div className="space-y-2">
-            <p className="text-sm text-slate-600 dark:text-slate-400">Daily Brief</p>
-            <p className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">Daily Brief</p>
+            <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
               {dailyBrief.highlight}
             </p>
           </div>
@@ -165,10 +165,10 @@ export function HomeUniverse() {
                   onClick={() => handleNavigate(action.href, action.label)}
                   className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                 >
-                  <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                  <div className="aurora-label text-sm text-slate-900 dark:text-slate-50">
                     {iconMap[action.icon]}
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{action.label}</p>
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{action.label}</p>
                 </button>
               ))}
             </div>
@@ -189,13 +189,13 @@ export function HomeUniverse() {
               {topTasks.map((task) => (
                 <div key={task.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{task.title}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{task.title}</p>
                     <Badge variant={task.priority === 'high' ? 'error' : task.priority === 'medium' ? 'warning' : 'default'} size="sm">
                       {task.priority}
                     </Badge>
                   </div>
                   {task.description && (
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{task.description}</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{task.description}</p>
                   )}
                 </div>
               ))}
@@ -216,8 +216,8 @@ export function HomeUniverse() {
             <div className="space-y-3" role="list" aria-label="Learning progress">
               {activeCourses.map(({ course, progress }) => (
                 <div key={course.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{course.title}</p>
-                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">{course.title}</p>
+                  <div className="aurora-label flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                     <span>{progress}% complete</span>
                     <span>{course.durationHours}h</span>
                   </div>
@@ -237,8 +237,8 @@ export function HomeUniverse() {
             <div className="space-y-3">
               {upcomingEvents.map((event) => (
                 <div key={event.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{event.title}</p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">{event.title}</p>
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {formatDateTime(event.startsAt)} • {event.durationMinutes} min
                   </p>
                 </div>
@@ -252,8 +252,8 @@ export function HomeUniverse() {
               {realms.slice(0, 3).map((realm) => (
                 <div key={realm.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-between">
                   <div>
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{realm.name}</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{realm.description}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{realm.name}</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{realm.description}</p>
                   </div>
                   <Button
                     variant="ghost"
@@ -272,8 +272,8 @@ export function HomeUniverse() {
             <div className="space-y-3">
               {notes.slice(0, 3).map((note) => (
                 <div key={note.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{note.title}</p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{note.body}</p>
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">{note.title}</p>
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{note.body}</p>
                 </div>
               ))}
             </div>

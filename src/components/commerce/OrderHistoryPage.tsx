@@ -113,7 +113,7 @@ export function OrderHistoryPage() {
         <div className="space-y-4">
           {filteredOrders.length === 0 ? (
             <Card>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-slate-600 dark:text-slate-400">
                 No orders yet. Your mock purchases will appear here after checkout.
               </p>
             </Card>
@@ -149,7 +149,7 @@ export function OrderHistoryPage() {
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <CardTitle>Order {order.id}</CardTitle>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="aurora-label aurora-text-xs text-slate-600 dark:text-slate-400">
                         Invoice {order.invoiceNumber} • Placed {formatDate(order.createdAt)} • {orderItems.length} items
                       </p>
                     </div>
@@ -166,10 +166,10 @@ export function OrderHistoryPage() {
                   <div className="space-y-2 text-sm">
                     {orderItems.map(({ item, product }) => (
                       <div key={product?.id} className="flex justify-between">
-                        <span className="text-slate-600 dark:text-slate-400">
+                        <span className="aurora-label text-slate-600 dark:text-slate-400">
                           {product?.title} • {item.quantity}x
                         </span>
-                        <span className="text-slate-900 dark:text-slate-50">
+                        <span className="aurora-label text-slate-900 dark:text-slate-50">
                           {formatMoney((product?.priceCents ?? 0) * item.quantity)}
                         </span>
                       </div>

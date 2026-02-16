@@ -156,10 +156,10 @@ export function AuroraContextMenu() {
           aria-haspopup="menu"
           aria-expanded={isPanelOpen}
         >
-        <span className="text-sm font-bold tracking-wider uppercase text-slate-900 dark:text-slate-50">
+        <span className="aurora-label text-sm font-bold tracking-wider uppercase text-slate-900 dark:text-slate-50">
           Aurora
         </span>
-        <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 tracking-wide">
+        <span className="aurora-label text-[10px] font-medium text-slate-500 dark:text-slate-400 tracking-wide">
           {currentPageName}
         </span>
       </button>
@@ -187,7 +187,7 @@ export function AuroraContextMenu() {
               {contextNav.universe.label} Universe
             </div>
             {contextNav.universe.description && (
-              <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 {contextNav.universe.description}
               </div>
             )}
@@ -210,11 +210,11 @@ export function AuroraContextMenu() {
                     : ''
                 )}
               >
-                <div className="font-semibold text-sm text-slate-900 dark:text-slate-50">
+                <div className="aurora-label text-sm text-slate-900 dark:text-slate-50">
                   {page.label}
                 </div>
                 {page.description && (
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     {page.description}
                   </div>
                 )}
@@ -227,7 +227,7 @@ export function AuroraContextMenu() {
             <Link
               href={contextNav.universe.href}
               onClick={closeMenu}
-              className="text-xs text-purple-600 dark:text-purple-400 hover:underline font-medium"
+              className="aurora-label text-xs text-purple-600 dark:text-purple-400 hover:underline font-medium"
             >
               → Explore {contextNav.universe.label}
             </Link>

@@ -31,7 +31,7 @@ export function ProductOverview({
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list" aria-label="Product highlights">
             {features.map((feature, i) => (
               <Card key={i} role="listitem">
-                <p className="text-slate-900 dark:text-slate-50">{feature}</p>
+                <p className="aurora-label text-slate-900 dark:text-slate-50">{feature}</p>
               </Card>
             ))}
           </div>
@@ -40,10 +40,10 @@ export function ProductOverview({
 
       <SurfaceSection title="Aurora is in development">
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900 rounded-xl p-8">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+          <h2 className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
             🚀 Aurora is in development
           </h2>
-          <p className="text-slate-600 dark:text-slate-300 mb-4">
+          <p className="aurora-label text-slate-600 dark:text-slate-300 mb-4">
             All 15 universes are being built with the same care, clarity, and ethical principles.
           </p>
           <Link href="/roadmap">

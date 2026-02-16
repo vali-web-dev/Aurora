@@ -53,7 +53,7 @@ export function KeyboardShortcutsHelp({
       <div className="space-y-6">
         {shortcuts.map((section) => (
           <div key={section.category} className="space-y-3">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 uppercase tracking-wide">
+            <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50 uppercase tracking-wide">
               {section.category}
             </h3>
             <div className="space-y-2">
@@ -62,7 +62,7 @@ export function KeyboardShortcutsHelp({
                   key={index}
                   className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2 px-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                 >
-                  <span className="text-sm text-slate-700 dark:text-slate-300">
+                  <span className="aurora-label text-sm text-slate-700 dark:text-slate-300">
                     {item.description}
                   </span>
                   <div className="flex items-center gap-1 flex-wrap">
@@ -74,13 +74,13 @@ export function KeyboardShortcutsHelp({
                             'bg-slate-100 dark:bg-slate-800',
                             'border border-slate-300 dark:border-slate-700',
                             'rounded shadow-sm',
-                            'text-slate-900 dark:text-slate-100'
+                            'aurora-label text-slate-900 dark:text-slate-100'
                           )}
                         >
                           {key}
                         </kbd>
                         {i < item.keys.length - 1 && (
-                          <span className="text-slate-400">+</span>
+                          <span className="aurora-label text-slate-400">+</span>
                         )}
                       </span>
                     ))}
@@ -92,7 +92,7 @@ export function KeyboardShortcutsHelp({
         ))}
         
         <div className="mt-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900">
-          <p className="text-xs text-blue-900 dark:text-blue-100">
+          <p className="aurora-label text-xs text-blue-900 dark:text-blue-100">
             <strong>Tip:</strong> Most shortcuts work globally, but some navigation shortcuts won&apos;t work when you&apos;re typing in an input field.
           </p>
         </div>

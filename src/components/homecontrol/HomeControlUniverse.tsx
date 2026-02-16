@@ -48,16 +48,16 @@ export function HomeControlUniverse() {
             {devices.map((device) => (
               <div key={device.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{device.name}</p>
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">{device.name}</p>
                   <Badge size="sm" variant={device.status === 'online' ? 'success' : 'error'}>
                     {device.status}
                   </Badge>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                   {device.type} • {device.room}
                 </p>
                 {device.battery !== undefined && (
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     Battery: {device.battery}%
                   </p>
                 )}
@@ -78,11 +78,11 @@ export function HomeControlUniverse() {
               {scenes.map((scene) => (
                 <div key={scene.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">{scene.name}</p>
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">{scene.name}</p>
                     <Button variant="ghost" size="sm">Activate</Button>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{scene.description}</p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{scene.description}</p>
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     Triggered {scene.triggeredCount} times
                   </p>
                 </div>
@@ -100,12 +100,12 @@ export function HomeControlUniverse() {
                 {automations.map((auto) => (
                   <div key={auto.id} role="listitem" className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold text-slate-900 dark:text-slate-50">{auto.name}</p>
+                      <p className="aurora-label text-slate-900 dark:text-slate-50">{auto.name}</p>
                       <Badge size="sm" variant={auto.enabled ? 'success' : 'default'}>
                         {auto.enabled ? 'ON' : 'OFF'}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{auto.triggerCondition}</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{auto.triggerCondition}</p>
                   </div>
                 ))}
               </div>
@@ -113,7 +113,7 @@ export function HomeControlUniverse() {
 
             <Card className="space-y-3">
               <CardTitle>Energy Efficiency</CardTitle>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 You&apos;re using {((currentEnergyUsage / 3000) * 100).toFixed(0)}% of typical peak usage.
               </p>
               <Button variant="primary" size="sm">Optimize Settings</Button>
@@ -128,15 +128,15 @@ export function HomeControlUniverse() {
             {energy.map((record) => (
               <div key={record.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">
                     {formatTime(record.timestamp)}
                   </p>
                   <Badge size="sm" variant="info">${record.costEstimate.toFixed(2)}</Badge>
                 </div>
-                <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">{record.powerUsageWatts}W</p>
+                <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">{record.powerUsageWatts}W</p>
                 <div className="space-y-2" role="list" aria-label="Device breakdown">
                   {Object.entries(record.deviceBreakdown).map(([device, wattage]) => (
-                    <div key={device} role="listitem" className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                    <div key={device} role="listitem" className="aurora-label flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                       <span>{device}</span>
                       <span>{wattage}W</span>
                     </div>

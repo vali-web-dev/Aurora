@@ -45,10 +45,10 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
     return (
       <Card className="p-12 text-center">
         <div className="text-6xl mb-4">✨</div>
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
+        <h3 className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
           Sample Data Created!
         </h3>
-        <p className="text-slate-600 dark:text-slate-400 mb-6">
+        <p className="aurora-label text-slate-600 dark:text-slate-400 mb-6">
           Your dashboard is now populated with sample content. Refreshing...
         </p>
         <div className="inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin transform-gpu" />
@@ -67,7 +67,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
           <h2 className="aurora-heading-1 mb-3">
             Welcome to Your Aurora Dashboard!
           </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-lg text-slate-600 dark:text-slate-400">
             Your personal command center awaits. Start exploring the universes and watch your dashboard come to life.
           </p>
         </div>
@@ -75,7 +75,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
         {/* Error message */}
         {error && (
           <div className="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+            <p className="aurora-label text-sm text-red-600 dark:text-red-400">{error}</p>
           </div>
         )}
 
@@ -88,10 +88,10 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
             'border-2 border-blue-200 dark:border-blue-800'
           )}>
             <div className="text-3xl mb-3">🚀</div>
-            <h3 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">
+            <h3 className="aurora-label text-slate-900 dark:text-slate-50 mb-2">
               Start Fresh
             </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-4">
               Explore Aurora universes and create your own content organically
             </p>
             <div className="flex flex-wrap gap-2">
@@ -120,10 +120,10 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
             'border-2 border-emerald-200 dark:border-emerald-800'
           )}>
             <div className="text-3xl mb-3">✨</div>
-            <h3 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">
+            <h3 className="aurora-label text-slate-900 dark:text-slate-50 mb-2">
               Try Sample Data
             </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 mb-4">
               See how Aurora works with sample posts, communities, and activity
             </p>
             <Button
@@ -147,36 +147,36 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
 
         {/* Getting started tips */}
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800">
-          <h4 className="font-semibold text-slate-900 dark:text-slate-50 mb-4">
+          <h4 className="aurora-label text-slate-900 dark:text-slate-50 mb-4">
             Quick Tips to Get Started:
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
             <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50">
               <div className="text-2xl mb-2">📝</div>
-              <div className="text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">
+              <div className="aurora-label text-sm text-slate-900 dark:text-slate-50 mb-1">
                 Create a Post
               </div>
-              <div className="text-xs text-slate-600 dark:text-slate-400">
+              <div className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 Share your thoughts in the Social Universe
               </div>
             </div>
             
             <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50">
               <div className="text-2xl mb-2">👥</div>
-              <div className="text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">
+              <div className="aurora-label text-sm text-slate-900 dark:text-slate-50 mb-1">
                 Join a Community
               </div>
-              <div className="text-xs text-slate-600 dark:text-slate-400">
+              <div className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 Connect with others who share your interests
               </div>
             </div>
             
             <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50">
               <div className="text-2xl mb-2">🛍️</div>
-              <div className="text-sm font-medium text-slate-900 dark:text-slate-50 mb-1">
+              <div className="aurora-label text-sm text-slate-900 dark:text-slate-50 mb-1">
                 Shop & Explore
               </div>
-              <div className="text-xs text-slate-600 dark:text-slate-400">
+              <div className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 Browse products from multiple providers
               </div>
             </div>

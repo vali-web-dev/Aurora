@@ -67,12 +67,12 @@ export function CollapsibleNav() {
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-          'relative w-10 h-10 flex items-center justify-center rounded-lg',
+          'aurora-label relative w-10 h-10 flex items-center justify-center rounded-lg',
           'transition-all duration-300 ease-out',
           'border border-slate-200 dark:border-slate-800',
           isOpen
-            ? 'bg-blue-600 text-white shadow-lg hover:border-blue-400 dark:hover:border-blue-600'
-            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700',
+            ? 'aurora-label bg-blue-600 text-white shadow-lg hover:border-blue-400 dark:hover:border-blue-600'
+            : 'aurora-label text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700',
           isIlluminated && isOpen && 'shadow-[0_0_20px_rgba(59,130,246,0.6)]'
         )}
         aria-label="Toggle navigation"
@@ -139,14 +139,14 @@ export function CollapsibleNav() {
                       href={item.href}
                       onClick={() => setIsOpen(false)}
                       className={clsx(
-                        'block px-3 py-2 rounded-lg text-sm font-medium',
+                        'aurora-label block px-3 py-2 rounded-lg text-sm font-medium',
                         'transition-all duration-200',
                         pathname === item.href
                           ? clsx(
-                              'bg-blue-100 dark:bg-blue-950 text-blue-900 dark:text-blue-100',
+                              'aurora-label bg-blue-100 dark:bg-blue-950 text-blue-900 dark:text-blue-100',
                               isIlluminated && 'shadow-[inset_0_0_20px_rgba(59,130,246,0.3)]'
                             )
-                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800',
+                          : 'aurora-label text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800',
                         'hover:translate-x-1',
                         isIlluminated && 'hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]'
                       )}
@@ -173,14 +173,14 @@ export function CollapsibleNav() {
                     href={item.href}
                     onClick={() => setIsOpen(false)}
                     className={clsx(
-                      'block px-3 py-2 rounded-lg text-sm font-medium',
+                      'aurora-label block px-3 py-2 rounded-lg text-sm font-medium',
                       'transition-all duration-200',
                       pathname === item.href
                         ? clsx(
-                            'bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-100',
+                            'aurora-label bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-100',
                             isIlluminated && 'shadow-[inset_0_0_20px_rgba(16,185,129,0.3)]'
                           )
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800',
+                        : 'aurora-label text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800',
                       'hover:translate-x-1',
                       isIlluminated && 'hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]'
                     )}

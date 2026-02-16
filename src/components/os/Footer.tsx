@@ -26,7 +26,7 @@ export function Footer() {
                 Aurora
               </span>
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xs">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400 max-w-xs">
               A calm, beautifully designed digital world for your creative life.
             </p>
 
@@ -48,31 +48,31 @@ export function Footer() {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
-                      Signed in as <span className="font-medium text-slate-900 dark:text-slate-50">{session?.user?.email}</span>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
+                      Signed in as <span className="aurora-label text-slate-900 dark:text-slate-50">{session?.user?.email}</span>
                     </p>
                     <div className="flex flex-col gap-2">
                       <Link 
                         href="/dashboard"
-                        className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                        className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline"
                       >
                         → Dashboard
                       </Link>
                       <Link 
                         href="/profile"
-                        className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                        className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline"
                       >
                         → Profile
                       </Link>
                       <Link 
                         href="/settings"
-                        className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                        className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline"
                       >
                         → Settings
                       </Link>
                       <button
                         onClick={() => signOut({ callbackUrl: '/' })}
-                        className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 text-left transition-colors"
+                        className="aurora-label text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 text-left transition-colors"
                       >
                         → Sign Out
                       </button>
@@ -95,7 +95,7 @@ export function Footer() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-colors"
+                        className="aurora-label text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -109,7 +109,7 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8">
-          <p className="text-xs text-slate-600 dark:text-slate-400 text-center">
+          <p className="aurora-label text-xs text-slate-600 dark:text-slate-400 text-center">
             Aurora © 2026 · Clarity, beauty, integrity, humanity, wonder.
           </p>
         </div>

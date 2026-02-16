@@ -163,7 +163,7 @@ export function DialogHeader({
           className={clsx(
             'flex-shrink-0 w-8 h-8 rounded-lg',
             'flex items-center justify-center',
-            'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
+            'aurora-label text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
             'hover:bg-slate-100 dark:hover:bg-slate-800',
             'transition-all duration-200',
             'focus:outline-none focus:ring-2 focus:ring-blue-500'
@@ -192,7 +192,7 @@ export function DialogHeader({
 
 export function DialogTitle({ children }: DialogTitleProps) {
   return (
-    <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+    <h2 className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
       {children}
     </h2>
   );

@@ -346,7 +346,7 @@ export function CheckoutPage() {
                   Step {index + 1}
                 </Badge>
               </div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                 {step.description}
               </p>
             </Card>
@@ -358,7 +358,7 @@ export function CheckoutPage() {
         <div className="space-y-4">
           {addresses.length > 0 && !useNewAddress && (
             <Card className="space-y-3 border-emerald-200 bg-emerald-50 dark:border-emerald-900 dark:bg-emerald-950">
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Saved Addresses</p>
+              <p className="aurora-label text-slate-900 dark:text-slate-50">Saved Addresses</p>
               <div className="space-y-2">
                 {addresses.map((addr: SavedAddress) => (
                   <div key={addr.id} className="flex items-start gap-3 rounded border border-slate-200 p-3 dark:border-slate-700">
@@ -371,8 +371,8 @@ export function CheckoutPage() {
                       className="mt-1"
                     />
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-900 dark:text-slate-50">{addr.label}</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">
+                      <p className="aurora-label text-sm font-medium text-slate-900 dark:text-slate-50">{addr.label}</p>
+                      <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                         {addr.name} • {addr.street}, {addr.city} {addr.province} {addr.zip}
                       </p>
                       {addr.isDefault && (
@@ -412,7 +412,7 @@ export function CheckoutPage() {
                   ← Back to Saved Addresses
                 </Button>
               )}
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+              <p className="aurora-label text-slate-900 dark:text-slate-50">
                 {addresses.length === 0 ? 'Enter Your Address' : 'Enter a New Address'}
               </p>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -481,7 +481,7 @@ export function CheckoutPage() {
                     onChange={(e) => setSaveAddressForFuture(e.target.checked)}
                     disabled={paymentStatus === 'success'}
                   />
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
+                  <span className="aurora-label text-slate-600 dark:text-slate-400">
                     Save this address for future orders
                   </span>
                 </label>
@@ -504,9 +504,9 @@ export function CheckoutPage() {
       <SurfaceSection title="Payment">
         {payments.length === 0 ? (
           <Card className="space-y-4">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
               No payment methods saved. Please add one in your{' '}
-              <Link href="/commerce/delivery" className="text-blue-600 hover:underline dark:text-blue-400">
+              <Link href="/commerce/delivery" className="aurora-label text-blue-600 hover:underline dark:text-blue-400">
                 delivery profile
               </Link>
               .
@@ -545,14 +545,14 @@ export function CheckoutPage() {
                     />
                     <div>
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-slate-900 dark:text-slate-50">
+                        <p className="aurora-label font-medium text-slate-900 dark:text-slate-50">
                           {payment.label}
                         </p>
                         {payment.isDefault && (
                           <Badge size="sm" variant="default">Default</Badge>
                         )}
                       </div>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                         {payment.type === 'card' && `${payment.cardBrand} •••• ${payment.cardLast4} (Exp: ${payment.cardExpiry})`}
                         {payment.type === 'wallet' && `${payment.walletProvider} - ${payment.walletEmail}`}
                         {payment.type === 'bank' && `${payment.bankName} •••• ${payment.bankAccountLast4}`}
@@ -562,9 +562,9 @@ export function CheckoutPage() {
                 </div>
               </Card>
             ))}
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
               Need a different payment method?{' '}
-              <Link href="/commerce/delivery" className="text-blue-600 hover:underline dark:text-blue-400">
+              <Link href="/commerce/delivery" className="aurora-label text-blue-600 hover:underline dark:text-blue-400">
                 Add one in your profile
               </Link>
             </p>
@@ -578,14 +578,14 @@ export function CheckoutPage() {
             <CardTitle>Order Summary</CardTitle>
             <div className="space-y-2 text-sm">
               {items.length === 0 ? (
-                <p className="text-slate-600 dark:text-slate-400">No items in cart.</p>
+                <p className="aurora-label text-slate-600 dark:text-slate-400">No items in cart.</p>
               ) : (
                 items.map((line: CartLine) => (
                   <div key={line.product.id} className="flex justify-between">
-                    <span className="text-slate-600 dark:text-slate-400">
+                    <span className="aurora-label text-slate-600 dark:text-slate-400">
                       {line.product.title} • {line.quantity}x
                     </span>
-                    <span className="text-slate-900 dark:text-slate-50">
+                    <span className="aurora-label text-slate-900 dark:text-slate-50">
                       {formatMoney(line.product.priceCents * line.quantity)}
                     </span>
                   </div>
@@ -594,20 +594,20 @@ export function CheckoutPage() {
             </div>
             <div className="border-t border-slate-200 pt-3 text-sm">
               {deliveryWindow && (
-                <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
                   <span>Delivery window</span>
                   <span>{deliveryWindow.min}-{deliveryWindow.max} days</span>
                 </div>
               )}
-              <div className="flex justify-between text-slate-600 dark:text-slate-400">
+              <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
                 <span>Subtotal</span>
                 <span>{formatMoney(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-slate-600 dark:text-slate-400">
+              <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
                 <span>Estimated tax</span>
                 <span>{formatMoney(tax)}</span>
               </div>
-              <div className="flex justify-between text-base font-semibold text-slate-900 dark:text-slate-50">
+              <div className="aurora-label flex justify-between text-base font-semibold text-slate-900 dark:text-slate-50">
                 <span>Total</span>
                 <span>{formatMoney(total)}</span>
               </div>
@@ -616,7 +616,7 @@ export function CheckoutPage() {
 
           <Card className="space-y-3">
             <CardTitle>Place Order</CardTitle>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
               Confirm to send this order to providers.
             </p>
             {notice && (
@@ -655,8 +655,8 @@ export function CheckoutPage() {
               <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                   <div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Order Details</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">Order Details</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       {(() => {
                         const payment = payments.find(p => p.id === selectedPaymentId);
                         if (!payment) return `Payment: ${receiptMethod}`;
@@ -669,7 +669,7 @@ export function CheckoutPage() {
                         }
                       })()}
                     </p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                       Invoice #: {mockOrder.invoiceNumber} | Shipment #: {mockOrder.shipmentNumber}
                     </p>
                   </div>
@@ -678,16 +678,16 @@ export function CheckoutPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
                   <div>
-                    <p className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Billing Address</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p className="aurora-label text-slate-900 dark:text-slate-50 mb-2">Billing Address</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                       {mockOrder.billingAddress.name}<br/>
                       {mockOrder.billingAddress.street}<br/>
                       {mockOrder.billingAddress.city}, {mockOrder.billingAddress.province} {mockOrder.billingAddress.zip}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-900 dark:text-slate-50 mb-2">Shipping Address</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p className="aurora-label text-slate-900 dark:text-slate-50 mb-2">Shipping Address</p>
+                    <p className="aurora-label text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                       {mockOrder.shippingAddress.name}<br/>
                       {mockOrder.shippingAddress.street}<br/>
                       {mockOrder.shippingAddress.city}, {mockOrder.shippingAddress.province} {mockOrder.shippingAddress.zip}
@@ -696,13 +696,13 @@ export function CheckoutPage() {
                 </div>
 
                 <div className="space-y-2 text-sm mb-4">
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">Items</p>
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">Items</p>
                   {mockOrder.cartItems.map((item: OrderItem, idx: number) => (
                     <div key={idx} className="flex justify-between">
-                      <span className="text-slate-600 dark:text-slate-400">
+                      <span className="aurora-label text-slate-600 dark:text-slate-400">
                         {item.sellerName} • {item.quantity}x
                       </span>
-                      <span className="text-slate-900 dark:text-slate-50">
+                      <span className="aurora-label text-slate-900 dark:text-slate-50">
                         {formatMoney(item.unitPriceCents * item.quantity)}
                       </span>
                     </div>
@@ -710,25 +710,25 @@ export function CheckoutPage() {
                 </div>
 
                 <div className="border-t border-slate-200 pt-3 text-sm">
-                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                  <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
                     <span>Subtotal</span>
                     <span>{formatMoney(mockOrder.subtotalCents)}</span>
                   </div>
                   {mockOrder.discountCents > 0 && (
-                    <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                    <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
                       <span>Discount</span>
                       <span>-{formatMoney(mockOrder.discountCents)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                  <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
                     <span>Federal Tax</span>
                     <span>{formatMoney(mockOrder.taxFederalCents)}</span>
                   </div>
-                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                  <div className="aurora-label flex justify-between text-slate-600 dark:text-slate-400">
                     <span>Provincial Tax</span>
                     <span>{formatMoney(mockOrder.taxProvincialCents)}</span>
                   </div>
-                  <div className="flex justify-between text-base font-semibold text-slate-900 dark:text-slate-50">
+                  <div className="aurora-label flex justify-between text-base font-semibold text-slate-900 dark:text-slate-50">
                     <span>Total Paid</span>
                     <span>{formatMoney(mockOrder.totalCents)}</span>
                   </div>
@@ -738,14 +738,14 @@ export function CheckoutPage() {
             {Object.keys(providerReceipts).length > 0 && (
               <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Provider Receipts</p>
+                  <p className="aurora-label text-slate-900 dark:text-slate-50">Provider Receipts</p>
                   <Badge size="sm" variant="default">{Object.keys(providerReceipts).length} providers</Badge>
                 </div>
                 <div className="mt-3 space-y-4">
                   {(Object.entries(providerReceipts) as [string, { items: CartLine[]; total: number }][]).map(([providerId, receipt]) => (
                     <div key={providerId} className="rounded-lg border border-slate-200/70 p-3 dark:border-slate-800/80">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                        <p className="aurora-label text-slate-900 dark:text-slate-50">
                           {formatProvider(providerId)}
                         </p>
                         <Badge size="sm" variant="default">{formatMoney(receipt.total)}</Badge>
@@ -753,10 +753,10 @@ export function CheckoutPage() {
                       <div className="mt-2 space-y-1 text-sm">
                         {receipt.items.map((line: CartLine) => (
                           <div key={line.product.id} className="flex justify-between">
-                            <span className="text-slate-600 dark:text-slate-400">
+                            <span className="aurora-label text-slate-600 dark:text-slate-400">
                               {line.product.title} • {line.quantity}x
                             </span>
-                            <span className="text-slate-900 dark:text-slate-50">
+                            <span className="aurora-label text-slate-900 dark:text-slate-50">
                               {formatMoney(line.product.priceCents * line.quantity)}
                             </span>
                           </div>
@@ -769,7 +769,7 @@ export function CheckoutPage() {
             )}
             <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">Delivery Tracking</p>
+                <p className="aurora-label text-slate-900 dark:text-slate-50">Delivery Tracking</p>
                 <Badge size="sm" variant="info">In progress</Badge>
               </div>
               <div className="mt-3 space-y-3">
@@ -787,10 +787,10 @@ export function CheckoutPage() {
                         }`}
                       />
                       <div>
-                        <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                        <p className="aurora-label text-sm font-medium text-slate-900 dark:text-slate-50">
                           {step.title}
                         </p>
-                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                        <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                           {step.detail}
                         </p>
                       </div>
@@ -799,7 +799,7 @@ export function CheckoutPage() {
                 })}
               </div>
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
               Providers are preparing shipment. You can continue shopping or view your order history.
             </p>
             <div className="flex flex-wrap gap-3">

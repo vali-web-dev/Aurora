@@ -4,10 +4,10 @@ import clsx from 'clsx';
 import { useRealtime, type ToastTone } from '@/lib/realtime/realtime-provider';
 
 const toneStyles: Record<ToastTone, string> = {
-  info: 'bg-blue-600 text-white',
-  success: 'bg-emerald-600 text-white',
-  warning: 'bg-amber-500 text-white',
-  error: 'bg-rose-600 text-white',
+  info: 'aurora-label bg-blue-600 text-white',
+  success: 'aurora-label bg-emerald-600 text-white',
+  warning: 'aurora-label bg-amber-500 text-white',
+  error: 'aurora-label bg-rose-600 text-white',
 };
 
 export function RealtimeToasts() {
@@ -30,14 +30,14 @@ export function RealtimeToasts() {
         >
           <div className="px-4 py-3 flex items-start justify-between gap-3">
             <div className="space-y-1">
-              <p className="text-sm font-semibold">{toast.title}</p>
+              <p className="aurora-label text-sm font-semibold">{toast.title}</p>
               {toast.detail && (
-                <p className="text-xs text-white/80">{toast.detail}</p>
+                <p className="aurora-label text-xs text-white/80">{toast.detail}</p>
               )}
             </div>
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-white/70 hover:text-white text-xs"
+              className="aurora-label text-white/70 hover:text-white text-xs"
               aria-label="Dismiss notification"
             >
               Close

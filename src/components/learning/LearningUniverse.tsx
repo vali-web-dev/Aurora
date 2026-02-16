@@ -83,11 +83,11 @@ export function LearningUniverse() {
                 <div key={idx} className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                   <div className="text-2xl">{item.icon}</div>
                   <div className="flex-grow">
-                    <p className="font-semibold text-slate-900 dark:text-slate-50">
+                    <p className="aurora-label text-slate-900 dark:text-slate-50">
                       Step {item.step}: {item.title}
                     </p>
                   </div>
-                  <div className="text-2xl text-slate-400">→</div>
+                  <div className="aurora-label text-2xl text-slate-400">→</div>
                 </div>
               ))}
             </div>
@@ -103,7 +103,7 @@ export function LearningUniverse() {
                 (platform) => (
                   <div
                     key={platform}
-                    className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium text-slate-900 dark:text-slate-50"
+                    className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center font-medium aurora-label text-slate-900 dark:text-slate-50"
                   >
                     {platform}
                   </div>

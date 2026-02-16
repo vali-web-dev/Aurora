@@ -319,14 +319,14 @@ export function DeliveryProfilePage() {
                 <div className="flex items-center gap-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-slate-900 dark:text-slate-50">
+                      <p className="aurora-label font-medium text-slate-900 dark:text-slate-50">
                         {payment.label}
                       </p>
                       {payment.isDefault && (
                         <Badge size="sm" variant="default">Default</Badge>
                       )}
                     </div>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                    <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                       {payment.type === 'card' && `${payment.cardBrand} •••• ${payment.cardLast4} (Exp: ${payment.cardExpiry})`}
                       {payment.type === 'wallet' && `${payment.walletProvider} - ${payment.walletEmail}`}
                       {payment.type === 'bank' && `${payment.bankName} •••• ${payment.bankAccountLast4}`}
@@ -455,7 +455,7 @@ export function DeliveryProfilePage() {
             </div>
           )}
 
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
             This is a demo. Payment details are stored locally and encrypted in production.
           </p>
         </Card>
@@ -465,7 +465,7 @@ export function DeliveryProfilePage() {
         <Card className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <CardTitle>Ready to shop</CardTitle>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
               Save your profile, address, and payment method to get started.
             </p>
             {notice && (
