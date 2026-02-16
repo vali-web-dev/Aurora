@@ -8,6 +8,43 @@
 
 body {
   @apply bg-aurora-bg text-aurora-text antialiased;
+  position: relative;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: -40% -10% -40% -10%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  background: conic-gradient(
+    from 120deg,
+    rgba(139, 92, 246, 0.12),
+    rgba(59, 130, 246, 0.1),
+    rgba(236, 72, 153, 0.1),
+    rgba(139, 92, 246, 0.12)
+  );
+  filter: blur(60px);
+  opacity: 0.6;
+  animation: aurora-life-hue 18s linear infinite,
+    aurora-life-breathe 10s ease-in-out infinite;
+}
+
+body::after {
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 45%, rgba(255, 255, 255, 0.05));
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  animation: aurora-life-glaze 8s ease-in-out infinite;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Simple scroll + focus styling */
@@ -155,6 +192,94 @@ html.theme-creative {
     box-shadow: 0 0 30px rgba(168, 85, 247, 0.6),
                 0 0 60px rgba(168, 85, 247, 0.4),
                 0 0 90px rgba(168, 85, 247, 0.2);
+  }
+
+  .aurora-life-surface {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .aurora-life-surface::before {
+    content: '';
+    position: absolute;
+    inset: -70% -25% -70% -25%;
+    background: conic-gradient(
+      from 120deg,
+      rgba(139, 92, 246, 0.18),
+      rgba(59, 130, 246, 0.16),
+      rgba(236, 72, 153, 0.14),
+      rgba(139, 92, 246, 0.18)
+    );
+    opacity: 0.5;
+    filter: blur(32px);
+    animation: aurora-life-hue 12s linear infinite,
+      aurora-life-breathe 6s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .aurora-life-surface::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 45%, rgba(255, 255, 255, 0.06));
+    mix-blend-mode: screen;
+    opacity: 0.3;
+    animation: aurora-life-glaze 4.8s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .aurora-life-surface > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+input,
+textarea,
+select {
+  background-image: linear-gradient(120deg, rgba(139, 92, 246, 0.08), transparent 50%, rgba(59, 130, 246, 0.08));
+  background-size: 200% 200%;
+  animation: aurora-life-input 8s ease-in-out infinite;
+}
+
+@keyframes aurora-life-hue {
+  0% {
+    filter: blur(32px) hue-rotate(0deg);
+  }
+  100% {
+    filter: blur(32px) hue-rotate(360deg);
+  }
+}
+
+@keyframes aurora-life-breathe {
+  0%, 100% {
+    transform: scale(0.98);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.6;
+  }
+}
+
+@keyframes aurora-life-glaze {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes aurora-life-input {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 

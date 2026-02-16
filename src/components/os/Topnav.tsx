@@ -37,6 +37,7 @@ export function TopNav() {
   const { itemCount, savedCount, total } = useCartStore();
   const { orderCount, pendingCount } = useOrderStore();
   const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isBlockingOpen = menuOpen || userMenuOpen || searchOpen || docsOpen || helpOpen;
 
   const isIlluminated = mode === 'illuminated';
   const isLoading = status === 'loading';
@@ -94,12 +95,22 @@ export function TopNav() {
       role="banner"
       className={clsx(
         'sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800',
-        'relative overflow-hidden',
+        'relative overflow-visible',
         'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl',
         'transition-all duration-300',
         isIlluminated && 'border-blue-400/30 shadow-[0_0_30px_rgba(59,130,246,0.15)]'
       )}
     >
+      {isBlockingOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/10"
+          onClick={() => {
+            setMenuOpen(false);
+            setUserMenuOpen(false);
+          }}
+          role="presentation"
+        />
+      )}
       <div className="life-topnav-backdrop" aria-hidden="true">
         <span className="life-topnav-ambient" />
         <span className="life-topnav-glaze" />

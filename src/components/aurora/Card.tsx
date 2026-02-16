@@ -10,6 +10,7 @@ export function Card({ children, className, hoverable = false, ...props }: CardP
   return (
     <div
       className={cn(
+        'aurora-life-surface',
         'rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6',
         'transition-all duration-200',
         hoverable && 'hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-700 cursor-pointer',
