@@ -1,0 +1,51 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aurora Logo Concept 1 - Living Aurora Core Interactive" class="aurora-logo concept-1 interactive" tabindex="0" focusable="true">
+  <defs>
+    <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E6FBFF" />
+      <stop offset="55%" stop-color="#00D9FF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </radialGradient>
+    <linearGradient id="haloGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D9FF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    .aurora-base { transition: filter 240ms ease; }
+    .aurora-nav { opacity: 0; transform-origin: 256px 256px; transition: opacity 240ms ease; }
+    .aurora-logo:hover .aurora-nav,
+    .aurora-logo:focus .aurora-nav { opacity: 0.9; animation: aurora-orbit 12s linear infinite; }
+    .aurora-logo:hover .aurora-base,
+    .aurora-logo:focus .aurora-base { filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.45)); }
+    @keyframes aurora-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  </style>
+
+  <g class="aurora-base">
+    <circle cx="256" cy="256" r="90" fill="url(#coreGrad)" />
+    <circle cx="256" cy="256" r="170" fill="none" stroke="url(#haloGrad)" stroke-width="6" opacity="0.9" />
+  </g>
+
+  <g class="aurora-nav" opacity="0.45">
+    <line x1="256" y1="86" x2="256" y2="68" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+    <line x1="426" y1="256" x2="444" y2="256" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+    <line x1="256" y1="426" x2="256" y2="444" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+    <line x1="86" y1="256" x2="68" y2="256" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+    <circle cx="456" cy="256" r="6" fill="#8B5CF6" />
+    <circle cx="430" cy="332" r="6" fill="#7A6AF2" />
+    <circle cx="380" cy="392" r="6" fill="#6B7AEF" />
+    <circle cx="312" cy="428" r="6" fill="#5C8AED" />
+    <circle cx="238" cy="438" r="6" fill="#4C9AEA" />
+    <circle cx="164" cy="420" r="6" fill="#3FA8E8" />
+    <circle cx="100" cy="374" r="6" fill="#31B6E6" />
+    <circle cx="66" cy="306" r="6" fill="#24C2E4" />
+    <circle cx="56" cy="230" r="6" fill="#19CDE2" />
+    <circle cx="82" cy="154" r="6" fill="#13D6E1" />
+    <circle cx="132" cy="94" r="6" fill="#1EDDF0" />
+    <circle cx="200" cy="66" r="6" fill="#2CE4FF" />
+    <circle cx="274" cy="56" r="6" fill="#40D4FF" />
+    <circle cx="348" cy="74" r="6" fill="#5BC5FF" />
+    <circle cx="412" cy="120" r="6" fill="#75B6FF" />
+    <circle cx="446" cy="188" r="6" fill="#8BA6FF" />
+  </g>
+</svg>

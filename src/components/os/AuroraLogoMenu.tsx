@@ -6,7 +6,9 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { expandableNavigation } from '@/lib/expandable-navigation';
 import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
+import { AuroraLogo } from '@/components/aurora/AuroraLogo';
 import { useTheme } from '@/lib/design-system/theme-provider';
+import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
 
 /**
  * Aurora Logo Menu
@@ -21,6 +23,7 @@ export function AuroraLogoMenu() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
   const { mode } = useTheme();
+  const { concept, setConcept } = useAuroraLogo();
   const isIlluminated = mode === 'illuminated';
 
   // Organize navigation by groups
@@ -111,6 +114,7 @@ export function AuroraLogoMenu() {
             'relative flex items-center justify-center h-10 w-10 rounded-xl overflow-hidden',
             'transition-all duration-300',
             'hover:scale-105 hover:shadow-xl',
+            'hover:shadow-[0_0_18px_rgba(0,217,255,0.35)]',
             isIlluminated && 'hover:shadow-[0_0_25px_rgba(139,92,246,0.6)]',
             isPanelOpen && 'scale-105 ring-2 ring-purple-400/40'
           )}
@@ -118,17 +122,10 @@ export function AuroraLogoMenu() {
           aria-haspopup="menu"
           aria-expanded={isPanelOpen}
         >
-        {/* Aurora Gradient Background */}
-        <span
-          className={clsx(
-            'absolute inset-0',
-            'bg-gradient-to-br from-purple-600 via-blue-600 to-pink-600',
-            'shadow-lg transition-all duration-300',
-            isIlluminated && 'shadow-[0_0_20px_rgba(139,92,246,0.6)]'
-          )}
-        />
-        {/* Aurora Symbol */}
-        <span className="aurora-label relative z-10 text-white text-xl font-bold">✨</span>
+        {/* Aurora Logo (Concept 1) */}
+        <span className="relative z-10">
+          <AuroraLogo concept={concept} size={32} interactive={false} showNav={false} />
+        </span>
       </button>
 
       {/* Full Navigation Menu */}
@@ -156,6 +153,32 @@ export function AuroraLogoMenu() {
             <p className="aurora-label text-xs text-slate-500 dark:text-slate-400 mt-1">
               Navigate your digital civilization
             </p>
+            <div className="mt-3 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setConcept('core')}
+                className={clsx(
+                  'aurora-label text-xs px-2 py-1 rounded-full border transition-colors',
+                  concept === 'core'
+                    ? 'border-blue-500 text-blue-600 bg-blue-50 dark:bg-blue-950/30'
+                    : 'border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400'
+                )}
+              >
+                Concept 1
+              </button>
+              <button
+                type="button"
+                onClick={() => setConcept('wave')}
+                className={clsx(
+                  'aurora-label text-xs px-2 py-1 rounded-full border transition-colors',
+                  concept === 'wave'
+                    ? 'border-purple-500 text-purple-600 bg-purple-50 dark:bg-purple-950/30'
+                    : 'border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400'
+                )}
+              >
+                Concept 2
+              </button>
+            </div>
           </div>
 
           {/* Navigation Groups */}

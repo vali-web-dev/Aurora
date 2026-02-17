@@ -1,0 +1,45 @@
+<svg width="1200" height="512" viewBox="0 0 1200 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aurora Logo Concept 3 - Master" class="aurora-logo concept-3 master">
+  <defs>
+    <linearGradient id="prismGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D9FF" />
+      <stop offset="55%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#F5A962" />
+    </linearGradient>
+    <radialGradient id="outerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F2F7FF" />
+      <stop offset="100%" stop-color="#9FB6FF" />
+    </radialGradient>
+    <linearGradient id="wordGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0B0F1A" />
+      <stop offset="100%" stop-color="#1A2233" />
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(40,0)">
+    <g class="aurora-base">
+      <circle cx="256" cy="256" r="188" fill="none" stroke="url(#outerGlow)" stroke-width="6" opacity="0.8" />
+      <circle cx="256" cy="256" r="110" fill="url(#outerGlow)" opacity="0.5" />
+      <polygon points="256,140 360,324 152,324" fill="url(#prismGrad)" opacity="0.95" />
+      <polygon points="256,170 330,302 182,302" fill="#FFFFFF" opacity="0.12" />
+    </g>
+    <g class="aurora-nav" opacity="0.35">
+      <line x1="256" y1="68" x2="256" y2="50" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+      <line x1="444" y1="256" x2="462" y2="256" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+      <line x1="256" y1="444" x2="256" y2="462" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+      <line x1="68" y1="256" x2="50" y2="256" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+      <circle cx="256" cy="50" r="5" fill="#8B5CF6" />
+      <circle cx="398" cy="126" r="5" fill="#6B7AEF" />
+      <circle cx="448" cy="272" r="5" fill="#4C9AEA" />
+      <circle cx="366" cy="412" r="5" fill="#31B6E6" />
+      <circle cx="210" cy="454" r="5" fill="#13D6E1" />
+      <circle cx="86" cy="348" r="5" fill="#2CE4FF" />
+      <circle cx="74" cy="198" r="5" fill="#40D4FF" />
+      <circle cx="170" cy="92" r="5" fill="#75B6FF" />
+    </g>
+  </g>
+
+  <g transform="translate(520,0)">
+    <text x="0" y="300" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="140" font-weight="600" letter-spacing="2" fill="url(#wordGrad)">Aurora</text>
+    <text x="4" y="362" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="32" font-weight="500" letter-spacing="4" fill="#6B7AEF">DIGITAL CIVILIZATION</text>
+  </g>
+</svg>

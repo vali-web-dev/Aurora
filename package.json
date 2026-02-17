@@ -9,12 +9,12 @@
 		"start": "next start",
 		"start:server": "node server.js",
 		"lint": "next lint",
-		"db:generate": "drizzle-kit generate:pg",
+		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
-		"db:push": "drizzle-kit push:pg",
+		"db:push": "drizzle-kit push",
 		"db:drop": "drizzle-kit drop",
 		"db:seed": "node --import tsx src/lib/seed.ts",
-		"db:format": "drizzle-kit up:pg"
+		"db:format": "drizzle-kit up"
 	},
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.11.1",
@@ -45,6 +45,7 @@
 		"@types/socket.io": "^3.0.2",
 		"eslint": "^8.57.0",
 		"eslint-config-next": "14.2.3",
+		"sharp": "^0.34.5",
 		"tsx": "^4.21.0"
 	}
 }

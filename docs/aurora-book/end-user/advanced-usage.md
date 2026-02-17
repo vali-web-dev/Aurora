@@ -50,3 +50,28 @@ Signals let you shape Aurora in real time by overriding default tone and scope.
 - Use global search to jump across universes quickly
 - Use the Companion Panel for fast context switches
 - Review weekly summaries to spot patterns
+
+## Advanced Navigation
+- Use the Aurora logo menu to jump universes without backtracking
+- Combine search with signals (e.g., set Focus, then search “review”)
+- Use keyboard shortcuts for universe switches
+
+## Automation Entry Points
+- Start in Automation universe with a single trigger
+- Add one action (create task, send summary)
+- Test the workflow before turning it on
+- See [/docs/aurora-book/end-user/automation-guides](/docs/aurora-book/end-user/automation-guides)
+
+## Example: Daily Review Stack
+1. Signal: Reflection
+2. Open Home summary
+3. Review Productivity tasks
+4. Add a Create note
+5. Optional: Share a summary to Communities
+
+## Example: Focus Sprint
+1. Signal: Focus
+2. Open Productivity
+3. Start a 25-minute session
+4. Disable notifications for 60 minutes
+5. Log outcome in Companion Panel

@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aurora Logo Concept 1-2 Blend" class="aurora-logo concept-1-2">
+  <defs>
+    <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E6FBFF" />
+      <stop offset="55%" stop-color="#00D9FF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </radialGradient>
+    <linearGradient id="haloGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D9FF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D9FF" />
+      <stop offset="60%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#F5A962" />
+    </linearGradient>
+  </defs>
+
+  <g class="aurora-base">
+    <circle cx="256" cy="256" r="88" fill="url(#coreGrad)" />
+    <circle cx="256" cy="256" r="170" fill="none" stroke="url(#haloGrad)" stroke-width="6" opacity="0.9" />
+    <path d="M88 276 C148 218, 206 218, 256 262 C306 306, 366 306, 424 250"
+          fill="none" stroke="url(#waveGrad)" stroke-width="8" stroke-linecap="round" />
+  </g>
+
+  <g class="aurora-nav" opacity="0.4">
+    <line x1="256" y1="86" x2="256" y2="68" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+    <line x1="426" y1="256" x2="444" y2="256" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+    <line x1="256" y1="426" x2="256" y2="444" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+    <line x1="86" y1="256" x2="68" y2="256" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+    <circle cx="456" cy="256" r="6" fill="#8B5CF6" />
+    <circle cx="380" cy="392" r="6" fill="#6B7AEF" />
+    <circle cx="238" cy="438" r="6" fill="#4C9AEA" />
+    <circle cx="100" cy="374" r="6" fill="#31B6E6" />
+    <circle cx="56" cy="230" r="6" fill="#19CDE2" />
+    <circle cx="132" cy="94" r="6" fill="#1EDDF0" />
+    <circle cx="274" cy="56" r="6" fill="#40D4FF" />
+    <circle cx="412" cy="120" r="6" fill="#75B6FF" />
+  </g>
+</svg>

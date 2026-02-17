@@ -17,6 +17,7 @@ import { KeyboardShortcutsHelp } from '@/components/aurora/KeyboardShortcutsHelp
 import { Button } from '@/components/aurora/Button';
 import { useTheme } from '@/lib/design-system/theme-provider';
 import { useCompanion } from '@/lib/companion/companion-provider';
+import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
 import { useKeyboardShortcuts } from '@/lib/hooks/useKeyboardShortcuts';
 import { ExpandableMenuItem } from '@/components/aurora/ExpandableMenuItem';
 import { AuroraLogoMenu } from '@/components/os/AuroraLogoMenu';
@@ -29,6 +30,7 @@ export function TopNav() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const { mode } = useTheme();
+  const { concept, setConcept } = useAuroraLogo();
   const { toggle } = useCompanion();
   const [docsOpen, setDocsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -163,6 +165,56 @@ export function TopNav() {
 
             {/* Right Actions */}
             <div className="flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-xs dark:border-slate-800 dark:bg-slate-900">
+                <button
+                  type="button"
+                  onClick={() => setConcept('core')}
+                  className={clsx(
+                    'aurora-label px-2 py-0.5 rounded-full transition-colors',
+                    concept === 'core'
+                      ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/40'
+                      : 'text-slate-500 dark:text-slate-400'
+                  )}
+                >
+                  C1
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConcept('wave')}
+                  className={clsx(
+                    'aurora-label px-2 py-0.5 rounded-full transition-colors',
+                    concept === 'wave'
+                      ? 'bg-purple-50 text-purple-600 dark:bg-purple-950/40'
+                      : 'text-slate-500 dark:text-slate-400'
+                  )}
+                >
+                  C2
+                </button>
+              </div>
+              <div className="flex sm:hidden items-center gap-1 rounded-full border border-slate-200 bg-white px-1.5 py-1 text-[0.6rem] dark:border-slate-800 dark:bg-slate-900">
+                <button
+                  type="button"
+                  aria-label="Use logo concept 1"
+                  onClick={() => setConcept('core')}
+                  className={clsx(
+                    'h-5 w-5 rounded-full transition-colors',
+                    concept === 'core'
+                      ? 'bg-blue-500/70 ring-2 ring-blue-400/60'
+                      : 'bg-slate-300/60 dark:bg-slate-700/60'
+                  )}
+                />
+                <button
+                  type="button"
+                  aria-label="Use logo concept 2"
+                  onClick={() => setConcept('wave')}
+                  className={clsx(
+                    'h-5 w-5 rounded-full transition-colors',
+                    concept === 'wave'
+                      ? 'bg-purple-500/70 ring-2 ring-purple-400/60'
+                      : 'bg-slate-300/60 dark:bg-slate-700/60'
+                  )}
+                />
+              </div>
               <RealtimeNotifications />
               <Link
                 href="/commerce/cart"

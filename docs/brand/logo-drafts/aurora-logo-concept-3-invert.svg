@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aurora Logo Concept 3 - Inverted" class="aurora-logo concept-3 invert">
+  <circle cx="256" cy="256" r="188" fill="none" stroke="#FFFFFF" stroke-width="6" opacity="0.8" />
+  <circle cx="256" cy="256" r="110" fill="#FFFFFF" opacity="0.3" />
+  <polygon points="256,140 360,324 152,324" fill="#FFFFFF" opacity="0.92" />
+  <polygon points="256,170 330,302 182,302" fill="#FFFFFF" opacity="0.15" />
+
+  <g opacity="0.75" fill="#FFFFFF">
+    <circle cx="256" cy="50" r="5" />
+    <circle cx="398" cy="126" r="5" />
+    <circle cx="448" cy="272" r="5" />
+    <circle cx="366" cy="412" r="5" />
+    <circle cx="210" cy="454" r="5" />
+    <circle cx="86" cy="348" r="5" />
+    <circle cx="74" cy="198" r="5" />
+    <circle cx="170" cy="92" r="5" />
+  </g>
+</svg>

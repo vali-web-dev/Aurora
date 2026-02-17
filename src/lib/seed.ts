@@ -10,6 +10,7 @@ import {
   learningCourses,
 } from './schema';
 import bcrypt from 'bcryptjs';
+import { inArray } from 'drizzle-orm';
 
 config({ path: '.env.local' });
 
@@ -23,37 +24,57 @@ async function seed() {
     // ========================================================================
     console.log('  → Creating sample users...');
     const passwordHash = await bcrypt.hash('password123', 10);
-    const sampleUsers = await db
-      .insert(users)
-      .values([
-        {
-          email: 'aurora@example.com',
-          name: 'Aurora Admin',
-          displayName: 'Aurora Admin',
-          image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aurora',
-          avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aurora',
-          passwordHash,
-        },
-        {
-          email: 'creator@example.com',
-          name: 'Creative Creator',
-          displayName: 'Creative Creator',
-          image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Creator',
-          avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Creator',
-          passwordHash,
-        },
-        {
-          email: 'learner@example.com',
-          name: 'Eager Learner',
-          displayName: 'Eager Learner',
-          image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Learner',
-          avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Learner',
-          passwordHash,
-        },
-      ])
-      .returning();
+    const seedUserValues = [
+      {
+        email: 'aurora@example.com',
+        name: 'Aurora Admin',
+        displayName: 'Aurora Admin',
+        image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aurora',
+        avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aurora',
+        passwordHash,
+      },
+      {
+        email: 'creator@example.com',
+        name: 'Creative Creator',
+        displayName: 'Creative Creator',
+        image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Creator',
+        avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Creator',
+        passwordHash,
+      },
+      {
+        email: 'learner@example.com',
+        name: 'Eager Learner',
+        displayName: 'Eager Learner',
+        image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Learner',
+        avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Learner',
+        passwordHash,
+      },
+    ];
 
-    console.log(`  ✓ Created ${sampleUsers.length} users`);
+    await db
+      .insert(users)
+      .values(seedUserValues)
+      .onConflictDoNothing({ target: users.email });
+
+    const seedEmails = seedUserValues.map((user) => user.email);
+    const sampleUsers = await db
+      .select()
+      .from(users)
+      .where(inArray(users.email, seedEmails));
+
+    const sampleUsersByEmail = new Map(
+      sampleUsers.map((user) => [user.email, user])
+    );
+
+    const adminUser = sampleUsersByEmail.get('aurora@example.com');
+    const creatorUser = sampleUsersByEmail.get('creator@example.com');
+    const learnerUser = sampleUsersByEmail.get('learner@example.com');
+
+    if (!adminUser || !creatorUser || !learnerUser) {
+      throw new Error('Seed users missing after insert.');
+    }
+
+    console.log(`  ✓ Seeded ${sampleUsers.length} users`);
 
     // ========================================================================
     // SEED PERSONAS
@@ -63,7 +84,7 @@ async function seed() {
       .insert(personas)
       .values([
         {
-          userId: sampleUsers[0].id,
+          userId: adminUser.id,
           name: 'Professional',
           mode: 'work',
           preferences: {
@@ -73,7 +94,7 @@ async function seed() {
           },
         },
         {
-          userId: sampleUsers[0].id,
+          userId: adminUser.id,
           name: 'Creator',
           mode: 'creative',
           preferences: {
@@ -83,7 +104,7 @@ async function seed() {
           },
         },
         {
-          userId: sampleUsers[1].id,
+          userId: creatorUser.id,
           name: 'Lifestyle',
           mode: 'lifestyle',
           preferences: {
@@ -101,44 +122,52 @@ async function seed() {
     // SEED BRANDS
     // ========================================================================
     console.log('  → Creating brands...');
-    const sampleBrands = await db
-      .insert(brands)
-      .values([
-        {
-          ownerUserId: sampleUsers[0].id,
-          name: 'Aurora Digital',
-          slug: 'aurora-digital',
-          story: 'A comprehensive digital civilization platform',
-          tone: 'warm, calm, professional',
-          archetype: 'The Sage',
-          vocabulary: {
-            primary: ['illuminate', 'connect', 'empower'],
-            secondary: ['explore', 'create', 'belong'],
-          },
-          settings: {
-            primaryColor: '#0066ff',
-            accentColor: '#00c9ff',
-          },
+    const seedBrandValues = [
+      {
+        ownerUserId: adminUser.id,
+        name: 'Aurora Digital',
+        slug: 'aurora-digital',
+        story: 'A comprehensive digital civilization platform',
+        tone: 'warm, calm, professional',
+        archetype: 'The Sage',
+        vocabulary: {
+          primary: ['illuminate', 'connect', 'empower'],
+          secondary: ['explore', 'create', 'belong'],
         },
-        {
-          ownerUserId: sampleUsers[1].id,
-          name: 'Creative Studios',
-          slug: 'creative-studios',
-          story: 'Building beautiful digital experiences',
-          tone: 'creative, energetic, bold',
-          archetype: 'The Creator',
-          vocabulary: {
-            primary: ['design', 'innovate', 'express'],
-          },
-          settings: {
-            primaryColor: '#ff6b6b',
-            accentColor: '#ffa500',
-          },
+        settings: {
+          primaryColor: '#0066ff',
+          accentColor: '#00c9ff',
         },
-      ])
-      .returning();
+      },
+      {
+        ownerUserId: creatorUser.id,
+        name: 'Creative Studios',
+        slug: 'creative-studios',
+        story: 'Building beautiful digital experiences',
+        tone: 'creative, energetic, bold',
+        archetype: 'The Creator',
+        vocabulary: {
+          primary: ['design', 'innovate', 'express'],
+        },
+        settings: {
+          primaryColor: '#ff6b6b',
+          accentColor: '#ffa500',
+        },
+      },
+    ];
 
-    console.log(`  ✓ Created ${sampleBrands.length} brands`);
+    await db
+      .insert(brands)
+      .values(seedBrandValues)
+      .onConflictDoNothing({ target: brands.slug });
+
+    const brandSlugs = seedBrandValues.map((brand) => brand.slug);
+    const sampleBrands = await db
+      .select()
+      .from(brands)
+      .where(inArray(brands.slug, brandSlugs));
+
+    console.log(`  ✓ Seeded ${sampleBrands.length} brands`);
 
     // ========================================================================
     // SEED SERVICES
@@ -238,31 +267,39 @@ async function seed() {
     // SEED COMMUNITIES
     // ========================================================================
     console.log('  → Creating communities...');
-    const sampleCommunities = await db
-      .insert(communities)
-      .values([
-        {
-          name: 'Aurora Creators',
-          slug: 'aurora-creators',
-          description: 'A community for digital creators and builders',
-          visibility: 'public',
-        },
-        {
-          name: 'Learning Hub',
-          slug: 'learning-hub',
-          description: 'Share knowledge and grow together',
-          visibility: 'public',
-        },
-        {
-          name: 'Tech Enthusiasts',
-          slug: 'tech-enthusiasts',
-          description: 'For tech-savvy Aurora users',
-          visibility: 'public',
-        },
-      ])
-      .returning();
+    const seedCommunityValues = [
+      {
+        name: 'Aurora Creators',
+        slug: 'aurora-creators',
+        description: 'A community for digital creators and builders',
+        visibility: 'public',
+      },
+      {
+        name: 'Learning Hub',
+        slug: 'learning-hub',
+        description: 'Share knowledge and grow together',
+        visibility: 'public',
+      },
+      {
+        name: 'Tech Enthusiasts',
+        slug: 'tech-enthusiasts',
+        description: 'For tech-savvy Aurora users',
+        visibility: 'public',
+      },
+    ];
 
-    console.log(`  ✓ Created ${sampleCommunities.length} communities`);
+    await db
+      .insert(communities)
+      .values(seedCommunityValues)
+      .onConflictDoNothing({ target: communities.slug });
+
+    const communitySlugs = seedCommunityValues.map((community) => community.slug);
+    const sampleCommunities = await db
+      .select()
+      .from(communities)
+      .where(inArray(communities.slug, communitySlugs));
+
+    console.log(`  ✓ Seeded ${sampleCommunities.length} communities`);
 
     // ========================================================================
     // SEED LEARNING CONTENT

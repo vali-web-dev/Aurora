@@ -2,6 +2,9 @@
 
 import React, { useId, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { AuroraLogo } from '@/components/aurora/AuroraLogo';
+import clsx from 'clsx';
+import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
 
 interface DocsSection {
   title: string;
@@ -206,6 +209,7 @@ export interface DocsPortalProps {
 }
 
 export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
+  const { concept: logoConcept, setConcept: setLogoConcept } = useAuroraLogo();
   const [activeTab, setActiveTab] = useState('Start Here');
   const titleId = useId();
   const descriptionId = useId();
@@ -225,11 +229,67 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
       >
         <DialogHeader onClose={() => onOpenChange(false)}>
           <DialogTitle>
-            <span id={titleId}>Aurora Documentation Portal</span>
+            <span className="inline-flex items-center gap-3" id={titleId}>
+              <AuroraLogo concept={logoConcept} size={36} interactive={false} showNav={false} />
+              Aurora Documentation Portal
+            </span>
           </DialogTitle>
           <p id={descriptionId} className="aurora-label text-sm text-slate-600 dark:text-slate-400 mt-1">
             Explore Aurora&apos;s docs by topic, role, or feature
           </p>
+          <div className="mt-3 flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setLogoConcept('core')}
+                className={clsx(
+                  'aurora-label text-xs px-2 py-1 rounded-full border transition-colors',
+                  logoConcept === 'core'
+                    ? 'border-blue-500 text-blue-600 bg-blue-50 dark:bg-blue-950/30'
+                    : 'border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400'
+                )}
+              >
+                Concept 1
+              </button>
+              <button
+                type="button"
+                onClick={() => setLogoConcept('wave')}
+                className={clsx(
+                  'aurora-label text-xs px-2 py-1 rounded-full border transition-colors',
+                  logoConcept === 'wave'
+                    ? 'border-purple-500 text-purple-600 bg-purple-50 dark:bg-purple-950/30'
+                    : 'border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400'
+                )}
+              >
+                Concept 2
+              </button>
+            </div>
+            <div className="flex sm:hidden items-center gap-1 rounded-full border border-slate-200 bg-white px-1.5 py-1 text-[0.6rem] dark:border-slate-800 dark:bg-slate-900">
+              <button
+                type="button"
+                aria-label="Use logo concept 1"
+                onClick={() => setLogoConcept('core')}
+                className={clsx(
+                  'h-5 w-5 rounded-full transition-colors',
+                  logoConcept === 'core'
+                    ? 'bg-blue-500/70 ring-2 ring-blue-400/60'
+                    : 'bg-slate-300/60 dark:bg-slate-700/60'
+                )}
+              />
+              <button
+                type="button"
+                aria-label="Use logo concept 2"
+                onClick={() => setLogoConcept('wave')}
+                className={clsx(
+                  'h-5 w-5 rounded-full transition-colors',
+                  logoConcept === 'wave'
+                    ? 'bg-purple-500/70 ring-2 ring-purple-400/60'
+                    : 'bg-slate-300/60 dark:bg-slate-700/60'
+                )}
+              />
+            </div>
+            <AuroraLogo concept={logoConcept} size={28} interactive={false} showNav={false} />
+          </div>
         </DialogHeader>
 
         {/* Tabs */}

@@ -198,12 +198,14 @@ export default function DocPage({ params }: DocPageProps) {
             li: ({ node, ...props }) => (
               <li className="text-slate-700 dark:text-slate-300" {...props} />
             ),
-            code: ({ node, inline, ...props }) =>
-              inline ? (
+            code: ({ node, className, ...props }: any) => {
+              const isInline = !className?.includes('language-');
+              return isInline ? (
                 <code className="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded font-mono text-sm" {...props} />
               ) : (
                 <code className="block bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto font-mono text-sm my-4" {...props} />
-              ),
+              );
+            },
             pre: ({ node, ...props }) => (
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto my-4" {...props} />
             ),

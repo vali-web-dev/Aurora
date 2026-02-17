@@ -1,23 +1,22 @@
 import { NextResponse } from 'next/server';
+import { checkDatabase } from '@/lib/health';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/health/db
  * Check database connectivity and health status
- * Note: Dynamic route to prevent build-time execution
  */
 export async function GET() {
   try {
-    // Only import at runtime to avoid build-time errors
-    const { checkDbHealth } = await import('@/lib/db');
-    const isHealthy = await checkDbHealth();
+    const dbCheck = await checkDatabase();
 
-    if (isHealthy) {
+    if (dbCheck.status === 'pass') {
       return NextResponse.json(
         {
-          status: 'ok',
+          status: 'healthy',
           database: 'connected',
+          responseTime: dbCheck.responseTime,
           timestamp: new Date().toISOString(),
         },
         { status: 200 }
@@ -25,8 +24,10 @@ export async function GET() {
     } else {
       return NextResponse.json(
         {
-          status: 'error',
-          database: 'unhealthy',
+          status: 'unhealthy',
+          database: 'failed',
+          message: dbCheck.message,
+          responseTime: dbCheck.responseTime,
           timestamp: new Date().toISOString(),
         },
         { status: 503 }
@@ -35,8 +36,8 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       {
-        status: 'error',
-        database: 'disconnected',
+        status: 'unhealthy',
+        database: 'error',
         error: error instanceof Error ? error.message : 'Unknown error',
         timestamp: new Date().toISOString(),
       },

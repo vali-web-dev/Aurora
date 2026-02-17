@@ -46,7 +46,7 @@ Aurora adapts its tone based on where you are and what you are doing. The compan
 - Scope: Minimal, Light, Standard, Deep, Intensive
 - Signals: Focus, Exploration, Learning, Creation, Relaxation, Crisis, Collaboration, Reflection
 
-For full details, see [docs/aurora-book/end-user/companion-system.md](docs/aurora-book/end-user/companion-system.md).
+For full details, see [/docs/aurora-book/end-user/companion-system](/docs/aurora-book/end-user/companion-system).
 
 ## Where To Find Key Controls
 - Theme and mode: top navigation theme selector
@@ -54,6 +54,26 @@ For full details, see [docs/aurora-book/end-user/companion-system.md](docs/auror
 - Search: global search in top navigation
 - Docs: help button in top navigation
 - Accessibility: settings panel and system preferences
+
+## How Navigation Works
+- Aurora is universe-based: each universe is a complete surface with its own tools.
+- Use the Aurora logo menu to jump between universes instantly.
+- Breadcrumbs in the Companion Panel show where you are and why.
+
+## Search and Command Flow
+- Use global search to find anything by name, tag, or action.
+- Start typing a verb like "Create", "Plan", or "Review" for action-first results.
+- When unsure, open Companion Panel and select a signal (Focus, Learning, etc.).
+
+## Notifications and Signals (Quick Use)
+- Notifications are intentional: no noisy default streams.
+- Signals tell Aurora your mode (Focus, Exploration, Collaboration).
+- You can pause notifications per universe in Settings.
+
+## Memory and Privacy (Quick Controls)
+- Memory is off by default; turn it on per universe if desired.
+- Use the Companion Panel to review and clear recent memory.
+- Sync is optional and can be disabled any time.
 
 ## Quick Start
 1. Open Home and review your dashboard.
@@ -69,6 +89,6 @@ For full details, see [docs/aurora-book/end-user/companion-system.md](docs/auror
 - Productivity: goals and focus
 
 ## If You Want a Shortcut
-- Use the quick reference: [docs/aurora-book/end-user/keyboard-shortcuts.md](docs/aurora-book/end-user/keyboard-shortcuts.md)
+- Use the quick reference: [/docs/aurora-book/end-user/keyboard-shortcuts](/docs/aurora-book/end-user/keyboard-shortcuts)
 
-Next: [docs/aurora-book/end-user/first-day.md](docs/aurora-book/end-user/first-day.md)
+Next: [/docs/aurora-book/end-user/first-day](/docs/aurora-book/end-user/first-day)

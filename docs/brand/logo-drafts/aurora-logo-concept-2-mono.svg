@@ -1,0 +1,20 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aurora Logo Concept 2 - Monochrome" class="aurora-logo concept-2 mono">
+  <circle cx="256" cy="256" r="84" fill="#0B0F1A" opacity="0.9" />
+  <circle cx="256" cy="256" r="176" fill="none" stroke="#0B0F1A" stroke-width="4" opacity="0.35" />
+
+  <path d="M80 270 C140 210, 200 210, 256 256 C312 302, 372 302, 432 242"
+        fill="none" stroke="#0B0F1A" stroke-width="10" stroke-linecap="round" />
+  <path d="M96 320 C150 280, 206 280, 256 316 C306 352, 362 352, 416 302"
+        fill="none" stroke="#0B0F1A" stroke-width="6" stroke-linecap="round" opacity="0.6" />
+
+  <g opacity="0.6" fill="#0B0F1A">
+    <circle cx="256" cy="70" r="5" />
+    <circle cx="384" cy="116" r="5" />
+    <circle cx="440" cy="240" r="5" />
+    <circle cx="402" cy="368" r="5" />
+    <circle cx="286" cy="438" r="5" />
+    <circle cx="144" cy="410" r="5" />
+    <circle cx="78" cy="286" r="5" />
+    <circle cx="118" cy="150" r="5" />
+  </g>
+</svg>

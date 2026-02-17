@@ -24,6 +24,20 @@ This edition is for developers, integrators, and platform builders. It consolida
 
 ## Table of Contents
 
+### Build From Source (Start Here)
+- [Architecture overview](/docs/aurora-book/developer/architecture)
+- [Data and database](/docs/aurora-book/developer/data-and-db)
+- [API and realtime](/docs/aurora-book/developer/api-and-realtime)
+- [Documentation operations](/docs/aurora-book/developer/documentation-ops)
+
+### Full Rebuild Checklist
+1. Install dependencies (`npm install`)
+2. Configure `.env.local` from `.env.example`
+3. Run database bootstrap (`db:generate`, `db:push`, `db:seed`)
+4. Start app (`npm run dev`)
+5. Start realtime server if enabled (`npm run dev:server`)
+6. Verify `/api/health`, `/api/health/db`, and `/docs/aurora-book/developer`
+
 ### Foundations
 - [Architecture overview](/docs/aurora-book/developer/architecture)
 - [Security, privacy, and ethics](/docs/aurora-book/developer/security-privacy-ethics)

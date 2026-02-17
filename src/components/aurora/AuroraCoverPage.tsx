@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/aurora/Button';
+import { AuroraLogo } from '@/components/aurora/AuroraLogo';
+import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
 import clsx from 'clsx';
 import { expandableNavigation, type NavItem } from '@/lib/expandable-navigation';
 import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
@@ -86,6 +88,7 @@ const floatingParticles = Array.from({ length: 20 }, (_, index) => {
 
 export function AuroraCoverPage() {
   const router = useRouter();
+  const { concept, setConcept } = useAuroraLogo();
   const [hoveredUniverse, setHoveredUniverse] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isAuroraMenuOpen, setIsAuroraMenuOpen] = useState(false);
@@ -449,6 +452,62 @@ export function AuroraCoverPage() {
                 Experience the future of digital living. 15 interconnected universes, one seamless reality. 
                 Welcome to the next evolution of the internet.
               </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                <AuroraLogo size={36} interactive={false} showNav={false} />
+                <div className="hidden sm:flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setConcept('core')}
+                    className={clsx(
+                      'aurora-label text-xs px-2 py-1 rounded-full transition-colors',
+                      concept === 'core'
+                        ? 'bg-blue-500/20 text-blue-100'
+                        : 'text-white/60'
+                    )}
+                  >
+                    Concept 1
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConcept('wave')}
+                    className={clsx(
+                      'aurora-label text-xs px-2 py-1 rounded-full transition-colors',
+                      concept === 'wave'
+                        ? 'bg-purple-500/20 text-purple-100'
+                        : 'text-white/60'
+                    )}
+                  >
+                    Concept 2
+                  </button>
+                </div>
+                <div className="flex sm:hidden items-center gap-1 rounded-full border border-white/10 bg-white/10 px-1.5 py-1 text-[0.6rem]">
+                  <button
+                    type="button"
+                    aria-label="Use logo concept 1"
+                    onClick={() => setConcept('core')}
+                    className={clsx(
+                      'h-5 w-5 rounded-full transition-colors',
+                      concept === 'core'
+                        ? 'bg-blue-400/70 ring-2 ring-blue-300/60'
+                        : 'bg-white/30'
+                    )}
+                  />
+                  <button
+                    type="button"
+                    aria-label="Use logo concept 2"
+                    onClick={() => setConcept('wave')}
+                    className={clsx(
+                      'h-5 w-5 rounded-full transition-colors',
+                      concept === 'wave'
+                        ? 'bg-purple-400/70 ring-2 ring-purple-300/60'
+                        : 'bg-white/30'
+                    )}
+                  />
+                </div>
+              </div>
             </div>
 
             {/* CTA Buttons */}

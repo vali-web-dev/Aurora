@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/aurora/Button';
 import { Card } from '@/components/aurora/Card';
+import { AuroraLogo } from '@/components/aurora/AuroraLogo';
 import Link from 'next/link';
 
 export default function SignInPage() {
@@ -42,6 +43,9 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-4">
       <Card className="w-full max-w-md space-y-6">
+        <div className="flex justify-center">
+          <AuroraLogo size={120} interactive={true} showNav={true} />
+        </div>
         <div className="space-y-2">
           <h1 className="aurora-heading-2">
             Sign In to Aurora

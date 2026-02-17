@@ -2,7 +2,6 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
-import MicrosoftProvider from 'next-auth/providers/microsoft-entra-id';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { eq } from 'drizzle-orm';
 import { db } from './db';
@@ -14,6 +13,11 @@ const credentialsSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
+
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const githubClientId = process.env.GITHUB_CLIENT_ID;
+const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db as any, {
@@ -66,22 +70,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
       },
     }),
-    // OAuth Providers
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-      allowDangerousEmailAccountLinking: true,
-    }),
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID || '',
-      clientSecret: process.env.GITHUB_SECRET || '',
-      allowDangerousEmailAccountLinking: true,
-    }),
-    MicrosoftProvider({
-      clientId: process.env.MICROSOFT_CLIENT_ID || '',
-      clientSecret: process.env.MICROSOFT_CLIENT_SECRET || '',
-      allowDangerousEmailAccountLinking: true,
-    }),
+    // OAuth Providers (only enabled when configured)
+    ...(googleClientId && googleClientSecret
+      ? [
+          GoogleProvider({
+            clientId: googleClientId,
+            clientSecret: googleClientSecret,
+            allowDangerousEmailAccountLinking: true,
+          }),
+        ]
+      : []),
+    ...(githubClientId && githubClientSecret
+      ? [
+          GitHubProvider({
+            clientId: githubClientId,
+            clientSecret: githubClientSecret,
+            allowDangerousEmailAccountLinking: true,
+          }),
+        ]
+      : []),
   ],
 
   callbacks: {

@@ -62,3 +62,19 @@ Visit Settings and confirm:
 - Theme mode and family
 - Accessibility preferences
 - Notification defaults
+
+## What Good Looks Like After Day One
+- You can move between universes quickly
+- You know where Companion Panel lives
+- Your theme is set and feels right
+- You completed one small task or creation
+
+## If Something Feels Off
+- Use Settings to reduce motion or increase contrast
+- Clear memory in the Companion Panel
+- Switch universe to reset context
+
+## Next Best Steps
+- Read [/docs/aurora-book/end-user/advanced-usage](/docs/aurora-book/end-user/advanced-usage)
+- Skim [/docs/aurora-book/end-user/keyboard-shortcuts](/docs/aurora-book/end-user/keyboard-shortcuts)
+- Try one multi-universe workflow

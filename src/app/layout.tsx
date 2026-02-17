@@ -4,6 +4,7 @@ import { AccessibilityProvider } from '@/lib/accessibility/accessibility-provide
 import { RealtimeProvider } from '@/lib/realtime/realtime-provider';
 import { CompanionProvider } from '@/lib/companion/companion-provider';
 import { CompanionContextEngineProvider } from '@/lib/companion/companion-context-engine';
+import { AuroraLogoProvider } from '@/lib/brand/aurora-logo-provider';
 import { MemoryProvider } from '@/lib/memory/memory-provider';
 import { AuthSessionProvider } from '@/components/auth/SessionProvider';
 import { SkipLinks } from '@/components/accessibility/SkipLinks';
@@ -86,13 +87,15 @@ export default function RootLayout({
                 <MemoryProvider>
                   <CompanionProvider>
                     <CompanionContextEngineProvider>
-                      <SkipLinks />
-                      <AutoFocusManager />
-                      {children}
-                      <MemoryTracker />
-                      <CompanionPanel />
-                      <CompanionHint />
-                      <RealtimeToasts />
+                      <AuroraLogoProvider>
+                        <SkipLinks />
+                        <AutoFocusManager />
+                        {children}
+                        <MemoryTracker />
+                        <CompanionPanel />
+                        <CompanionHint />
+                        <RealtimeToasts />
+                      </AuroraLogoProvider>
                     </CompanionContextEngineProvider>
                   </CompanionProvider>
                 </MemoryProvider>

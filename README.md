@@ -2,36 +2,76 @@
 
 > A calm, beautifully designed digital world for your creative life.
 
+[![Production Ready](https://img.shields.io/badge/status-production%20ready-brightgreen)](PRODUCTION_READINESS_CHECKLIST.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-14+-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-blue)](https://www.typescriptlang.org/)
+
 Aurora is a comprehensive, emotionally intelligent digital civilization platform that unifies 15 interconnected universes into one seamless experience. Built with clarity, beauty, integrity, humanity, and wonder.
 
-## 🌍 Overview
+## 🚀 Quick Start
 
-Aurora brings together:
-- **Home** — Personal dashboard and life control
-- **Entertainment** — Unified video, music, and media
-- **Commerce** — Federated shopping with universal checkout
-- **Social** — Unified feeds, communities, and messaging
-- **Learning** — Global academy with courses and progress
-- **Create** — Creative studio for building surfaces and components
-- **Brand** — Identity systems and campaigns
-- **Communities** — Creator groups and collaboration
-- **Gaming** — Games, clips, events, and leaderboards
-- **Productivity** — Notes, tasks, calendar, boards
-- **Travel** — Trip planning and itineraries
-- **Finance** — Spending, budgets, and goals
-- **Health & Wellness** — Habits, sessions, reflection
-- **Home Control** — Smart device management
-- **Automation & Agents** — Routines and intelligent automation
+```bash
+# Install dependencies
+npm install
+
+# Set up environment
+cp .env.example .env.local
+# Edit .env.local with your configuration
+
+# Set up database
+npm run db:push
+npm run db:seed  # Optional: Add sample data
+
+# Start development server
+npm run dev
+
+# Or start with realtime support (Socket.IO)
+npm run dev:server
+
+# Visit http://localhost:3000
+```
+
+## 📚 Documentation
+
+- **[Production Readiness Checklist](PRODUCTION_READINESS_CHECKLIST.md)** - ✅ Status and requirements
+- **[Production Setup Guide](PRODUCTION_SETUP.md)** - Environment and security configuration
+- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Platform-specific deployment instructions
+- **[Developer Manual](docs/aurora-book/developer/)** - Complete architecture and API docs
+- **[End-User Guide](docs/aurora-book/end-user/)** - Universe guides and tutorials
+
+## 🌍 Universes
+
+Aurora brings together 15 interconnected universes:
+
+| Universe | Description | Route |
+|----------|-------------|-------|
+| **Home** | Personal dashboard and life control | `/home` |
+| **Entertainment** | Unified video, music, and media | `/entertainment` |
+| **Commerce** | Federated shopping with universal checkout | `/commerce` |
+| **Social** | Unified feeds, communities, and messaging | `/social` |
+| **Learning** | Global academy with courses and progress | `/learning` |
+| **Create** | Creative studio for building surfaces | `/create` |
+| **Brand** | Identity systems and campaigns | `/brand` |
+| **Communities** | Creator groups and collaboration | `/communities` |
+| **Gaming** | Games, clips, events, and leaderboards | `/gaming` |
+| **Productivity** | Notes, tasks, calendar, boards | `/productivity` |
+| **Travel** | Trip planning and itineraries | `/travel` |
+| **Finance** | Spending, budgets, and goals | `/finance` |
+| **Health** | Habits, sessions, reflection | `/health` |
+| **Home Control** | Smart device management | `/homecontrol` |
+| **Automation** | Routines and intelligent automation | `/automation` |
 
 ## 🛠 Technology Stack
 
 - **Framework:** Next.js 14+ (App Router)
-- **Language:** TypeScript
+- **Language:** TypeScript 5+
 - **Styling:** Tailwind CSS
 - **UI Library:** React 18+
-- **Components:** Modular, accessible, and themeable
-- **Design System:** Aurora Design Language with tokens for color, typography, motion
-- **Database Schema:** PostgreSQL (provided in `src/aurora_schema.sql`)
+- **Database:** PostgreSQL 14+ with Drizzle ORM
+- **Authentication:** NextAuth.js v5
+- **Realtime:** Socket.IO (optional)
+- **Security:** Built-in rate limiting, PII masking, audit logging
 
 ## 🎨 Design System
 
@@ -56,6 +96,16 @@ Aurora brings together:
 - **Wonder:** Meaningful and emotionally resonant
 
 ## ✨ Key Features
+
+### Production-Ready Infrastructure
+- ✅ **Health Monitoring** - `/api/health` and `/api/health/db` endpoints
+- ✅ **Structured Logging** - JSON logs with PII masking and audit trails
+- ✅ **Rate Limiting** - In-memory rate limiter for API protection
+- ✅ **Security Headers** - HSTS, CSP, XSS protection, frame denial
+- ✅ **Error Sanitization** - Generic errors in production, detailed in dev
+- ✅ **Auth Security** - Conditional OAuth, secure sessions, bcrypt passwords
+- ✅ **CI/CD Pipeline** - GitHub Actions workflow for automated testing
+- ✅ **Comprehensive Docs** - Developer and deployment guides included
 
 ### Design Language
 - Adaptive theme system with global theme provider

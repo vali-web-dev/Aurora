@@ -1,0 +1,72 @@
+<svg width="1200" height="512" viewBox="0 0 1200 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aurora Logo Concept 1 - Master" class="aurora-logo concept-1 master">
+  <defs>
+    <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="40%" stop-color="#C9F6FF" />
+      <stop offset="70%" stop-color="#00D9FF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </radialGradient>
+    <radialGradient id="coreAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E6FBFF" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#00D9FF" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="haloGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D9FF" />
+      <stop offset="60%" stop-color="#5BC5FF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="haloAccent" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F5A962" />
+      <stop offset="100%" stop-color="#00D9FF" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="wordGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0B0F1A" />
+      <stop offset="100%" stop-color="#1A2233" />
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(40,0)">
+    <g class="aurora-base">
+      <circle cx="256" cy="256" r="104" fill="url(#coreAura)" />
+      <circle cx="256" cy="256" r="90" fill="url(#coreGrad)" />
+      <circle cx="256" cy="256" r="170" fill="none" stroke="url(#haloGrad)" stroke-width="6" opacity="0.92" />
+      <circle cx="256" cy="256" r="186" fill="none" stroke="url(#haloAccent)" stroke-width="2" opacity="0.35" />
+      <circle cx="256" cy="256" r="150" fill="none" stroke="#D9E6FF" stroke-width="2" opacity="0.25" />
+    </g>
+    <g class="aurora-nav" opacity="0.45">
+      <line x1="256" y1="86" x2="256" y2="68" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+      <line x1="426" y1="256" x2="444" y2="256" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+      <line x1="256" y1="426" x2="256" y2="444" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+      <line x1="86" y1="256" x2="68" y2="256" stroke="#9FB6FF" stroke-width="4" stroke-linecap="round" />
+      <circle cx="256" cy="36" r="4" fill="#D9E6FF" />
+      <circle cx="476" cy="256" r="4" fill="#D9E6FF" />
+      <circle cx="256" cy="476" r="4" fill="#D9E6FF" />
+      <circle cx="36" cy="256" r="4" fill="#D9E6FF" />
+      <circle cx="456" cy="256" r="6" fill="#8B5CF6" />
+      <circle cx="430" cy="332" r="6" fill="#7A6AF2" />
+      <circle cx="380" cy="392" r="6" fill="#6B7AEF" />
+      <circle cx="312" cy="428" r="6" fill="#5C8AED" />
+      <circle cx="238" cy="438" r="6" fill="#4C9AEA" />
+      <circle cx="164" cy="420" r="6" fill="#3FA8E8" />
+      <circle cx="100" cy="374" r="6" fill="#31B6E6" />
+      <circle cx="66" cy="306" r="6" fill="#24C2E4" />
+      <circle cx="56" cy="230" r="6" fill="#19CDE2" />
+      <circle cx="82" cy="154" r="6" fill="#13D6E1" />
+      <circle cx="132" cy="94" r="6" fill="#1EDDF0" />
+      <circle cx="200" cy="66" r="6" fill="#2CE4FF" />
+      <circle cx="274" cy="56" r="6" fill="#40D4FF" />
+      <circle cx="348" cy="74" r="6" fill="#5BC5FF" />
+      <circle cx="412" cy="120" r="6" fill="#75B6FF" />
+      <circle cx="446" cy="188" r="6" fill="#8BA6FF" />
+      <circle cx="196" cy="118" r="3" fill="#F5A962" opacity="0.7" />
+      <circle cx="316" cy="114" r="3" fill="#F5A962" opacity="0.7" />
+      <circle cx="176" cy="394" r="3" fill="#F5A962" opacity="0.7" />
+      <circle cx="336" cy="394" r="3" fill="#F5A962" opacity="0.7" />
+    </g>
+  </g>
+
+  <g transform="translate(520,0)">
+    <text x="0" y="300" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="140" font-weight="600" letter-spacing="2" fill="url(#wordGrad)">Aurora</text>
+    <text x="4" y="362" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="32" font-weight="500" letter-spacing="4" fill="#6B7AEF">DIGITAL CIVILIZATION</text>
+  </g>
+</svg>

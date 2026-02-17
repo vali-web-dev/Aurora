@@ -9,6 +9,40 @@ This chapter consolidates the core design language, typography system, button sy
 - Elevation and shadow tiers
 - Motion durations and easing
 
+## Source of Truth (Files)
+- Tokens: `src/lib/design-system/tokens.ts`
+- Theme provider: `src/lib/design-system/theme-provider.tsx`
+- Global styles: `src/app/globals.css`
+- UI primitives: `src/components/aurora/*`
+
+## Core Component Inventory
+- Buttons: `Button`, `Modal`, `Card`, `Surface`, `SurfaceHeader`
+- Navigation: `AuroraLogoMenu`, `Topnav`, `CollapsibleNav`
+- Feedback: `RealtimeToasts`, `InlineNotice`, `CompanionHint`
+- Inputs: `Form`, `GlobalSearch`
+- Layout: `AuroraShell`, `SurfaceSection`
+
+## Theming Rules
+- Use CSS variables from theme provider
+- Avoid direct hex usage in components
+- Respect `dark` and `illuminated` modes
+
+## Motion System
+- Use calm motion: 200–600ms transitions
+- Respect reduced-motion user setting
+- Keep animation subtle and purposeful
+
+## Component Usage Pattern
+- Prefer semantic components over raw divs
+- Use `aurora-label` for body text
+- Use `aurora-heading-*` for titles
+
+## Accessibility Requirements
+- Keyboard navigable controls
+- Visible focus rings
+- Contrast verified in light/dark modes
+- aria-label on icon-only buttons
+
 ## Token Usage
 - Use tokens from src/lib/design-system/tokens.ts
 - Prefer semantic classes over raw colors
