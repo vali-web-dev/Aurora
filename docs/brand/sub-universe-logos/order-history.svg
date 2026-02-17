@@ -1,0 +1,23 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Order History - Receipts, Timeline -->
+  <defs>
+    <linearGradient id="order-history-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#64748B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Receipt -->
+  <path d="M18 14 L46 14 L46 50 L42 48 L38 50 L34 48 L30 50 L26 48 L22 50 L18 48 Z" fill="url(#order-history-gradient)" opacity="0.9"/>
+  <rect x="24" y="22" width="16" height="4" rx="2" fill="#FFFFFF" opacity="0.7"/>
+  <rect x="24" y="30" width="12" height="3" rx="1.5" fill="#FFFFFF" opacity="0.6"/>
+  <rect x="24" y="36" width="10" height="3" rx="1.5" fill="#FFFFFF" opacity="0.6"/>
+
+  <!-- Clock -->
+  <circle cx="44" cy="38" r="8" fill="#FFFFFF" opacity="0.9"/>
+  <line x1="44" y1="38" x2="44" y2="34" stroke="url(#order-history-gradient)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="44" y1="38" x2="48" y2="38" stroke="url(#order-history-gradient)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Glow -->
+  <circle cx="32" cy="32" r="20" fill="url(#order-history-gradient)" opacity="0.1"/>
+</svg>

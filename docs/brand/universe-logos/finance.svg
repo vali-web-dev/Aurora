@@ -1,0 +1,24 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Finance - Money, Growth -->
+  <defs>
+    <linearGradient id="finance-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#11998E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38EF7D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Growth chart with aurora gradient -->
+  <path d="M12 48 L12 52 L52 52 L52 48" stroke="url(#finance-gradient)" stroke-width="2" opacity="0.3"/>
+  <path d="M12 48 L20 42 L28 38 L36 32 L44 26 L52 18" 
+        stroke="url(#finance-gradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Chart bars underneath -->
+  <rect x="14" y="42" width="4" height="6" fill="#11998E" opacity="0.4"/>
+  <rect x="22" y="36" width="4" height="12" fill="#11998E" opacity="0.4"/>
+  <rect x="30" y="30" width="4" height="18" fill="#11998E" opacity="0.4"/>
+  <rect x="38" y="24" width="4" height="24" fill="#38EF7D" opacity="0.4"/>
+  <rect x="46" y="16" width="4" height="32" fill="#38EF7D" opacity="0.4"/>
+  
+  <!-- Upward arrow -->
+  <path d="M52 18 L48 22 M52 18 L56 22" stroke="url(#finance-gradient)" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

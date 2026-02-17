@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Home - Warm, Personal -->
+  <defs>
+    <linearGradient id="home-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFB347;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- House icon with aurora curve -->
+  <path d="M32 12 L48 28 L48 52 L40 52 L40 40 L24 40 L24 52 L16 52 L16 28 Z" 
+        fill="url(#home-gradient)" opacity="0.9"/>
+  <path d="M32 12 L52 32" stroke="url(#home-gradient)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <path d="M32 12 L12 32" stroke="url(#home-gradient)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="32" cy="20" r="2" fill="#FFB347"/>
+</svg>

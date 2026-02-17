@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Home - Monochrome Version -->
+  <!-- Single color for light backgrounds -->
+  <path d="M32 12 L48 28 L48 52 L40 52 L40 40 L24 40 L24 52 L16 52 L16 28 Z" 
+        fill="#1F2937" opacity="0.9"/>
+  <path d="M32 12 L52 32" stroke="#1F2937" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <path d="M32 12 L12 32" stroke="#1F2937" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="32" cy="20" r="2" fill="#1F2937"/>
+</svg>

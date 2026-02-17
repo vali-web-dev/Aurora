@@ -1,0 +1,19 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Roadmap - Path, Milestones -->
+  <defs>
+    <linearGradient id="roadmap-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FB923C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Curved path -->
+  <path d="M14 48 Q24 38, 28 32 Q34 22, 50 18" stroke="url(#roadmap-gradient)" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Milestones -->
+  <circle cx="18" cy="44" r="4" fill="url(#roadmap-gradient)"/>
+  <circle cx="30" cy="30" r="4" fill="url(#roadmap-gradient)"/>
+  <circle cx="48" cy="18" r="4" fill="url(#roadmap-gradient)"/>
+
+  <circle cx="32" cy="32" r="22" fill="url(#roadmap-gradient)" opacity="0.08"/>
+</svg>

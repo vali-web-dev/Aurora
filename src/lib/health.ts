@@ -212,7 +212,7 @@ export function withTiming<T>(fn: () => Promise<T>): Promise<{ result: T; durati
     });
 }
 
-export default {
+const healthUtils = {
   runHealthChecks,
   checkDatabase,
   checkEnvironment,
@@ -220,3 +220,5 @@ export default {
   metrics,
   withTiming,
 };
+
+export default healthUtils;

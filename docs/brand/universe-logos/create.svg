@@ -1,0 +1,22 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Create - Creativity, Building -->
+  <defs>
+    <linearGradient id="create-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FA709A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FEE140;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Paintbrush with aurora trail -->
+  <path d="M42 14 L50 22 L28 44 L20 36 Z" fill="url(#create-gradient)"/>
+  <ellipse cx="24" cy="40" rx="6" ry="8" transform="rotate(-45 24 40)" fill="url(#create-gradient)" opacity="0.7"/>
+  
+  <!-- Aurora paint strokes -->
+  <path d="M16 48 Q20 44, 24 48 T32 48" stroke="#FA709A" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <path d="M20 52 Q24 48, 28 52 T36 52" stroke="#FEE140" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  
+  <!-- Sparkles -->
+  <circle cx="38" cy="18" r="2" fill="#FEE140"/>
+  <circle cx="46" cy="10" r="1.5" fill="#FA709A"/>
+  <circle cx="54" cy="18" r="1.5" fill="#FEE140"/>
+</svg>

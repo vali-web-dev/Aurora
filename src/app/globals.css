@@ -4,6 +4,290 @@
 
 :root {
   color-scheme: dark;
+
+  /* ========================================
+     AURORA BUTTON SYSTEM - WATER DROPLET DESIGN
+     Root-level CSS variables for comprehensive button styling
+     Inspired by water droplet aesthetics: transparency, smoothness,
+     shininess, flow, reflection, and curvature
+     ======================================== */
+
+  /* === SIZING & SPACING === */
+  --btn-height-sm: 32px;
+  --btn-height-md: 40px;
+  --btn-height-lg: 48px;
+  --btn-height-xl: 56px;
+  --btn-padding-x-sm: 12px;
+  --btn-padding-x-md: 16px;
+  --btn-padding-x-lg: 24px;
+  --btn-padding-x-xl: 32px;
+  --btn-padding-y: 0;
+  --btn-gap: 8px;
+  --btn-icon-size: 20px;
+
+  /* === BORDER RADIUS (Water Droplet Smoothness) === */
+  --btn-radius-sm: 8px;
+  --btn-radius-md: 10px;
+  --btn-radius-lg: 12px;
+  --btn-radius-xl: 14px;
+  --btn-radius-full: 9999px;
+
+  /* === BORDER PROPERTIES === */
+  --btn-border-width: 1px;
+  --btn-border-width-thick: 2px;
+  --btn-border-style: solid;
+
+  /* === TYPOGRAPHY === */
+  --btn-font-size-sm: 13px;
+  --btn-font-size-md: 14px;
+  --btn-font-size-lg: 15px;
+  --btn-font-size-xl: 16px;
+  --btn-font-weight: 500;
+  --btn-font-weight-bold: 600;
+  --btn-letter-spacing: -0.01em;
+  --btn-line-height: 1;
+
+  /* === OPACITY & TRANSPARENCY (Water Droplet) === */
+  --btn-opacity-disabled: 0.4;
+  --btn-opacity-blocked: 0.6;
+  --btn-opacity-hover: 0.9;
+  --btn-opacity-active: 0.85;
+  --btn-overlay-opacity: 0.15;
+  --btn-glass-opacity: 0.08;
+  --btn-reflection-opacity: 0.25;
+
+  /* === TRANSITIONS & TIMING === */
+  --btn-transition-fast: 120ms;
+  --btn-transition-normal: 200ms;
+  --btn-transition-slow: 300ms;
+  --btn-transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --btn-transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --btn-transition-smooth: cubic-bezier(0.4, 0, 0.6, 1);
+
+  /* === ANIMATION DURATIONS === */
+  --btn-anim-pulse: 2s;
+  --btn-anim-breathe: 3s;
+  --btn-anim-excited: 0.6s;
+  --btn-anim-nervous: 0.3s;
+  --btn-anim-shimmer: 2.5s;
+  --btn-anim-ripple: 0.8s;
+
+  /* === SHADOWS (Water Droplet Depth) === */
+  /* Box Shadows */
+  --btn-shadow-none: none;
+  --btn-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --btn-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --btn-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+  --btn-shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.16), 0 4px 8px rgba(0, 0, 0, 0.1);
+  --btn-shadow-glow: 0 0 20px rgba(167, 139, 250, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+  
+  /* Layered Shadows (Realistic depth perception) */
+  --btn-shadow-layered-sm: 0 1px 1px rgba(0, 0, 0, 0.06), 
+                           0 2px 2px rgba(0, 0, 0, 0.04), 
+                           0 4px 4px rgba(0, 0, 0, 0.02);
+  --btn-shadow-layered-md: 0 2px 2px rgba(0, 0, 0, 0.08),
+                           0 4px 4px rgba(0, 0, 0, 0.06),
+                           0 8px 8px rgba(0, 0, 0, 0.04),
+                           0 16px 16px rgba(0, 0, 0, 0.02);
+  --btn-shadow-layered-lg: 0 2px 2px rgba(0, 0, 0, 0.1),
+                           0 4px 4px rgba(0, 0, 0, 0.08),
+                           0 8px 8px rgba(0, 0, 0, 0.06),
+                           0 16px 16px rgba(0, 0, 0, 0.04),
+                           0 32px 32px rgba(0, 0, 0, 0.02);
+  
+  /* Inset Shadows (Inner Depth) - Enhanced for glossy glass */
+  --btn-inset-shadow-light: inset 0 1px 3px rgba(255, 255, 255, 0.25), inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+  --btn-inset-shadow-dark: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  --btn-inset-shadow-deep: inset 0 3px 8px rgba(0, 0, 0, 0.3);
+  --btn-inset-shadow-glossy: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  
+  /* Text Shadows - Water container effect with depth */
+  --btn-text-shadow-water: 0 1px 1px rgba(255, 255, 255, 0.3), 
+                           0 2px 3px rgba(0, 0, 0, 0.5), 
+                           0 0 8px rgba(255, 255, 255, 0.15);
+  --btn-text-shadow-water-focused: 0 0 1px rgba(255, 255, 255, 0.5), 
+                                   0 1px 2px rgba(0, 0, 0, 0.6), 
+                                   0 0 12px rgba(255, 255, 255, 0.3),
+                                   0 0 20px currentColor;
+  --btn-text-shadow-primary: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --btn-text-shadow-secondary: 0 1px 1px rgba(0, 0, 0, 0.3);
+  --btn-text-shadow-subtle: 0 0.5px 1px rgba(0, 0, 0, 0.2);
+  --btn-text-shadow-glow: 0 0 12px currentColor;
+  --btn-text-shadow-none: none;
+
+  /* === GRADIENTS (Water Droplet Flow & Reflection) === */
+  /* Primary Gradients - Aurora's Luminous Purple with depth */
+  --btn-gradient-primary: linear-gradient(135deg, #9d7ce8 0%, #7c51e6 50%, #6b3ee4 100%);
+  --btn-gradient-primary-hover: linear-gradient(135deg, #8b66e0 0%, #6d40dc 50%, #5c2dd9 100%);
+  --btn-gradient-primary-active: linear-gradient(135deg, #7c51e6 0%, #5c2dd9 50%, #4b1fc7 100%);
+  
+  /* Secondary Gradients - Subtle glass with warmth */
+  --btn-gradient-secondary: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(139, 92, 246, 0.12) 50%, rgba(109, 40, 217, 0.08) 100%);
+  --btn-gradient-secondary-hover: linear-gradient(135deg, rgba(167, 139, 250, 0.14) 0%, rgba(139, 92, 246, 0.18) 50%, rgba(109, 40, 217, 0.12) 100%);
+  
+  /* State Gradients - Emotionally intelligent colors */
+  --btn-gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+  --btn-gradient-warning: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  --btn-gradient-danger: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #dc2626 100%);
+  --btn-gradient-notice: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+  --btn-gradient-blocked: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%);
+  
+  /* Glass Effect (Water Droplet Transparency) - Aurora's signature shimmer */
+  --btn-gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.05) 100%);
+  --btn-gradient-glass-dark: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.1) 100%);
+  --btn-gradient-glass-glossy: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 60%, rgba(0, 0, 0, 0.1) 100%);
+  
+  /* Reflection Overlay (Top Shine) - More pronounced droplet effect */
+  --btn-gradient-reflection: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 30%, transparent 50%);
+  --btn-gradient-reflection-subtle: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 35%, transparent 50%);
+  
+  /* Mesh Gradients (Multi-point radial for organic depth) */
+  --btn-gradient-mesh-primary: radial-gradient(circle at 30% 30%, rgba(157, 124, 232, 0.8) 0%, transparent 50%),
+                                radial-gradient(circle at 70% 70%, rgba(107, 62, 228, 0.6) 0%, transparent 50%),
+                                linear-gradient(135deg, #9d7ce8 0%, #7c51e6 50%, #6b3ee4 100%);
+  --btn-gradient-mesh-success: radial-gradient(circle at 30% 30%, rgba(52, 211, 153, 0.8) 0%, transparent 50%),
+                                radial-gradient(circle at 70% 70%, rgba(5, 150, 105, 0.6) 0%, transparent 50%),
+                                linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+  
+  /* Border Gradients (Liquid edges) */
+  --btn-border-gradient-primary: linear-gradient(135deg, rgba(167, 139, 250, 0.8), rgba(124, 81, 230, 0.9), rgba(107, 62, 228, 0.7));
+  --btn-border-gradient-success: linear-gradient(135deg, rgba(52, 211, 153, 0.8), rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.7));
+  --btn-border-gradient-danger: linear-gradient(135deg, rgba(248, 113, 113, 0.8), rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.7));
+  --btn-border-gradient-notice: linear-gradient(135deg, rgba(96, 165, 250, 0.8), rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.7));
+  
+  /* Shimmer Effect (Movement) */
+  --btn-gradient-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.25) 40%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0.25) 60%, transparent 100%);
+
+  /* === BACKGROUND COLORS & IMAGES === */
+  /* Background Base Colors */
+  --btn-bg-primary: #8b5cf6;
+  --btn-bg-secondary: transparent;
+  --btn-bg-success: #10b981;
+  --btn-bg-warning: #f59e0b;
+  --btn-bg-danger: #ef4444;
+  --btn-bg-notice: #3b82f6;
+  --btn-bg-disabled: #374151;
+  --btn-bg-blocked: #4b5563;
+  --btn-bg-ghost: transparent;
+  
+  /* Border Colors */
+  --btn-border-primary: rgba(139, 92, 246, 0.5);
+  --btn-border-secondary: rgba(167, 139, 250, 0.25);
+  --btn-border-success: rgba(16, 185, 129, 0.5);
+  --btn-border-warning: rgba(245, 158, 11, 0.5);
+  --btn-border-danger: rgba(239, 68, 68, 0.5);
+  --btn-border-notice: rgba(59, 130, 246, 0.5);
+  --btn-border-disabled: rgba(55, 65, 81, 0.5);
+  --btn-border-blocked: rgba(75, 85, 99, 0.5);
+  --btn-border-ghost: rgba(148, 163, 184, 0.2);
+  
+  /* Aurora Glow Colors - Signature luminance */
+  --btn-glow-primary: rgba(124, 81, 230, 0.6);
+  --btn-glow-success: rgba(16, 185, 129, 0.5);
+  --btn-glow-warning: rgba(245, 158, 11, 0.5);
+  --btn-glow-danger: rgba(239, 68, 68, 0.5);
+  --btn-glow-notice: rgba(59, 130, 246, 0.5);
+  
+  /* Focus Ring Colors (Enhanced accessibility) */
+  --btn-focus-ring-primary: rgba(167, 139, 250, 0.5);
+  --btn-focus-ring-success: rgba(52, 211, 153, 0.5);
+  --btn-focus-ring-danger: rgba(248, 113, 113, 0.5);
+  --btn-focus-ring-width: 3px;
+  --btn-focus-ring-offset: 2px;
+  
+  /* Universe-Specific Colors (15 Digital Universes) */
+  --btn-universe-entertainment: linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be185d 100%);
+  --btn-universe-commerce: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+  --btn-universe-social: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+  --btn-universe-learning: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+  --btn-universe-create: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+  --btn-universe-gaming: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+
+  /* Text Colors - Enhanced contrast for water container effect */
+  --btn-text-primary: #ffffff;
+  --btn-text-primary-enhanced: #fefefe;
+  --btn-text-secondary: #f8fafc;
+  --btn-text-secondary-muted: #e2e8f0;
+  --btn-text-muted: #94a3b8;
+  --btn-text-disabled: #64748b;
+  --btn-text-on-light: #0f172a;
+  --btn-text-on-dark: #f8fafc;
+
+  /* === HOVER & ACTIVE STATES === */
+  --btn-hover-scale: 1.02;
+  --btn-hover-brightness: 1.1;
+  --btn-active-scale: 0.98;
+  --btn-active-brightness: 0.95;
+
+  /* === Z-INDEX LAYERS === */
+  --btn-z-base: 0;
+  --btn-z-overlay: 1;
+  --btn-z-reflection: 2;
+  --btn-z-content: 3;
+  --btn-z-icon: 4;
+}
+
+/* === LIGHT MODE OVERRIDES === */
+[data-theme="light"],
+.theme-light {
+  --btn-bg-primary: #8b5cf6;
+  --btn-bg-secondary: rgba(15, 23, 42, 0.05);
+  --btn-bg-disabled: #e2e8f0;
+  --btn-bg-blocked: #cbd5e1;
+  
+  --btn-border-secondary: rgba(15, 23, 42, 0.15);
+  --btn-border-disabled: rgba(148, 163, 184, 0.3);
+  --btn-border-ghost: rgba(15, 23, 42, 0.1);
+  
+  --btn-text-secondary: #334155;
+  --btn-text-secondary-muted: #475569;
+  --btn-text-muted: #64748b;
+  --btn-text-disabled: #94a3b8;
+  
+  --btn-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --btn-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --btn-shadow-layered-md: 0 2px 2px rgba(0, 0, 0, 0.04),
+                           0 4px 4px rgba(0, 0, 0, 0.03),
+                           0 8px 8px rgba(0, 0, 0, 0.02),
+                           0 16px 16px rgba(0, 0, 0, 0.01);
+  
+  --btn-gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.4) 100%);
+  --btn-gradient-secondary: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(124, 81, 230, 0.08) 50%, rgba(109, 40, 217, 0.05) 100%);
+  --btn-inset-shadow-light: inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  --btn-gradient-reflection-subtle: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 40%, transparent 55%);
+}
+
+/* === DARK MODE (Default) === */
+[data-theme="dark"],
+.theme-dark {
+  /* Inherits root values */
+}
+
+/* === GRAY MODE === */
+[data-theme="gray"],
+.theme-gray {
+  --btn-gradient-primary: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  --btn-gradient-primary-hover: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+  --btn-gradient-primary-active: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  
+  --btn-bg-primary: #6b7280;
+  --btn-border-primary: rgba(107, 114, 128, 0.5);
+  
+  --btn-gradient-secondary: linear-gradient(135deg, rgba(75, 85, 99, 0.1) 0%, rgba(55, 65, 81, 0.15) 100%);
+  --btn-bg-secondary: rgba(75, 85, 99, 0.1);
+  --btn-border-secondary: rgba(107, 114, 128, 0.3);
+}
+
+/* === ILLUMINATED MODE (High Contrast) === */
+[data-theme="illuminated"],
+.theme-illuminated {
+  --btn-gradient-primary: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #3b82f6 100%);
+  --btn-gradient-primary-hover: linear-gradient(135deg, #8b5cf6 0%, #db2777 50%, #2563eb 100%);
+  
+  --btn-shadow-glow: 0 0 30px rgba(167, 139, 250, 0.6), 0 0 60px rgba(139, 92, 246, 0.4);
+  --btn-text-shadow-primary: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 16px rgba(167, 139, 250, 0.8);
+  
+  --btn-gradient-reflection: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%);
 }
 
 body {
@@ -196,6 +480,198 @@ html:not(.aurora-motion-ready) * {
   }
   50% {
     opacity: 0.7;
+  }
+}
+
+/* ========================================
+   AURORA BUTTON ANIMATIONS
+   Water droplet-inspired movement and effects
+   ======================================== */
+
+/* Pulse - Gentle rhythmic scaling */
+@keyframes btn-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 0.95;
+  }
+}
+
+/* Breathe - Smooth expansion and contraction */
+@keyframes btn-breathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: var(--btn-shadow-md);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: var(--btn-shadow-lg);
+  }
+}
+
+/* Excited - Quick bouncy animation */
+@keyframes btn-excited {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  10% {
+    transform: scale(1.05) rotate(-2deg);
+  }
+  30% {
+    transform: scale(1.08) rotate(2deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(-1deg);
+  }
+  70% {
+    transform: scale(1.02) rotate(1deg);
+  }
+  90% {
+    transform: scale(1.01) rotate(0deg);
+  }
+}
+
+/* Nervous - Rapid subtle shake */
+@keyframes btn-nervous {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(-2px);
+  }
+  20% {
+    transform: translateX(2px);
+  }
+  30% {
+    transform: translateX(-2px);
+  }
+  40% {
+    transform: translateX(2px);
+  }
+  50% {
+    transform: translateX(-1px);
+  }
+  60% {
+    transform: translateX(1px);
+  }
+  70% {
+    transform: translateX(-1px);
+  }
+  80% {
+    transform: translateX(1px);
+  }
+  90% {
+    transform: translateX(-0.5px);
+  }
+}
+
+/* Shimmer - Light reflection sweep (water droplet shine) */
+@keyframes btn-shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+    opacity: 0;
+  }
+}
+
+/* Ripple - Expanding wave effect */
+@keyframes btn-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Glow Pulse - Pulsating glow effect */
+@keyframes btn-glow-pulse {
+  0%, 100% {
+    box-shadow: var(--btn-shadow-md);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: var(--btn-shadow-glow);
+    filter: brightness(1.15);
+  }
+}
+
+/* Float - Gentle vertical movement */
+@keyframes btn-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Rotate Hue - Color shift animation */
+@keyframes btn-rotate-hue {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* Liquid Morph - Subtle width/height variation (water droplet) */
+@keyframes btn-liquid-morph {
+  0%, 100% {
+    border-radius: var(--btn-radius-md);
+  }
+  25% {
+    border-radius: calc(var(--btn-radius-md) * 1.2) calc(var(--btn-radius-md) * 0.9);
+  }
+  50% {
+    border-radius: var(--btn-radius-md);
+  }
+  75% {
+    border-radius: calc(var(--btn-radius-md) * 0.9) calc(var(--btn-radius-md) * 1.2);
+  }
+}
+
+/* Focus Pulse - Enhanced focus animation */
+@keyframes focus-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 var(--btn-focus-ring-offset) rgba(0, 0, 0, 0.05),
+                0 0 0 calc(var(--btn-focus-ring-width) + var(--btn-focus-ring-offset)) var(--btn-focus-ring-primary);
+  }
+  50% {
+    box-shadow: 0 0 0 var(--btn-focus-ring-offset) rgba(0, 0, 0, 0.05),
+                0 0 0 calc(var(--btn-focus-ring-width) + var(--btn-focus-ring-offset) + 2px) var(--btn-focus-ring-primary),
+                0 0 12px var(--btn-focus-ring-primary);
+  }
+}
+
+/* Mesh Shift - Multi-point gradient animation */
+@keyframes mesh-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 100%;
   }
 }
 
@@ -1006,7 +1482,711 @@ body {
   border-color: rgba(251, 191, 36, 0.6);
   box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.35), 0 12px 30px rgba(15, 23, 42, 0.15);
   background: linear-gradient(135deg, rgba(255, 247, 237, 0.9), rgba(255, 255, 255, 0.8));
-  animation: target-highlight 1400ms ease-out;
+  animation: target-highlight 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   AURORA BUTTON COMPONENTS
+   Water Droplet Design System
+   Complete implementation with all states and variants
+   ======================================== */
+
+/* === BASE BUTTON === */
+.aurora-btn {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-gap);
+  position: relative;
+  overflow: hidden;
+  
+  /* Sizing */
+  height: var(--btn-height-md);
+  padding: var(--btn-padding-y) var(--btn-padding-x-md);
+  
+  /* Typography - Aurora system */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--btn-font-size-md);
+  font-weight: var(--btn-font-weight);
+  letter-spacing: var(--btn-letter-spacing);
+  line-height: var(--btn-line-height);
+  white-space: nowrap;
+  
+  /* Text rendering for clarity */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  
+  /* Border & Radius */
+  border: var(--btn-border-width) var(--btn-border-style) transparent;
+  border-radius: var(--btn-radius-md);
+  
+  /* Transitions - smooth text focus */
+  transition: all var(--btn-transition-normal) var(--btn-transition-ease),
+              text-shadow 0.3s ease,
+              filter 0.2s ease;
+  
+  /* Effects */
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  
+  /* Performance */
+  will-change: transform, box-shadow, background, text-shadow;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Water Droplet Reflection Overlay - Enhanced glossy effect */
+.aurora-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: var(--btn-gradient-reflection);
+  border-radius: var(--btn-radius-md) var(--btn-radius-md) 0 0;
+  opacity: 1;
+  pointer-events: none;
+  z-index: var(--btn-z-reflection);
+  transition: opacity var(--btn-transition-normal) var(--btn-transition-ease),
+              background 0.3s ease;
+  mix-blend-mode: overlay;
+}
+
+/* Glossy glass layer */
+.aurora-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--btn-gradient-glass-glossy);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: var(--btn-z-overlay);
+  border-radius: var(--btn-radius-md);
+  mix-blend-mode: soft-light;
+  transition: opacity 0.3s ease;
+}
+
+/* Text container - water effect */
+.aurora-btn,
+.aurora-btn > * {
+  position: relative;
+  text-shadow: var(--btn-text-shadow-water);
+  transition: text-shadow 0.3s ease, filter 0.2s ease;
+  filter: contrast(0.95) brightness(1);
+}
+
+.aurora-btn > * {
+  z-index: var(--btn-z-content);
+}
+
+/* Hover: Focus the text (clarity increase) */
+.aurora-btn:hover:not(:disabled),
+.aurora-btn:hover:not(:disabled) > * {
+  text-shadow: var(--btn-text-shadow-water-focused);
+  filter: contrast(1.1) brightness(1.05);
+}
+
+.aurora-btn:hover:not(:disabled)::before {
+  opacity: 0.68;
+}
+
+.aurora-btn:hover:not(:disabled)::after {
+  opacity: 0.78;
+}
+
+/* Remove old shimmer effect structure */
+.aurora-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--btn-gradient-shimmer);
+  opacity: 0;
+  pointer-events: none;
+  z-index: var(--btn-z-overlay);
+}
+
+/* === SIZE VARIANTS === */
+.aurora-btn-sm {
+  height: var(--btn-height-sm);
+  padding: var(--btn-padding-y) var(--btn-padding-x-sm);
+  font-size: var(--btn-font-size-sm);
+  border-radius: var(--btn-radius-sm);
+}
+
+.aurora-btn-lg {
+  height: var(--btn-height-lg);
+  padding: var(--btn-padding-y) var(--btn-padding-x-lg);
+  font-size: var(--btn-font-size-lg);
+  border-radius: var(--btn-radius-lg);
+}
+
+.aurora-btn-xl {
+  height: var(--btn-height-xl);
+  padding: var(--btn-padding-y) var(--btn-padding-x-xl);
+  font-size: var(--btn-font-size-xl);
+  border-radius: var(--btn-radius-xl);
+}
+
+/* === ENHANCED FOCUS STATES === */
+.aurora-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--btn-focus-ring-offset) rgba(0, 0, 0, 0.05),
+              0 0 0 calc(var(--btn-focus-ring-width) + var(--btn-focus-ring-offset)) var(--btn-focus-ring-primary);
+  animation: focus-pulse 2s ease-in-out infinite;
+}
+
+.aurora-btn-primary:focus-visible {
+  box-shadow: 0 0 0 var(--btn-focus-ring-offset) rgba(0, 0, 0, 0.05),
+              0 0 0 calc(var(--btn-focus-ring-width) + var(--btn-focus-ring-offset)) var(--btn-focus-ring-primary),
+              0 0 24px var(--btn-glow-primary),
+              var(--btn-shadow-md);
+}
+
+.aurora-btn-success:focus-visible {
+  box-shadow: 0 0 0 var(--btn-focus-ring-offset) rgba(0, 0, 0, 0.05),
+              0 0 0 calc(var(--btn-focus-ring-width) + var(--btn-focus-ring-offset)) var(--btn-focus-ring-success),
+              0 0 24px var(--btn-glow-success),
+              var(--btn-shadow-md);
+}
+
+.aurora-btn-danger:focus-visible {
+  box-shadow: 0 0 0 var(--btn-focus-ring-offset) rgba(0, 0, 0, 0.05),
+              0 0 0 calc(var(--btn-focus-ring-width) + var(--btn-focus-ring-offset)) var(--btn-focus-ring-danger),
+              0 0 24px var(--btn-glow-danger),
+              var(--btn-shadow-md);
+}
+
+/* === LAYERED SHADOW MODIFIER === */
+.aurora-btn-layered,
+.aurora-btn.layered {
+  box-shadow: var(--btn-shadow-layered-md) !important;
+}
+
+.aurora-btn-layered:hover:not(:disabled),
+.aurora-btn.layered:hover:not(:disabled) {
+  box-shadow: var(--btn-shadow-layered-lg) !important;
+}
+
+/* === MESH GRADIENT MODIFIER === */
+.aurora-btn-mesh.aurora-btn-primary {
+  background: var(--btn-gradient-mesh-primary);
+  background-size: 200% 200%;
+  animation: mesh-shift 8s ease-in-out infinite;
+}
+
+.aurora-btn-mesh.aurora-btn-success {
+  background: var(--btn-gradient-mesh-success);
+  background-size: 200% 200%;
+  animation: mesh-shift 8s ease-in-out infinite;
+}
+
+/* === MAGNETIC HOVER EFFECT === */
+.aurora-btn-magnetic {
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.aurora-btn-magnetic:hover:not(:disabled) {
+  transform: scale(1.05) translateZ(0);
+}
+
+/* === UNIVERSE-SPECIFIC VARIANTS === */
+.aurora-btn-universe-entertainment {
+  background: var(--btn-universe-entertainment);
+  color: var(--btn-text-primary-enhanced);
+  border-color: rgba(236, 72, 153, 0.5);
+  box-shadow: var(--btn-shadow-md), 0 0 24px rgba(236, 72, 153, 0.5), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-universe-entertainment:hover:not(:disabled) {
+  box-shadow: var(--btn-shadow-lg), 0 0 32px rgba(236, 72, 153, 0.6), 0 0 48px rgba(219, 39, 119, 0.3);
+  transform: scale(var(--btn-hover-scale)) translateZ(0);
+  filter: brightness(1.08);
+}
+
+.aurora-btn-universe-commerce {
+  background: var(--btn-universe-commerce);
+  color: var(--btn-text-primary-enhanced);
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: var(--btn-shadow-md), 0 0 24px rgba(16, 185, 129, 0.5), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-universe-social {
+  background: var(--btn-universe-social);
+  color: var(--btn-text-primary-enhanced);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: var(--btn-shadow-md), 0 0 24px rgba(59, 130, 246, 0.5), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-universe-learning {
+  background: var(--btn-universe-learning);
+  color: var(--btn-text-primary-enhanced);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: var(--btn-shadow-md), 0 0 24px rgba(139, 92, 246, 0.5), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-universe-create {
+  background: var(--btn-universe-create);
+  color: var(--btn-text-on-light);
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: var(--btn-shadow-md), 0 0 24px rgba(245, 158, 11, 0.5), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-universe-gaming {
+  background: var(--btn-universe-gaming);
+  color: var(--btn-text-primary-enhanced);
+  border-color: rgba(239, 68, 68, 0.5);
+  box-shadow: var(--btn-shadow-md), 0 0 24px rgba(239, 68, 68, 0.5), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+/* === PRIMARY BUTTON === */
+.aurora-btn-primary {
+  background: var(--btn-gradient-primary);
+  color: var(--btn-text-primary-enhanced);
+  border-color: var(--btn-border-primary);
+  box-shadow: var(--btn-shadow-md), 0 0 24px var(--btn-glow-primary), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.aurora-btn-primary:hover:not(:disabled) {
+  background: var(--btn-gradient-primary-hover);
+  box-shadow: var(--btn-shadow-lg), 0 0 32px var(--btn-glow-primary), 0 0 48px rgba(124, 81, 230, 0.3), var(--btn-inset-shadow-glossy);
+  transform: scale(var(--btn-hover-scale)) translateZ(0);
+  filter: brightness(1.08);
+}
+
+.aurora-btn-primary:hover:not(:disabled)::before {
+  opacity: 0.4;
+}
+
+.aurora-btn-primary:active:not(:disabled) {
+  background: var(--btn-gradient-primary-active);
+  transform: scale(var(--btn-active-scale)) translateZ(0);
+  box-shadow: var(--btn-shadow-sm), 0 0 16px var(--btn-glow-primary), var(--btn-inset-shadow-deep);
+  filter: brightness(0.92);
+}
+
+/* === SECONDARY BUTTON === */
+.aurora-btn-secondary {
+  background: var(--btn-gradient-secondary);
+  color: var(--btn-text-primary-enhanced);
+  border-color: var(--btn-border-secondary);
+  box-shadow: var(--btn-shadow-sm), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.aurora-btn-secondary:hover:not(:disabled) {
+  background: var(--btn-gradient-secondary-hover);
+  box-shadow: var(--btn-shadow-md), 0 0 16px rgba(167, 139, 250, 0.15);
+  transform: scale(var(--btn-hover-scale)) translateZ(0);
+  border-color: rgba(167, 139, 250, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.aurora-btn-secondary:active:not(:disabled) {
+  transform: scale(var(--btn-active-scale)) translateZ(0);
+  box-shadow: var(--btn-shadow-sm), var(--btn-inset-shadow-dark);
+  filter: brightness(0.95);
+}
+
+/* === SUCCESS BUTTON === */
+.aurora-btn-success {
+  background: var(--btn-gradient-success);
+  color: var(--btn-text-primary-enhanced);
+  border-color: var(--btn-border-success);
+  box-shadow: var(--btn-shadow-md), 0 0 24px var(--btn-glow-success), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-success:hover:not(:disabled) {
+  box-shadow: var(--btn-shadow-lg), 0 0 32px var(--btn-glow-success), 0 0 48px rgba(16, 185, 129, 0.25);
+  transform: scale(var(--btn-hover-scale)) translateZ(0);
+  filter: brightness(1.08);
+}
+
+.aurora-btn-success:active:not(:disabled) {
+  transform: scale(var(--btn-active-scale)) translateZ(0);
+  box-shadow: var(--btn-shadow-sm), 0 0 16px var(--btn-glow-success), var(--btn-inset-shadow-deep);
+  filter: brightness(0.92);
+}
+
+/* === WARNING BUTTON === */
+.aurora-btn-warning {
+  background: var(--btn-gradient-warning);
+  color: var(--btn-text-on-light);
+  border-color: var(--btn-border-warning);
+  box-shadow: var(--btn-shadow-md), 0 0 24px var(--btn-glow-warning), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-warning:hover:not(:disabled) {
+  box-shadow: var(--btn-shadow-lg), 0 0 32px var(--btn-glow-warning), 0 0 48px rgba(245, 158, 11, 0.25);
+  transform: scale(var(--btn-hover-scale)) translateZ(0);
+  filter: brightness(1.08);
+}
+
+.aurora-btn-warning:active:not(:disabled) {
+  transform: scale(var(--btn-active-scale)) translateZ(0);
+  box-shadow: var(--btn-shadow-sm), 0 0 16px var(--btn-glow-warning), var(--btn-inset-shadow-deep);
+  filter: brightness(0.92);
+}
+
+/* === DANGER BUTTON === */
+.aurora-btn-danger {
+  background: var(--btn-gradient-danger);
+  color: var(--btn-text-primary-enhanced);
+  border-color: var(--btn-border-danger);
+  box-shadow: var(--btn-shadow-md), 0 0 24px var(--btn-glow-danger), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-danger:hover:not(:disabled) {
+  box-shadow: var(--btn-shadow-lg), 0 0 32px var(--btn-glow-danger), 0 0 48px rgba(239, 68, 68, 0.25);
+  transform: scale(var(--btn-hover-scale)) translateZ(0);
+  filter: brightness(1.08);
+}
+
+.aurora-btn-danger:active:not(:disabled) {
+  transform: scale(var(--btn-active-scale)) translateZ(0);
+  box-shadow: var(--btn-shadow-sm), 0 0 16px var(--btn-glow-danger), var(--btn-inset-shadow-deep);
+  filter: brightness(0.92);
+}
+
+/* === NOTICE BUTTON === */
+.aurora-btn-notice {
+  background: var(--btn-gradient-notice);
+  color: var(--btn-text-primary-enhanced);
+  border-color: var(--btn-border-notice);
+  box-shadow: var(--btn-shadow-md), 0 0 24px var(--btn-glow-notice), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+  font-weight: 600;
+}
+
+.aurora-btn-notice:hover:not(:disabled) {
+  box-shadow: var(--btn-shadow-lg), 0 0 32px var(--btn-glow-notice), 0 0 48px rgba(59, 130, 246, 0.25);
+  transform: scale(var(--btn-hover-scale)) translateZ(0);
+  filter: brightness(1.08);
+}
+
+.aurora-btn-notice:active:not(:disabled) {
+  transform: scale(var(--btn-active-scale)) translateZ(0);
+  box-shadow: var(--btn-shadow-sm), 0 0 16px var(--btn-glow-notice), var(--btn-inset-shadow-deep);
+  filter: brightness(0.92);
+}
+
+/* === GHOST BUTTON (Transparent) === */
+.aurora-btn-ghost {
+  background: var(--btn-bg-ghost);
+  color: var(--btn-text-secondary);
+  border-color: var(--btn-border-ghost);
+  box-shadow: none;
+  text-shadow: var(--btn-text-shadow-water);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.aurora-btn-ghost:hover:not(:disabled) {
+  background: var(--btn-gradient-glass);
+  border-color: var(--btn-border-secondary);
+  box-shadow: var(--btn-shadow-sm), 0 0 16px rgba(167, 139, 250, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.aurora-btn-ghost:active:not(:disabled) {
+  background: var(--btn-gradient-glass-dark);
+  transform: scale(var(--btn-active-scale)) translateZ(0);
+  box-shadow: var(--btn-inset-shadow-dark);
+}
+
+/* === DISABLED STATE === */
+.aurora-btn:disabled,
+.aurora-btn-disabled {
+  background: var(--btn-bg-disabled);
+  color: var(--btn-text-disabled);
+  border-color: var(--btn-border-disabled);
+  box-shadow: none;
+  opacity: var(--btn-opacity-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+  text-shadow: none;
+}
+
+.aurora-btn:disabled::before,
+.aurora-btn-disabled::before {
+  opacity: 0;
+}
+
+/* === BLOCKED STATE === */
+.aurora-btn-blocked {
+  background: var(--btn-gradient-blocked);
+  color: var(--btn-text-disabled);
+  border-color: var(--btn-border-blocked);
+  opacity: var(--btn-opacity-blocked);
+  cursor: not-allowed;
+  position: relative;
+}
+
+.aurora-btn-blocked::after {
+  content: '🔒';
+  position: absolute;
+  right: 8px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* === CANCEL/EXIT BUTTON === */
+.aurora-btn-cancel,
+.aurora-btn-exit {
+  background: var(--btn-gradient-secondary);
+  color: var(--btn-text-primary-enhanced);
+  border-color: var(--btn-border-secondary);
+  box-shadow: var(--btn-shadow-sm), var(--btn-inset-shadow-glossy);
+  text-shadow: var(--btn-text-shadow-water);
+}
+
+.aurora-btn-cancel:hover:not(:disabled),
+.aurora-btn-exit:hover:not(:disabled) {
+  background: var(--btn-gradient-danger);
+  color: var(--btn-text-primary);
+  border-color: var(--btn-border-danger);
+  box-shadow: var(--btn-shadow-md), 0 0 24px var(--btn-glow-danger);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  transform: scale(var(--btn-hover-scale)) translateZ(0);
+}
+
+/* === ANIMATION VARIANTS === */
+.aurora-btn-pulse {
+  animation: btn-pulse var(--btn-anim-pulse) ease-in-out infinite;
+}
+
+.aurora-btn-breathe {
+  animation: btn-breathe var(--btn-anim-breathe) ease-in-out infinite;
+}
+
+.aurora-btn-excited:hover:not(:disabled) {
+  animation: btn-excited var(--btn-anim-excited) var(--btn-transition-bounce);
+}
+
+.aurora-btn-nervous {
+  animation: btn-nervous var(--btn-anim-nervous) ease-in-out infinite;
+}
+
+.aurora-btn-shimmer:hover:not(:disabled)::after {
+  animation: btn-shimmer var(--btn-anim-shimmer) ease-in-out;
+  opacity: 1;
+}
+
+.aurora-btn-glow {
+  animation: btn-glow-pulse var(--btn-anim-pulse) ease-in-out infinite;
+}
+
+.aurora-btn-float {
+  animation: btn-float 3s ease-in-out infinite;
+}
+
+.aurora-btn-liquid {
+  animation: btn-liquid-morph 4s ease-in-out infinite;
+}
+
+/* === FULL WIDTH === */
+.aurora-btn-full {
+  width: 100%;
+}
+
+/* === ICON ONLY === */
+.aurora-btn-icon {
+  padding: 0;
+  width: var(--btn-height-md);
+  aspect-ratio: 1;
+}
+
+.aurora-btn-icon.aurora-btn-sm {
+  width: var(--btn-height-sm);
+}
+
+.aurora-btn-icon.aurora-btn-lg {
+  width: var(--btn-height-lg);
+}
+
+.aurora-btn-icon.aurora-btn-xl {
+  width: var(--btn-height-xl);
+}
+
+/* === LOADING STATE === */
+.aurora-btn-loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+
+.aurora-btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  color: var(--btn-text-primary);
+  opacity: 0.8;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === GROUP BUTTONS === */
+.aurora-btn-group {
+  display: inline-flex;
+  gap: 0;
+}
+
+.aurora-btn-group .aurora-btn {
+  border-radius: 0;
+  margin-left: calc(var(--btn-border-width) * -1);
+}
+
+.aurora-btn-group .aurora-btn:first-child {
+  border-radius: var(--btn-radius-md) 0 0 var(--btn-radius-md);
+  margin-left: 0;
+}
+
+.aurora-btn-group .aurora-btn:last-child {
+  border-radius: 0 var(--btn-radius-md) var(--btn-radius-md) 0;
+}
+
+.aurora-btn-group .aurora-btn:only-child {
+  border-radius: var(--btn-radius-md);
+}
+
+/* === FOCUS STATES === */
+.aurora-btn:focus-visible {
+  outline: 2px solid var(--btn-border-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2), var(--btn-shadow-md);
+}
+
+.aurora-btn-secondary:focus-visible {
+  outline-color: var(--btn-border-secondary);
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.2), var(--btn-shadow-sm);
+}
+
+.aurora-btn-danger:focus-visible {
+  outline-color: var(--btn-border-danger);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2), var(--btn-shadow-md);
+}
+
+/* === ACCESSIBILITY === */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-btn,
+  .aurora-btn::before,
+  .aurora-btn::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* === PRINT STYLES === */
+@media print {
+  .aurora-btn {
+    border: 1px solid #000;
+    background: #fff !important;
+    color: #000 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* === BADGE STYLES === */
+.aurora-btn-badge {
+  background: #6b7280;
+  color: #ffffff;
+}
+
+.aurora-btn-badge-primary {
+  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+}
+
+.aurora-btn-badge-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.aurora-btn-badge-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+}
+
+.aurora-btn-badge-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.aurora-btn-badge-default {
+  background: #6b7280;
+  color: #ffffff;
+}
+
+/* === SELECTED STATE === */
+.aurora-btn-selected {
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5), var(--btn-shadow-md);
+}
+
+.aurora-btn-selected::after {
+  opacity: 0.15;
+  background: var(--btn-gradient-glass);
+}
+
+/* === NO PERMISSION STATE === */
+.aurora-btn-no-permission {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.aurora-btn-no-permission:hover {
+  transform: none !important;
+  filter: grayscale(0.5) !important;
+}
+
+/* === BUTTON WRAPPER === */
+.aurora-btn-wrapper {
+  position: relative;
+  display: inline-block;
 }
 
 html.dark #saved:target .saved-highlight {

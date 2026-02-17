@@ -1,0 +1,24 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Health - Wellness, Balance -->
+  <defs>
+    <linearGradient id="health-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E96443;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#904E95;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="health-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#C56EFF;stop-opacity:0.1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Heart shape with aurora glow -->
+  <path d="M32 50 C32 50, 14 36, 14 24 C14 18, 18 14, 24 14 C28 14, 30 16, 32 18 C34 16, 36 14, 40 14 C46 14, 50 18, 50 24 C50 36, 32 50, 32 50 Z" 
+        fill="url(#health-gradient)"/>
+  
+  <!-- Inner glow -->
+  <circle cx="32" cy="28" r="8" fill="url(#health-glow)"/>
+  
+  <!-- Heartbeat line -->
+  <path d="M18 32 L24 32 L26 28 L28 36 L30 32 L46 32" 
+        stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+</svg>

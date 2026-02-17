@@ -8,6 +8,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+- Aurora enhanced button system with glossy water-droplet styling, stronger readability, and improved focus/hover behavior.
+- Advanced button primitives and interactions:
+  - IconButton, ToggleButton, DropdownButton, SplitButton, FloatingActionButton
+  - Button hooks for analytics, keyboard shortcuts, sound/haptic feedback, async state, and emotional state transitions
+- Universe and sub-universe logo platform:
+  - New reusable logo components for universes and sub-universes
+  - New brand logo documentation, guidelines, and showcase surfaces
+  - PNG export tooling for sub-universe logo assets
+- Expanded developer showcase surfaces for Aurora button system variants and emotional behaviors.
+
+### Changed
+- Updated global UI styling and button composition to align Aurora typography and visual depth across interaction states.
+- Updated supporting utility/config modules to integrate new UI system capabilities.
+
+### Fixed
+- Resolved prior build/lint blockers related to client component boundaries, JSX entity escaping, and anonymous default-export object patterns.
+
+### Validation
+- ✅ Production build passes (`npm run build`) including compile, lint/type-check, and static generation.
+
 ### Planned for v0.2
 - Full-text search across documentation
 - Localization (7 languages)

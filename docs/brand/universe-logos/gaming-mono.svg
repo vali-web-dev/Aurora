@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gaming - Monochrome -->
+  <rect x="16" y="24" width="32" height="20" rx="10" fill="#1F2937" opacity="0.9"/>
+  
+  <!-- D-pad -->
+  <rect x="22" y="30" width="3" height="8" fill="#FFF" opacity="0.9"/>
+  <rect x="20" y="32" width="7" height="4" fill="#FFF" opacity="0.9"/>
+  
+  <!-- Buttons -->
+  <circle cx="40" cy="32" r="2.5" fill="#FFF" opacity="0.9"/>
+  <circle cx="38" cy="36" r="2.5" fill="#FFF" opacity="0.7"/>
+  <circle cx="42" cy="36" r="2.5" fill="#FFF" opacity="0.7"/>
+  
+  <path d="M12 34 Q18 30, 24 34" stroke="#1F2937" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M40 34 Q46 30, 52 34" stroke="#1F2937" stroke-width="1.5" fill="none" opacity="0.5"/>
+</svg>

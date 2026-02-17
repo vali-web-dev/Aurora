@@ -1,0 +1,6 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Product - Inverted -->
+  <path d="M20 22 L32 16 L44 22 L44 42 L32 48 L20 42 Z" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M32 16 L32 48" stroke="#E5E7EB" stroke-width="2" opacity="0.8"/>
+  <path d="M20 22 L32 28 L44 22" stroke="#E5E7EB" stroke-width="2" opacity="0.8"/>
+</svg>

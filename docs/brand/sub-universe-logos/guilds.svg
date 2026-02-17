@@ -1,0 +1,19 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Guilds - Teams, Crests -->
+  <defs>
+    <linearGradient id="guilds-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Shield -->
+  <path d="M32 12 L48 18 L46 36 Q42 48, 32 52 Q22 48, 18 36 L16 18 Z" fill="url(#guilds-gradient)" opacity="0.9"/>
+
+  <!-- Banner -->
+  <rect x="24" y="26" width="16" height="6" rx="3" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M24 32 L32 36 L40 32" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+
+  <!-- Glow -->
+  <circle cx="32" cy="32" r="20" fill="url(#guilds-gradient)" opacity="0.1"/>
+</svg>

@@ -1,0 +1,28 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- AI - Intelligence, Neural -->
+  <defs>
+    <linearGradient id="ai-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Neural core -->
+  <circle cx="32" cy="32" r="10" fill="url(#ai-gradient)" opacity="0.9"/>
+  <circle cx="32" cy="32" r="4" fill="#FFFFFF" opacity="0.9"/>
+
+  <!-- Nodes -->
+  <circle cx="18" cy="20" r="3" fill="url(#ai-gradient)"/>
+  <circle cx="46" cy="20" r="3" fill="url(#ai-gradient)"/>
+  <circle cx="16" cy="40" r="3" fill="url(#ai-gradient)"/>
+  <circle cx="48" cy="40" r="3" fill="url(#ai-gradient)"/>
+
+  <!-- Connections -->
+  <line x1="21" y1="21" x2="28" y2="28" stroke="url(#ai-gradient)" stroke-width="1.5" opacity="0.7"/>
+  <line x1="43" y1="21" x2="36" y2="28" stroke="url(#ai-gradient)" stroke-width="1.5" opacity="0.7"/>
+  <line x1="19" y1="40" x2="28" y2="36" stroke="url(#ai-gradient)" stroke-width="1.5" opacity="0.7"/>
+  <line x1="45" y1="40" x2="36" y2="36" stroke="url(#ai-gradient)" stroke-width="1.5" opacity="0.7"/>
+
+  <!-- Glow -->
+  <circle cx="32" cy="32" r="20" fill="url(#ai-gradient)" opacity="0.1"/>
+</svg>

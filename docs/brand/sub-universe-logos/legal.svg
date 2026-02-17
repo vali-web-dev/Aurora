@@ -1,0 +1,19 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Legal - Scales, Policy -->
+  <defs>
+    <linearGradient id="legal-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5E9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Scales of justice -->
+  <line x1="32" y1="16" x2="32" y2="44" stroke="url(#legal-gradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="20" y1="22" x2="44" y2="22" stroke="url(#legal-gradient)" stroke-width="3" stroke-linecap="round"/>
+
+  <path d="M16 22 L10 34 H22 Z" fill="url(#legal-gradient)" opacity="0.9"/>
+  <path d="M48 22 L42 34 H54 Z" fill="url(#legal-gradient)" opacity="0.9"/>
+
+  <rect x="24" y="44" width="16" height="6" rx="3" fill="url(#legal-gradient)" opacity="0.9"/>
+  <circle cx="32" cy="32" r="22" fill="url(#legal-gradient)" opacity="0.08"/>
+</svg>

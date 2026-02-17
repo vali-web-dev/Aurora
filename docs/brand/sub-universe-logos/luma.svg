@@ -1,0 +1,28 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Luma - Light, Guidance -->
+  <defs>
+    <linearGradient id="luma-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FDE047;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22D3EE;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Light orb -->
+  <circle cx="32" cy="32" r="12" fill="url(#luma-gradient)" opacity="0.9"/>
+  <circle cx="32" cy="32" r="6" fill="#FFFFFF" opacity="0.9"/>
+
+  <!-- Rays -->
+  <line x1="32" y1="10" x2="32" y2="18" stroke="url(#luma-gradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="32" y1="46" x2="32" y2="54" stroke="url(#luma-gradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="10" y1="32" x2="18" y2="32" stroke="url(#luma-gradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="46" y1="32" x2="54" y2="32" stroke="url(#luma-gradient)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Diagonal rays -->
+  <line x1="18" y1="18" x2="23" y2="23" stroke="url(#luma-gradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="46" y1="18" x2="41" y2="23" stroke="url(#luma-gradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="18" y1="46" x2="23" y2="41" stroke="url(#luma-gradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="46" y1="46" x2="41" y2="41" stroke="url(#luma-gradient)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Glow -->
+  <circle cx="32" cy="32" r="20" fill="url(#luma-gradient)" opacity="0.1"/>
+</svg>

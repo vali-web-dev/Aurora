@@ -1,0 +1,25 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gaming - Play, Competition -->
+  <defs>
+    <linearGradient id="gaming-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6A11CB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2575FC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Game controller -->
+  <rect x="16" y="24" width="32" height="20" rx="10" fill="url(#gaming-gradient)" opacity="0.9"/>
+  
+  <!-- D-pad -->
+  <rect x="22" y="30" width="3" height="8" fill="#FFF" opacity="0.9"/>
+  <rect x="20" y="32" width="7" height="4" fill="#FFF" opacity="0.9"/>
+  
+  <!-- Buttons -->
+  <circle cx="40" cy="32" r="2.5" fill="#FFF" opacity="0.9"/>
+  <circle cx="38" cy="36" r="2.5" fill="#FFF" opacity="0.7"/>
+  <circle cx="42" cy="36" r="2.5" fill="#FFF" opacity="0.7"/>
+  
+  <!-- Aurora energy trails -->
+  <path d="M12 34 Q18 30, 24 34" stroke="#6A11CB" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M40 34 Q46 30, 52 34" stroke="#2575FC" stroke-width="1.5" fill="none" opacity="0.5"/>
+</svg>

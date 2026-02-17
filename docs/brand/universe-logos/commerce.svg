@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Commerce - Shopping, Checkout -->
+  <defs>
+    <linearGradient id="commerce-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#44A08D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Shopping bag with aurora glow -->
+  <rect x="20" y="24" width="24" height="28" rx="2" fill="url(#commerce-gradient)" opacity="0.9"/>
+  <path d="M24 24 L24 20 Q24 16, 28 16 L36 16 Q40 16, 40 20 L40 24" 
+        stroke="url(#commerce-gradient)" stroke-width="2.5" fill="none"/>
+  <circle cx="32" cy="38" r="12" fill="#4ECDC4" opacity="0.2"/>
+  <path d="M28 38 L30 40 L36 34" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

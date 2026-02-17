@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Entertainment - Play, Media -->
+  <defs>
+    <linearGradient id="entertainment-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6EC7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C56EFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Play button with aurora waves -->
+  <circle cx="32" cy="32" r="20" fill="url(#entertainment-gradient)" opacity="0.2"/>
+  <path d="M28 22 L28 42 L44 32 Z" fill="url(#entertainment-gradient)"/>
+  <path d="M12 32 Q18 26, 24 32 T36 32" stroke="#C56EFF" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M28 32 Q34 26, 40 32 T52 32" stroke="#FF6EC7" stroke-width="1.5" fill="none" opacity="0.5"/>
+</svg>

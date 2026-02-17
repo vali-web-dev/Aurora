@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Home Control - Smart Home, Automation -->
+  <defs>
+    <linearGradient id="homecontrol-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3A7BD5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00D2FF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- House icon -->
+  <path d="M32 14 L48 28 L48 50 L16 50 L16 28 Z" fill="url(#homecontrol-gradient)" opacity="0.3"/>
+  <path d="M32 14 L48 28 L48 50 L16 50 L16 28 Z" stroke="url(#homecontrol-gradient)" stroke-width="2" fill="none"/>
+  
+  <!-- Smart control panel in center -->
+  <rect x="24" y="28" width="16" height="16" rx="2" fill="url(#homecontrol-gradient)" opacity="0.9"/>
+  
+  <!-- Control buttons/indicators -->
+  <circle cx="28" cy="32" r="1.5" fill="#FFF" opacity="0.9"/>
+  <circle cx="36" cy="32" r="1.5" fill="#FFF" opacity="0.9"/>
+  <circle cx="28" cy="40" r="1.5" fill="#FFF" opacity="0.9"/>
+  <circle cx="36" cy="40" r="1.5" fill="#FFF" opacity="0.9"/>
+  
+  <!-- Aurora signal waves -->
+  <path d="M32 24 Q28 20, 24 24" stroke="#3A7BD5" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M32 24 Q36 20, 40 24" stroke="#00D2FF" stroke-width="1.5" fill="none" opacity="0.5"/>
+</svg>

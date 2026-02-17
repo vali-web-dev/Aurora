@@ -1,0 +1,19 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Accessibility - Inclusive, Universal -->
+  <defs>
+    <linearGradient id="accessibility-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22C55E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Universal access figure -->
+  <circle cx="32" cy="16" r="6" fill="url(#accessibility-gradient)"/>
+  <path d="M18 26 L46 26" stroke="url(#accessibility-gradient)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M24 26 L30 48" stroke="url(#accessibility-gradient)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M40 26 L34 48" stroke="url(#accessibility-gradient)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Inclusive ring -->
+  <circle cx="32" cy="32" r="20" stroke="url(#accessibility-gradient)" stroke-width="2" opacity="0.5"/>
+  <circle cx="32" cy="32" r="24" fill="url(#accessibility-gradient)" opacity="0.08"/>
+</svg>

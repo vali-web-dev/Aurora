@@ -1,0 +1,7 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Contact - Inverted -->
+  <path d="M14 20 H50 Q54 20, 54 24 V40 Q54 44, 50 44 H28 L18 52 V44 H14 Q10 44, 10 40 V24 Q10 20, 14 20 Z" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="24" cy="32" r="2.5" fill="#111827" opacity="0.9"/>
+  <circle cx="32" cy="32" r="2.5" fill="#111827" opacity="0.9"/>
+  <circle cx="40" cy="32" r="2.5" fill="#111827" opacity="0.9"/>
+</svg>

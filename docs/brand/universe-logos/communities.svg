@@ -1,0 +1,19 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Communities - Groups, Collaboration -->
+  <defs>
+    <linearGradient id="communities-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F857A6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF5858;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Multiple overlapping circles representing community -->
+  <circle cx="24" cy="28" r="8" fill="url(#communities-gradient)" opacity="0.7"/>
+  <circle cx="40" cy="28" r="8" fill="url(#communities-gradient)" opacity="0.7"/>
+  <circle cx="20" cy="42" r="7" fill="url(#communities-gradient)" opacity="0.7"/>
+  <circle cx="32" cy="42" r="7" fill="url(#communities-gradient)" opacity="0.7"/>
+  <circle cx="44" cy="42" r="7" fill="url(#communities-gradient)" opacity="0.7"/>
+  
+  <!-- Aurora glow around community -->
+  <circle cx="32" cy="36" r="22" fill="url(#communities-gradient)" opacity="0.15"/>
+</svg>

@@ -1,0 +1,28 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Automation - Workflows, Intelligence -->
+  <defs>
+    <linearGradient id="automation-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FC466B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3F5EFB;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Gear/cog representing automation -->
+  <circle cx="32" cy="32" r="12" fill="url(#automation-gradient)"/>
+  <circle cx="32" cy="32" r="6" fill="#FFF" opacity="0.9"/>
+  
+  <!-- Gear teeth -->
+  <rect x="30" y="14" width="4" height="6" fill="url(#automation-gradient)"/>
+  <rect x="30" y="44" width="4" height="6" fill="url(#automation-gradient)"/>
+  <rect x="14" y="30" width="6" height="4" fill="url(#automation-gradient)"/>
+  <rect x="44" y="30" width="6" height="4" fill="url(#automation-gradient)"/>
+  
+  <rect x="21" y="19" width="4" height="6" fill="url(#automation-gradient)" transform="rotate(-45 23 22)"/>
+  <rect x="39" y="19" width="4" height="6" fill="url(#automation-gradient)" transform="rotate(45 41 22)"/>
+  <rect x="21" y="39" width="4" height="6" fill="url(#automation-gradient)" transform="rotate(45 23 42)"/>
+  <rect x="39" y="39" width="4" height="6" fill="url(#automation-gradient)" transform="rotate(-45 41 42)"/>
+  
+  <!-- Aurora flow lines -->
+  <path d="M6 32 Q12 28, 18 32" stroke="#FC466B" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M46 32 Q52 28, 58 32" stroke="#3F5EFB" stroke-width="1.5" fill="none" opacity="0.5"/>
+</svg>

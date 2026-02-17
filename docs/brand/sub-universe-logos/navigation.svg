@@ -1,0 +1,23 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Navigation - Compass, Direction -->
+  <defs>
+    <linearGradient id="navigation-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14B8A6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#84CC16;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Compass ring -->
+  <circle cx="32" cy="32" r="18" stroke="url(#navigation-gradient)" stroke-width="3" opacity="0.9"/>
+  <circle cx="32" cy="32" r="10" stroke="url(#navigation-gradient)" stroke-width="2" opacity="0.7"/>
+
+  <!-- Needle -->
+  <path d="M32 18 L38 32 L32 46 L26 32 Z" fill="url(#navigation-gradient)" opacity="0.9"/>
+  <circle cx="32" cy="32" r="3" fill="#FFFFFF" opacity="0.9"/>
+
+  <!-- N marker -->
+  <line x1="32" y1="10" x2="32" y2="14" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Glow -->
+  <circle cx="32" cy="32" r="22" fill="url(#navigation-gradient)" opacity="0.1"/>
+</svg>

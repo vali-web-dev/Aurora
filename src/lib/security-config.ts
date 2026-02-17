@@ -245,7 +245,7 @@ export function sanitizeError(error: unknown): { message: string; code?: string 
   };
 }
 
-export default {
+const securityConfig = {
   securityHeaders,
   rateLimits,
   sessionConfig,
@@ -256,3 +256,5 @@ export default {
   featureFlags,
   dbSecurity,
 };
+
+export default securityConfig;

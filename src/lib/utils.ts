@@ -1,7 +1,30 @@
-export function cn(...classes: (string | undefined | null | false)[]): string {
-  return classes
-    .filter((c): c is string => typeof c === 'string' && c.length > 0)
-    .join(' ');
+type ClassValue = string | number | boolean | undefined | null | ClassArray | ClassDictionary;
+type ClassArray = ClassValue[];
+type ClassDictionary = { [key: string]: any };
+
+export function cn(...classes: ClassValue[]): string {
+  const result: string[] = [];
+
+  for (const cls of classes) {
+    if (!cls) continue;
+
+    const type = typeof cls;
+
+    if (type === 'string' || type === 'number') {
+      result.push(String(cls));
+    } else if (Array.isArray(cls)) {
+      const inner = cn(...cls);
+      if (inner) result.push(inner);
+    } else if (type === 'object') {
+      for (const key in cls as ClassDictionary) {
+        if ((cls as ClassDictionary)[key]) {
+          result.push(key);
+        }
+      }
+    }
+  }
+
+  return result.join(' ');
 }
 
 const pad2 = (value: number): string => String(value).padStart(2, '0');
