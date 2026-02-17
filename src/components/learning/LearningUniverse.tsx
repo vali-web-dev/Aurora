@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Card } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { CourseCard } from '@/components/learning/CourseCard';

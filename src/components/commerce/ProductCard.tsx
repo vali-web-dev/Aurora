@@ -1,5 +1,5 @@
 import { Card, CardFooter, CardTitle } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 
 interface ProductCardProps {
   title: string;

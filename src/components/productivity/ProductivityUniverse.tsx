@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardTitle } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
 import { AuroraDataService, type Task, type TaskStatus } from '@/data/types';

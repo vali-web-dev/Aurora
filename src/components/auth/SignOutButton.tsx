@@ -1,7 +1,7 @@
 'use client';
 
 import { signOut, useSession } from 'next-auth/react';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 
 export function SignOutButton() {
   const { data: session } = useSession();

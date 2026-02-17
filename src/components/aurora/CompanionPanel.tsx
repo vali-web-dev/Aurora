@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { AuroraModal } from '@/components/aurora/Modal';
 import { Badge } from '@/components/aurora/Badge';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { useCompanion } from '@/lib/companion/companion-provider';
 import { useMemory } from '@/lib/memory/memory-provider';
 import { useCompanionContextEngine } from '@/lib/companion/companion-context-engine';

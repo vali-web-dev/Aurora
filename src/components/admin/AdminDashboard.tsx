@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { Surface, SurfaceHeader } from '@/components/aurora/Surface';
 import clsx from 'clsx';

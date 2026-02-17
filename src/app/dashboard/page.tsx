@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { AuroraShell } from '@/components/os/AuroraShell';
 import {
   UniverseCard,

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Card, CardTitle } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { AuroraDataService } from '@/data/types';
 import { formatNumber } from '@/lib/utils';

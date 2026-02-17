@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { InlineNotice } from '@/components/ui/InlineNotice';
 import { AuroraDataService } from '@/data/types';
 import { useRouter } from 'next/navigation';

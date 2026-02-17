@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { footerNav } from '@/lib/navigation';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 
 export function Footer() {
   const { data: session, status } = useSession();

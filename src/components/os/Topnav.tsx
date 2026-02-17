@@ -14,7 +14,7 @@ import { RealtimeNotifications } from '@/components/aurora/RealtimeNotifications
 import { CollapsibleNav } from '@/components/os/CollapsibleNav';
 import { DocsPortal } from '@/components/aurora/DocsPortal';
 import { KeyboardShortcutsHelp } from '@/components/aurora/KeyboardShortcutsHelp';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { useTheme } from '@/lib/design-system/theme-provider';
 import { useCompanion } from '@/lib/companion/companion-provider';
 import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';

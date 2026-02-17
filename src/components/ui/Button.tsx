@@ -11,6 +11,8 @@
  * - Theme support: light, dark, gray, illuminated
  */
 
+'use client';
+
 import React, { forwardRef, ButtonHTMLAttributes, ReactNode, useState, useCallback, useEffect, useRef, MouseEvent } from 'react';
 import { cn } from '@/lib/utils';
 import { useEmotionalState, useEmotionalLoadingState } from './useEmotionalState';
@@ -18,6 +20,11 @@ import { useEmotionalState, useEmotionalLoadingState } from './useEmotionalState
 export type ButtonVariant =
   | 'primary'
   | 'secondary'
+  | 'outline'
+  | 'accent'
+  | 'aurora'
+  | 'auroraSecondary'
+  | 'auroraGhost'
   | 'success'
   | 'warning'
   | 'danger'
@@ -460,13 +467,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
       // Variant classes
       {
-        'aurora-btn-primary': variant === 'primary',
-        'aurora-btn-secondary': variant === 'secondary',
+        'aurora-btn-primary': variant === 'primary' || variant === 'aurora',
+        'aurora-btn-secondary': variant === 'secondary' || variant === 'outline' || variant === 'auroraSecondary',
+        'aurora-btn-danger': variant === 'danger' || variant === 'accent',
+        'aurora-btn-ghost': variant === 'ghost' || variant === 'auroraGhost',
         'aurora-btn-success': variant === 'success',
         'aurora-btn-warning': variant === 'warning',
-        'aurora-btn-danger': variant === 'danger',
         'aurora-btn-notice': variant === 'notice',
-        'aurora-btn-ghost': variant === 'ghost',
         'aurora-btn-cancel': variant === 'cancel',
         'aurora-btn-exit': variant === 'exit',
         'aurora-btn-universe-entertainment': variant === 'universe-entertainment',

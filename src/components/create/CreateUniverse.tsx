@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Card, CardDescription, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 
 const blockTypes = [

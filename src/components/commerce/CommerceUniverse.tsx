@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { ProductCard } from '@/components/commerce/ProductCard';
 import { InlineNotice } from '@/components/ui/InlineNotice';

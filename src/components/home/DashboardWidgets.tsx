@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Card } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { useCartStore } from '@/lib/commerce/cart-store';
 import { useOrderStore } from '@/lib/commerce/order-store';
 import clsx from 'clsx';

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/aurora/Card';
 import { AuroraLogo } from '@/components/aurora/AuroraLogo';
 import Link from 'next/link';

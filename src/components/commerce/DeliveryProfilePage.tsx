@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { Card, CardTitle } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Input, Select } from '@/components/aurora/Form';
 import { InlineNotice } from '@/components/ui/InlineNotice';
 import { Badge } from '@/components/aurora/Badge';

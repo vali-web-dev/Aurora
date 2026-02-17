@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Card } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import clsx from 'clsx';
 

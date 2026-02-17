@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';

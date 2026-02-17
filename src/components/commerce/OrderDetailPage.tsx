@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { AuroraDataService } from '@/data/types';
 import { useCartStore, type CartLine } from '@/lib/commerce/cart-store';

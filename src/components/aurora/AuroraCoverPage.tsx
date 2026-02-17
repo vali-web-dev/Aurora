@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { AuroraLogo } from '@/components/aurora/AuroraLogo';
 import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
 import clsx from 'clsx';

@@ -2,7 +2,7 @@
 
 import { useState, type CSSProperties } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
-import { Button } from '@/components/aurora/Button';
+import { Button } from '@/components/ui/Button';
 import { mockRealms, mockRealmUsage } from '@/data/types';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { expandableNavigation } from '@/lib/expandable-navigation';
