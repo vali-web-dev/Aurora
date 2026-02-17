@@ -116,6 +116,22 @@ This repository contains Aurora's complete identity, design philosophy, and user
 
 ---
 
+### 🔩 **[docs/brand/MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md](docs/brand/MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md)** **NEW**
+**For:** Navigation systems designers, interaction engineers, motion/sound architects  
+**Contains:**
+- Mechanical chain-link ring topology (inner/main/outer/overflow)
+- Arc panel unit spec (link structure and behavior)
+- Capacity formulas and dynamic ring spawning rules
+- Open/close sequencing with engineered timing bands
+- Sound event model + reduced-motion accessibility constraints
+- Implementation phases and acceptance criteria
+
+**Read this if:** You're designing or implementing Aurora's ring-engine behavior for hierarchical logo navigation.
+
+**Length:** ~2,500 words (15-20 min read)
+
+---
+
 ### 🎨 **[AURORA_DESIGN_CULTURE.md](AURORA_DESIGN_CULTURE.md)**
 **For:** Designers, developers, marketers, brand builders  
 **Contains:**
@@ -296,6 +312,12 @@ These themes appear throughout:
 - [MASTER_LOGO_CONSOLE_RFC_v1.md - State Machine](docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md#6-functional-model)
 - [MASTER_LOGO_CONSOLE_RFC_v1.md - API Surface](docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md#13-api-surface-proposed)
 
+**Ring Engine Draft** ⭐ **NEW**
+- [MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md - Full Draft](docs/brand/MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md)
+- [MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md - Ring Topology](docs/brand/MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md#2-ring-topology)
+- [MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md - Geometry + Capacity Rules](docs/brand/MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md#4-geometry--capacity-rules)
+- [MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md - Mechanical Open/Close Sequencing](docs/brand/MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md#5-mechanical-openclose-sequencing)
+
 ---
 
 ## Contributing to Aurora's Identity
@@ -320,8 +342,9 @@ These documents are maintained by:
 - **AURORA_QUICK_REFERENCE.md** - All teams (collaborative)
 - **FEATURE_DEVELOPMENT_GUIDE.md** - Engineering & Product Team ⭐ **NEW**
 - **docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md** - Brand Systems & Navigation Engineering ⭐ **NEW**
+- **docs/brand/MASTER_LOGO_RING_ENGINE_SPEC_v1_DRAFT.md** - Navigation Systems & Motion Engineering ⭐ **NEW**
 
-**Last Updated:** February 2026 (added Feature Development Guide + Master Logo Console RFC)  
+**Last Updated:** February 2026 (added Feature Development Guide + Master Logo Console RFC + Ring Engine Draft)  
 **Next Review:** May 2026
 
 ---
