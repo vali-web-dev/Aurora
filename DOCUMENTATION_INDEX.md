@@ -100,6 +100,22 @@ This repository contains Aurora's complete identity, design philosophy, and user
 
 ---
 
+### ⚙️ **[docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md](docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md)** **NEW**
+**For:** Brand systems, navigation architects, UI engineers  
+**Contains:**
+- Master logo console functional architecture (core, ring, arcs, banks)
+- State machine and interaction contracts
+- Data schema and API surface for implementation
+- Motion timing bands, accessibility constraints, telemetry hooks
+- Rollout phases, risks, acceptance criteria
+- Upgrade blueprint: AMNE-v2
+
+**Read this if:** You're implementing Aurora's master logo navigation engine or reviewing platform-level navigation behavior.
+
+**Length:** ~3,000 words (15-25 min read)
+
+---
+
 ### 🎨 **[AURORA_DESIGN_CULTURE.md](AURORA_DESIGN_CULTURE.md)**
 **For:** Designers, developers, marketers, brand builders  
 **Contains:**
@@ -274,6 +290,12 @@ These themes appear throughout:
 - [FEATURE_DEVELOPMENT_GUIDE.md - Feature Doc Template](FEATURE_DEVELOPMENT_GUIDE.md#feature-specific-documentation-template)
 - [FEATURE_DEVELOPMENT_GUIDE.md - Examples](FEATURE_DEVELOPMENT_GUIDE.md#examples)
 
+**Master Logo Console Architecture** ⭐ **NEW**
+- [MASTER_LOGO_CONSOLE_RFC_v1.md - Full RFC](docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md)
+- [MASTER_LOGO_CONSOLE_RFC_v1.md - Information Architecture](docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md#5-information-architecture)
+- [MASTER_LOGO_CONSOLE_RFC_v1.md - State Machine](docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md#6-functional-model)
+- [MASTER_LOGO_CONSOLE_RFC_v1.md - API Surface](docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md#13-api-surface-proposed)
+
 ---
 
 ## Contributing to Aurora's Identity
@@ -297,8 +319,9 @@ These documents are maintained by:
 - **COMPANION_PERSONALITY_DESIGN.md** - Engineering & Product Team
 - **AURORA_QUICK_REFERENCE.md** - All teams (collaborative)
 - **FEATURE_DEVELOPMENT_GUIDE.md** - Engineering & Product Team ⭐ **NEW**
+- **docs/brand/MASTER_LOGO_CONSOLE_RFC_v1.md** - Brand Systems & Navigation Engineering ⭐ **NEW**
 
-**Last Updated:** February 2026 (added Feature Development Guide)  
+**Last Updated:** February 2026 (added Feature Development Guide + Master Logo Console RFC)  
 **Next Review:** May 2026
 
 ---
