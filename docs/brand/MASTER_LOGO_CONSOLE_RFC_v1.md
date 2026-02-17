@@ -1,7 +1,8 @@
 # RFC: Aurora Master Logo Console v1
 
-- **Status:** Draft
+- **Status:** Draft (v1 decisions locked)
 - **Date:** 2026-02-17
+- **Decision Update:** 2026-02-17
 - **Owners:** Aurora Brand + Navigation Systems
 - **Scope:** Master logo as global navigation console (functional-first), with crystal-water button-style presentation.
 
@@ -191,12 +192,18 @@ Enhancements:
 5. Predictive pre-focus with user override
 6. Deterministic recovery from interrupted interactions
 
-## 18) Open Questions
-1. Final slot count for compact state (6 vs 8).
-2. Whether deep mode opens on hold, click, or both.
-3. Universe grouping taxonomy for initial arcs.
-4. Thresholds for criticality lane visibility.
-5. Telemetry privacy retention window.
+## 18) Decisions (v1 Locked)
+1. **Compact slot count:** `8` visible slots max.
+2. **Deep mode trigger:** both hold and explicit click/tap.
+3. **Initial arc taxonomy:** `worlds`, `tools`, `system`.
+4. **Criticality lane visibility:** show only when `isCritical=true` or active warning state exists.
+5. **Telemetry retention policy:** 30 days raw event retention, then aggregate-only metrics.
+
+### 18.1 Guardrails
+- Never exceed 8 visible compact slots.
+- Do not auto-open deep mode from incidental hover.
+- Criticality lane must remain sparse and semantically meaningful.
+- Telemetry must remain privacy-auditable and align with Aurora privacy defaults.
 
 ## 19) Acceptance Criteria
 - Master icon remains geometrically unchanged.
