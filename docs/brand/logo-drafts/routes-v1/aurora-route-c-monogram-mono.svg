@@ -1,5 +1,10 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M14 50L28 18C29 15 33 15 34 18L50 50H43L39 41H24L20 50H14Z" fill="#1F2937" opacity="0.94"/>
-  <path d="M27 34H36L34 29C33 27 30 27 29 29L27 34Z" fill="white" fill-opacity="0.18"/>
-  <path d="M24 40H39" stroke="white" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="20.5" stroke="#374151" stroke-opacity="0.24" stroke-width="1.5"/>
+
+  <path d="M14 50L27.5 17.8C28.9 14.7 33.1 14.7 34.5 17.8L50 50H43.3L39.3 41.4H24.2L20.6 50H14Z" fill="#111827" opacity="0.95"/>
+  <path d="M23.9 41.6L27.4 33.8H36.3L39.2 41.6H23.9Z" fill="#000000" fill-opacity="0.14"/>
+  <path d="M27.1 34H36.6L34.4 28.7C33.4 26.4 30.2 26.4 29.2 28.7L27.1 34Z" fill="white" fill-opacity="0.22"/>
+  <path d="M25.2 39.8H39.1" stroke="white" stroke-opacity="0.58" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="41.5" cy="25.3" r="1.8" fill="#374151" fill-opacity="0.72"/>
+  <circle cx="22.1" cy="45.7" r="1.3" fill="#4B5563" fill-opacity="0.62"/>
 </svg>

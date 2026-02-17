@@ -1,14 +1,23 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="aurora-route-c-gradient" x1="12" y1="52" x2="52" y2="12" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#8B5CF6"/>
-      <stop offset="0.55" stop-color="#06B6D4"/>
-      <stop offset="1" stop-color="#22D3EE"/>
+    <linearGradient id="aurora-route-c-gradient-v2" x1="12" y1="52" x2="52" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7C3AED"/>
+      <stop offset="0.52" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#67E8F9"/>
+    </linearGradient>
+    <linearGradient id="aurora-route-c-highlight-v2" x1="25" y1="19" x2="39" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="white" stop-opacity="0.46"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
-  <path d="M14 50L28 18C29 15 33 15 34 18L50 50H43L39 41H24L20 50H14Z" fill="url(#aurora-route-c-gradient)" opacity="0.94"/>
-  <path d="M27 34H36L34 29C33 27 30 27 29 29L27 34Z" fill="white" fill-opacity="0.2"/>
-  <path d="M24 40H39" stroke="white" stroke-opacity="0.48" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="32" cy="32" r="22" fill="url(#aurora-route-c-gradient)" opacity="0.1"/>
+  <circle cx="32" cy="32" r="22" fill="url(#aurora-route-c-gradient-v2)" opacity="0.1"/>
+  <circle cx="32" cy="32" r="20.5" stroke="url(#aurora-route-c-gradient-v2)" stroke-opacity="0.22" stroke-width="1.5"/>
+
+  <path d="M14 50L27.5 17.8C28.9 14.7 33.1 14.7 34.5 17.8L50 50H43.3L39.3 41.4H24.2L20.6 50H14Z" fill="url(#aurora-route-c-gradient-v2)" opacity="0.96"/>
+  <path d="M23.9 41.6L27.4 33.8H36.3L39.2 41.6H23.9Z" fill="#0F172A" fill-opacity="0.2"/>
+  <path d="M27.1 34H36.6L34.4 28.7C33.4 26.4 30.2 26.4 29.2 28.7L27.1 34Z" fill="url(#aurora-route-c-highlight-v2)"/>
+  <path d="M25.2 39.8H39.1" stroke="white" stroke-opacity="0.58" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="41.5" cy="25.3" r="1.9" fill="#67E8F9" fill-opacity="0.95"/>
+  <circle cx="22.1" cy="45.7" r="1.4" fill="#A78BFA" fill-opacity="0.8"/>
 </svg>
