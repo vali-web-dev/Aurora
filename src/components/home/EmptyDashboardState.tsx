@@ -127,7 +127,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
               See how Aurora works with sample posts, communities, and activity
             </p>
             <Button
-              variant="aurora"
+              variant="primary"
               size="sm"
               onClick={handleCreateSampleData}
               disabled={isCreating}

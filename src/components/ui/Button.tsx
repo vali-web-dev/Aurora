@@ -20,11 +20,6 @@ import { useEmotionalState, useEmotionalLoadingState } from './useEmotionalState
 export type ButtonVariant =
   | 'primary'
   | 'secondary'
-  | 'outline'
-  | 'accent'
-  | 'aurora'
-  | 'auroraSecondary'
-  | 'auroraGhost'
   | 'success'
   | 'warning'
   | 'danger'
@@ -467,10 +462,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
       // Variant classes
       {
-        'aurora-btn-primary': variant === 'primary' || variant === 'aurora',
-        'aurora-btn-secondary': variant === 'secondary' || variant === 'outline' || variant === 'auroraSecondary',
-        'aurora-btn-danger': variant === 'danger' || variant === 'accent',
-        'aurora-btn-ghost': variant === 'ghost' || variant === 'auroraGhost',
+        'aurora-btn-primary': variant === 'primary',
+        'aurora-btn-secondary': variant === 'secondary',
+        'aurora-btn-danger': variant === 'danger',
+        'aurora-btn-ghost': variant === 'ghost',
         'aurora-btn-success': variant === 'success',
         'aurora-btn-warning': variant === 'warning',
         'aurora-btn-notice': variant === 'notice',

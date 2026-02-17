@@ -145,7 +145,7 @@ export default function SignUpPage() {
 
           <Button
             type="submit"
-            variant="aurora"
+            variant="primary"
             size="md"
             disabled={isLoading}
             className="w-full"

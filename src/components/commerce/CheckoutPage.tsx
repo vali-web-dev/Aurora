@@ -384,7 +384,7 @@ export function CheckoutPage() {
               </div>
               <Button
                 size="sm"
-                variant="outline"
+                variant="secondary"
                 onClick={() => {
                   setUseNewAddress(true);
                   setFormName('');
@@ -623,7 +623,7 @@ export function CheckoutPage() {
               <InlineNotice message={notice.message} tone={notice.tone} />
             )}
             <Button
-              variant="aurora"
+              variant="primary"
               className="w-full"
               disabled={items.length === 0 || paymentStatus === 'processing' || paymentStatus === 'success'}
               onClick={handlePlaceOrder}
@@ -631,7 +631,7 @@ export function CheckoutPage() {
               {paymentStatus === 'processing' ? 'Processing...' : paymentStatus === 'success' ? 'Order Placed' : 'Place Order'}
             </Button>
             <Link href="/commerce/review">
-              <Button variant="outline" className="w-full" disabled={items.length === 0}>
+              <Button variant="secondary" className="w-full" disabled={items.length === 0}>
                 Review Priorities
               </Button>
             </Link>
@@ -810,7 +810,7 @@ export function CheckoutPage() {
                 <Button variant="secondary">Continue Shopping</Button>
               </Link>
               <Link href="/commerce/review">
-                <Button variant="outline">Review Priorities</Button>
+                <Button variant="secondary">Review Priorities</Button>
               </Link>
               <Button variant="ghost" onClick={handleDownloadReceipt}>
                 Download Receipt

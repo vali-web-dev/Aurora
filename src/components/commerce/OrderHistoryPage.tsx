@@ -178,7 +178,7 @@ export function OrderHistoryPage() {
 
                   <div className="flex flex-wrap gap-3">
                     <Link href={`/commerce/orders/${order.id}`}>
-                      <Button size="sm" variant="outline">View Details</Button>
+                      <Button size="sm" variant="secondary">View Details</Button>
                     </Link>
                     <Button size="sm" variant="ghost" onClick={handleDownloadReceipt}>
                       Download Receipt

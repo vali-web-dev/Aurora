@@ -193,12 +193,12 @@ export function CartSummaryWidget() {
           
           <div className="flex gap-2">
             <Link href="/commerce/cart" className="flex-1">
-              <Button variant="auroraSecondary" size="sm" className="w-full">
+              <Button variant="secondary" size="sm" className="w-full">
                 View Cart
               </Button>
             </Link>
             <Link href="/commerce/checkout" className="flex-1">
-              <Button variant="aurora" size="sm" className="w-full">
+              <Button variant="primary" size="sm" className="w-full">
                 Checkout
               </Button>
             </Link>

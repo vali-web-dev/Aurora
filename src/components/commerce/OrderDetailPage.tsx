@@ -158,10 +158,10 @@ export function OrderDetailPage({ orderId }: { orderId: string }) {
             <Link href="/commerce/orders">
               <Button variant="secondary">Back to Orders</Button>
             </Link>
-            <Button variant="outline" onClick={handleDownloadReceipt}>
+            <Button variant="secondary" onClick={handleDownloadReceipt}>
               Download Receipt
             </Button>
-            <Button variant="outline" onClick={handlePrintReceipt}>
+            <Button variant="secondary" onClick={handlePrintReceipt}>
               Print Receipt
             </Button>
             <Button

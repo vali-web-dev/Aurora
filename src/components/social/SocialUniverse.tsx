@@ -412,7 +412,7 @@ export function SocialUniverse() {
                             @{profile.handle} • {profile.followers.toLocaleString()} followers
                           </p>
                         </div>
-                        <Button variant="outline" size="sm">Follow</Button>
+                        <Button variant="secondary" size="sm">Follow</Button>
                       </div>
                     ))}
                   </div>
@@ -435,7 +435,7 @@ export function SocialUniverse() {
                           {channel.members.toLocaleString()} members
                         </p>
                       </div>
-                      <Button variant="outline" size="sm">Join</Button>
+                      <Button variant="secondary" size="sm">Join</Button>
                     </div>
                   ))}
                 </div>

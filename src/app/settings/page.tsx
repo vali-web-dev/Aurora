@@ -385,7 +385,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               <Button
-                variant="accent"
+                variant="danger"
                 size="sm"
                 onClick={() => pushNotice('Delete account is not available in this demo.', 'warning')}
               >

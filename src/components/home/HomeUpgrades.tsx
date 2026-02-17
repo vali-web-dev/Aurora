@@ -139,7 +139,7 @@ export function HomeUpgrades() {
               No orders yet
             </p>
             <Button
-              variant="outline"
+              variant="secondary"
               size="sm"
               onClick={() => handleNavigate('/commerce', 'Commerce Universe')}
             >

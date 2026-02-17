@@ -291,12 +291,12 @@ export function AuroraCoverPage() {
           </div>
           <div className="flex gap-3">
             <Link href="/auth/signin">
-              <Button variant="auroraGhost" size="sm">
+              <Button variant="ghost" size="sm">
                 Sign In
               </Button>
             </Link>
             <Link href="/dashboard">
-              <Button variant="aurora" size="sm">
+              <Button variant="primary" size="sm">
                 Get Started
               </Button>
             </Link>
@@ -382,12 +382,12 @@ export function AuroraCoverPage() {
                       </div>
                       <div className="flex flex-wrap gap-3">
                         <Link href={activeMenu?.href ?? '/home'}>
-                          <Button variant="aurora" size="sm" className="life-gateway-button">
+                          <Button variant="primary" size="sm" className="life-gateway-button">
                             Enter {activeMenu?.label ?? 'Aurora'}
                           </Button>
                         </Link>
                         <Link href="/realms">
-                          <Button variant="auroraSecondary" size="sm" className="life-gateway-button">
+                          <Button variant="secondary" size="sm" className="life-gateway-button">
                             View All Universes
                           </Button>
                         </Link>
@@ -513,12 +513,12 @@ export function AuroraCoverPage() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Link href="/home">
-                <Button variant="aurora" size="lg">
+                <Button variant="primary" size="lg">
                   Enter Aurora ✨
                 </Button>
               </Link>
               <Link href="/about">
-                <Button variant="auroraSecondary" size="lg">
+                <Button variant="secondary" size="lg">
                   Learn More
                 </Button>
               </Link>

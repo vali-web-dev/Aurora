@@ -265,7 +265,7 @@ export function ShoppingReview() {
                 {formatMoney(product.priceCents)}
               </p>
               <Link href="/commerce">
-                <Button variant="outline" size="sm">View in Commerce</Button>
+                <Button variant="secondary" size="sm">View in Commerce</Button>
               </Link>
             </Card>
           ))}

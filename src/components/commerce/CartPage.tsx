@@ -181,7 +181,7 @@ export function CartPage() {
                       <div className="flex items-center gap-2">
                         <Button
                           type="button"
-                          variant="outline"
+                          variant="secondary"
                           size="sm"
                           aria-label={`Decrease quantity of ${line.product.title}`}
                           onClick={() => {
@@ -196,7 +196,7 @@ export function CartPage() {
                         </span>
                         <Button
                           type="button"
-                          variant="outline"
+                          variant="secondary"
                           size="sm"
                           aria-label={`Increase quantity of ${line.product.title}`}
                           onClick={() => {
@@ -291,7 +291,7 @@ export function CartPage() {
                     <div className="flex flex-wrap items-center gap-3">
                       <Button
                         type="button"
-                        variant="outline"
+                        variant="secondary"
                         size="sm"
                         onClick={() => {
                           if (confirmAction(`Move ${line.product.title} back to cart?`)) {
@@ -360,12 +360,12 @@ export function CartPage() {
               Review your cart priorities before checkout.
             </p>
             <Link href="/commerce/review">
-              <Button variant="aurora" className="w-full" disabled={items.length === 0}>
+              <Button variant="primary" className="w-full" disabled={items.length === 0}>
                 Review Cart
               </Button>
             </Link>
             <Link href="/commerce/checkout">
-              <Button variant="auroraSecondary" className="w-full" disabled={items.length === 0}>
+              <Button variant="secondary" className="w-full" disabled={items.length === 0}>
                 Proceed to Checkout
               </Button>
             </Link>
