@@ -14,7 +14,11 @@
 		"db:push": "drizzle-kit push",
 		"db:drop": "drizzle-kit drop",
 		"db:seed": "node --import tsx src/lib/seed.ts",
-		"db:format": "drizzle-kit up"
+		"db:format": "drizzle-kit up",
+		"logos:routes:export": "node --import tsx scripts/export-logo-routes-v1.ts",
+		"logos:routes:export:a": "node --import tsx scripts/export-logo-routes-v1.ts --route a",
+		"logos:routes:export:b": "node --import tsx scripts/export-logo-routes-v1.ts --route b",
+		"logos:routes:export:c": "node --import tsx scripts/export-logo-routes-v1.ts --route c"
 	},
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.11.1",
