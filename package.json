@@ -18,7 +18,8 @@
 		"logos:routes:export": "node --import tsx scripts/export-logo-routes-v1.ts",
 		"logos:routes:export:a": "node --import tsx scripts/export-logo-routes-v1.ts --route a",
 		"logos:routes:export:b": "node --import tsx scripts/export-logo-routes-v1.ts --route b",
-		"logos:routes:export:c": "node --import tsx scripts/export-logo-routes-v1.ts --route c"
+		"logos:routes:export:c": "node --import tsx scripts/export-logo-routes-v1.ts --route c",
+		"logos:routes:preview": "node --import tsx scripts/export-logo-routes-preview-v1.ts"
 	},
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.11.1",
