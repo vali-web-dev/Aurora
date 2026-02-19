@@ -1,0 +1,120 @@
+name: Aurora Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+  NEXT_DIST_DIR: '.next-build'
+
+jobs:
+  validate:
+    name: Validate & Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint (Strict)
+        run: npm run lint:strict
+
+      - name: Type Check
+        run: npx tsc --noEmit
+
+      - name: Security Audit
+        run: npm audit --audit-level=moderate || true
+
+      - name: Build
+        run: npm run build:ci
+        env:
+          NEXT_IGNORE_INCORRECT_LOCKFILE: 1
+
+  build:
+    name: Build Production Artifact
+    runs-on: ubuntu-latest
+    needs: validate
+    if: success()
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --only=production
+
+      - name: Build
+        run: npm run build:raw
+        env:
+          NEXT_DIST_DIR: '.next-build'
+          NEXT_IGNORE_INCORRECT_LOCKFILE: 1
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aurora-build-${{ github.sha }}
+          path: |
+            .next-build/
+            package.json
+            package-lock.json
+          retention-days: 7
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Aurora ${{ github.ref_name }}
+          body: |
+            # Aurora Production Release
+            
+            **Status:** Production Ready
+            **Deployment Date:** ${{ github.event.head_commit.timestamp }}
+            **Build:** ${{ github.sha }}
+            
+            All CI/CD gates passed:
+            - ✅ ESLint strict mode
+            - ✅ TypeScript compilation
+            - ✅ Production build
+            - ✅ Route generation
+            
+            See [DEPLOYMENT_READY.md](DEPLOYMENT_READY.md) for deployment steps.
+          draft: false
+          prerelease: false
+
+  notify:
+    name: Notify Deployment
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    
+    steps:
+      - name: Build Status
+        run: |
+          if [ "${{ needs.build.result }}" == "success" ]; then
+            echo "✅ Deployment artifact ready: aurora-build-${{ github.sha }}"
+            echo "Next: Deploy to staging/production environment"
+          else
+            echo "❌ Build failed. Review logs above."
+            exit 1
+          fi

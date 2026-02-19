@@ -244,7 +244,7 @@ export function AuroraCoverPage() {
         {/* Gradient Orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse transform-gpu" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse transform-gpu" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500/20 rounded-full blur-3xl animate-pulse transform-gpu" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500/20 rounded-full blur-3xl animate-pulse transform-gpu" style={{ animationDelay: '2s' }} />
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -435,7 +435,7 @@ export function AuroraCoverPage() {
             <div className="aurora-coverpage-title-group space-y-2">
               <h1 className="text-7xl md:text-9xl font-black tracking-tighter">
                 <span className="relative inline-block">
-                  <span className="absolute top-[6px] md:top-[2px] left-[34%] -translate-x-1/2 translate-x-[6px] text-[14px] uppercase tracking-[0.4em] border border-white/10 bg-white/5 px-2 py-0.5 rounded-full shadow-sm shadow-purple-500/20 aurora-udc-badge">
+                  <span className="absolute top-[6px] md:top-[2px] left-[34%] translate-x-[calc(-50%+6px)] text-[14px] uppercase tracking-[0.4em] border border-white/10 bg-white/5 px-2 py-0.5 rounded-full shadow-sm shadow-purple-500/20 aurora-udc-badge">
                     <span className="aurora-udc-letter">U</span>
                     <span className="aurora-udc-letter">D</span>
                     <span className="aurora-udc-letter">C</span>

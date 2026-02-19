@@ -44,3 +44,51 @@ export function spawnRingsByCapacity(
 
   return placements;
 }
+
+interface DynamicBandOptions {
+  prefix: string;
+  role: RingBand['role'];
+  startRadius: number;
+  step: number;
+  itemCount: number;
+  metrics: PanelMetrics;
+  maxBands?: number;
+  minRadius?: number;
+}
+
+export function buildDynamicBands(options: DynamicBandOptions): RingBand[] {
+  const {
+    prefix,
+    role,
+    startRadius,
+    step,
+    itemCount,
+    metrics,
+    maxBands = 12,
+    minRadius,
+  } = options;
+
+  if (itemCount <= 0) return [];
+
+  const bands: RingBand[] = [];
+  let remaining = itemCount;
+  let radius = startRadius;
+  let index = 1;
+
+  while (remaining > 0 && index <= maxBands) {
+    const safeRadius = minRadius ? Math.max(minRadius, radius) : radius;
+    const capacity = computeRingCapacity(safeRadius, metrics);
+
+    bands.push({
+      id: `${prefix}-${index}`,
+      role,
+      radius: safeRadius,
+    });
+
+    remaining -= capacity;
+    radius += step;
+    index += 1;
+  }
+
+  return bands;
+}

@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: aurora-db
+    environment:
+      POSTGRES_USER: aurora
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-aurora-dev-pass}
+      POSTGRES_DB: aurora
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aurora"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aurora-network
+
+  aurora-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aurora-app
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      DATABASE_URL: postgresql://aurora:${DB_PASSWORD:-aurora-dev-pass}@postgres:5432/aurora
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-dev-secret-please-change-in-production}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      NEXT_PUBLIC_SOCKET_URL: ${NEXT_PUBLIC_SOCKET_URL:-http://localhost:3000}
+      NEXT_DIST_DIR: .next-build
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - aurora-network
+    restart: unless-stopped
+
+  # Optional: Redis for session/caching (uncomment to enable)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: aurora-cache
+  #   ports:
+  #     - "6379:6379"
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - aurora-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  aurora-network:
+    driver: bridge

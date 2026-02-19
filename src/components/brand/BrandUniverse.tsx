@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/ui/Button';
@@ -37,7 +38,14 @@ export function BrandUniverse() {
       <SurfaceHeader
         title="Brand Universe"
         description="Your brand is a living mind. Align story, tone, and campaigns in one place."
-        actions={<Button variant="primary">Open Brand Brain</Button>}
+        actions={(
+          <>
+            <Link href="/brand/arc-panel-lab" aria-label="Open Arc Panel Lab logo designer">
+              <Button variant="primary">Open Arc Panel Lab</Button>
+            </Link>
+            <Button variant="secondary">Open Brand Brain</Button>
+          </>
+        )}
       />
 
       <SurfaceSection title="Brand Overview">

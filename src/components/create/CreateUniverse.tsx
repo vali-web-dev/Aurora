@@ -1,20 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardDescription, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/ui/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 
 const blockTypes = [
-  { name: 'Hero', icon: '🦸', description: 'Large headline section' },
-  { name: 'Text', icon: '📝', description: 'Rich text content' },
-  { name: 'Media', icon: '📸', description: 'Images and videos' },
-  { name: 'Features', icon: '⭐', description: 'Feature grid' },
-  { name: 'Testimonials', icon: '💬', description: 'Social proof' },
-  { name: 'CTA', icon: '🎯', description: 'Call-to-action' },
-  { name: 'FAQ', icon: '❓', description: 'Questions & answers' },
-  { name: 'Pricing', icon: '💰', description: 'Pricing table' },
+  { name: 'Hero', icon: 'H', description: 'Large headline section' },
+  { name: 'Text', icon: 'T', description: 'Rich text content' },
+  { name: 'Media', icon: 'M', description: 'Images and videos' },
+  { name: 'Features', icon: 'F', description: 'Feature grid' },
+  { name: 'Testimonials', icon: 'Q', description: 'Social proof' },
+  { name: 'CTA', icon: 'C', description: 'Call-to-action' },
+  { name: 'FAQ', icon: '?', description: 'Questions and answers' },
+  { name: 'Pricing', icon: '$', description: 'Pricing table' },
 ];
 
 const recentSurfaces = [
@@ -24,7 +25,17 @@ const recentSurfaces = [
   { id: '4', name: 'Portfolio Showcase', blocks: 6, updated: '1 week ago' },
 ];
 
+const templates = [
+  { name: 'SaaS Landing', blocks: 8, category: 'Product' },
+  { name: 'Personal Portfolio', blocks: 6, category: 'Creator' },
+  { name: 'Blog Post', blocks: 5, category: 'Content' },
+  { name: 'Event Page', blocks: 7, category: 'Community' },
+  { name: 'Course Intro', blocks: 9, category: 'Learning' },
+  { name: 'Shop Showcase', blocks: 10, category: 'Commerce' },
+];
+
 export function CreateUniverse() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'builder' | 'library' | 'templates'>('templates');
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
 
@@ -64,34 +75,30 @@ export function CreateUniverse() {
             <Card className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
               <div className="text-center space-y-4">
                 <CardTitle className="text-xl">Create a new surface</CardTitle>
-                <Button variant="primary" size="lg">
-                  ✨ Start Building
+                <Button variant="primary" size="lg" onClick={() => router.push('/create/editor')}>
+                  Start Building
                 </Button>
               </div>
             </Card>
 
             <div className="space-y-3">
-              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">
-                Recent Surfaces
-              </h3>
+              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">Recent Surfaces</h3>
               <div className="space-y-2" role="list" aria-label="Recent surfaces">
                 {recentSurfaces.map((surface) => (
                   <div
                     key={surface.id}
                     role="listitem"
-                    className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:shadow-lg transition-shadow cursor-pointer"
+                    className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:shadow-lg transition-shadow"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="aurora-label text-slate-900 dark:text-slate-50">
-                          {surface.name}
-                        </p>
+                        <p className="aurora-label text-slate-900 dark:text-slate-50">{surface.name}</p>
                         <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">
                           {surface.blocks} blocks • Updated {surface.updated}
                         </p>
                       </div>
-                      <Button variant="ghost" size="sm">
-                        Open →
+                      <Button variant="ghost" size="sm" onClick={() => router.push('/create/editor')}>
+                        Open
                       </Button>
                     </div>
                   </div>
@@ -104,9 +111,7 @@ export function CreateUniverse() {
         {activeTab === 'library' && (
           <div className="space-y-6">
             <div className="space-y-3">
-              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">
-                Block Library
-              </h3>
+              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">Block Library</h3>
               <p className="aurora-label text-slate-600 dark:text-slate-400">
                 Choose blocks to compose your surfaces. Each block is designed for clarity and responsiveness.
               </p>
@@ -117,10 +122,10 @@ export function CreateUniverse() {
                 <button
                   key={block.name}
                   onClick={() =>
-                    setSelectedBlocks(
-                      selectedBlocks.includes(block.name)
-                        ? selectedBlocks.filter((b) => b !== block.name)
-                        : [...selectedBlocks, block.name]
+                    setSelectedBlocks((current) =>
+                      current.includes(block.name)
+                        ? current.filter((name) => name !== block.name)
+                        : [...current, block.name]
                     )
                   }
                   className="text-left rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
@@ -133,9 +138,7 @@ export function CreateUniverse() {
                       <div className="text-4xl">{block.icon}</div>
                       <div>
                         <CardTitle>{block.name}</CardTitle>
-                        <CardDescription className="aurora-label text-xs">
-                          {block.description}
-                        </CardDescription>
+                        <CardDescription className="aurora-label text-xs">{block.description}</CardDescription>
                       </div>
                       <div
                         className={`aurora-label h-1 rounded-full ${
@@ -153,9 +156,7 @@ export function CreateUniverse() {
             {selectedBlocks.length > 0 && (
               <Card className="bg-blue-50 dark:bg-slate-900 border-blue-200 dark:border-slate-800">
                 <div className="space-y-3">
-                  <CardTitle>
-                    Selected Blocks ({selectedBlocks.length})
-                  </CardTitle>
+                  <CardTitle>Selected Blocks ({selectedBlocks.length})</CardTitle>
                   <div className="flex gap-2 flex-wrap" role="list" aria-label="Selected blocks">
                     {selectedBlocks.map((block) => (
                       <Badge
@@ -165,11 +166,11 @@ export function CreateUniverse() {
                         variant="primary"
                         className="aurora-label bg-blue-600 text-white ring-0 dark:bg-blue-500 dark:text-white"
                       >
-                        {block} ✕
+                        {block}
                       </Badge>
                     ))}
                   </div>
-                  <Button variant="primary" size="lg" className="w-full">
+                  <Button variant="primary" size="lg" className="w-full" onClick={() => router.push('/create/editor')}>
                     Create Surface with {selectedBlocks.length} Block{selectedBlocks.length !== 1 ? 's' : ''}
                   </Button>
                 </div>
@@ -181,24 +182,15 @@ export function CreateUniverse() {
         {activeTab === 'templates' && (
           <div className="space-y-6">
             <div className="space-y-3">
-              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">
-                Pre-built Templates
-              </h3>
+              <h3 className="aurora-label text-lg font-bold text-slate-900 dark:text-slate-50">Pre-built Templates</h3>
               <p className="aurora-label text-slate-600 dark:text-slate-400">
                 Start with professionally designed templates and customize them for your needs.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6" role="list" aria-label="Templates">
-              {[
-                { name: 'SaaS Landing', blocks: 8, category: 'Product' },
-                { name: 'Personal Portfolio', blocks: 6, category: 'Creator' },
-                { name: 'Blog Post', blocks: 5, category: 'Content' },
-                { name: 'Event Page', blocks: 7, category: 'Community' },
-                { name: 'Course Intro', blocks: 9, category: 'Learning' },
-                { name: 'Shop Showcase', blocks: 10, category: 'Commerce' },
-              ].map((template, idx) => (
-                <div key={idx} role="listitem">
+              {templates.map((template) => (
+                <div key={template.name} role="listitem">
                   <Card hoverable className="h-full">
                     <div className="space-y-4">
                       <div className="h-40 bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg" />
@@ -208,7 +200,7 @@ export function CreateUniverse() {
                           {template.blocks} blocks • {template.category}
                         </CardDescription>
                       </div>
-                      <Button variant="primary" size="sm" className="w-full">
+                      <Button variant="primary" size="sm" className="w-full" onClick={() => router.push('/create/editor')}>
                         Use Template
                       </Button>
                     </div>
