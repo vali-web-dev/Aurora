@@ -4,12 +4,22 @@ node_modules/
 # Next.js
 .next/
 .next-build/
+.next-dev/
+.next.lock
 out/
+*.tsbuildinfo
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+build*.log
+gate_output_latest.txt
+schedule_once*_output_latest.txt
+scheduler_export_smoke_output.txt
+snapshot_output_latest.txt
+db_push_output.log
+.tmpbatch*.txt
 
 # Env
 .env
