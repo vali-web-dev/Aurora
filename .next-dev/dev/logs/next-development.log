@@ -15,3 +15,4 @@
 [00:04:11.744] Server  WARN    [auth][warn][debug-enabled] "Read more: https://warnings.authjs.dev"
 [00:04:11.773] Browser ERROR   The result of getServerSnapshot should be cached to avoid an infinite loop
 [00:04:11.773] Browser LOG     [Socket.IO] Connecting to http://localhost:3000
+[00:31:58.461] Server  LOG     ○ Compiling /home ...
