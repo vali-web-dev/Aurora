@@ -1,0 +1,23 @@
+
+> aurora-rv0@0.0.1 build:json
+> npm run clean:build && cross-env NEXT_DIST_DIR=.next-build NEXT_IGNORE_INCORRECT_LOCKFILE=1 NEXT_BUILD_JSON_LOGS=1 node scripts/next-build-retry.js
+
+
+> aurora-rv0@0.0.1 clean:build
+> node -e "const fs=require('fs');for(const d of ['.next-build']){try{fs.rmSync(d,{recursive:true,force:true})}catch(e){}}"
+
+{"source":"next-build-retry","event":"lock_acquired","pid":30596,"ts":"2026-02-20T21:53:20.994Z","lockFile":"C:\\Users\\Admin\\Documents\\VSCode\\Aurora_rebirth\\.next-build.lock","waitedMs":5}
+{"source":"next-build-retry","event":"retry_cleanup_started","pid":30596,"ts":"2026-02-20T21:53:20.997Z","mode":"normal","attempt":1}
+{"source":"next-build-retry","event":"retry_cleanup_finished","pid":30596,"ts":"2026-02-20T21:53:21.465Z","mode":"normal","attempt":1}
+
+[next-build-retry] attempt 1/2 started
+{"source":"next-build-retry","event":"attempt_started","pid":30596,"ts":"2026-02-20T21:53:21.466Z","attempt":1,"attemptsTotal":2}
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+   Using tsconfig file: ./tsconfig.json
+   Using tsconfig file: ./tsconfig.json
+   Using tsconfig file: ./tsconfig.json
+ ✓ Compiled successfully
+   Linting and checking validity of types ...

@@ -1,0 +1,190 @@
+
+> aurora-rv0@0.0.1 build:ci:json
+> npm run clean:build && npm run lint:strict && cross-env NEXT_DIST_DIR=.next-build NEXT_IGNORE_INCORRECT_LOCKFILE=1 NEXT_BUILD_JSON_LOGS=1 node scripts/next-build-retry.js
+
+
+> aurora-rv0@0.0.1 clean:build
+> node -e "const fs=require('fs');for(const d of ['.next-build']){try{fs.rmSync(d,{recursive:true,force:true})}catch(e){}}"
+
+
+> aurora-rv0@0.0.1 lint:strict
+> next lint --max-warnings 0
+
+✔ No ESLint warnings or errors
+{"source":"next-build-retry","event":"lock_wait_started","pid":35788,"ts":"2026-02-19T06:48:45.237Z","lockFile":"C:\\Users\\Admin\\Documents\\VSCode\\Aurora_rebirth\\.next-build.lock","timeoutMs":90000}
+{"source":"next-build-retry","event":"lock_stale_removed","pid":35788,"ts":"2026-02-19T06:48:45.243Z","lockFile":"C:\\Users\\Admin\\Documents\\VSCode\\Aurora_rebirth\\.next-build.lock"}
+{"source":"next-build-retry","event":"lock_acquired","pid":35788,"ts":"2026-02-19T06:48:45.245Z","lockFile":"C:\\Users\\Admin\\Documents\\VSCode\\Aurora_rebirth\\.next-build.lock","waitedMs":8}
+
+[next-build-retry] attempt 1/2 started
+{"source":"next-build-retry","event":"attempt_started","pid":35788,"ts":"2026-02-19T06:48:45.246Z","attempt":1,"attemptsTotal":2}
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+   Using tsconfig file: ./tsconfig.json
+   Using tsconfig file: ./tsconfig.json
+   Using tsconfig file: ./tsconfig.json
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+
+./src/components/brand/PhotoshopPro.tsx
+1564:6  Warning: React Hook useCallback has a missing dependency: 'resolvePublishFilename'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+1577:6  Warning: React Hook useCallback has a missing dependency: 'resolvePublishFilename'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/87) ...
+   Generating static pages (21/87) 
+   Generating static pages (43/87) 
+   Generating static pages (65/87) 
+ ✓ Generating static pages (87/87)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    9.58 kB         117 kB
+├ ○ /_not-found                          876 B          88.2 kB
+├ ○ /about                               231 B           147 kB
+├ ƒ /about/[...slug]                     260 B          96.3 kB
+├ ○ /accessibility                       2.84 kB         150 kB
+├ ƒ /accessibility/[...slug]             260 B          96.3 kB
+├ ○ /admin                               2.22 kB         149 kB
+├ ƒ /admin/[...slug]                     260 B          96.3 kB
+├ ○ /ai                                  1.54 kB         160 kB
+├ ƒ /ai/[...slug]                        260 B          96.3 kB
+├ ƒ /api/auth/[...nextauth]              0 B                0 B
+├ ƒ /api/auth/[auth]                     0 B                0 B
+├ ƒ /api/auth/register                   0 B                0 B
+├ ƒ /api/brand/brands                    0 B                0 B
+├ ƒ /api/brand/brands/[id]               0 B                0 B
+├ ƒ /api/commerce/products               0 B                0 B
+├ ƒ /api/commerce/products/[id]          0 B                0 B
+├ ƒ /api/communities                     0 B                0 B
+├ ƒ /api/communities/[id]                0 B                0 B
+├ ƒ /api/communities/[id]/messages       0 B                0 B
+├ ƒ /api/docs/[...path]                  0 B                0 B
+├ ƒ /api/entertainment/playlists         0 B                0 B
+├ ƒ /api/entertainment/playlists/[id]    0 B                0 B
+├ ƒ /api/health                          0 B                0 B
+├ ƒ /api/health/db                       0 B                0 B
+├ ƒ /api/learning/courses                0 B                0 B
+├ ƒ /api/learning/courses/[id]           0 B                0 B
+├ ƒ /api/notifications                   0 B                0 B
+├ ƒ /api/notifications/[id]              0 B                0 B
+├ ƒ /api/notifications/mark-all-read     0 B                0 B
+├ ƒ /api/services                        0 B                0 B
+├ ƒ /api/services/[id]                   0 B                0 B
+├ ƒ /api/social/comment-reactions        0 B                0 B
+├ ƒ /api/social/comments                 0 B                0 B
+├ ƒ /api/social/feed                     0 B                0 B
+├ ƒ /api/social/posts                    0 B                0 B
+├ ƒ /api/social/reactions                0 B                0 B
+├ ƒ /api/users/[id]                      0 B                0 B
+├ ƒ /api/users/activity                  0 B                0 B
+├ ƒ /api/users/change-password           0 B                0 B
+├ ƒ /api/users/profile                   0 B                0 B
+├ ƒ /api/users/seed-sample-data          0 B                0 B
+├ ƒ /api/users/stats                     0 B                0 B
+├ ƒ /api/ws                              0 B                0 B
+├ ○ /auth/signin                         4.4 kB          107 kB
+├ ○ /auth/signup                         3.79 kB         103 kB
+├ ○ /automation                          1.74 kB         161 kB
+├ ƒ /automation/[...slug]                260 B          96.3 kB
+├ ○ /blog                                231 B           147 kB
+├ ƒ /blog/[...slug]                      260 B          96.3 kB
+├ ○ /brand                               1.54 kB         160 kB
+├ ƒ /brand/[...slug]                     260 B          96.3 kB
+├ ○ /brand/arc-panel-lab                 208 B           158 kB
+├ ○ /brand/aurora-logo-studio            3.02 kB         118 kB
+├ ○ /brand/photoshop-canvas              179 B            96 kB
+├ ○ /brand/photoshop-canvas-advanced     2.15 kB        93.2 kB
+├ ○ /brand/photoshop-enhanced            4.82 kB        95.8 kB
+├ ○ /brand/photoshop-pro                 25.5 kB         117 kB
+├ ○ /brand/studio-pro                    3.6 kB         94.6 kB
+├ ○ /brand/universe-logos                2.69 kB        95.2 kB
+├ ○ /commerce                            166 B           163 kB
+├ ○ /commerce/cart                       3.38 kB         150 kB
+├ ○ /commerce/checkout                   9.71 kB         169 kB
+├ ○ /commerce/delivery                   5.07 kB         152 kB
+├ ○ /commerce/orders                     5.06 kB         164 kB
+├ ƒ /commerce/orders/[id]                5.07 kB         164 kB
+├ ○ /commerce/review                     2.45 kB         161 kB
+├ ○ /communities                         1.55 kB         160 kB
+├ ƒ /communities/[...slug]               260 B          96.3 kB
+├ ƒ /communities/[id]                    2.65 kB         151 kB
+├ ○ /contact                             231 B           147 kB
+├ ƒ /contact/[...slug]                   260 B          96.3 kB
+├ ○ /create                              3.17 kB         150 kB
+├ ƒ /create/[...slug]                    260 B          96.3 kB
+├ ○ /create/editor                       23.6 kB         170 kB
+├ ○ /dashboard                           6.31 kB         153 kB
+├ ○ /dev/arc-panel-lab                   9.67 kB         100 kB
+├ ○ /dev/buttons                         2.15 kB        93.2 kB
+├ ○ /dev/buttons/advanced                5.52 kB        96.5 kB
+├ ○ /dev/buttons/aurora-enhanced         2.54 kB        93.6 kB
+├ ○ /dev/buttons/emotional               2.72 kB        93.7 kB
+├ ○ /dev/buttons/ultimate                2.44 kB        93.5 kB
+├ ○ /dev/logo-chain-segment              4.44 kB        98.9 kB
+├ ○ /dev/logo-console                    6.48 kB         101 kB
+├ ○ /dev/logo-modal                      7.28 kB         102 kB
+├ ○ /dev/logo-modal-routes               5.18 kB        99.6 kB
+├ ○ /dev/logo-preview                    177 B          92.7 kB
+├ ○ /dev/logo-ring-engine                7.55 kB         102 kB
+├ ○ /developer                           2.07 kB         161 kB
+├ ƒ /developer/[...slug]                 260 B          96.3 kB
+├ ƒ /docs/[[...path]]                    35.9 kB         132 kB
+├ ○ /economy                             2.29 kB         161 kB
+├ ƒ /economy/[...slug]                   260 B          96.3 kB
+├ ○ /entertainment                       2.35 kB         161 kB
+├ ƒ /entertainment/[...slug]             260 B          96.3 kB
+├ ○ /finance                             1.68 kB         161 kB
+├ ƒ /finance/[...slug]                   260 B          96.3 kB
+├ ○ /gaming                              1.55 kB         160 kB
+├ ƒ /gaming/[...slug]                    258 B          96.3 kB
+├ ○ /guilds                              231 B           147 kB
+├ ƒ /guilds/[...slug]                    260 B          96.3 kB
+├ ○ /health                              1.59 kB         160 kB
+├ ƒ /health/[...slug]                    260 B          96.3 kB
+├ ○ /home                                6.03 kB         165 kB
+├ ○ /homecontrol                         1.62 kB         161 kB
+├ ƒ /homecontrol/[...slug]               260 B          96.3 kB
+├ ○ /identity                            1.45 kB         160 kB
+├ ƒ /identity/[...slug]                  260 B          96.3 kB
+├ ○ /learning                            2.66 kB         162 kB
+├ ƒ /learning/[...slug]                  260 B          96.3 kB
+├ ○ /legal                               231 B           147 kB
+├ ○ /luma                                231 B           147 kB
+├ ƒ /luma/[...slug]                      260 B          96.3 kB
+├ ○ /navigation                          1.44 kB         160 kB
+├ ƒ /navigation/[...slug]                260 B          96.3 kB
+├ ○ /notifications                       3.67 kB         151 kB
+├ ○ /product                             166 B           163 kB
+├ ○ /productivity                        2.04 kB         161 kB
+├ ƒ /productivity/[...slug]              260 B          96.3 kB
+├ ○ /profile                             2.1 kB          149 kB
+├ ○ /realms                              3.92 kB         163 kB
+├ ƒ /realms/[...slug]                    260 B          96.3 kB
+├ ○ /roadmap                             231 B           147 kB
+├ ƒ /roadmap/[...slug]                   260 B          96.3 kB
+├ ○ /security                            1.58 kB         160 kB
+├ ○ /settings                            2.72 kB         150 kB
+├ ƒ /settings/[...slug]                  260 B          96.3 kB
+├ ○ /settings/change-password            2.8 kB          106 kB
+├ ○ /settings/profile                    3.01 kB         106 kB
+├ ○ /social                              7.32 kB         167 kB
+├ ƒ /social/[...slug]                    260 B          96.3 kB
+├ ○ /travel                              1.63 kB         161 kB
+└ ƒ /travel/[...slug]                    260 B          96.3 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/2117-fcf0abbe841d759e.js      31.7 kB
+  ├ chunks/fd9d1056-f42af8b42f73c6d9.js  53.6 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+[next-build-retry] attempt 1/2 finished with code 0 in 189.5s
+{"source":"next-build-retry","event":"attempt_finished","pid":35788,"ts":"2026-02-19T06:51:54.703Z","attempt":1,"attemptsTotal":2,"exitCode":0,"elapsedMs":189457}
+[next-build-retry] build succeeded in 189.5s
+{"source":"next-build-retry","event":"build_succeeded","pid":35788,"ts":"2026-02-19T06:51:54.703Z","elapsedMs":189458,"attemptsUsed":1}
