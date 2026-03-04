@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-03-03T17:51:33.038Z",
+  "runId": "exp-mmawmrhs",
+  "profiles": {
+    "dev": {
+      "label": "Stable",
+      "recentSuccessRate": 1,
+      "olderSuccessRate": 1,
+      "sampleSize": 1
+    },
+    "runtime": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    },
+    "ci": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    },
+    "full": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    }
+  }
+}

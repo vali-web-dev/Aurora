@@ -1,0 +1,14 @@
+{
+  "targets": [
+    {
+      "type": "http",
+      "name": "Public API Health",
+      "url": "https://api.example.com/health",
+      "method": "GET",
+      "headers": { "X-Api-Key": "example" },
+      "expectStatus": [200, 204],
+      "requireHttps": true
+    },
+    { "type": "tcp", "name": "Postgres", "host": "localhost", "port": 5432 }
+  ]
+}

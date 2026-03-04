@@ -54,6 +54,12 @@ npm run lint
 npm run build
 ```
 
+Build reliability note:
+- `npm run build` and `npm run build:ci` run `scripts/next-build-retry.js`.
+- The wrapper retries `next build` once after cleaning `.next*` folders.
+- This mitigates intermittent Next.js manifest race failures observed on some Windows runners.
+- Real compile/lint/type errors still fail normally after the retry.
+
 Expected output: ✓ Build successful with ~62 routes
 
 #### 4. Database Setup

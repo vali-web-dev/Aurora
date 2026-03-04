@@ -22,12 +22,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Updated global UI styling and button composition to align Aurora typography and visual depth across interaction states.
 - Updated supporting utility/config modules to integrate new UI system capabilities.
+- Hardened production build pipeline to avoid cross-cleaning development output by introducing a dedicated build-only clean step.
+- Upgraded notifications API actions to persist and scope state changes in the database for authenticated users.
+- Enhanced build wrapper lock strategy to wait briefly for active builds and perform deeper cache cleanup on retry.
+- Added build diagnostics output for retry attempts (attempt status and elapsed time) to improve CI troubleshooting.
+- Added optional structured JSON telemetry for build retries via `NEXT_BUILD_JSON_LOGS=1` and new scripts `build:json` / `build:ci:json`.
+- Added a build event summarizer script (`scripts/summarize-build-events.js`) and summary commands (`build:json:summary`, `build:ci:json:summary`) for one-line CI reporting.
+- Added JSON summary output mode (`--json`) and JSON summary scripts (`build:json:summary:json`, `build:ci:json:summary:json`) for machine ingestion.
+- Added threshold-based CI gating in the summary parser (`--max-attempts`, `--max-total-ms`) with new scripts (`build:ci:json:gate`, `build:ci:json:gate:json`).
+- Added environment-configurable gate thresholds (`BUILD_GATE_MAX_ATTEMPTS`, `BUILD_GATE_MAX_TOTAL_MS`) and env-driven scripts (`build:ci:json:gate:env`, `build:ci:json:gate:env:json`).
+- Added gate profile presets (`strict`, `balanced`, `lenient`) via `--profile` and `BUILD_GATE_PROFILE`, plus profile scripts for CI runs.
+- Added GitHub Actions step-summary publishing (`--github-summary`) and `build:ci:json:gha-summary` for markdown CI artifact visibility.
+- Added compact badge-line output (`BUILD_BADGE status=stable|retried|failed`) in the build summary parser plus `build:ci:json:summary:badge` alias.
+- Updated CI workflows to run JSON build telemetry parsing with balanced gates and emit GitHub badge annotations (`stable`/`retried`/`failed`).
+- Updated CI workflows to persist build telemetry artifacts (`build-ci-json.log`, `build-summary.json`, `build-report.md`) for easier post-failure diagnostics.
 
 ### Fixed
 - Resolved prior build/lint blockers related to client component boundaries, JSX entity escaping, and anonymous default-export object patterns.
+- Stabilized intermittent Windows build failures by serializing `next build` with a lock file and stale-lock recovery.
+- Reduced race conditions that caused transient missing manifest artifacts in `.next-build` during concurrent or interrupted runs.
+- Replaced placeholder notification mutation handlers with DB-backed PATCH/DELETE and mark-all-read behavior with ownership checks.
 
 ### Validation
 - ✅ Production build passes (`npm run build`) including compile, lint/type-check, and static generation.
+- ✅ Consecutive `npm run build:ci` runs pass after lock and cleanup hardening (February 19, 2026).
+- ✅ Consecutive `npm run build:ci` runs now succeed on attempt 1 after lock-wait and deep-clean retry improvements (February 19, 2026).
 
 ### Planned for v0.2
 - Full-text search across documentation

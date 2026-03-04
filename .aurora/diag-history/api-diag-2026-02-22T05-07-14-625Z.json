@@ -1,0 +1,122 @@
+{
+  "timestamp": "2026-02-22T05:07:14.622Z",
+  "baseUrl": "http://localhost:3000",
+  "profile": "balanced",
+  "strictMode": true,
+  "allowSkip": true,
+  "summaryMode": false,
+  "jsonSummaryMode": true,
+  "retries": 0,
+  "retryDelayMs": 500,
+  "ports": [
+    3000,
+    3001,
+    3002,
+    3003,
+    3004,
+    3005
+  ],
+  "endpoints": [
+    "/api/health",
+    "/api/health/db"
+  ],
+  "thresholds": {
+    "latencyWarnMs": 500,
+    "latencyFailMs": 1200,
+    "errorRateWarn": 0.05,
+    "errorRateFail": 0.2
+  },
+  "checks": [
+    {
+      "name": "routes",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 394,
+      "attempts": 1,
+      "discoveredApiRoutes": [],
+      "totalRoutes": 0,
+      "parseOk": false
+    },
+    {
+      "name": "health-batch",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 77,
+      "attempts": 1,
+      "results": [
+        {
+          "endpoint": "/api/health",
+          "ok": false,
+          "status": "ECONNREFUSED",
+          "elapsed": 71,
+          "body": "",
+          "json": null
+        },
+        {
+          "endpoint": "/api/health/db",
+          "ok": false,
+          "status": "ECONNREFUSED",
+          "elapsed": 5,
+          "body": "",
+          "json": null
+        }
+      ]
+    },
+    {
+      "name": "perf",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 21,
+      "attempts": 1,
+      "metrics": {
+        "endpoint": "/api/health",
+        "samples": 5,
+        "successes": 0,
+        "errors": 5,
+        "errorRate": 1,
+        "mean": 0,
+        "p95": 0,
+        "p99": 0,
+        "thresholds": {
+          "latencyWarnMs": 500,
+          "latencyFailMs": 1200,
+          "errorRateWarn": 0.05,
+          "errorRateFail": 0.2
+        },
+        "severity": "fail"
+      }
+    },
+    {
+      "name": "schema-sanity",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 11,
+      "checks": [
+        {
+          "endpoint": "/api/health",
+          "ok": false
+        },
+        {
+          "endpoint": "/api/health/db",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "name": "openapi-conformance",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no --openapi file provided)."
+    }
+  ],
+  "ok": false,
+  "totals": {
+    "passed": 2,
+    "failed": 3,
+    "skipped": 1,
+    "durationMs": 508
+  },
+  "exitReason": "THRESHOLD_FAIL"
+}

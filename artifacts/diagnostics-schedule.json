@@ -1,0 +1,40 @@
+{
+  "jobs": [
+    {
+      "name": "api-diagnostics",
+      "everyMinutes": 30,
+      "command": "npm",
+      "args": ["run", "api:ci:diagnose:json:summary"],
+      "profiles": ["ci", "full"],
+      "webhookUrl": "https://hooks.slack.com/services/xxx"
+    },
+    {
+      "name": "platform-diagnostics",
+      "cron": "*/60 * * * *",
+      "command": "npm",
+      "args": ["run", "platform:diagnose:summary"],
+      "profiles": ["ci", "full"]
+    },
+    {
+      "name": "editor-runtime-snapshot",
+      "cron": "*/30 * * * *",
+      "command": "npm",
+      "args": ["run", "diagnostics:editor-runtime:snapshot"],
+      "profiles": ["dev", "ci", "runtime", "full"]
+    },
+    {
+      "name": "editor-runtime-gate-strict",
+      "cron": "*/60 * * * *",
+      "command": "npm",
+      "args": ["run", "diagnostics:editor-runtime:gate:strict"],
+      "profiles": ["ci", "full", "runtime"]
+    },
+    {
+      "name": "scheduler-export-snapshot",
+      "cron": "*/60 * * * *",
+      "command": "npm",
+      "args": ["run", "diagnostics:scheduler:export"],
+      "profiles": ["dev", "runtime", "ci", "full"]
+    }
+  ]
+}

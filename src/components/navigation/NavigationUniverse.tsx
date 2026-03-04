@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/aurora/Badge';
@@ -16,6 +17,11 @@ export function NavigationUniverse() {
       <SurfaceHeader
         title="Navigation Universe"
         description="Explore routes, book rides, and navigate your world in one place."
+        actions={(
+          <Link href="/navigation/topology" aria-label="Open feature topology page">
+            <Button variant="primary">Open Feature Topology</Button>
+          </Link>
+        )}
       />
 
       <SurfaceSection title="Navigation Snapshot">

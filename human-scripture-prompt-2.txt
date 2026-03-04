@@ -1,0 +1,187 @@
+You are GitHub Copilot acting as a senior product engineer, system architect, UX strategist, and educational designer.
+
+Your task is to UPDATE, EXPAND, and COMPLETE the entire “Human Blueprint System” previously created using the earlier master prompt. The system already contains:
+
+- A 3D transparent human anatomy model (partially complete)
+- An interactive organ/system click framework
+- A content engine with layered information
+- A narrative and psychological layer
+- A UI style guide
+- A partial organ-by-organ library
+
+Your mission now is to:
+1. Locate all existing files, components, models, and content.
+2. Analyze the entire system for:
+   - Missing features
+   - Incomplete organs
+   - Inconsistent naming
+   - Weak UX patterns
+   - Missing narrative layers
+   - Missing content layers
+   - Missing UI elements
+   - Missing interactions
+3. Complete everything to the highest standard.
+
+===========================================================
+1. SYSTEM COMPLETION TASKS
+===========================================================
+You must:
+- Find the existing 3D human model
+- Identify missing organs, meshes, or regions
+- Complete the model using consistent naming and structure
+- Ensure every organ/system is clickable
+- Ensure every click triggers the correct content panel
+- Ensure the content engine is fully connected to the 3D model
+- Ensure all organs have complete content entries
+- Ensure all UI components follow the style guide
+
+===========================================================
+2. CONTENT EXPANSION TASKS
+===========================================================
+You must generate and integrate a FULL organ-by-organ content library.
+
+For EVERY organ/system/feature:
+- Add summary
+- Add physical function
+- Add emotional/psychological associations
+- Add lifestyle support
+- Add lifestyle harm
+- Add micro-actions
+- Add reflection questions
+- Add long-term positive consequences
+- Add long-term negative consequences
+- Add mythic identity
+- Add psychological identity
+- Add narrative voice
+- Add transformation arc
+
+Ensure the content is:
+- Accurate
+- Emotionally resonant
+- Practical
+- Transformative
+- Consistent with the Aurora philosophy
+
+===========================================================
+3. ADAPTIVE INFORMATION DELIVERY
+===========================================================
+Upgrade the system so each organ’s information is delivered in PHASES:
+
+PHASE 1 — Quick Insight  
+PHASE 2 — Practical Guidance  
+PHASE 3 — Deep Understanding  
+PHASE 4 — Mythic Narrative  
+PHASE 5 — Mastery
+
+Implement:
+- Progressive disclosure
+- User-controlled depth
+- Smooth transitions between phases
+
+===========================================================
+4. UI/UX UPGRADE TASKS
+===========================================================
+Using the existing style guide, refine and complete:
+
+- Panels
+- Cards
+- Tabs
+- Accordions
+- Tooltips
+- Progress indicators
+- Daily Focus widget
+- Journaling interface
+- Organ highlight animations
+- Smooth 3D-to-panel transitions
+
+Ensure:
+- Clean, futuristic, minimal design
+- Soft edges, cosmic gradients
+- Breathing animations
+- High clarity and emotional impact
+
+===========================================================
+5. NARRATIVE SYSTEM EXPANSION
+===========================================================
+For each organ/system:
+- Add a mythic identity (symbolic meaning)
+- Add a psychological identity (inner pattern)
+- Add a narrative voice (how the organ “speaks”)
+- Add a transformation arc (what healing looks like)
+
+Integrate these into the UI as:
+- Optional narrative tabs
+- Hover tooltips
+- “Deep Dive” sections
+- Audio-ready text blocks (future expansion)
+
+===========================================================
+6. TECHNICAL IMPROVEMENTS
+===========================================================
+You must:
+- Clean up folder structure
+- Improve component modularity
+- Strengthen state management
+- Optimize 3D performance
+- Ensure content is fully data-driven
+- Add TODO markers for future AI-generated content
+- Add comments explaining architecture decisions
+
+===========================================================
+7. NEW FEATURES TO ADD
+===========================================================
+Add the following features:
+
+1. **Daily Body Focus**
+   - Random or user-selected organ
+   - Micro-practice of the day
+   - Reflection question of the day
+
+2. **User Progress Tracking**
+   - Organs explored
+   - Systems mastered
+   - Reflection logs
+
+3. **Inner Evolution Timeline**
+   - A chronological view of user insights
+   - Organ-by-organ growth markers
+
+4. **Search & Filter**
+   - Search organs by name, function, emotion, or system
+
+5. **Adaptive Recommendations**
+   - Suggest organs based on user behavior
+   - Suggest deeper phases based on engagement
+
+===========================================================
+8. OUTPUT EXPECTATIONS
+===========================================================
+Your output must include:
+
+STEP 1 — System audit summary  
+STEP 2 — List of missing or incomplete elements  
+STEP 3 — Updated architecture plan  
+STEP 4 — Updated folder structure  
+STEP 5 — Updated components and code improvements  
+STEP 6 — Completed organ-by-organ content library  
+STEP 7 — Completed UI style guide integration  
+STEP 8 — Completed narrative layer integration  
+STEP 9 — Implementation of new features  
+STEP 10 — Final TODO list for future expansion
+
+===========================================================
+9. QUALITY BAR
+===========================================================
+Everything must feel:
+- Premium
+- Futuristic
+- Emotionally intelligent
+- Transformative
+- Mythic yet scientific
+- Deep yet accessible
+- Clean, modular, and scalable
+
+Your job is to evolve the system into:
+**The most complete, intelligent, and transformative self-understanding tool ever built.**
+
+Begin with a full system audit.

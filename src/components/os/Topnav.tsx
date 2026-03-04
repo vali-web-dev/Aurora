@@ -10,7 +10,7 @@ import { useCartStore } from '@/lib/commerce/cart-store';
 import { useOrderStore } from '@/lib/commerce/order-store';
 import { ThemeSelector } from '@/components/aurora/ThemeSelector';
 import { GlobalSearch } from '@/components/aurora/GlobalSearch';
-import { RealtimeNotifications } from '@/components/aurora/RealtimeNotifications';
+import { NotificationBellNav } from '@/components/notifications/NotificationBellNav';
 import { CollapsibleNav } from '@/components/os/CollapsibleNav';
 import { DocsPortal } from '@/components/aurora/DocsPortal';
 import { KeyboardShortcutsHelp } from '@/components/aurora/KeyboardShortcutsHelp';
@@ -215,7 +215,7 @@ export function TopNav() {
                   )}
                 />
               </div>
-              <RealtimeNotifications />
+              <NotificationBellNav />
               <Link
                 href="/commerce/cart"
                 className={clsx(

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "dev-mm2sffzo-o6tjg6",
+    "profile": "dev",
+    "ok": true,
+    "exitCode": 0,
+    "message": "Scheduler profile 'dev' completed successfully.",
+    "outputTail": [
+      "SCHEDULED profile=dev selectedJobs=1/4",
+      "> aurora-rv0@0.0.1 diagnostics:editor-runtime:snapshot",
+      "> node --import tsx scripts/editor-runtime-snapshot.ts",
+      "Editor runtime snapshot written: artifacts\\editor-runtime-ci-export.json",
+      "Status=pass alerts=0 profile=balanced",
+      "SCHEDULED job=editor-runtime-snapshot finished code=0 startedAt=2026-02-26T01:31:39.777Z"
+    ],
+    "startedAt": "2026-02-26T01:31:39.537Z",
+    "finishedAt": "2026-02-26T01:31:43.667Z",
+    "actor": {
+      "userId": "1",
+      "email": "aurora@example.com"
+    }
+  }
+]

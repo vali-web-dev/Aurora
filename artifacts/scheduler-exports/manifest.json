@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-03-03T20:46:54.025Z",
+  "runId": "exp-mmb2w9jf",
+  "outputDir": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf",
+  "datasets": {
+    "runs": {
+      "file": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf/runs.json",
+      "count": 0
+    },
+    "events": {
+      "file": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf/events.json",
+      "count": 0
+    },
+    "profiles": {
+      "file": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf/profiles.json",
+      "count": 4
+    },
+    "trends": {
+      "file": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf/trends.json",
+      "count": 4
+    }
+  },
+  "profileCounts": {
+    "dev": 0,
+    "runtime": 0,
+    "ci": 0,
+    "full": 0
+  },
+  "trends": {
+    "historyCount": 5,
+    "profileLabels": {
+      "dev": "No data",
+      "runtime": "No data",
+      "ci": "No data",
+      "full": "No data"
+    }
+  },
+  "retention": {
+    "policyDays": 14,
+    "retainedDayFolders": 1,
+    "deletedDayFolders": 0,
+    "deletedRunFolders": 0,
+    "lastCleanupAt": "2026-03-03T20:46:54.025Z"
+  }
+}

@@ -1001,14 +1001,20 @@ function pathExclude(path1: Path2D, path2: Path2D): Path2D {
 
 // ==================== MAIN COMPONENT ====================
 
-export function PhotoshopPro() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const bulkCreateFileRef = useRef<HTMLInputElement>(null);
-  const [psDoc, setPsDoc] = useState<PSDocument>({
-    id: 'doc1',
-    name: 'Untitled-1',
-    width: 1920,
-    height: 1080,
+function buildBlankDocument(options?: {
+  id?: string;
+  name?: string;
+  width?: number;
+  height?: number;
+}): PSDocument {
+  const width = options?.width ?? 1920;
+  const height = options?.height ?? 1080;
+
+  return {
+    id: options?.id ?? `doc-${Date.now()}`,
+    name: options?.name ?? 'Untitled-1',
+    width,
+    height,
     resolution: 72,
     colorMode: 'rgb',
     bitDepth: 8,
@@ -1024,13 +1030,13 @@ export function PhotoshopPro() {
         locked: false,
         x: 0,
         y: 0,
-        width: 1920,
-        height: 1080,
+        width,
+        height,
         rotation: 0,
         scaleX: 1,
         scaleY: 1,
         fill: '#ffffff',
-      }
+      },
     ],
     channels: [
       { id: 'r', name: 'Red', type: 'red', visible: true, data: null },
@@ -1043,7 +1049,315 @@ export function PhotoshopPro() {
     selectedChannelIds: ['r', 'g', 'b'],
     history: [],
     historyIndex: -1,
+  };
+}
+
+function cloneProjectDocument(doc: PSDocument): PSDocument {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(doc);
+  }
+  return JSON.parse(JSON.stringify(doc)) as PSDocument;
+}
+
+type RecentProjectItem = { id: string; name: string; openedAt: number; pinned: boolean; pinnedOrder?: number; doc: PSDocument };
+
+const RECENT_PROJECTS_STORAGE_KEY = 'aurora.photoshopPro.recentProjects.v1';
+const AUTO_SAVE_PREFS_KEY = 'aurora.photoshopPro.autosave.prefs.v1';
+const AUTO_SAVE_SNAPSHOT_KEY = 'aurora.photoshopPro.autosave.latest.v1';
+const AUTO_SAVE_SNAPSHOT_HISTORY_KEY = 'aurora.photoshopPro.autosave.history.v1';
+const AUTO_SAVE_CHECKPOINTS_KEY = 'aurora.photoshopPro.checkpoints.v1';
+const TIMELINE_PINS_KEY = 'aurora.photoshopPro.timeline.pins.v1';
+const TIMELINE_NOTES_KEY = 'aurora.photoshopPro.timeline.notes.v1';
+const TIMELINE_VIEWS_KEY = 'aurora.photoshopPro.timeline.views.v1';
+const TIMELINE_TAGS_KEY = 'aurora.photoshopPro.timeline.tags.v1';
+const TIMELINE_BRANCHES_KEY = 'aurora.photoshopPro.timeline.branches.v1';
+const TIMELINE_BRANCH_ASSIGNMENTS_KEY = 'aurora.photoshopPro.timeline.branchAssignments.v1';
+const TIMELINE_TAG_AUTOMATION_KEY = 'aurora.photoshopPro.timeline.tagAutomation.v1';
+const TIMELINE_PIN_COLLECTIONS_KEY = 'aurora.photoshopPro.timeline.pinCollections.v1';
+const TIMELINE_RETENTION_POLICIES_KEY = 'aurora.photoshopPro.timeline.retentionPolicies.v1';
+const TIMELINE_TAG_PRESETS = ['Milestone', 'Backup', 'Experiment', 'Review', 'Client', 'Draft'] as const;
+const DEFAULT_BLANK_FINGERPRINT = getProjectFingerprint(buildBlankDocument({ id: 'doc1', name: 'Untitled-1' }));
+const AUTO_SAVE_DEFAULT_RETENTION_DAYS = 7;
+const AUTO_SAVE_HISTORY_LIMIT = 5;
+const AUTO_SAVE_CHECKPOINT_LIMIT = 10;
+
+type AutoSaveIntervalSeconds = 30 | 60 | 300;
+type AutoSaveRestoreMode = 'replace-current' | 'new-document';
+type AutoSaveRetentionDays = 0 | 1 | 7 | 30;
+
+interface AutoSaveSnapshot {
+  savedAt: number;
+  doc: PSDocument;
+}
+
+interface NamedCheckpoint {
+  id: string;
+  name: string;
+  savedAt: number;
+  doc: PSDocument;
+}
+
+type TimelineItem = {
+  id: string;
+  kind: 'autosave' | 'checkpoint' | 'manual';
+  label: string;
+  savedAt: number;
+  branch: string;
+  pinned: boolean;
+  note?: string;
+  tags: string[];
+  snapshot?: AutoSaveSnapshot;
+  checkpoint?: NamedCheckpoint;
+};
+
+type TimelineView = {
+  id: string;
+  name: string;
+  search: string;
+  filter: 'all' | 'autosave' | 'checkpoint' | 'manual';
+  sort: 'newest' | 'oldest' | 'type';
+  pinnedOnly: boolean;
+  tagFilter: string;
+  branch: string;
+};
+
+type TimelineTagAutomation = {
+  autoTagManual: boolean;
+  autoTagCheckpoint: boolean;
+  autoTagImported: boolean;
+  autoTagMilestone: boolean;
+  autoTagLabelIncludes: string;
+};
+
+type TimelinePinCollection = {
+  id: string;
+  name: string;
+  itemIds: string[];
+};
+
+type TimelineTagRetentionPolicies = Record<string, number>;
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isValidPersistedDocument(value: unknown): value is PSDocument {
+  if (!isObjectRecord(value)) {
+    return false;
+  }
+
+  const width = value.width;
+  const height = value.height;
+  const layers = value.layers;
+
+  if (typeof value.id !== 'string' || value.id.length === 0) {
+    return false;
+  }
+  if (typeof value.name !== 'string' || value.name.length === 0) {
+    return false;
+  }
+  if (typeof width !== 'number' || width <= 0) {
+    return false;
+  }
+  if (typeof height !== 'number' || height <= 0) {
+    return false;
+  }
+  if (!Array.isArray(layers) || layers.length === 0) {
+    return false;
+  }
+
+  const hasValidLayer = layers.every((layer) => {
+    if (!isObjectRecord(layer)) {
+      return false;
+    }
+    return typeof layer.id === 'string' && typeof layer.name === 'string';
   });
+
+  return hasValidLayer;
+}
+
+function toValidAutoSaveSnapshot(value: unknown): AutoSaveSnapshot | null {
+  if (!isObjectRecord(value) || !isValidPersistedDocument(value.doc)) {
+    return null;
+  }
+
+  return {
+    savedAt: typeof value.savedAt === 'number' ? value.savedAt : Date.now(),
+    doc: cloneProjectDocument(value.doc),
+  };
+}
+
+function getPersistableProjectDocument(doc: PSDocument): PSDocument {
+  const cloned = cloneProjectDocument(doc);
+  return {
+    ...cloned,
+    layers: cloned.layers.map(layer => ({
+      ...layer,
+      imageData: undefined,
+      shapePath: undefined,
+    })),
+    channels: cloned.channels.map(channel => ({
+      ...channel,
+      data: null,
+    })),
+    history: [],
+    historyIndex: -1,
+  };
+}
+
+function getProjectFingerprint(doc: PSDocument): string {
+  return JSON.stringify(getPersistableProjectDocument(doc));
+}
+
+function formatRelativeOpenedTime(openedAt: number, now: number): string {
+  const deltaMs = Math.max(0, now - openedAt);
+  const minute = 60_000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+
+  if (deltaMs < minute) {
+    return 'Opened just now';
+  }
+  if (deltaMs < hour) {
+    const minutes = Math.floor(deltaMs / minute);
+    return `Opened ${minutes} min${minutes === 1 ? '' : 's'} ago`;
+  }
+  if (deltaMs < day) {
+    const hours = Math.floor(deltaMs / hour);
+    return `Opened ${hours} hour${hours === 1 ? '' : 's'} ago`;
+  }
+
+  const days = Math.floor(deltaMs / day);
+  return `Opened ${days} day${days === 1 ? '' : 's'} ago`;
+}
+
+function formatClockTime(timestamp: number): string {
+  return new Date(timestamp).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function formatRelativeSavedTime(savedAt: number, now: number): string {
+  const deltaMs = Math.max(0, now - savedAt);
+  const minute = 60_000;
+  const hour = 60 * minute;
+
+  if (deltaMs < minute) {
+    return 'just now';
+  }
+  if (deltaMs < hour) {
+    const minutes = Math.floor(deltaMs / minute);
+    return `${minutes}m ago`;
+  }
+
+  const hours = Math.floor(deltaMs / hour);
+  return `${hours}h ago`;
+}
+
+function formatAutoSaveRetentionCountdown(savedAt: number, retentionDays: AutoSaveRetentionDays, now: number): string {
+  if (retentionDays === 0) {
+    return 'No expiry';
+  }
+
+  const retentionMs = retentionDays * 24 * 60 * 60 * 1000;
+  const remainingMs = savedAt + retentionMs - now;
+
+  if (remainingMs <= 0) {
+    return 'Expired';
+  }
+
+  const totalMinutes = Math.ceil(remainingMs / 60_000);
+  const days = Math.floor(totalMinutes / (24 * 60));
+  const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+  const minutes = totalMinutes % 60;
+
+  if (days > 0) {
+    return `Expires in ${days}d ${hours}h`;
+  }
+  if (hours > 0) {
+    return `Expires in ${hours}h ${minutes}m`;
+  }
+  return `Expires in ${minutes}m`;
+}
+
+function getAutoSaveRestorePreview(currentDoc: PSDocument, snapshotDoc: PSDocument): string[] {
+  const preview: string[] = [];
+
+  if (currentDoc.width !== snapshotDoc.width || currentDoc.height !== snapshotDoc.height) {
+    preview.push(`Canvas ${currentDoc.width}×${currentDoc.height} → ${snapshotDoc.width}×${snapshotDoc.height}`);
+  }
+
+  if (currentDoc.layers.length !== snapshotDoc.layers.length) {
+    preview.push(`Layers ${currentDoc.layers.length} → ${snapshotDoc.layers.length}`);
+  }
+
+  const currentLayerNames = currentDoc.layers.map(layer => layer.name);
+  const snapshotLayerNames = snapshotDoc.layers.map(layer => layer.name);
+  const renamedLayerCount = Math.min(currentLayerNames.length, snapshotLayerNames.length);
+  let renamed = 0;
+  for (let index = 0; index < renamedLayerCount; index += 1) {
+    if (currentLayerNames[index] !== snapshotLayerNames[index]) {
+      renamed += 1;
+    }
+  }
+  if (renamed > 0) {
+    preview.push(`${renamed} layer name${renamed === 1 ? '' : 's'} differ`);
+  }
+
+  const currentTextLayers = currentDoc.layers.filter(layer => layer.type === 'text' && typeof layer.text === 'string').length;
+  const snapshotTextLayers = snapshotDoc.layers.filter(layer => layer.type === 'text' && typeof layer.text === 'string').length;
+  if (currentTextLayers !== snapshotTextLayers) {
+    preview.push(`Text layers ${currentTextLayers} → ${snapshotTextLayers}`);
+  }
+
+  if (preview.length === 0) {
+    preview.push('No visible structural differences detected');
+  }
+
+  return preview.slice(0, 3);
+}
+
+function normalizeRecentProjects(items: RecentProjectItem[]): RecentProjectItem[] {
+  const seen = new Set<string>();
+  const unique: RecentProjectItem[] = [];
+
+  items.forEach((item) => {
+    if (seen.has(item.id)) {
+      return;
+    }
+    seen.add(item.id);
+    unique.push(item);
+  });
+
+  const pinned = unique
+    .filter(item => item.pinned)
+    .sort((a, b) => {
+      const orderA = typeof a.pinnedOrder === 'number' ? a.pinnedOrder : Number.MAX_SAFE_INTEGER;
+      const orderB = typeof b.pinnedOrder === 'number' ? b.pinnedOrder : Number.MAX_SAFE_INTEGER;
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+      return b.openedAt - a.openedAt;
+    })
+    .map((item, index) => ({ ...item, pinnedOrder: index }));
+  const unpinned = unique
+    .filter(item => !item.pinned)
+    .sort((a, b) => b.openedAt - a.openedAt)
+    .slice(0, 3)
+    .map(item => ({ ...item, pinnedOrder: undefined }));
+
+  return [...pinned, ...unpinned];
+}
+
+export function PhotoshopPro() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const projectFileInputRef = useRef<HTMLInputElement>(null);
+  const versionFileInputRef = useRef<HTMLInputElement>(null);
+  const lastMilestoneCheckpointRef = useRef<string | null>(null);
+  const headerSaveMenuRef = useRef<HTMLDivElement>(null);
+  const autoSaveHintRef = useRef<HTMLDivElement>(null);
+  const [psDoc, setPsDoc] = useState<PSDocument>(() => buildBlankDocument({ id: 'doc1', name: 'Untitled-1' }));
 
   const [activeTool, setActiveTool] = useState<Tool>('move');
   const [foregroundColor, setForegroundColor] = useState('#000000');
@@ -1083,7 +1397,55 @@ export function PhotoshopPro() {
   const [showGuides, setShowGuides] = useState(true);
   const [showRulers, setShowRulers] = useState(true);
 
-  const [activePanel, setActivePanel] = useState<'layers' | 'channels' | 'paths' | 'properties' | 'adjustments' | 'styles' | 'history'>('layers');
+  const [activePanel, setActivePanel] = useState<'layers' | 'channels' | 'paths' | 'properties' | 'adjustments' | 'styles' | 'history' | 'timeline'>('layers');
+  const [timelineSearch, setTimelineSearch] = useState('');
+  const [timelineFilter, setTimelineFilter] = useState<'all' | 'autosave' | 'checkpoint' | 'manual'>('all');
+  const [timelineSort, setTimelineSort] = useState<'newest' | 'oldest' | 'type'>('newest');
+  const [timelinePinnedOnly, setTimelinePinnedOnly] = useState(false);
+  const [timelinePinnedIds, setTimelinePinnedIds] = useState<string[]>([]);
+  const [timelineBranches, setTimelineBranches] = useState<string[]>(['main']);
+  const [timelineBranchAssignments, setTimelineBranchAssignments] = useState<Record<string, string>>({});
+  const [activeTimelineBranch, setActiveTimelineBranch] = useState<string>('main');
+  const [timelineNewBranchName, setTimelineNewBranchName] = useState<string>('');
+  const [timelineNotes, setTimelineNotes] = useState<Record<string, string>>({});
+  const [timelineTags, setTimelineTags] = useState<Record<string, string[]>>({});
+  const [timelineTagAutomation, setTimelineTagAutomation] = useState<TimelineTagAutomation>({
+    autoTagManual: true,
+    autoTagCheckpoint: true,
+    autoTagImported: true,
+    autoTagMilestone: true,
+    autoTagLabelIncludes: '',
+  });
+  const [milestoneDetectionEnabled, setMilestoneDetectionEnabled] = useState<boolean>(true);
+  const [timelineTagFilter, setTimelineTagFilter] = useState<string>('');
+  const [timelineViewNameDraft, setTimelineViewNameDraft] = useState<string>('');
+  const [timelineSelectedNoteDraft, setTimelineSelectedNoteDraft] = useState<string>('');
+  const [timelineSelectedTagsDraft, setTimelineSelectedTagsDraft] = useState<string>('');
+  const [timelinePinCollections, setTimelinePinCollections] = useState<TimelinePinCollection[]>([]);
+  const [activePinCollectionId, setActivePinCollectionId] = useState<string>('');
+  const [timelinePinCollectionNameDraft, setTimelinePinCollectionNameDraft] = useState<string>('');
+  const [timelineBulkTagDraft, setTimelineBulkTagDraft] = useState<string>('');
+  const [timelineBulkUntagDraft, setTimelineBulkUntagDraft] = useState<string>('');
+  const [timelineRetentionTagDraft, setTimelineRetentionTagDraft] = useState<string>('Milestone');
+  const [timelineRetentionDaysDraft, setTimelineRetentionDaysDraft] = useState<string>('90');
+  const [timelineViewMigrationBranch, setTimelineViewMigrationBranch] = useState<string>('main');
+  const [timelineCheckpointNameDraft, setTimelineCheckpointNameDraft] = useState<string>('');
+  const [projectSaveAsDraft, setProjectSaveAsDraft] = useState<string>('');
+  const [newDocumentNameDraft, setNewDocumentNameDraft] = useState<string>('');
+  const [timelineTagRetentionPolicies, setTimelineTagRetentionPolicies] = useState<TimelineTagRetentionPolicies>({
+    Milestone: 365,
+    Draft: 30,
+    Backup: 90,
+  });
+  const [timelineViews, setTimelineViews] = useState<TimelineView[]>([]);
+  const [activeTimelineViewId, setActiveTimelineViewId] = useState<string>('');
+  const [selectedTimelineItemId, setSelectedTimelineItemId] = useState<string | null>(null);
+  const [compareTimelineItemId, setCompareTimelineItemId] = useState<string | null>(null);
+  const [selectedTimelineItemIds, setSelectedTimelineItemIds] = useState<string[]>([]);
+  const [lastDeletedTimelineBatch, setLastDeletedTimelineBatch] = useState<{
+    autosaves: AutoSaveSnapshot[];
+    checkpoints: NamedCheckpoint[];
+  } | null>(null);
   const [leftRailTab, setLeftRailTab] = useState<'search' | 'add-content' | 'text' | 'upload' | 'your-stuff'>('add-content');
   const [showEditPagePanel, setShowEditPagePanel] = useState(true);
   const [pageTitle, setPageTitle] = useState('Edit page');
@@ -1097,12 +1459,6 @@ export function PhotoshopPro() {
   const [translateLanguage, setTranslateLanguage] = useState('es');
   const [showBulkCreateDialog, setShowBulkCreateDialog] = useState(false);
   const [bulkCreateInput, setBulkCreateInput] = useState('Summer Sale\nNew Product Drop\nWeekend Promo');
-  const [templateCategory, setTemplateCategory] = useState<'all' | 'social' | 'marketing' | 'business' | 'event'>('all');
-  const [templateSearch, setTemplateSearch] = useState('');
-  const [translateScope, setTranslateScope] = useState<'all' | 'active' | 'selection'>('all');
-  const [bulkMapTitleCol, setBulkMapTitleCol] = useState(0);
-  const [bulkMapBodyCol, setBulkMapBodyCol] = useState(1);
-  const [bulkMapCtaCol, setBulkMapCtaCol] = useState(2);
   
   // Tool options
   const [tolerance, setTolerance] = useState(32);
@@ -1142,34 +1498,2077 @@ export function PhotoshopPro() {
   const [layerComps, setLayerComps] = useState<Array<{id: string; name: string; state: PSLayer[]}>>([]);
   const [actions, setActions] = useState<Array<{id: string; name: string; steps: Array<{command: string; params: any}>}>>([]);
   const [recordingAction, setRecordingAction] = useState<{id: string; steps: Array<{command: string; params: any}>} | null>(null);
+  const [recentOpenProjects, setRecentOpenProjects] = useState<RecentProjectItem[]>([]);
+  const [recentOpenedNow, setRecentOpenedNow] = useState(() => Date.now());
+  const [draggedPinnedRecentId, setDraggedPinnedRecentId] = useState<string | null>(null);
+  const [showHeaderSaveMenu, setShowHeaderSaveMenu] = useState(false);
+  const [showAutoSaveHint, setShowAutoSaveHint] = useState(false);
+  const [saveFeedbackState, setSaveFeedbackState] = useState<'idle' | 'saved'>('idle');
+  const [autoSaveEnabled, setAutoSaveEnabled] = useState(false);
+  const [autoSaveIntervalSeconds, setAutoSaveIntervalSeconds] = useState<AutoSaveIntervalSeconds>(60);
+  const [autoSaveRetentionDays, setAutoSaveRetentionDays] = useState<AutoSaveRetentionDays>(AUTO_SAVE_DEFAULT_RETENTION_DAYS);
+  const [lastAutoSavedAt, setLastAutoSavedAt] = useState<number | null>(null);
+  const [autoSaveNotice, setAutoSaveNotice] = useState<string | null>(null);
+  const [hasAutoSaveSnapshot, setHasAutoSaveSnapshot] = useState(false);
+  const [autoSaveHistory, setAutoSaveHistory] = useState<AutoSaveSnapshot[]>([]);
+  const [checkpointNameDraft, setCheckpointNameDraft] = useState('');
+  const [namedCheckpoints, setNamedCheckpoints] = useState<NamedCheckpoint[]>([]);
+  const [pendingAutoSaveSnapshot, setPendingAutoSaveSnapshot] = useState<AutoSaveSnapshot | null>(null);
+  const [lastManualSavedSnapshot, setLastManualSavedSnapshot] = useState<AutoSaveSnapshot | null>(() => ({
+    savedAt: Date.now(),
+    doc: getPersistableProjectDocument(buildBlankDocument({ id: 'doc1', name: 'Untitled-1' })),
+  }));
+  const [showAutoSaveRecoveryPrompt, setShowAutoSaveRecoveryPrompt] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<number>(() => Date.now());
+  const [lastSavedFingerprint, setLastSavedFingerprint] = useState(() => DEFAULT_BLANK_FINGERPRINT);
+  const latestDocRef = useRef(psDoc);
+  const latestDirtyRef = useRef(false);
+
+  const isDocumentDirty = useMemo(() => {
+    return getProjectFingerprint(psDoc) !== lastSavedFingerprint;
+  }, [psDoc, lastSavedFingerprint]);
+
+  useEffect(() => {
+    latestDocRef.current = psDoc;
+    latestDirtyRef.current = isDocumentDirty;
+  }, [psDoc, isDocumentDirty]);
+
+  const applyAutoSaveSnapshot = useCallback((snapshotToRestore: AutoSaveSnapshot, mode: AutoSaveRestoreMode = 'replace-current') => {
+    if (mode === 'replace-current' && isDocumentDirty) {
+      const proceed = window.confirm('Replace current unsaved work with the auto-saved draft? Choose Cancel to keep current work and use Restore as New Doc instead.');
+      if (!proceed) {
+        return;
+      }
+    }
+
+    const restoredSourceDoc = cloneProjectDocument(snapshotToRestore.doc);
+    const restoredDoc = mode === 'new-document'
+      ? {
+          ...restoredSourceDoc,
+          id: `recovered-${Date.now()}`,
+          name: `${restoredSourceDoc.name} (Recovered)`,
+        }
+      : restoredSourceDoc;
+
+    setPsDoc(restoredDoc);
+    setSelection({
+      active: false,
+      path: typeof Path2D !== 'undefined' ? new Path2D() : {} as Path2D,
+      feather: 0,
+      antiAlias: true,
+    });
+    setZoom(100);
+    setPanX(0);
+    setPanY(0);
+
+    setLastAutoSavedAt(snapshotToRestore.savedAt);
+    setPendingAutoSaveSnapshot(null);
+    setShowAutoSaveRecoveryPrompt(false);
+    setShowAutoSaveHint(false);
+    setSaveFeedbackState('idle');
+  }, [isDocumentDirty]);
+
+  const isAutoSaveSnapshotExpired = useCallback((savedAt: number, retentionDays: AutoSaveRetentionDays) => {
+    if (retentionDays === 0) {
+      return false;
+    }
+    const expiryMs = retentionDays * 24 * 60 * 60 * 1000;
+    return Date.now() - savedAt > expiryMs;
+  }, []);
+
+  const isAutoSaveSnapshotRestorable = useMemo(() => {
+    if (!hasAutoSaveSnapshot || !lastAutoSavedAt) {
+      return false;
+    }
+    return !isAutoSaveSnapshotExpired(lastAutoSavedAt, autoSaveRetentionDays);
+  }, [autoSaveRetentionDays, hasAutoSaveSnapshot, isAutoSaveSnapshotExpired, lastAutoSavedAt]);
+
+  const isAutoSaveSnapshotExpiredNow = useMemo(() => {
+    if (!hasAutoSaveSnapshot || !lastAutoSavedAt) {
+      return false;
+    }
+    return isAutoSaveSnapshotExpired(lastAutoSavedAt, autoSaveRetentionDays);
+  }, [autoSaveRetentionDays, hasAutoSaveSnapshot, isAutoSaveSnapshotExpired, lastAutoSavedAt]);
+
+  const restorableAutoSaveHistory = useMemo(
+    () => autoSaveHistory.filter(snapshot => !isAutoSaveSnapshotExpired(snapshot.savedAt, autoSaveRetentionDays)),
+    [autoSaveHistory, autoSaveRetentionDays, isAutoSaveSnapshotExpired, recentOpenedNow]
+  );
+
+  const latestRestorableSnapshot = useMemo(
+    () => pendingAutoSaveSnapshot ?? restorableAutoSaveHistory[0] ?? null,
+    [pendingAutoSaveSnapshot, restorableAutoSaveHistory]
+  );
+
+  const autoSaveRestorePreview = useMemo(
+    () => (latestRestorableSnapshot ? getAutoSaveRestorePreview(psDoc, latestRestorableSnapshot.doc) : []),
+    [latestRestorableSnapshot, psDoc]
+  );
+
+  const timelineItems = useMemo<TimelineItem[]>(() => {
+    const items: TimelineItem[] = [];
+
+    autoSaveHistory.forEach(snapshot => {
+      const itemId = `autosave-${snapshot.savedAt}`;
+      items.push({
+        id: itemId,
+        kind: 'autosave',
+        label: 'Auto-save',
+        savedAt: snapshot.savedAt,
+        branch: timelineBranchAssignments[itemId] ?? 'main',
+        pinned: timelinePinnedIds.includes(itemId),
+        note: timelineNotes[itemId],
+        tags: timelineTags[itemId] ?? [],
+        snapshot,
+      });
+    });
+
+    namedCheckpoints.forEach(checkpoint => {
+      items.push({
+        id: checkpoint.id,
+        kind: 'checkpoint',
+        label: checkpoint.name,
+        savedAt: checkpoint.savedAt,
+        branch: timelineBranchAssignments[checkpoint.id] ?? 'main',
+        pinned: timelinePinnedIds.includes(checkpoint.id),
+        note: timelineNotes[checkpoint.id],
+        tags: timelineTags[checkpoint.id] ?? [],
+        checkpoint,
+      });
+    });
+
+    if (lastManualSavedSnapshot) {
+      const itemId = `manual-${lastManualSavedSnapshot.savedAt}`;
+      items.push({
+        id: itemId,
+        kind: 'manual',
+        label: 'Manual Save',
+        savedAt: lastManualSavedSnapshot.savedAt,
+        branch: timelineBranchAssignments[itemId] ?? 'main',
+        pinned: timelinePinnedIds.includes(itemId),
+        note: timelineNotes[itemId],
+        tags: timelineTags[itemId] ?? [],
+        snapshot: lastManualSavedSnapshot,
+      });
+    }
+
+    const normalizedSearch = timelineSearch.trim().toLowerCase();
+    const normalizedTagFilter = timelineTagFilter.trim().toLowerCase();
+    const kindOrder: Record<TimelineItem['kind'], number> = { autosave: 0, checkpoint: 1, manual: 2 };
+
+    return items
+      .filter(item => timelineFilter === 'all' || item.kind === timelineFilter)
+      .filter(item => activeTimelineBranch === 'all' || item.branch === activeTimelineBranch)
+      .filter(item => normalizedSearch.length === 0 || item.label.toLowerCase().includes(normalizedSearch) || (item.note ?? '').toLowerCase().includes(normalizedSearch))
+      .filter(item => normalizedTagFilter.length === 0 || item.tags.some(tag => tag.toLowerCase().includes(normalizedTagFilter)))
+      .filter(item => !timelinePinnedOnly || item.pinned)
+      .sort((a, b) => {
+        if (a.pinned !== b.pinned) {
+          return a.pinned ? -1 : 1;
+        }
+        if (timelineSort === 'oldest') {
+          return a.savedAt - b.savedAt;
+        }
+        if (timelineSort === 'type') {
+          const kindDiff = kindOrder[a.kind] - kindOrder[b.kind];
+          if (kindDiff !== 0) {
+            return kindDiff;
+          }
+          return b.savedAt - a.savedAt;
+        }
+        return b.savedAt - a.savedAt;
+      });
+  }, [activeTimelineBranch, autoSaveHistory, lastManualSavedSnapshot, namedCheckpoints, timelineBranchAssignments, timelineFilter, timelineNotes, timelinePinnedIds, timelinePinnedOnly, timelineSearch, timelineSort, timelineTagFilter, timelineTags]);
+
+  const getTimelineSnapshot = useCallback((item: TimelineItem): AutoSaveSnapshot | null => {
+    if (item.kind === 'autosave') {
+      return item.snapshot ?? null;
+    }
+    if (item.kind === 'checkpoint' && item.checkpoint) {
+      return { savedAt: item.checkpoint.savedAt, doc: item.checkpoint.doc };
+    }
+    if (item.kind === 'manual') {
+      return item.snapshot ?? null;
+    }
+    return null;
+  }, []);
+
+  const selectedTimelineItem = useMemo(
+    () => timelineItems.find(item => item.id === selectedTimelineItemId) ?? null,
+    [timelineItems, selectedTimelineItemId]
+  );
+
+  const selectedTimelineSnapshot = useMemo(
+    () => (selectedTimelineItem ? getTimelineSnapshot(selectedTimelineItem) : null),
+    [getTimelineSnapshot, selectedTimelineItem]
+  );
+
+  const compareTimelineItem = useMemo(
+    () => timelineItems.find(item => item.id === compareTimelineItemId) ?? null,
+    [compareTimelineItemId, timelineItems]
+  );
+
+  const compareTimelineSnapshot = useMemo(
+    () => (compareTimelineItem ? getTimelineSnapshot(compareTimelineItem) : null),
+    [compareTimelineItem, getTimelineSnapshot]
+  );
+
+  const selectedTimelineItems = useMemo(
+    () => timelineItems.filter(item => selectedTimelineItemIds.includes(item.id)),
+    [selectedTimelineItemIds, timelineItems]
+  );
+
+  const selectedTimelineCount = selectedTimelineItems.length;
+
+  const selectedTimelineKindCounts = useMemo(
+    () => selectedTimelineItems.reduce(
+      (acc, item) => {
+        acc[item.kind] += 1;
+        return acc;
+      },
+      { autosave: 0, checkpoint: 0, manual: 0 }
+    ),
+    [selectedTimelineItems]
+  );
+
+  const selectedTimelineTags = useMemo(
+    () => Array.from(new Set(selectedTimelineItems.flatMap(item => item.tags))).sort((a, b) => a.localeCompare(b)),
+    [selectedTimelineItems]
+  );
+
+  const timelineTagStats = useMemo(
+    () => Object.entries(
+      timelineItems.reduce<Record<string, number>>((acc, item) => {
+        item.tags.forEach(tag => {
+          acc[tag] = (acc[tag] ?? 0) + 1;
+        });
+        return acc;
+      }, {})
+    )
+      .map(([tag, count]) => ({ tag, count }))
+      .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag)),
+    [timelineItems]
+  );
+
+  const topTimelineTagStats = useMemo(
+    () => timelineTagStats.slice(0, 8),
+    [timelineTagStats]
+  );
+
+  const timelineBranchStats = useMemo(
+    () => Object.entries(
+      timelineItems.reduce<Record<string, number>>((acc, item) => {
+        acc[item.branch] = (acc[item.branch] ?? 0) + 1;
+        return acc;
+      }, {})
+    )
+      .map(([branch, count]) => ({ branch, count }))
+      .sort((a, b) => b.count - a.count || a.branch.localeCompare(b.branch)),
+    [timelineItems]
+  );
+
+  const timelineHealth = useMemo(() => {
+    const hasRecentAutoSave = autoSaveHistory.some(snapshot => Date.now() - snapshot.savedAt < 1000 * 60 * 15);
+    const checkpointCount = namedCheckpoints.length;
+    const staleTagCount = timelineTagStats.filter(stat => {
+      const latestWithTag = timelineItems
+        .filter(item => item.tags.includes(stat.tag))
+        .sort((a, b) => b.savedAt - a.savedAt)[0];
+      if (!latestWithTag) {
+        return false;
+      }
+      return Date.now() - latestWithTag.savedAt > 1000 * 60 * 60 * 24 * 14;
+    }).length;
+
+    const score = Math.max(0, Math.min(100,
+      (hasRecentAutoSave ? 35 : 10)
+      + Math.min(30, checkpointCount * 3)
+      + Math.min(20, timelinePinnedIds.length * 2)
+      + Math.min(15, timelineTagStats.length * 2)
+      - Math.min(20, staleTagCount * 5)
+    ));
+
+    return {
+      score,
+      staleTagCount,
+      level: score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Fair' : 'Risky',
+    };
+  }, [autoSaveHistory, namedCheckpoints.length, timelineItems, timelinePinnedIds.length, timelineTagStats]);
+
+  const selectedTimelinePreview = useMemo(
+    () => (selectedTimelineSnapshot ? getAutoSaveRestorePreview(psDoc, selectedTimelineSnapshot.doc) : []),
+    [psDoc, selectedTimelineSnapshot]
+  );
+
+  const hasUndoableTimelineDelete = Boolean(
+    lastDeletedTimelineBatch
+    && (lastDeletedTimelineBatch.autosaves.length > 0 || lastDeletedTimelineBatch.checkpoints.length > 0)
+  );
+
+  const timelineComparePreview = useMemo(
+    () => (selectedTimelineSnapshot && compareTimelineSnapshot
+      ? getAutoSaveRestorePreview(selectedTimelineSnapshot.doc, compareTimelineSnapshot.doc)
+      : []),
+    [compareTimelineSnapshot, selectedTimelineSnapshot]
+  );
+
+  const timelineVisualDiff = useMemo(() => {
+    if (!selectedTimelineSnapshot || !compareTimelineSnapshot) {
+      return null;
+    }
+    const selectedLayerCount = selectedTimelineSnapshot.doc.layers.length;
+    const compareLayerCount = compareTimelineSnapshot.doc.layers.length;
+    const layerDelta = Math.abs(selectedLayerCount - compareLayerCount);
+    const changeIndicators = timelineComparePreview.length;
+    const roughDiffScore = Math.min(100, Math.round((layerDelta * 8) + (changeIndicators * 4)));
+    return {
+      selectedLayerCount,
+      compareLayerCount,
+      layerDelta,
+      changeIndicators,
+      roughDiffScore,
+    };
+  }, [compareTimelineSnapshot, selectedTimelineSnapshot, timelineComparePreview.length]);
+
+  const compareMatrix = useMemo(() => {
+    const withSnapshot = selectedTimelineItems
+      .map(item => ({ item, snapshot: getTimelineSnapshot(item) }))
+      .filter((entry): entry is { item: TimelineItem; snapshot: AutoSaveSnapshot } => Boolean(entry.snapshot));
+
+    const rows: Array<{ leftId: string; rightId: string; leftLabel: string; rightLabel: string; score: number }> = [];
+    for (let index = 0; index < withSnapshot.length; index += 1) {
+      for (let pairIndex = index + 1; pairIndex < withSnapshot.length; pairIndex += 1) {
+        const left = withSnapshot[index];
+        const right = withSnapshot[pairIndex];
+        const preview = getAutoSaveRestorePreview(left.snapshot.doc, right.snapshot.doc);
+        const layerDelta = Math.abs(left.snapshot.doc.layers.length - right.snapshot.doc.layers.length);
+        const score = Math.max(0, 100 - Math.min(100, preview.length * 5 + layerDelta * 10));
+        rows.push({
+          leftId: left.item.id,
+          rightId: right.item.id,
+          leftLabel: left.item.label,
+          rightLabel: right.item.label,
+          score,
+        });
+      }
+    }
+    return rows.sort((a, b) => b.score - a.score).slice(0, 8);
+  }, [getTimelineSnapshot, selectedTimelineItems]);
+
+  useEffect(() => {
+    if (!selectedTimelineItem) {
+      setTimelineSelectedNoteDraft('');
+      setTimelineSelectedTagsDraft('');
+      return;
+    }
+    setTimelineSelectedNoteDraft(selectedTimelineItem.note ?? '');
+    setTimelineSelectedTagsDraft(selectedTimelineItem.tags.join(', '));
+  }, [selectedTimelineItem]);
+
+  useEffect(() => {
+    if (!activeTimelineViewId) {
+      return;
+    }
+    const currentView = timelineViews.find(view => view.id === activeTimelineViewId);
+    if (currentView) {
+      setTimelineViewNameDraft(currentView.name);
+    }
+  }, [activeTimelineViewId, timelineViews]);
+
+  useEffect(() => {
+    if (selectedTimelineTags.length === 0) {
+      setTimelineBulkUntagDraft('');
+      return;
+    }
+    if (!selectedTimelineTags.includes(timelineBulkUntagDraft)) {
+      setTimelineBulkUntagDraft(selectedTimelineTags[0]);
+    }
+  }, [selectedTimelineTags, timelineBulkUntagDraft]);
+
+  useEffect(() => {
+    if (!selectedTimelineItemId) {
+      return;
+    }
+    const stillExists = timelineItems.some(item => item.id === selectedTimelineItemId);
+    if (!stillExists) {
+      setSelectedTimelineItemId(null);
+    }
+  }, [selectedTimelineItemId, timelineItems]);
+
+  useEffect(() => {
+    if (!compareTimelineItemId) {
+      return;
+    }
+    const stillExists = timelineItems.some(item => item.id === compareTimelineItemId);
+    if (!stillExists) {
+      setCompareTimelineItemId(null);
+    }
+  }, [compareTimelineItemId, timelineItems]);
+
+  useEffect(() => {
+    if (selectedTimelineItemIds.length === 0) {
+      return;
+    }
+    const validIds = new Set(timelineItems.map(item => item.id));
+    const nextSelectedIds = selectedTimelineItemIds.filter(id => validIds.has(id));
+    if (nextSelectedIds.length !== selectedTimelineItemIds.length) {
+      setSelectedTimelineItemIds(nextSelectedIds);
+    }
+  }, [selectedTimelineItemIds, timelineItems]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const rawPinnedIds = window.localStorage.getItem(TIMELINE_PINS_KEY);
+      if (!rawPinnedIds) {
+        return;
+      }
+      const parsedPinnedIds = JSON.parse(rawPinnedIds) as unknown;
+      if (!Array.isArray(parsedPinnedIds)) {
+        return;
+      }
+      const normalized = parsedPinnedIds
+        .filter((value): value is string => typeof value === 'string')
+        .slice(0, 200);
+      setTimelinePinnedIds(normalized);
+    } catch (error) {
+      console.warn('Failed to load timeline pins.', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      if (timelinePinnedIds.length > 0) {
+        window.localStorage.setItem(TIMELINE_PINS_KEY, JSON.stringify(timelinePinnedIds));
+      } else {
+        window.localStorage.removeItem(TIMELINE_PINS_KEY);
+      }
+    } catch (error) {
+      console.warn('Failed to persist timeline pins.', error);
+    }
+  }, [timelinePinnedIds]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const rawNotes = window.localStorage.getItem(TIMELINE_NOTES_KEY);
+      if (!rawNotes) {
+        return;
+      }
+      const parsedNotes = JSON.parse(rawNotes) as unknown;
+      if (!parsedNotes || typeof parsedNotes !== 'object' || Array.isArray(parsedNotes)) {
+        return;
+      }
+      const normalized = Object.entries(parsedNotes).reduce<Record<string, string>>((acc, [key, value]) => {
+        if (typeof value === 'string' && value.trim().length > 0) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+      setTimelineNotes(normalized);
+    } catch (error) {
+      console.warn('Failed to load timeline notes.', error);
+    }
+  }, []);
+
+  // Load timeline tags
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const rawTags = window.localStorage.getItem(TIMELINE_TAGS_KEY);
+      if (!rawTags) {
+        return;
+      }
+      const parsedTags = JSON.parse(rawTags) as unknown;
+      if (!parsedTags || typeof parsedTags !== 'object' || Array.isArray(parsedTags)) {
+        return;
+      }
+      const normalized = Object.entries(parsedTags).reduce<Record<string, string[]>>((acc, [key, value]) => {
+        if (Array.isArray(value) && value.every(tag => typeof tag === 'string')) {
+          const filtered = value.filter(tag => tag.trim().length > 0);
+          if (filtered.length > 0) {
+            acc[key] = filtered;
+          }
+        }
+        return acc;
+      }, {});
+      setTimelineTags(normalized);
+    } catch (error) {
+      console.warn('Failed to load timeline tags.', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const noteEntries = Object.entries(timelineNotes).filter(([, value]) => value.trim().length > 0);
+      if (noteEntries.length > 0) {
+        window.localStorage.setItem(TIMELINE_NOTES_KEY, JSON.stringify(Object.fromEntries(noteEntries)));
+      } else {
+        window.localStorage.removeItem(TIMELINE_NOTES_KEY);
+      }
+    } catch (error) {
+      console.warn('Failed to persist timeline notes.', error);
+    }
+  }, [timelineNotes]);
+
+  // Persist timeline tags
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const tagEntries = Object.entries(timelineTags).filter(([, value]) => value.length > 0);
+      if (tagEntries.length > 0) {
+        window.localStorage.setItem(TIMELINE_TAGS_KEY, JSON.stringify(Object.fromEntries(tagEntries)));
+      } else {
+        window.localStorage.removeItem(TIMELINE_TAGS_KEY);
+      }
+    } catch (error) {
+      console.warn('Failed to persist timeline tags.', error);
+    }
+  }, [timelineTags]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const rawBranches = window.localStorage.getItem(TIMELINE_BRANCHES_KEY);
+      if (rawBranches) {
+        const parsed = JSON.parse(rawBranches) as unknown;
+        if (Array.isArray(parsed)) {
+          const normalized = parsed.filter((entry): entry is string => typeof entry === 'string' && entry.trim().length > 0);
+          if (normalized.length > 0) {
+            setTimelineBranches(Array.from(new Set(['main', ...normalized])));
+          }
+        }
+      }
+
+      const rawAssignments = window.localStorage.getItem(TIMELINE_BRANCH_ASSIGNMENTS_KEY);
+      if (rawAssignments) {
+        const parsed = JSON.parse(rawAssignments) as unknown;
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          const normalized = Object.entries(parsed as Record<string, unknown>).reduce<Record<string, string>>((acc, [itemId, branch]) => {
+            if (typeof branch === 'string' && branch.trim().length > 0) {
+              acc[itemId] = branch;
+            }
+            return acc;
+          }, {});
+          setTimelineBranchAssignments(normalized);
+        }
+      }
+
+      const rawAutomation = window.localStorage.getItem(TIMELINE_TAG_AUTOMATION_KEY);
+      if (rawAutomation) {
+        const parsed = JSON.parse(rawAutomation) as Partial<TimelineTagAutomation>;
+        setTimelineTagAutomation(prev => ({
+          ...prev,
+          autoTagManual: typeof parsed?.autoTagManual === 'boolean' ? parsed.autoTagManual : prev.autoTagManual,
+          autoTagCheckpoint: typeof parsed?.autoTagCheckpoint === 'boolean' ? parsed.autoTagCheckpoint : prev.autoTagCheckpoint,
+          autoTagImported: typeof parsed?.autoTagImported === 'boolean' ? parsed.autoTagImported : prev.autoTagImported,
+          autoTagMilestone: typeof parsed?.autoTagMilestone === 'boolean' ? parsed.autoTagMilestone : prev.autoTagMilestone,
+          autoTagLabelIncludes: typeof parsed?.autoTagLabelIncludes === 'string' ? parsed.autoTagLabelIncludes : prev.autoTagLabelIncludes,
+        }));
+      }
+
+      const rawCollections = window.localStorage.getItem(TIMELINE_PIN_COLLECTIONS_KEY);
+      if (rawCollections) {
+        const parsed = JSON.parse(rawCollections) as unknown;
+        if (Array.isArray(parsed)) {
+          const normalized = parsed
+            .filter((entry): entry is TimelinePinCollection => Boolean(
+              entry && typeof entry === 'object'
+              && typeof (entry as TimelinePinCollection).id === 'string'
+              && typeof (entry as TimelinePinCollection).name === 'string'
+              && Array.isArray((entry as TimelinePinCollection).itemIds)
+            ))
+            .slice(0, 20)
+            .map(entry => ({ ...entry, itemIds: entry.itemIds.filter(itemId => typeof itemId === 'string') }));
+          setTimelinePinCollections(normalized);
+        }
+      }
+
+      const rawRetention = window.localStorage.getItem(TIMELINE_RETENTION_POLICIES_KEY);
+      if (rawRetention) {
+        const parsed = JSON.parse(rawRetention) as unknown;
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          const normalized = Object.entries(parsed as Record<string, unknown>).reduce<TimelineTagRetentionPolicies>((acc, [tag, days]) => {
+            if (typeof days === 'number' && Number.isFinite(days) && days >= 0) {
+              acc[tag] = Math.floor(days);
+            }
+            return acc;
+          }, {});
+          setTimelineTagRetentionPolicies(prev => ({ ...prev, ...normalized }));
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to load timeline advanced preferences.', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    try {
+      window.localStorage.setItem(TIMELINE_BRANCHES_KEY, JSON.stringify(timelineBranches));
+      if (Object.keys(timelineBranchAssignments).length > 0) {
+        window.localStorage.setItem(TIMELINE_BRANCH_ASSIGNMENTS_KEY, JSON.stringify(timelineBranchAssignments));
+      } else {
+        window.localStorage.removeItem(TIMELINE_BRANCH_ASSIGNMENTS_KEY);
+      }
+      window.localStorage.setItem(TIMELINE_TAG_AUTOMATION_KEY, JSON.stringify(timelineTagAutomation));
+      if (timelinePinCollections.length > 0) {
+        window.localStorage.setItem(TIMELINE_PIN_COLLECTIONS_KEY, JSON.stringify(timelinePinCollections));
+      } else {
+        window.localStorage.removeItem(TIMELINE_PIN_COLLECTIONS_KEY);
+      }
+      window.localStorage.setItem(TIMELINE_RETENTION_POLICIES_KEY, JSON.stringify(timelineTagRetentionPolicies));
+    } catch (error) {
+      console.warn('Failed to persist timeline advanced preferences.', error);
+    }
+  }, [timelineBranchAssignments, timelineBranches, timelinePinCollections, timelineTagAutomation, timelineTagRetentionPolicies]);
+
+  useEffect(() => {
+    if (timelineItems.length === 0) {
+      return;
+    }
+
+    setTimelineTags(prev => {
+      let changed = false;
+      const next: Record<string, string[]> = { ...prev };
+      timelineItems.forEach(item => {
+        const existing = next[item.id] ?? [];
+        const tagsToAdd: string[] = [];
+        if (timelineTagAutomation.autoTagManual && item.kind === 'manual' && !existing.includes('Manual')) {
+          tagsToAdd.push('Manual');
+        }
+        if (timelineTagAutomation.autoTagCheckpoint && item.kind === 'checkpoint' && !existing.includes('Checkpoint')) {
+          tagsToAdd.push('Checkpoint');
+        }
+        if (timelineTagAutomation.autoTagImported && item.kind === 'checkpoint' && item.label.toLowerCase().includes('import') && !existing.includes('Imported')) {
+          tagsToAdd.push('Imported');
+        }
+        const labelIncludes = timelineTagAutomation.autoTagLabelIncludes.trim();
+        if (labelIncludes.length > 0 && item.label.toLowerCase().includes(labelIncludes.toLowerCase()) && !existing.includes(labelIncludes)) {
+          tagsToAdd.push(labelIncludes);
+        }
+        if (tagsToAdd.length > 0) {
+          changed = true;
+          next[item.id] = [...existing, ...tagsToAdd];
+        }
+      });
+      return changed ? next : prev;
+    });
+  }, [timelineItems, timelineTagAutomation]);
+
+  useEffect(() => {
+    if (!milestoneDetectionEnabled || !timelineTagAutomation.autoTagMilestone || autoSaveHistory.length < 2) {
+      return;
+    }
+
+    const newest = autoSaveHistory[0];
+    const previous = autoSaveHistory[1];
+    const deltaMs = newest.savedAt - previous.savedAt;
+    if (deltaMs < 1000 * 60 * 15) {
+      return;
+    }
+
+    const sourceKey = `${newest.savedAt}-${previous.savedAt}`;
+    if (lastMilestoneCheckpointRef.current === sourceKey) {
+      return;
+    }
+
+    const milestoneId = `checkpoint-milestone-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const checkpoint: NamedCheckpoint = {
+      id: milestoneId,
+      name: `Milestone ${formatClockTime(newest.savedAt)}`,
+      savedAt: newest.savedAt,
+      doc: getPersistableProjectDocument(newest.doc),
+    };
+
+    setNamedCheckpoints(prev => [checkpoint, ...prev].sort((a, b) => b.savedAt - a.savedAt).slice(0, AUTO_SAVE_CHECKPOINT_LIMIT));
+    setTimelineTags(prev => ({
+      ...prev,
+      [milestoneId]: Array.from(new Set([...(prev[milestoneId] ?? []), 'Milestone'])),
+    }));
+    lastMilestoneCheckpointRef.current = sourceKey;
+    setAutoSaveNotice('Milestone checkpoint auto-created');
+  }, [autoSaveHistory, milestoneDetectionEnabled, timelineTagAutomation.autoTagMilestone]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const rawViews = window.localStorage.getItem(TIMELINE_VIEWS_KEY);
+      if (!rawViews) {
+        return;
+      }
+
+      const parsedViews = JSON.parse(rawViews) as unknown;
+      if (!Array.isArray(parsedViews)) {
+        return;
+      }
+
+      const normalizedViews = parsedViews
+        .filter((entry): entry is Omit<TimelineView, 'tagFilter' | 'branch'> & { tagFilter?: string; branch?: string } => {
+          return Boolean(
+            entry
+            && typeof entry === 'object'
+            && typeof (entry as TimelineView).id === 'string'
+            && typeof (entry as TimelineView).name === 'string'
+            && typeof (entry as TimelineView).search === 'string'
+            && ['all', 'autosave', 'checkpoint', 'manual'].includes((entry as TimelineView).filter)
+            && ['newest', 'oldest', 'type'].includes((entry as TimelineView).sort)
+            && typeof (entry as TimelineView).pinnedOnly === 'boolean'
+            && ((entry as { tagFilter?: unknown }).tagFilter === undefined || typeof (entry as { tagFilter?: unknown }).tagFilter === 'string')
+            && ((entry as { branch?: unknown }).branch === undefined || typeof (entry as { branch?: unknown }).branch === 'string')
+          );
+        })
+        .map(entry => ({
+          ...entry,
+          tagFilter: entry.tagFilter ?? '',
+          branch: entry.branch ?? 'all',
+        }))
+        .slice(0, 20);
+
+      setTimelineViews(normalizedViews);
+    } catch (error) {
+      console.warn('Failed to load timeline views.', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      if (timelineViews.length > 0) {
+        window.localStorage.setItem(TIMELINE_VIEWS_KEY, JSON.stringify(timelineViews));
+      } else {
+        window.localStorage.removeItem(TIMELINE_VIEWS_KEY);
+      }
+    } catch (error) {
+      console.warn('Failed to persist timeline views.', error);
+    }
+  }, [timelineViews]);
+
+  const stageDeletedTimelineItems = useCallback((items: TimelineItem[]) => {
+    const autosaves = items
+      .filter(item => item.kind === 'autosave' && item.snapshot)
+      .map(item => item.snapshot as AutoSaveSnapshot);
+    const checkpoints = items
+      .filter(item => item.kind === 'checkpoint' && item.checkpoint)
+      .map(item => item.checkpoint as NamedCheckpoint);
+
+    if (autosaves.length === 0 && checkpoints.length === 0) {
+      return;
+    }
+
+    setLastDeletedTimelineBatch({ autosaves, checkpoints });
+  }, []);
+
+  const exportTimelineItem = useCallback((item: TimelineItem) => {
+    const snapshot = getTimelineSnapshot(item);
+    if (!snapshot) {
+      return;
+    }
+
+    const payload = {
+      version: 'aurora-photoshop-pro-version-v1',
+      exportedAt: new Date().toISOString(),
+      kind: item.kind,
+      label: item.label,
+      branch: item.branch,
+      tags: item.tags,
+      savedAt: snapshot.savedAt,
+      doc: snapshot.doc,
+    };
+
+    const safeName = psDoc.name.replace(/[\\/:*?"<>|]+/g, '-');
+    const stamp = new Date(snapshot.savedAt).toISOString().replace(/[:.]/g, '-');
+    const fileName = `${safeName}-${item.kind}-${stamp}.aurora-version.json`;
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(url);
+  }, [getTimelineSnapshot, psDoc.name]);
+
+  const importTimelineVersion = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+    event.target.value = '';
+    if (files.length === 0) {
+      return;
+    }
+
+    const importedCheckpoints: Array<NamedCheckpoint & { importedBranch: string; importedTags: string[] }> = [];
+    const conflictingImports: Array<{ fileName: string; checkpointName: string; savedAt: number; doc: PSDocument }> = [];
+    let skippedCount = 0;
+    const existingDocFingerprints = new Set(namedCheckpoints.map(entry => getProjectFingerprint(entry.doc)));
+    const importedFingerprints = new Set<string>();
+
+    for (const file of files) {
+      try {
+        const text = await file.text();
+        const parsed = JSON.parse(text) as any;
+
+        const snapshotFromPayload =
+          toValidAutoSaveSnapshot(parsed)
+          ?? toValidAutoSaveSnapshot(parsed?.snapshot)
+          ?? (isValidPersistedDocument(parsed?.doc)
+            ? { savedAt: typeof parsed?.savedAt === 'number' ? parsed.savedAt : Date.now(), doc: parsed.doc }
+            : null);
+
+        if (!snapshotFromPayload) {
+          skippedCount += 1;
+          continue;
+        }
+
+        const suggestedLabel = typeof parsed?.label === 'string'
+          ? parsed.label
+          : typeof parsed?.name === 'string'
+            ? parsed.name
+            : file.name.replace(/\.[^.]+$/, '');
+        const checkpointName = suggestedLabel.trim().length > 0
+          ? suggestedLabel.trim()
+          : `Imported ${new Date(snapshotFromPayload.savedAt).toLocaleString()}`;
+        const importedBranchRaw = typeof parsed?.branch === 'string' && parsed.branch.trim().length > 0
+          ? parsed.branch.trim()
+          : activeTimelineBranch;
+        const importedBranch = importedBranchRaw === 'all' ? 'main' : importedBranchRaw;
+        const importedTags = Array.isArray(parsed?.tags)
+          ? parsed.tags.filter((tag: unknown): tag is string => typeof tag === 'string' && tag.trim().length > 0)
+          : [];
+
+        const importedFingerprint = getProjectFingerprint(snapshotFromPayload.doc);
+        if (existingDocFingerprints.has(importedFingerprint) || importedFingerprints.has(importedFingerprint)) {
+          conflictingImports.push({
+            fileName: file.name,
+            checkpointName,
+            savedAt: snapshotFromPayload.savedAt,
+            doc: getPersistableProjectDocument(snapshotFromPayload.doc),
+          });
+          continue;
+        }
+        importedFingerprints.add(importedFingerprint);
+
+        importedCheckpoints.push({
+          id: `checkpoint-import-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          name: checkpointName,
+          savedAt: snapshotFromPayload.savedAt,
+          doc: getPersistableProjectDocument(snapshotFromPayload.doc),
+          importedBranch,
+          importedTags,
+        });
+      } catch (error) {
+        console.error(`Failed to import timeline version from ${file.name}`, error);
+        skippedCount += 1;
+      }
+    }
+
+    if (importedCheckpoints.length === 0 && conflictingImports.length > 0) {
+      window.alert('All imported versions conflicted with existing timeline entries and were skipped.');
+      return;
+    }
+
+    if (importedCheckpoints.length === 0) {
+      window.alert('Could not import these version files.');
+      return;
+    }
+
+    let shouldMergeConflicts = false;
+    if (conflictingImports.length > 0) {
+      shouldMergeConflicts = window.confirm(
+        `${conflictingImports.length} imported version${conflictingImports.length === 1 ? '' : 's'} appear to duplicate existing snapshots. Merge anyway by keeping renamed copies?`
+      );
+    }
+
+    if (shouldMergeConflicts) {
+      const mergedConflicts = conflictingImports.map((entry, index) => ({
+        id: `checkpoint-import-merged-${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+        name: `${entry.checkpointName} (Merged)`,
+        savedAt: entry.savedAt + index,
+        doc: entry.doc,
+        importedBranch: activeTimelineBranch,
+        importedTags: [] as string[],
+      }));
+      importedCheckpoints.push(...mergedConflicts);
+    }
+
+    const sortedImported = importedCheckpoints.sort((a, b) => b.savedAt - a.savedAt);
+    setNamedCheckpoints(prev => {
+      const importedAsCheckpoints = sortedImported.map(entry => ({
+        id: entry.id,
+        name: entry.name,
+        savedAt: entry.savedAt,
+        doc: entry.doc,
+      }));
+      const nextCheckpoints = [...importedAsCheckpoints, ...prev]
+        .sort((a, b) => b.savedAt - a.savedAt)
+        .slice(0, AUTO_SAVE_CHECKPOINT_LIMIT);
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(AUTO_SAVE_CHECKPOINTS_KEY, JSON.stringify(nextCheckpoints));
+      }
+      return nextCheckpoints;
+    });
+
+    setTimelineBranchAssignments(prev => {
+      const next = { ...prev };
+      sortedImported.forEach(entry => {
+        next[entry.id] = entry.importedBranch;
+      });
+      return next;
+    });
+    setTimelineBranches(prev => Array.from(new Set([
+      ...prev,
+      ...sortedImported.map(entry => entry.importedBranch === 'all' ? 'main' : entry.importedBranch),
+    ])));
+    setTimelineTags(prev => {
+      const next = { ...prev };
+      sortedImported.forEach(entry => {
+        const base = next[entry.id] ?? [];
+        const withImported = timelineTagAutomation.autoTagImported ? ['Imported'] : [];
+        next[entry.id] = Array.from(new Set([...base, ...entry.importedTags, ...withImported]));
+      });
+      return next;
+    });
+
+    const importedCount = sortedImported.length;
+    const conflictLabel = conflictingImports.length > 0 ? ` (${conflictingImports.length} conflict${conflictingImports.length === 1 ? '' : 's'})` : '';
+    const skippedLabel = skippedCount > 0 ? ` (${skippedCount} skipped)` : '';
+    setAutoSaveNotice(`Imported ${importedCount} version${importedCount === 1 ? '' : 's'}${skippedLabel}${conflictLabel}`);
+
+    const latestImported = sortedImported[0];
+    if (!latestImported) {
+      return;
+    }
+
+    if (importedCount === 1) {
+      const shouldRestore = window.confirm('Version imported. Restore now?');
+      if (shouldRestore) {
+        applyAutoSaveSnapshot({ savedAt: latestImported.savedAt, doc: latestImported.doc }, 'replace-current');
+      }
+      return;
+    }
+
+    const shouldRestoreLatest = window.confirm('Versions imported. Restore the latest imported version now?');
+    if (shouldRestoreLatest) {
+      applyAutoSaveSnapshot({ savedAt: latestImported.savedAt, doc: latestImported.doc }, 'replace-current');
+    }
+  }, [activeTimelineBranch, applyAutoSaveSnapshot, namedCheckpoints, timelineTagAutomation.autoTagImported]);
+
+  const saveTimelineItemAsCheckpoint = useCallback((item: TimelineItem) => {
+    const snapshot = getTimelineSnapshot(item);
+    if (!snapshot) {
+      return;
+    }
+
+    const defaultName = item.kind === 'manual'
+      ? 'Manual Save'
+      : item.kind === 'autosave'
+        ? 'Auto-save'
+        : item.label;
+    const suggested = `${defaultName} ${formatClockTime(snapshot.savedAt)}`;
+    const enteredName = timelineCheckpointNameDraft || suggested;
+    if (!enteredName) {
+      return;
+    }
+
+    const checkpointName = enteredName.trim() || defaultName;
+    const savedAt = Date.now();
+    const nextCheckpoint: NamedCheckpoint = {
+      id: `checkpoint-${savedAt}-${Math.random().toString(36).slice(2, 8)}`,
+      name: checkpointName,
+      savedAt,
+      doc: getPersistableProjectDocument(snapshot.doc),
+    };
+
+    setNamedCheckpoints(prev => {
+      const nextCheckpoints = [nextCheckpoint, ...prev]
+        .sort((a, b) => b.savedAt - a.savedAt)
+        .slice(0, AUTO_SAVE_CHECKPOINT_LIMIT);
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(AUTO_SAVE_CHECKPOINTS_KEY, JSON.stringify(nextCheckpoints));
+      }
+      return nextCheckpoints;
+    });
+
+    setTimelineBranchAssignments(prev => ({
+      ...prev,
+      [nextCheckpoint.id]: item.branch,
+    }));
+    if (timelineTagAutomation.autoTagCheckpoint) {
+      setTimelineTags(prev => ({
+        ...prev,
+        [nextCheckpoint.id]: Array.from(new Set([...(prev[nextCheckpoint.id] ?? []), 'Checkpoint'])),
+      }));
+    }
+
+    setAutoSaveNotice('Checkpoint saved');
+    setTimelineCheckpointNameDraft('');
+  }, [getTimelineSnapshot, timelineTagAutomation.autoTagCheckpoint, timelineCheckpointNameDraft]);
+
+  const toggleTimelineItemSelection = useCallback((itemId: string, checked: boolean) => {
+    setSelectedTimelineItemIds(prev => {
+      if (checked) {
+        if (prev.includes(itemId)) {
+          return prev;
+        }
+        return [...prev, itemId];
+      }
+      return prev.filter(id => id !== itemId);
+    });
+  }, []);
+
+  const toggleTimelinePin = useCallback((itemId: string) => {
+    setTimelinePinnedIds(prev => {
+      if (prev.includes(itemId)) {
+        return prev.filter(id => id !== itemId);
+      }
+      return [itemId, ...prev].slice(0, 200);
+    });
+  }, []);
+
+  const editTimelineNote = useCallback((item: TimelineItem) => {
+    setSelectedTimelineItemId(item.id);
+    setTimelineSelectedNoteDraft(timelineNotes[item.id] ?? '');
+  }, [timelineNotes]);
+
+  const removeTimelineNote = useCallback((itemId: string) => {
+    setTimelineNotes(prev => {
+      if (!(itemId in prev)) {
+        return prev;
+      }
+      const { [itemId]: _, ...rest } = prev;
+      return rest;
+    });
+    setAutoSaveNotice('Timeline note removed');
+  }, []);
+
+  const addTimelineTag = useCallback((itemId: string, tag: string) => {
+    const normalizedTag = tag.trim();
+    if (normalizedTag.length === 0) {
+      return;
+    }
+    setTimelineTags(prev => {
+      const existingTags = prev[itemId] ?? [];
+      if (existingTags.includes(normalizedTag)) {
+        return prev;
+      }
+      return {
+        ...prev,
+        [itemId]: [...existingTags, normalizedTag],
+      };
+    });
+    setAutoSaveNotice(`Tag "${normalizedTag}" added`);
+  }, []);
+
+  const removeTimelineTag = useCallback((itemId: string, tag: string) => {
+    setTimelineTags(prev => {
+      const existingTags = prev[itemId] ?? [];
+      const filtered = existingTags.filter(t => t !== tag);
+      if (filtered.length === existingTags.length) {
+        return prev;
+      }
+      if (filtered.length === 0) {
+        const { [itemId]: _, ...rest } = prev;
+        return rest;
+      }
+      return {
+        ...prev,
+        [itemId]: filtered,
+      };
+    });
+    setAutoSaveNotice(`Tag "${tag}" removed`);
+  }, []);
+
+  const editTimelineTags = useCallback((itemId: string) => {
+    const item = timelineItems.find(entry => entry.id === itemId);
+    if (!item) {
+      return;
+    }
+    setSelectedTimelineItemId(itemId);
+    setTimelineSelectedTagsDraft((timelineTags[itemId] ?? item.tags).join(', '));
+  }, [timelineItems, timelineTags]);
+
+  const saveSelectedTimelineNote = useCallback(() => {
+    if (!selectedTimelineItemId) {
+      return;
+    }
+    const nextNote = timelineSelectedNoteDraft.trim();
+    setTimelineNotes(prev => {
+      if (nextNote.length === 0) {
+        const { [selectedTimelineItemId]: _, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [selectedTimelineItemId]: nextNote };
+    });
+    setAutoSaveNotice(nextNote.length === 0 ? 'Timeline note removed' : 'Timeline note saved');
+  }, [selectedTimelineItemId, timelineSelectedNoteDraft]);
+
+  const saveSelectedTimelineTags = useCallback(() => {
+    if (!selectedTimelineItemId) {
+      return;
+    }
+    const newTags = timelineSelectedTagsDraft
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(tag => tag.length > 0);
+
+    if (newTags.length === 0) {
+      setTimelineTags(prev => {
+        const { [selectedTimelineItemId]: _, ...rest } = prev;
+        return rest;
+      });
+      setAutoSaveNotice('All tags removed');
+      return;
+    }
+
+    setTimelineTags(prev => ({
+      ...prev,
+      [selectedTimelineItemId]: newTags,
+    }));
+    setAutoSaveNotice(`Tags updated: ${newTags.join(', ')}`);
+  }, [selectedTimelineItemId, timelineSelectedTagsDraft]);
+
+  const applyTimelineView = useCallback((viewId: string) => {
+    const view = timelineViews.find(entry => entry.id === viewId);
+    if (!view) {
+      return;
+    }
+
+    setTimelineSearch(view.search);
+    setTimelineFilter(view.filter);
+    setTimelineSort(view.sort);
+    setTimelinePinnedOnly(view.pinnedOnly);
+    setTimelineTagFilter(view.tagFilter);
+    setActiveTimelineBranch(view.branch);
+    setActiveTimelineViewId(view.id);
+    setAutoSaveNotice(`Applied view: ${view.name}`);
+  }, [timelineViews]);
+
+  const saveCurrentTimelineView = useCallback(() => {
+    const defaultName = `View ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const name = timelineViewNameDraft.trim() || defaultName;
+    const nextView: TimelineView = {
+      id: `timeline-view-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      name,
+      search: timelineSearch,
+      filter: timelineFilter,
+      sort: timelineSort,
+      pinnedOnly: timelinePinnedOnly,
+      tagFilter: timelineTagFilter,
+      branch: activeTimelineBranch,
+    };
+
+    setTimelineViews(prev => [nextView, ...prev].slice(0, 20));
+    setActiveTimelineViewId(nextView.id);
+    setTimelineViewNameDraft('');
+    setAutoSaveNotice('Timeline view saved');
+  }, [activeTimelineBranch, timelineFilter, timelinePinnedOnly, timelineSearch, timelineSort, timelineTagFilter, timelineViewNameDraft]);
+
+  const deleteTimelineView = useCallback((viewId: string) => {
+    setTimelineViews(prev => prev.filter(view => view.id !== viewId));
+    setActiveTimelineViewId(prev => (prev === viewId ? '' : prev));
+    setAutoSaveNotice('Timeline view deleted');
+  }, []);
+
+  const updateActiveTimelineView = useCallback(() => {
+    if (!activeTimelineViewId) {
+      return;
+    }
+
+    setTimelineViews(prev => prev.map(view => {
+      if (view.id !== activeTimelineViewId) {
+        return view;
+      }
+      return {
+        ...view,
+        search: timelineSearch,
+        filter: timelineFilter,
+        sort: timelineSort,
+        pinnedOnly: timelinePinnedOnly,
+        tagFilter: timelineTagFilter,
+        branch: activeTimelineBranch,
+      };
+    }));
+
+    setAutoSaveNotice('Timeline view updated');
+  }, [activeTimelineBranch, activeTimelineViewId, timelineFilter, timelinePinnedOnly, timelineSearch, timelineSort, timelineTagFilter]);
+
+  const renameActiveTimelineView = useCallback(() => {
+    if (!activeTimelineViewId) {
+      return;
+    }
+
+    const current = timelineViews.find(view => view.id === activeTimelineViewId);
+    if (!current) {
+      return;
+    }
+
+    const nextName = timelineViewNameDraft.trim();
+    if (nextName.length === 0) {
+      return;
+    }
+
+    setTimelineViews(prev => prev.map(view => (
+      view.id === activeTimelineViewId
+        ? { ...view, name: nextName }
+        : view
+    )));
+
+    setAutoSaveNotice('Timeline view renamed');
+  }, [activeTimelineViewId, timelineViewNameDraft, timelineViews]);
+
+  const createTimelineBranch = useCallback((branchName?: string) => {
+    const normalizedName = (branchName ?? timelineNewBranchName).trim();
+    if (normalizedName.length === 0 || timelineBranches.includes(normalizedName)) {
+      return;
+    }
+    setTimelineBranches(prev => [...prev, normalizedName]);
+    setActiveTimelineBranch(normalizedName);
+    setTimelineNewBranchName('');
+    setAutoSaveNotice(`Created branch: ${normalizedName}`);
+  }, [timelineBranches, timelineNewBranchName]);
+
+  const assignSelectedToActiveBranch = useCallback(() => {
+    if (selectedTimelineItems.length === 0 || activeTimelineBranch === 'all') {
+      return;
+    }
+    setTimelineBranchAssignments(prev => {
+      const next = { ...prev };
+      selectedTimelineItems.forEach(item => {
+        next[item.id] = activeTimelineBranch;
+      });
+      return next;
+    });
+    setAutoSaveNotice(`Moved ${selectedTimelineItems.length} item${selectedTimelineItems.length === 1 ? '' : 's'} to branch ${activeTimelineBranch}`);
+  }, [activeTimelineBranch, selectedTimelineItems]);
+
+  const savePinnedCollection = useCallback((collectionName?: string) => {
+    if (timelinePinnedIds.length === 0) {
+      return;
+    }
+    const fallbackName = `Pins ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const name = (collectionName ?? timelinePinCollectionNameDraft).trim() || fallbackName;
+    if (name.length === 0) {
+      return;
+    }
+    const nextCollection: TimelinePinCollection = {
+      id: `pin-collection-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      name,
+      itemIds: timelinePinnedIds,
+    };
+    setTimelinePinCollections(prev => [nextCollection, ...prev].slice(0, 20));
+    setActivePinCollectionId(nextCollection.id);
+    setTimelinePinCollectionNameDraft('');
+    setAutoSaveNotice(`Saved pinned collection: ${name}`);
+  }, [timelinePinCollectionNameDraft, timelinePinnedIds]);
+
+  const applyPinCollection = useCallback((collectionId: string) => {
+    const collection = timelinePinCollections.find(entry => entry.id === collectionId);
+    if (!collection) {
+      return;
+    }
+    setTimelinePinnedIds(collection.itemIds);
+    setActivePinCollectionId(collection.id);
+    setAutoSaveNotice(`Applied pinned collection: ${collection.name}`);
+  }, [timelinePinCollections]);
+
+  const setTagRetentionPolicy = useCallback((tag: string, days?: number) => {
+    const parsed = typeof days === 'number' ? days : Number(timelineRetentionDaysDraft);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      return;
+    }
+    setTimelineTagRetentionPolicies(prev => ({ ...prev, [tag]: Math.floor(parsed) }));
+    setTimelineRetentionTagDraft(tag);
+    setTimelineRetentionDaysDraft(String(Math.floor(parsed)));
+    setAutoSaveNotice(`Retention set for ${tag}: ${Math.floor(parsed)} days`);
+  }, [timelineRetentionDaysDraft]);
+
+  const applyTagRetentionPolicies = useCallback(() => {
+    const now = Date.now();
+    const itemLookup = new Map(timelineItems.map(item => [item.id, item]));
+    const idsToDelete = new Set<string>();
+
+    Object.entries(timelineTagRetentionPolicies).forEach(([tag, days]) => {
+      const threshold = now - days * 24 * 60 * 60 * 1000;
+      timelineItems.forEach(item => {
+        if (item.tags.includes(tag) && item.savedAt < threshold) {
+          idsToDelete.add(item.id);
+        }
+      });
+    });
+
+    if (idsToDelete.size === 0) {
+      setAutoSaveNotice('No entries matched retention policies');
+      return;
+    }
+
+    const toDelete = Array.from(idsToDelete)
+      .map(id => itemLookup.get(id))
+      .filter((item): item is TimelineItem => Boolean(item));
+
+    if (toDelete.length === 0) {
+      return;
+    }
+
+    stageDeletedTimelineItems(toDelete);
+    const autosaveTimes = new Set(toDelete.filter(item => item.kind === 'autosave' && item.snapshot).map(item => item.snapshot!.savedAt));
+    const checkpointIds = new Set(toDelete.filter(item => item.kind === 'checkpoint' && item.checkpoint).map(item => item.checkpoint!.id));
+
+    if (autosaveTimes.size > 0) {
+      setAutoSaveHistory(prev => prev.filter(snapshot => !autosaveTimes.has(snapshot.savedAt)).slice(0, AUTO_SAVE_HISTORY_LIMIT));
+    }
+    if (checkpointIds.size > 0) {
+      setNamedCheckpoints(prev => prev.filter(entry => !checkpointIds.has(entry.id)).slice(0, AUTO_SAVE_CHECKPOINT_LIMIT));
+    }
+
+    setTimelineTags(prev => Object.entries(prev).reduce<Record<string, string[]>>((acc, [id, tags]) => {
+      if (!idsToDelete.has(id)) {
+        acc[id] = tags;
+      }
+      return acc;
+    }, {}));
+
+    setAutoSaveNotice(`Retention policies archived ${toDelete.length} timeline item${toDelete.length === 1 ? '' : 's'}`);
+  }, [stageDeletedTimelineItems, timelineItems, timelineTagRetentionPolicies]);
+
+  const openTimelineSandbox = useCallback((item: TimelineItem) => {
+    const snapshot = getTimelineSnapshot(item);
+    if (!snapshot) {
+      return;
+    }
+
+    const sandboxDoc = cloneProjectDocument(snapshot.doc);
+    sandboxDoc.id = `sandbox-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    sandboxDoc.name = `[Sandbox] ${snapshot.doc.name}`;
+    setPsDoc(sandboxDoc);
+    setAutoSaveNotice(`Opened sandbox restore from ${item.label}`);
+  }, [getTimelineSnapshot]);
+
+  const migrateLegacyTimelineViews = useCallback(() => {
+    const targetBranch = timelineViewMigrationBranch.trim() || 'main';
+    setTimelineViews(prev => prev.map(view => (
+      view.branch === 'all'
+        ? { ...view, branch: targetBranch }
+        : view
+    )));
+    setTimelineBranches(prev => Array.from(new Set([...prev, targetBranch])));
+    setAutoSaveNotice(`Migrated legacy views to branch: ${targetBranch}`);
+  }, [timelineViewMigrationBranch]);
+
+  const selectAllTimelineItems = useCallback(() => {
+    setSelectedTimelineItemIds(timelineItems.map(item => item.id));
+  }, [timelineItems]);
+
+  const clearTimelineSelection = useCallback(() => {
+    setSelectedTimelineItemIds([]);
+  }, []);
+
+  const selectTimelineItemsByKind = useCallback((kind: TimelineItem['kind']) => {
+    setSelectedTimelineItemIds(timelineItems.filter(item => item.kind === kind).map(item => item.id));
+  }, [timelineItems]);
+
+  const selectTimelineItemsByTag = useCallback((tag: string) => {
+    const matchingItemIds = timelineItems
+      .filter(item => item.tags.includes(tag))
+      .map(item => item.id);
+
+    setSelectedTimelineItemIds(matchingItemIds);
+    setAutoSaveNotice(`Selected ${matchingItemIds.length} item${matchingItemIds.length === 1 ? '' : 's'} with tag "${tag}"`);
+  }, [timelineItems]);
+
+  const addTagToSelectedTimelineItems = useCallback((tagInput?: string) => {
+    if (selectedTimelineItems.length === 0) {
+      return;
+    }
+
+    const tag = (tagInput ?? timelineBulkTagDraft).trim();
+    if (tag.length === 0) {
+      return;
+    }
+
+    setTimelineTags(prev => {
+      const next = { ...prev };
+      selectedTimelineItems.forEach(item => {
+        const existing = next[item.id] ?? [];
+        if (!existing.includes(tag)) {
+          next[item.id] = [...existing, tag];
+        }
+      });
+      return next;
+    });
+
+    setTimelineBulkTagDraft('');
+
+    setAutoSaveNotice(`Added tag "${tag}" to ${selectedTimelineItems.length} item${selectedTimelineItems.length === 1 ? '' : 's'}`);
+  }, [selectedTimelineItems, timelineBulkTagDraft]);
+
+  const removeTagFromSelectedTimelineItems = useCallback((tagInput?: string) => {
+    if (selectedTimelineItems.length === 0 || selectedTimelineTags.length === 0) {
+      return;
+    }
+
+    const tag = (tagInput ?? timelineBulkUntagDraft).trim();
+    if (tag.length === 0) {
+      return;
+    }
+
+    setTimelineTags(prev => {
+      const next = { ...prev };
+      selectedTimelineItems.forEach(item => {
+        const existing = next[item.id] ?? [];
+        if (!existing.includes(tag)) {
+          return;
+        }
+        const filtered = existing.filter(entry => entry !== tag);
+        if (filtered.length > 0) {
+          next[item.id] = filtered;
+        } else {
+          delete next[item.id];
+        }
+      });
+      return next;
+    });
+
+    setAutoSaveNotice(`Removed tag "${tag}" from selected items`);
+  }, [selectedTimelineItems, selectedTimelineTags, timelineBulkUntagDraft]);
+
+  const exportSelectedTimelineItems = useCallback(() => {
+    if (selectedTimelineItems.length === 0) {
+      return;
+    }
+    selectedTimelineItems.forEach(item => exportTimelineItem(item));
+    setAutoSaveNotice(`Exported ${selectedTimelineItems.length} timeline item${selectedTimelineItems.length === 1 ? '' : 's'}`);
+  }, [exportTimelineItem, selectedTimelineItems]);
+
+  const checkpointSelectedTimelineItems = useCallback(() => {
+    if (selectedTimelineItems.length === 0) {
+      return;
+    }
+
+    const snapshots = selectedTimelineItems
+      .map(item => ({ item, snapshot: getTimelineSnapshot(item) }))
+      .filter((entry): entry is { item: TimelineItem; snapshot: AutoSaveSnapshot } => Boolean(entry.snapshot));
+
+    if (snapshots.length === 0) {
+      return;
+    }
+
+    const now = Date.now();
+    const additions = snapshots.map((entry, index) => {
+      const id = `checkpoint-bulk-${now}-${index}-${Math.random().toString(36).slice(2, 8)}`;
+      return {
+        checkpoint: {
+          id,
+          name: `${entry.item.label} ${formatClockTime(entry.snapshot.savedAt)}`,
+          savedAt: now + index,
+          doc: getPersistableProjectDocument(entry.snapshot.doc),
+        } as NamedCheckpoint,
+        sourceBranch: entry.item.branch,
+      };
+    });
+
+    setNamedCheckpoints(prev => {
+      const nextCheckpoints = [...additions.map(entry => entry.checkpoint), ...prev]
+        .sort((a, b) => b.savedAt - a.savedAt)
+        .slice(0, AUTO_SAVE_CHECKPOINT_LIMIT);
+
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(AUTO_SAVE_CHECKPOINTS_KEY, JSON.stringify(nextCheckpoints));
+      }
+
+      return nextCheckpoints;
+    });
+
+    setTimelineBranchAssignments(prev => {
+      const next = { ...prev };
+      additions.forEach((entry) => {
+        next[entry.checkpoint.id] = entry.sourceBranch;
+      });
+      return next;
+    });
+
+    if (timelineTagAutomation.autoTagCheckpoint) {
+      setTimelineTags(prev => {
+        const next = { ...prev };
+        additions.forEach(entry => {
+          next[entry.checkpoint.id] = Array.from(new Set([...(next[entry.checkpoint.id] ?? []), 'Checkpoint']));
+        });
+        return next;
+      });
+    }
+
+    setAutoSaveNotice(`Checkpointed ${snapshots.length} timeline item${snapshots.length === 1 ? '' : 's'}`);
+  }, [getTimelineSnapshot, selectedTimelineItems, timelineTagAutomation.autoTagCheckpoint]);
+
+  const deleteSelectedTimelineItems = useCallback(() => {
+    if (selectedTimelineItems.length === 0) {
+      return;
+    }
+
+    stageDeletedTimelineItems(selectedTimelineItems);
+
+    const autosaveTimesToDelete = new Set<number>(
+      selectedTimelineItems
+        .filter(item => item.kind === 'autosave' && item.snapshot)
+        .map(item => item.snapshot!.savedAt)
+    );
+
+    const checkpointIdsToDelete = new Set<string>(
+      selectedTimelineItems
+        .filter(item => item.kind === 'checkpoint' && item.checkpoint)
+        .map(item => item.checkpoint!.id)
+    );
+
+    if (autosaveTimesToDelete.size > 0) {
+      setAutoSaveHistory(prev => {
+        const nextHistory = prev
+          .filter(snapshot => !autosaveTimesToDelete.has(snapshot.savedAt))
+          .sort((a, b) => b.savedAt - a.savedAt)
+          .slice(0, AUTO_SAVE_HISTORY_LIMIT);
+
+        if (typeof window !== 'undefined') {
+          if (nextHistory.length > 0) {
+            window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY, JSON.stringify(nextHistory));
+            window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_KEY, JSON.stringify(nextHistory[0]));
+          } else {
+            window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY);
+            window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_KEY);
+          }
+        }
+
+        const latest = nextHistory[0];
+        if (latest) {
+          setHasAutoSaveSnapshot(true);
+          setLastAutoSavedAt(latest.savedAt);
+          if (pendingAutoSaveSnapshot && autosaveTimesToDelete.has(pendingAutoSaveSnapshot.savedAt)) {
+            setPendingAutoSaveSnapshot(latest);
+          }
+        } else {
+          setHasAutoSaveSnapshot(false);
+          setLastAutoSavedAt(null);
+          setPendingAutoSaveSnapshot(null);
+          setShowAutoSaveRecoveryPrompt(false);
+        }
+
+        return nextHistory;
+      });
+    }
+
+    if (checkpointIdsToDelete.size > 0) {
+      setNamedCheckpoints(prev => {
+        const nextCheckpoints = prev.filter(checkpoint => !checkpointIdsToDelete.has(checkpoint.id));
+        if (typeof window !== 'undefined') {
+          if (nextCheckpoints.length > 0) {
+            window.localStorage.setItem(AUTO_SAVE_CHECKPOINTS_KEY, JSON.stringify(nextCheckpoints));
+          } else {
+            window.localStorage.removeItem(AUTO_SAVE_CHECKPOINTS_KEY);
+          }
+        }
+        return nextCheckpoints;
+      });
+    }
+
+    setSelectedTimelineItemIds([]);
+    const removableCount = autosaveTimesToDelete.size + checkpointIdsToDelete.size;
+    if (removableCount > 0) {
+      setAutoSaveNotice(`Removed ${removableCount} timeline item${removableCount === 1 ? '' : 's'}`);
+    }
+  }, [pendingAutoSaveSnapshot, selectedTimelineItems, stageDeletedTimelineItems]);
+
+  const undoLastTimelineDelete = useCallback(() => {
+    if (!lastDeletedTimelineBatch) {
+      return;
+    }
+
+    const { autosaves, checkpoints } = lastDeletedTimelineBatch;
+
+    if (autosaves.length > 0) {
+      setAutoSaveHistory(prev => {
+        const nextHistory = [...autosaves, ...prev]
+          .filter((snapshot, index, array) => array.findIndex(item => item.savedAt === snapshot.savedAt) === index)
+          .sort((a, b) => b.savedAt - a.savedAt)
+          .slice(0, AUTO_SAVE_HISTORY_LIMIT);
+
+        if (typeof window !== 'undefined') {
+          if (nextHistory.length > 0) {
+            window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY, JSON.stringify(nextHistory));
+            window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_KEY, JSON.stringify(nextHistory[0]));
+          } else {
+            window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY);
+            window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_KEY);
+          }
+        }
+
+        const latest = nextHistory[0];
+        if (latest) {
+          setHasAutoSaveSnapshot(true);
+          setLastAutoSavedAt(latest.savedAt);
+          if (!pendingAutoSaveSnapshot) {
+            setPendingAutoSaveSnapshot(latest);
+          }
+        }
+
+        return nextHistory;
+      });
+    }
+
+    if (checkpoints.length > 0) {
+      setNamedCheckpoints(prev => {
+        const nextCheckpoints = [...checkpoints, ...prev]
+          .filter((checkpoint, index, array) => array.findIndex(item => item.id === checkpoint.id) === index)
+          .sort((a, b) => b.savedAt - a.savedAt)
+          .slice(0, AUTO_SAVE_CHECKPOINT_LIMIT);
+
+        if (typeof window !== 'undefined') {
+          if (nextCheckpoints.length > 0) {
+            window.localStorage.setItem(AUTO_SAVE_CHECKPOINTS_KEY, JSON.stringify(nextCheckpoints));
+          } else {
+            window.localStorage.removeItem(AUTO_SAVE_CHECKPOINTS_KEY);
+          }
+        }
+        return nextCheckpoints;
+      });
+    }
+
+    const restoredCount = autosaves.length + checkpoints.length;
+    setLastDeletedTimelineBatch(null);
+    setAutoSaveNotice(`Restored ${restoredCount} deleted timeline item${restoredCount === 1 ? '' : 's'}`);
+  }, [lastDeletedTimelineBatch, pendingAutoSaveSnapshot]);
+
+  const restoreLatestSelectedTimelineItem = useCallback((mode: AutoSaveRestoreMode = 'replace-current') => {
+    if (selectedTimelineItems.length === 0) {
+      return;
+    }
+
+    const latestWithSnapshot = [...selectedTimelineItems]
+      .sort((a, b) => b.savedAt - a.savedAt)
+      .map(item => ({ item, snapshot: getTimelineSnapshot(item) }))
+      .find(entry => Boolean(entry.snapshot));
+
+    if (!latestWithSnapshot?.snapshot) {
+      return;
+    }
+
+    const isExpiredAutoSave = latestWithSnapshot.item.kind === 'autosave'
+      && isAutoSaveSnapshotExpired(latestWithSnapshot.snapshot.savedAt, autoSaveRetentionDays);
+    if (isExpiredAutoSave) {
+      setAutoSaveNotice('Latest selected auto-save is expired');
+      return;
+    }
+
+    applyAutoSaveSnapshot(latestWithSnapshot.snapshot, mode);
+    setAutoSaveNotice(`Restored latest selected (${latestWithSnapshot.item.label})`);
+  }, [applyAutoSaveSnapshot, autoSaveRetentionDays, getTimelineSnapshot, isAutoSaveSnapshotExpired, selectedTimelineItems]);
+
+  const clearAutoSaveSnapshot = useCallback(
+    (hideRecoveryPrompt = true, reason: 'expired' | 'manual' | 'silent' = 'silent') => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_KEY);
+      window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY);
+    } catch (error) {
+      console.warn('Failed to clear auto-save snapshot.', error);
+    }
+
+    setHasAutoSaveSnapshot(false);
+    setLastAutoSavedAt(null);
+    setAutoSaveHistory([]);
+    setPendingAutoSaveSnapshot(null);
+    if (hideRecoveryPrompt) {
+      setShowAutoSaveRecoveryPrompt(false);
+    }
+    if (reason === 'expired') {
+      setAutoSaveNotice('Expired auto-save snapshot removed');
+    } else if (reason === 'manual') {
+      setAutoSaveNotice('Auto-save snapshot discarded');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!isDocumentDirty) {
+        return;
+      }
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDocumentDirty]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const rawPrefs = window.localStorage.getItem(AUTO_SAVE_PREFS_KEY);
+      let configuredRetentionDays: AutoSaveRetentionDays = AUTO_SAVE_DEFAULT_RETENTION_DAYS;
+      if (rawPrefs) {
+        const parsedPrefs = JSON.parse(rawPrefs) as Partial<{ enabled: boolean; intervalSeconds: AutoSaveIntervalSeconds; retentionDays: AutoSaveRetentionDays }>;
+        if (typeof parsedPrefs.enabled === 'boolean') {
+          setAutoSaveEnabled(parsedPrefs.enabled);
+        }
+        if (parsedPrefs.intervalSeconds === 30 || parsedPrefs.intervalSeconds === 60 || parsedPrefs.intervalSeconds === 300) {
+          setAutoSaveIntervalSeconds(parsedPrefs.intervalSeconds);
+        }
+        if (parsedPrefs.retentionDays === 0 || parsedPrefs.retentionDays === 1 || parsedPrefs.retentionDays === 7 || parsedPrefs.retentionDays === 30) {
+          setAutoSaveRetentionDays(parsedPrefs.retentionDays);
+          configuredRetentionDays = parsedPrefs.retentionDays;
+        }
+      }
+
+      const rawHistory = window.localStorage.getItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY);
+      if (rawHistory) {
+        const parsedHistory = JSON.parse(rawHistory) as unknown[];
+        const normalizedHistory = parsedHistory
+          .map(item => toValidAutoSaveSnapshot(item))
+          .filter((snapshot): snapshot is AutoSaveSnapshot => Boolean(snapshot))
+          .filter(snapshot => !isAutoSaveSnapshotExpired(snapshot.savedAt, configuredRetentionDays))
+          .sort((a, b) => b.savedAt - a.savedAt)
+          .slice(0, AUTO_SAVE_HISTORY_LIMIT);
+
+        if (normalizedHistory.length !== parsedHistory.length) {
+          window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY, JSON.stringify(normalizedHistory));
+          setAutoSaveNotice('Skipped corrupted auto-save history entries');
+        }
+
+        if (normalizedHistory.length > 0) {
+          const latestSnapshot = normalizedHistory[0];
+          setAutoSaveHistory(normalizedHistory);
+          setLastAutoSavedAt(latestSnapshot.savedAt);
+          setHasAutoSaveSnapshot(true);
+          setPendingAutoSaveSnapshot(latestSnapshot);
+          if (getProjectFingerprint(latestSnapshot.doc) !== DEFAULT_BLANK_FINGERPRINT) {
+            setShowAutoSaveRecoveryPrompt(true);
+          }
+          return;
+        }
+      }
+
+      const rawCheckpoints = window.localStorage.getItem(AUTO_SAVE_CHECKPOINTS_KEY);
+      if (rawCheckpoints) {
+        const parsedCheckpoints = JSON.parse(rawCheckpoints) as unknown[];
+        const normalizedCheckpoints = parsedCheckpoints
+          .filter((item): item is { id: string; name: string; savedAt?: number; doc?: unknown } => {
+            if (!isObjectRecord(item)) {
+              return false;
+            }
+            return typeof item.id === 'string' && typeof item.name === 'string';
+          })
+          .map(item => {
+            const snapshot = toValidAutoSaveSnapshot(item);
+            if (!snapshot) {
+              return null;
+            }
+            return {
+              id: item.id as string,
+              name: item.name as string,
+              savedAt: snapshot.savedAt,
+              doc: snapshot.doc,
+            } as NamedCheckpoint;
+          })
+          .filter((checkpoint): checkpoint is NamedCheckpoint => Boolean(checkpoint))
+          .sort((a, b) => b.savedAt - a.savedAt)
+          .slice(0, AUTO_SAVE_CHECKPOINT_LIMIT);
+
+        if (normalizedCheckpoints.length !== parsedCheckpoints.length) {
+          window.localStorage.setItem(AUTO_SAVE_CHECKPOINTS_KEY, JSON.stringify(normalizedCheckpoints));
+          setAutoSaveNotice('Skipped corrupted checkpoints');
+        }
+
+        setNamedCheckpoints(normalizedCheckpoints);
+      }
+
+      const rawSnapshot = window.localStorage.getItem(AUTO_SAVE_SNAPSHOT_KEY);
+      if (!rawSnapshot) {
+        return;
+      }
+
+      const parsedSnapshot = JSON.parse(rawSnapshot) as unknown;
+      const validSnapshot = toValidAutoSaveSnapshot(parsedSnapshot);
+      if (!validSnapshot) {
+        window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_KEY);
+        setAutoSaveNotice('Skipped corrupted latest auto-save');
+        return;
+      }
+
+      setLastAutoSavedAt(validSnapshot.savedAt);
+      if (isAutoSaveSnapshotExpired(validSnapshot.savedAt, configuredRetentionDays)) {
+          clearAutoSaveSnapshot(true, 'expired');
+          return;
+      }
+
+      const snapshotDoc = cloneProjectDocument(validSnapshot.doc);
+      setAutoSaveHistory([{ savedAt: validSnapshot.savedAt, doc: snapshotDoc }]);
+      setHasAutoSaveSnapshot(true);
+      setPendingAutoSaveSnapshot({
+        savedAt: validSnapshot.savedAt,
+        doc: snapshotDoc,
+      });
+      if (getProjectFingerprint(snapshotDoc) !== DEFAULT_BLANK_FINGERPRINT) {
+        setShowAutoSaveRecoveryPrompt(true);
+      }
+
+      setLastManualSavedSnapshot({
+        savedAt: Date.now(),
+        doc: getPersistableProjectDocument(latestDocRef.current),
+      });
+    } catch (error) {
+      console.warn('Failed to restore auto-save settings.', error);
+    }
+  }, [clearAutoSaveSnapshot, isAutoSaveSnapshotExpired]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(
+        AUTO_SAVE_PREFS_KEY,
+        JSON.stringify({ enabled: autoSaveEnabled, intervalSeconds: autoSaveIntervalSeconds, retentionDays: autoSaveRetentionDays })
+      );
+    } catch (error) {
+      console.warn('Failed to persist auto-save settings.', error);
+    }
+  }, [autoSaveEnabled, autoSaveIntervalSeconds, autoSaveRetentionDays]);
+
+  useEffect(() => {
+    if (!lastAutoSavedAt) {
+      return;
+    }
+    if (!isAutoSaveSnapshotExpired(lastAutoSavedAt, autoSaveRetentionDays)) {
+      return;
+    }
+    clearAutoSaveSnapshot(true, 'expired');
+  }, [autoSaveRetentionDays, clearAutoSaveSnapshot, isAutoSaveSnapshotExpired, lastAutoSavedAt]);
+
+  useEffect(() => {
+    if (!showAutoSaveRecoveryPrompt || !pendingAutoSaveSnapshot) {
+      return;
+    }
+    if (!isAutoSaveSnapshotExpired(pendingAutoSaveSnapshot.savedAt, autoSaveRetentionDays)) {
+      return;
+    }
+    clearAutoSaveSnapshot(true, 'expired');
+  }, [
+    autoSaveRetentionDays,
+    clearAutoSaveSnapshot,
+    isAutoSaveSnapshotExpired,
+    pendingAutoSaveSnapshot,
+    recentOpenedNow,
+    showAutoSaveRecoveryPrompt,
+  ]);
+
+  useEffect(() => {
+    if (!autoSaveNotice) {
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setAutoSaveNotice(null);
+    }, 2800);
+    return () => window.clearTimeout(timer);
+  }, [autoSaveNotice]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const originalTitle = document.title;
+    const dirtyPrefix = isDocumentDirty ? '● ' : '';
+    document.title = `${dirtyPrefix}${psDoc.name} · Aurora Photoshop Pro`;
+
+    return () => {
+      document.title = originalTitle;
+    };
+  }, [isDocumentDirty, psDoc.name]);
+
+  useEffect(() => {
+    if (saveFeedbackState !== 'saved') {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setSaveFeedbackState('idle');
+    }, 1600);
+
+    return () => window.clearTimeout(timer);
+  }, [saveFeedbackState]);
+
+  useEffect(() => {
+    if (!showHeaderSaveMenu && !showAutoSaveHint) {
+      return;
+    }
+
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as Node;
+      const clickedInsideSaveMenu = headerSaveMenuRef.current?.contains(target);
+      const clickedInsideAutoSaveHint = autoSaveHintRef.current?.contains(target);
+
+      if (!clickedInsideSaveMenu) {
+        setShowHeaderSaveMenu(false);
+      }
+      if (!clickedInsideAutoSaveHint) {
+        setShowAutoSaveHint(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowHeaderSaveMenu(false);
+        setShowAutoSaveHint(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [showHeaderSaveMenu, showAutoSaveHint]);
+
+  const pinnedRecentProjects = useMemo(
+    () => recentOpenProjects.filter(project => project.pinned),
+    [recentOpenProjects]
+  );
+
+  const unpinnedRecentProjects = useMemo(
+    () => recentOpenProjects.filter(project => !project.pinned),
+    [recentOpenProjects]
+  );
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setRecentOpenedNow(Date.now());
+    }, 60_000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const raw = window.localStorage.getItem(RECENT_PROJECTS_STORAGE_KEY);
+      if (!raw) {
+        return;
+      }
+
+      const parsed = JSON.parse(raw) as unknown;
+      if (!Array.isArray(parsed)) {
+        return;
+      }
+
+      const restored = parsed
+        .map<RecentProjectItem | null>((entry) => {
+          if (!entry || typeof entry !== 'object') {
+            return null;
+          }
+
+          const candidate = entry as Partial<RecentProjectItem> & { doc?: Partial<PSDocument> };
+          const id = typeof candidate.id === 'string' ? candidate.id : '';
+          const name = typeof candidate.name === 'string' ? candidate.name : '';
+          const openedAt = typeof candidate.openedAt === 'number' ? candidate.openedAt : Date.now();
+          const pinned = typeof candidate.pinned === 'boolean' ? candidate.pinned : false;
+          const pinnedOrder = typeof candidate.pinnedOrder === 'number' ? candidate.pinnedOrder : undefined;
+          if (!id || !name || !candidate.doc || typeof candidate.doc !== 'object') {
+            return null;
+          }
+
+          const doc = candidate.doc;
+          const width = typeof doc.width === 'number' && doc.width > 0 ? doc.width : 1920;
+          const height = typeof doc.height === 'number' && doc.height > 0 ? doc.height : 1080;
+          const fallbackDoc = buildBlankDocument({ id, name, width, height });
+
+          return {
+            id,
+            name,
+            openedAt,
+            pinned,
+            pinnedOrder,
+            doc: {
+              ...fallbackDoc,
+              ...doc,
+              id,
+              name,
+              width,
+              height,
+              layers: Array.isArray(doc.layers) && doc.layers.length > 0
+                ? (doc.layers as PSLayer[])
+                : fallbackDoc.layers,
+              channels: Array.isArray(doc.channels)
+                ? (doc.channels as Channel[])
+                : fallbackDoc.channels,
+              guides: Array.isArray(doc.guides) ? doc.guides : fallbackDoc.guides,
+            },
+          };
+        })
+        .filter((entry): entry is RecentProjectItem => entry !== null);
+
+      setRecentOpenProjects(normalizeRecentProjects(restored));
+    } catch (error) {
+      console.warn('Failed to restore recent projects from storage.', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(RECENT_PROJECTS_STORAGE_KEY, JSON.stringify(recentOpenProjects));
+    } catch (error) {
+      console.warn('Failed to persist recent projects to storage.', error);
+    }
+  }, [recentOpenProjects]);
 
   const activeLayer = useMemo(
     () => psDoc.layers.find(l => l.id === psDoc.activeLayerId),
     [psDoc.layers, psDoc.activeLayerId]
   );
-
-  const templateLibrary = useMemo(() => ([
-    { id: 'tpl-social-1', title: 'Bold Social Quote', category: 'social', width: 1080, height: 1080 },
-    { id: 'tpl-social-2', title: 'Gradient Story', category: 'social', width: 1080, height: 1920 },
-    { id: 'tpl-marketing-1', title: 'Product Launch', category: 'marketing', width: 1200, height: 628 },
-    { id: 'tpl-marketing-2', title: 'Flash Sale', category: 'marketing', width: 1080, height: 1080 },
-    { id: 'tpl-business-1', title: 'Team Update', category: 'business', width: 1600, height: 900 },
-    { id: 'tpl-business-2', title: 'Pitch Cover', category: 'business', width: 1920, height: 1080 },
-    { id: 'tpl-event-1', title: 'Event Poster', category: 'event', width: 2480, height: 3508 },
-    { id: 'tpl-event-2', title: 'Workshop Invite', category: 'event', width: 1920, height: 1080 },
-  ] as const), []);
-
-  const filteredTemplates = useMemo(() => {
-    if (templateCategory === 'all') {
-      return templateLibrary.filter(template =>
-        template.title.toLowerCase().includes(templateSearch.trim().toLowerCase())
-      );
-    }
-    return templateLibrary.filter(template =>
-      template.category === templateCategory &&
-      template.title.toLowerCase().includes(templateSearch.trim().toLowerCase())
-    );
-  }, [templateCategory, templateLibrary, templateSearch]);
 
   const resizeDocument = useCallback((width: number, height: number) => {
     setPsDoc(prev => ({
@@ -1241,29 +3640,21 @@ export function PhotoshopPro() {
   const applyTranslate = useCallback(() => {
     setPsDoc(prev => ({
       ...prev,
-      layers: prev.layers.map(layer => {
-        if (layer.type !== 'text') return layer;
-
-        if (translateScope === 'active' && layer.id !== prev.activeLayerId) {
-          return layer;
-        }
-
-        if (translateScope === 'selection' && !selection.active) {
-          return layer;
-        }
-
-        return {
-          ...layer,
-          text: layer.text ? `[${translateLanguage}] ${layer.text}` : `[${translateLanguage}]`,
-        };
-      }),
+      layers: prev.layers.map(layer =>
+        layer.type === 'text'
+          ? {
+              ...layer,
+              text: layer.text ? `[${translateLanguage}] ${layer.text}` : `[${translateLanguage}]`,
+            }
+          : layer
+      ),
     }));
     setShowTranslateDialog(false);
-  }, [translateLanguage, translateScope, selection.active]);
+  }, [translateLanguage]);
 
   const applyBulkCreate = useCallback(() => {
     const rows = bulkCreateInput
-      .split(/\r?\n/)
+      .split('\n')
       .map(row => row.trim())
       .filter(Boolean);
 
@@ -1272,46 +3663,19 @@ export function PhotoshopPro() {
       return;
     }
 
-    const parsed = rows.map(row => row.split(',').map(col => col.trim()));
-    const first = parsed[0] || [];
-    const title = first[bulkMapTitleCol] || rows[0];
-    const body = first[bulkMapBodyCol] || '';
-    const cta = first[bulkMapCtaCol] || '';
-    const mergedText = [title, body, cta].filter(Boolean).join('\n');
-
-    setPageCount(parsed.length);
+    setPageCount(rows.length);
     setActivePage(1);
-    setPageTitle(title || 'Bulk Page');
+    setPageTitle(rows[0]);
     setPsDoc(prev => ({
       ...prev,
       layers: prev.layers.map(layer =>
         layer.type === 'text'
-          ? { ...layer, text: mergedText || layer.text }
+          ? { ...layer, text: rows[0] }
           : layer
       ),
     }));
     setShowBulkCreateDialog(false);
-  }, [bulkCreateInput, bulkMapTitleCol, bulkMapBodyCol, bulkMapCtaCol]);
-
-  const applyTemplate = useCallback((template: { title: string; width: number; height: number }) => {
-    setPageTitle(template.title);
-    applyResizeDimensions(template.width, template.height);
-  }, [applyResizeDimensions]);
-
-  const handleBulkCsvImport = useCallback((file: File) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const content = String(reader.result || '');
-      const rows = content
-        .split(/\r?\n/)
-        .map(line => line.split(',')[0]?.trim())
-        .filter(Boolean);
-      if (rows.length > 0) {
-        setBulkCreateInput(rows.join('\n'));
-      }
-    };
-    reader.readAsText(file);
-  }, []);
+  }, [bulkCreateInput]);
 
   const animateAllLayers = useCallback(() => {
     setPsDoc(prev => ({
@@ -3026,6 +5390,563 @@ if (activeTool !== 'pen') return;
     URL.revokeObjectURL(url);
   }, [psDoc]);
 
+  const saveProjectJson = useCallback((fileNameOverride?: string) => {
+    const normalizedName = fileNameOverride?.trim();
+    const exportName = normalizedName && normalizedName.length > 0 ? normalizedName : psDoc.name;
+
+    const payload = {
+      version: 'aurora-photoshop-pro-v1',
+      exportedAt: new Date().toISOString(),
+      document: {
+        id: psDoc.id,
+        name: psDoc.name,
+        width: psDoc.width,
+        height: psDoc.height,
+        resolution: psDoc.resolution,
+        colorMode: psDoc.colorMode,
+        bitDepth: psDoc.bitDepth,
+        backgroundColor: psDoc.backgroundColor,
+      },
+      layers: psDoc.layers.map(layer => ({
+        id: layer.id,
+        name: layer.name,
+        type: layer.type,
+        visible: layer.visible,
+        opacity: layer.opacity,
+        blendMode: layer.blendMode,
+        x: layer.x,
+        y: layer.y,
+        width: layer.width,
+        height: layer.height,
+        rotation: layer.rotation,
+        scaleX: layer.scaleX,
+        scaleY: layer.scaleY,
+        fill: layer.fill,
+        text: layer.text,
+      })),
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${exportName}.aurora.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    const savedAt = Date.now();
+    setLastSavedAt(savedAt);
+    setLastSavedFingerprint(getProjectFingerprint(psDoc));
+    setLastManualSavedSnapshot({ savedAt, doc: getPersistableProjectDocument(psDoc) });
+    setPendingAutoSaveSnapshot(null);
+    setShowAutoSaveRecoveryPrompt(false);
+    setSaveFeedbackState('saved');
+    setShowHeaderSaveMenu(false);
+    setShowAutoSaveHint(false);
+  }, [psDoc]);
+
+  const handleSaveAs = useCallback(() => {
+    const suggestedName = projectSaveAsDraft || psDoc.name;
+    if (!suggestedName) return;
+    saveProjectJson(suggestedName);
+    setProjectSaveAsDraft('');
+    setShowHeaderSaveMenu(false);
+  }, [psDoc.name, saveProjectJson, projectSaveAsDraft]);
+
+  const persistAutoSaveSnapshot = useCallback((doc: PSDocument) => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const snapshot: AutoSaveSnapshot = {
+        savedAt: Date.now(),
+        doc: getPersistableProjectDocument(doc),
+      };
+      window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_KEY, JSON.stringify(snapshot));
+      setAutoSaveHistory(prev => {
+        const nextHistory = [snapshot, ...prev.filter(item => item.savedAt !== snapshot.savedAt)]
+          .sort((a, b) => b.savedAt - a.savedAt)
+          .slice(0, AUTO_SAVE_HISTORY_LIMIT);
+        window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY, JSON.stringify(nextHistory));
+        return nextHistory;
+      });
+      setLastAutoSavedAt(snapshot.savedAt);
+      setHasAutoSaveSnapshot(true);
+    } catch (error) {
+      console.warn('Failed to write auto-save snapshot.', error);
+    }
+  }, []);
+
+  const loadProjectDocument = useCallback((nextDoc: PSDocument) => {
+    setPsDoc(cloneProjectDocument(nextDoc));
+    setSelection({
+      active: false,
+      path: typeof Path2D !== 'undefined' ? new Path2D() : {} as Path2D,
+      feather: 0,
+      antiAlias: true,
+    });
+    setZoom(100);
+    setPanX(0);
+    setPanY(0);
+    const savedAt = Date.now();
+    setLastSavedAt(savedAt);
+    setLastSavedFingerprint(getProjectFingerprint(nextDoc));
+    setLastManualSavedSnapshot({ savedAt, doc: getPersistableProjectDocument(nextDoc) });
+    setPendingAutoSaveSnapshot(null);
+    setShowAutoSaveRecoveryPrompt(false);
+  }, []);
+
+  const restoreFromAutoSave = useCallback((mode: AutoSaveRestoreMode = 'replace-current') => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (!isAutoSaveSnapshotRestorable) {
+      clearAutoSaveSnapshot(true, 'expired');
+      return;
+    }
+
+    try {
+      let snapshotToRestore = pendingAutoSaveSnapshot;
+
+      if (!snapshotToRestore) {
+        const rawSnapshot = window.localStorage.getItem(AUTO_SAVE_SNAPSHOT_KEY);
+        if (!rawSnapshot) {
+          return;
+        }
+
+        const parsedSnapshot = JSON.parse(rawSnapshot) as unknown;
+        const validSnapshot = toValidAutoSaveSnapshot(parsedSnapshot);
+        if (!validSnapshot) {
+          const fallbackSnapshot = restorableAutoSaveHistory[0];
+          if (fallbackSnapshot) {
+            applyAutoSaveSnapshot(fallbackSnapshot, mode);
+            setAutoSaveNotice('Recovered from fallback auto-save');
+            return;
+          }
+          setAutoSaveNotice('Skipped corrupted latest auto-save');
+          clearAutoSaveSnapshot(true, 'expired');
+          return;
+        }
+
+        snapshotToRestore = validSnapshot;
+      }
+
+      applyAutoSaveSnapshot(snapshotToRestore, mode);
+    } catch (error) {
+      console.warn('Failed to restore from auto-save.', error);
+    }
+  }, [applyAutoSaveSnapshot, clearAutoSaveSnapshot, isAutoSaveSnapshotRestorable, pendingAutoSaveSnapshot, restorableAutoSaveHistory]);
+
+  const dismissAutoSaveRecoveryPrompt = useCallback(() => {
+    setShowAutoSaveRecoveryPrompt(false);
+    setPendingAutoSaveSnapshot(null);
+  }, []);
+
+  const discardAutoSaveSnapshot = useCallback(() => {
+    clearAutoSaveSnapshot(true, 'manual');
+    setShowAutoSaveHint(false);
+  }, [clearAutoSaveSnapshot]);
+
+  const revertToLastManualSave = useCallback(() => {
+    if (!lastManualSavedSnapshot) {
+      return;
+    }
+
+    if (isDocumentDirty) {
+      const proceed = window.confirm('Revert current changes and restore the last manual save?');
+      if (!proceed) {
+        return;
+      }
+    }
+
+    const restoredDoc = cloneProjectDocument(lastManualSavedSnapshot.doc);
+    setPsDoc(restoredDoc);
+    setSelection({
+      active: false,
+      path: typeof Path2D !== 'undefined' ? new Path2D() : {} as Path2D,
+      feather: 0,
+      antiAlias: true,
+    });
+    setZoom(100);
+    setPanX(0);
+    setPanY(0);
+    setLastSavedAt(lastManualSavedSnapshot.savedAt);
+    setLastSavedFingerprint(getProjectFingerprint(lastManualSavedSnapshot.doc));
+    setShowAutoSaveHint(false);
+    setSaveFeedbackState('idle');
+    setAutoSaveNotice('Reverted to last manual save');
+  }, [isDocumentDirty, lastManualSavedSnapshot]);
+
+  const createNamedCheckpoint = useCallback(() => {
+    const checkpointName = checkpointNameDraft.trim() || `Checkpoint ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const nextCheckpoint: NamedCheckpoint = {
+      id: `checkpoint-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      name: checkpointName,
+      savedAt: Date.now(),
+      doc: getPersistableProjectDocument(psDoc),
+    };
+
+    setNamedCheckpoints(prev => {
+      const nextCheckpoints = [nextCheckpoint, ...prev]
+        .sort((a, b) => b.savedAt - a.savedAt)
+        .slice(0, AUTO_SAVE_CHECKPOINT_LIMIT);
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(AUTO_SAVE_CHECKPOINTS_KEY, JSON.stringify(nextCheckpoints));
+      }
+      return nextCheckpoints;
+    });
+
+    setCheckpointNameDraft('');
+    setAutoSaveNotice('Checkpoint saved');
+  }, [checkpointNameDraft, psDoc]);
+
+  const restoreNamedCheckpoint = useCallback((checkpoint: NamedCheckpoint, mode: AutoSaveRestoreMode = 'replace-current') => {
+    applyAutoSaveSnapshot({ savedAt: checkpoint.savedAt, doc: checkpoint.doc }, mode);
+  }, [applyAutoSaveSnapshot]);
+
+  const deleteNamedCheckpoint = useCallback((checkpointId: string) => {
+    const deletedCheckpoint = namedCheckpoints.find(checkpoint => checkpoint.id === checkpointId);
+    if (deletedCheckpoint) {
+      setLastDeletedTimelineBatch({ autosaves: [], checkpoints: [deletedCheckpoint] });
+    }
+
+    setNamedCheckpoints(prev => {
+      const nextCheckpoints = prev.filter(checkpoint => checkpoint.id !== checkpointId);
+      if (typeof window !== 'undefined') {
+        if (nextCheckpoints.length > 0) {
+          window.localStorage.setItem(AUTO_SAVE_CHECKPOINTS_KEY, JSON.stringify(nextCheckpoints));
+        } else {
+          window.localStorage.removeItem(AUTO_SAVE_CHECKPOINTS_KEY);
+        }
+      }
+      return nextCheckpoints;
+    });
+    setAutoSaveNotice('Checkpoint removed');
+  }, [namedCheckpoints]);
+
+  const deleteAutoSaveHistoryEntry = useCallback((savedAt: number) => {
+    const deletedSnapshot = autoSaveHistory.find(snapshot => snapshot.savedAt === savedAt);
+    if (deletedSnapshot) {
+      setLastDeletedTimelineBatch({ autosaves: [deletedSnapshot], checkpoints: [] });
+    }
+
+    setAutoSaveHistory(prev => {
+      const nextHistory = prev
+        .filter(snapshot => snapshot.savedAt !== savedAt)
+        .sort((a, b) => b.savedAt - a.savedAt)
+        .slice(0, AUTO_SAVE_HISTORY_LIMIT);
+
+      if (typeof window !== 'undefined') {
+        if (nextHistory.length > 0) {
+          window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY, JSON.stringify(nextHistory));
+          window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_KEY, JSON.stringify(nextHistory[0]));
+        } else {
+          window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY);
+          window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_KEY);
+        }
+      }
+
+      const latest = nextHistory[0];
+      if (latest) {
+        setHasAutoSaveSnapshot(true);
+        setLastAutoSavedAt(latest.savedAt);
+        if (pendingAutoSaveSnapshot?.savedAt === savedAt) {
+          setPendingAutoSaveSnapshot(latest);
+        }
+      } else {
+        setHasAutoSaveSnapshot(false);
+        setLastAutoSavedAt(null);
+        setPendingAutoSaveSnapshot(null);
+        setShowAutoSaveRecoveryPrompt(false);
+      }
+
+      return nextHistory;
+    });
+
+    setAutoSaveNotice('Auto-save entry removed');
+  }, [autoSaveHistory, pendingAutoSaveSnapshot]);
+
+  const purgeExpiredAutoSaveEntries = useCallback(() => {
+    setAutoSaveHistory(prev => {
+      const nextHistory = prev
+        .filter(snapshot => !isAutoSaveSnapshotExpired(snapshot.savedAt, autoSaveRetentionDays))
+        .sort((a, b) => b.savedAt - a.savedAt)
+        .slice(0, AUTO_SAVE_HISTORY_LIMIT);
+
+      if (typeof window !== 'undefined') {
+        if (nextHistory.length > 0) {
+          window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY, JSON.stringify(nextHistory));
+          window.localStorage.setItem(AUTO_SAVE_SNAPSHOT_KEY, JSON.stringify(nextHistory[0]));
+        } else {
+          window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_HISTORY_KEY);
+          window.localStorage.removeItem(AUTO_SAVE_SNAPSHOT_KEY);
+        }
+      }
+
+      const latest = nextHistory[0];
+      if (latest) {
+        setHasAutoSaveSnapshot(true);
+        setLastAutoSavedAt(latest.savedAt);
+        if (pendingAutoSaveSnapshot && isAutoSaveSnapshotExpired(pendingAutoSaveSnapshot.savedAt, autoSaveRetentionDays)) {
+          setPendingAutoSaveSnapshot(latest);
+        }
+      } else {
+        setHasAutoSaveSnapshot(false);
+        setLastAutoSavedAt(null);
+        setPendingAutoSaveSnapshot(null);
+        setShowAutoSaveRecoveryPrompt(false);
+      }
+
+      return nextHistory;
+    });
+
+    setSelectedTimelineItemId(null);
+    setCompareTimelineItemId(null);
+    setSelectedTimelineItemIds([]);
+    setAutoSaveNotice('Expired auto-saves purged');
+  }, [autoSaveRetentionDays, isAutoSaveSnapshotExpired, pendingAutoSaveSnapshot]);
+
+  const resetTimelineView = useCallback(() => {
+    setTimelineSearch('');
+    setTimelineFilter('all');
+    setTimelineSort('newest');
+    setTimelinePinnedOnly(false);
+    setTimelineTagFilter('');
+    setActiveTimelineBranch('all');
+    setActivePinCollectionId('');
+    setActiveTimelineViewId('');
+    setSelectedTimelineItemId(null);
+    setCompareTimelineItemId(null);
+    setSelectedTimelineItemIds([]);
+  }, []);
+
+  useEffect(() => {
+    if (!autoSaveEnabled) {
+      return;
+    }
+
+    const intervalMs = autoSaveIntervalSeconds * 1000;
+    const timer = window.setInterval(() => {
+      if (!latestDirtyRef.current) {
+        return;
+      }
+      persistAutoSaveSnapshot(latestDocRef.current);
+    }, intervalMs);
+
+    return () => window.clearInterval(timer);
+  }, [autoSaveEnabled, autoSaveIntervalSeconds, persistAutoSaveSnapshot]);
+
+  const confirmDiscardIfDirty = useCallback((message: string) => {
+    if (!isDocumentDirty) {
+      return true;
+    }
+    return window.confirm(message);
+  }, [isDocumentDirty]);
+
+  const pushRecentProject = useCallback((nextDoc: PSDocument) => {
+    setRecentOpenProjects(prev => {
+      const existing = prev.find(project => project.id === nextDoc.id);
+      const nextEntry = {
+        id: nextDoc.id,
+        name: nextDoc.name,
+        openedAt: Date.now(),
+        pinned: existing?.pinned ?? false,
+        pinnedOrder: existing?.pinned ? existing.pinnedOrder : undefined,
+        doc: getPersistableProjectDocument(nextDoc),
+      };
+      const deduped = prev.filter(project => project.id !== nextEntry.id);
+      return normalizeRecentProjects([nextEntry, ...deduped]);
+    });
+  }, []);
+
+  const newBlankDocument = useCallback(() => {
+    const proceed = confirmDiscardIfDirty('Create a new document and discard unsaved changes?');
+    if (!proceed) {
+      return;
+    }
+
+    const fallbackName = `Untitled-${Date.now()}`;
+    const enteredName = newDocumentNameDraft || fallbackName;
+    if (!enteredName) {
+      return;
+    }
+
+    const nextName = enteredName.trim() || fallbackName;
+    loadProjectDocument(buildBlankDocument({ name: nextName }));
+    setNewDocumentNameDraft('');
+  }, [confirmDiscardIfDirty, loadProjectDocument, newDocumentNameDraft]);
+
+  const openProjectFromFile = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result;
+        if (typeof text !== 'string') {
+          throw new Error('Unable to read file content.');
+        }
+
+        const parsed = JSON.parse(text) as any;
+        const docSource = parsed?.document && typeof parsed.document === 'object' ? parsed.document : parsed;
+        const parsedLayers = Array.isArray(parsed?.layers) ? parsed.layers : [];
+
+        const width = typeof docSource?.width === 'number' && docSource.width > 0 ? docSource.width : 1920;
+        const height = typeof docSource?.height === 'number' && docSource.height > 0 ? docSource.height : 1080;
+        const baseName = file.name.replace(/\.[^.]+$/, '');
+        const name = typeof docSource?.name === 'string' && docSource.name.trim().length > 0
+          ? docSource.name.trim()
+          : baseName;
+
+        const layers: PSLayer[] = parsedLayers.length > 0
+          ? parsedLayers.map((layer: any, index: number) => ({
+              id: typeof layer?.id === 'string' ? layer.id : `layer-${Date.now()}-${index}`,
+              name: typeof layer?.name === 'string' ? layer.name : `Layer ${index + 1}`,
+              type: (typeof layer?.type === 'string' ? layer.type : 'normal') as LayerType,
+              visible: typeof layer?.visible === 'boolean' ? layer.visible : true,
+              opacity: typeof layer?.opacity === 'number' ? Math.max(0, Math.min(100, layer.opacity)) : 100,
+              blendMode: (typeof layer?.blendMode === 'string' ? layer.blendMode : 'normal') as BlendMode,
+              locked: typeof layer?.locked === 'boolean' ? layer.locked : false,
+              x: typeof layer?.x === 'number' ? layer.x : 0,
+              y: typeof layer?.y === 'number' ? layer.y : 0,
+              width: typeof layer?.width === 'number' && layer.width > 0 ? layer.width : width,
+              height: typeof layer?.height === 'number' && layer.height > 0 ? layer.height : height,
+              rotation: typeof layer?.rotation === 'number' ? layer.rotation : 0,
+              scaleX: typeof layer?.scaleX === 'number' ? layer.scaleX : 1,
+              scaleY: typeof layer?.scaleY === 'number' ? layer.scaleY : 1,
+              fill: typeof layer?.fill === 'string' ? layer.fill : undefined,
+              text: typeof layer?.text === 'string' ? layer.text : undefined,
+            }))
+          : buildBlankDocument({ width, height }).layers;
+
+        const nextDoc: PSDocument = {
+          id: typeof docSource?.id === 'string' ? docSource.id : `doc-${Date.now()}`,
+          name,
+          width,
+          height,
+          resolution: typeof docSource?.resolution === 'number' ? docSource.resolution : 72,
+          colorMode: (typeof docSource?.colorMode === 'string' ? docSource.colorMode : 'rgb') as PSDocument['colorMode'],
+          bitDepth: (docSource?.bitDepth === 16 || docSource?.bitDepth === 32 ? docSource.bitDepth : 8) as PSDocument['bitDepth'],
+          backgroundColor: typeof docSource?.backgroundColor === 'string' ? docSource.backgroundColor : '#ffffff',
+          layers,
+          channels: [
+            { id: 'r', name: 'Red', type: 'red', visible: true, data: null },
+            { id: 'g', name: 'Green', type: 'green', visible: true, data: null },
+            { id: 'b', name: 'Blue', type: 'blue', visible: true, data: null },
+          ],
+          guides: Array.isArray(docSource?.guides) ? docSource.guides : [],
+          grids: docSource?.grids && typeof docSource.grids === 'object'
+            ? {
+                size: typeof docSource.grids.size === 'number' ? docSource.grids.size : 20,
+                subdivisions: typeof docSource.grids.subdivisions === 'number' ? docSource.grids.subdivisions : 4,
+              }
+            : { size: 20, subdivisions: 4 },
+          activeLayerId: layers[0]?.id ?? 'bg',
+          selectedChannelIds: ['r', 'g', 'b'],
+          history: [],
+          historyIndex: -1,
+        };
+
+        loadProjectDocument(nextDoc);
+        pushRecentProject(nextDoc);
+      } catch (error) {
+        console.error('Failed to open project file', error);
+        window.alert('Could not open this file. Please select a valid Aurora project JSON.');
+      }
+    };
+
+    reader.readAsText(file);
+  }, [loadProjectDocument, pushRecentProject]);
+
+  const openRecentProject = useCallback((projectId: string) => {
+    const proceed = confirmDiscardIfDirty('Open a recent document and discard unsaved changes?');
+    if (!proceed) {
+      return;
+    }
+
+    const project = recentOpenProjects.find(item => item.id === projectId);
+    if (!project) {
+      return;
+    }
+    loadProjectDocument(project.doc);
+    setRecentOpenProjects(prev => {
+      const current = prev.find(item => item.id === projectId);
+      if (!current) {
+        return prev;
+      }
+      const updated = { ...current, openedAt: Date.now() };
+      return normalizeRecentProjects([updated, ...prev.filter(item => item.id !== projectId)]);
+    });
+  }, [confirmDiscardIfDirty, recentOpenProjects, loadProjectDocument]);
+
+  const togglePinRecentProject = useCallback((projectId: string) => {
+    setRecentOpenProjects(prev => {
+      const target = prev.find(item => item.id === projectId);
+      if (!target) {
+        return prev;
+      }
+      const nextPinned = !target.pinned;
+      const currentPinnedCount = prev.filter(item => item.pinned).length;
+      const updated = {
+        ...target,
+        pinned: nextPinned,
+        pinnedOrder: nextPinned ? currentPinnedCount : undefined,
+      };
+      return normalizeRecentProjects([updated, ...prev.filter(item => item.id !== projectId)]);
+    });
+  }, []);
+
+  const reorderPinnedRecentProjects = useCallback((draggedId: string, targetId: string) => {
+    if (draggedId === targetId) {
+      return;
+    }
+
+    setRecentOpenProjects(prev => {
+      const pinned = prev.filter(item => item.pinned);
+      const draggedIndex = pinned.findIndex(item => item.id === draggedId);
+      const targetIndex = pinned.findIndex(item => item.id === targetId);
+      if (draggedIndex === -1 || targetIndex === -1) {
+        return prev;
+      }
+
+      const reordered = [...pinned];
+      const [moved] = reordered.splice(draggedIndex, 1);
+      reordered.splice(targetIndex, 0, moved);
+
+      const updatedPinned = reordered.map((item, index) => ({
+        ...item,
+        pinnedOrder: index,
+      }));
+      const unpinned = prev.filter(item => !item.pinned);
+      return normalizeRecentProjects([...updatedPinned, ...unpinned]);
+    });
+  }, []);
+
+  const clearRecentProjects = useCallback(() => {
+    setRecentOpenProjects([]);
+  }, []);
+
+  const openProjectDialog = useCallback(() => {
+    const proceed = confirmDiscardIfDirty('Open another document and discard unsaved changes?');
+    if (!proceed) {
+      return;
+    }
+    projectFileInputRef.current?.click();
+  }, [confirmDiscardIfDirty]);
+
+  const closeCurrentDocument = useCallback(() => {
+    const shouldClose = confirmDiscardIfDirty('Close current document and discard unsaved changes?');
+    if (!shouldClose) {
+      return;
+    }
+    loadProjectDocument(buildBlankDocument({ name: 'Untitled-1' }));
+  }, [confirmDiscardIfDirty, loadProjectDocument]);
+
   // ==================== ACTIONS & AUTOMATION ====================
 
   const startRecordingAction = useCallback((name: string) => {
@@ -3550,7 +6471,7 @@ layerId: string,
     // Draw selection preview while drawing
     drawSelectionPreview(ctx);
 
-  }, [psDoc, showGrid, showGuides, selection, drawSelectionPreview]);
+  }, [psDoc.activeLayerId, psDoc.backgroundColor, psDoc.grids.size, psDoc.guides, psDoc.height, psDoc.layers, psDoc.width, showGrid, showGuides, selection, drawSelectionPreview]);
 
   // ==================== RENDERED LAYER ITEM COMPONENT ====================
 
@@ -3636,19 +6557,23 @@ layerId: string,
             break;
           case 's':
             e.preventDefault();
-            console.log('Save document');
+            if (e.shiftKey) {
+              exportAsPSD();
+            } else {
+              saveProjectJson();
+            }
             break;
           case 'n':
             e.preventDefault();
-            console.log('New document');
+            newBlankDocument();
             break;
           case 'o':
             e.preventDefault();
-            console.log('Open document');
+            openProjectDialog();
             break;
           case 'w':
             e.preventDefault();
-            console.log('Close document');
+            closeCurrentDocument();
             break;
           case 'j':
             e.preventDefault();
@@ -3665,8 +6590,12 @@ layerId: string,
             break;
           case 'e':
             e.preventDefault();
-            console.log('Merge down');
-            mergeDown(psDoc.activeLayerId);
+            if (e.shiftKey) {
+              exportAsPNG();
+            } else {
+              console.log('Merge down');
+              mergeDown(psDoc.activeLayerId);
+            }
             break;
           case 't':
             e.preventDefault();
@@ -3686,12 +6615,267 @@ layerId: string,
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [psDoc.activeLayerId, psDoc.layers.length, undo, redo, duplicateLayer, deleteLayer, mergeDown]);
+  }, [psDoc.activeLayerId, psDoc.layers.length, undo, redo, duplicateLayer, deleteLayer, mergeDown, exportAsPNG, exportAsPSD, saveProjectJson, newBlankDocument, openProjectDialog, closeCurrentDocument]);
+
+  const shortcutModifierLabel = useMemo(() => {
+    if (typeof navigator === 'undefined') {
+      return 'Ctrl';
+    }
+    return /Mac|iPhone|iPad|iPod/i.test(navigator.platform) ? '⌘' : 'Ctrl';
+  }, []);
+
+  const autoSavePopoverContent = (
+    <div className="absolute left-0 top-full z-50 mt-1 min-w-[260px] rounded border border-gray-700 bg-[#1e1e1e] p-2 text-[10px] text-gray-400 shadow-xl">
+      <div className="mb-2">Auto-save preferences</div>
+      <a href="/settings" className="mb-2 inline-block text-[10px] text-blue-300 hover:text-blue-200">
+        Learn more
+      </a>
+      <div className="mb-2 flex items-center justify-between rounded border border-gray-700/80 bg-[#2a2a2a] px-2 py-1 text-[10px] text-gray-500">
+        <span>Enable auto-save</span>
+        <button
+          type="button"
+          onClick={() => setAutoSaveEnabled(prev => !prev)}
+          title="Automatically stores a local draft snapshot while you work."
+          className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+          aria-label="Toggle auto-save"
+        >
+          {autoSaveEnabled ? 'On' : 'Off'}
+        </button>
+      </div>
+      <div className="mb-2 rounded border border-gray-700/80 bg-[#2a2a2a] px-2 py-1">
+        <div className="mb-1 text-[10px] text-gray-500">Interval</div>
+        <div className="flex items-center gap-1">
+          {[30, 60, 300].map(interval => (
+            <button
+              key={interval}
+              type="button"
+              onClick={() => setAutoSaveIntervalSeconds(interval as AutoSaveIntervalSeconds)}
+              className={`rounded border px-1.5 py-0.5 text-[10px] ${autoSaveIntervalSeconds === interval ? 'border-blue-500 text-blue-300' : 'border-gray-600 text-gray-400 hover:text-white'}`}
+              disabled={!autoSaveEnabled}
+            >
+              {interval === 30 ? '30s' : interval === 60 ? '1m' : '5m'}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="mb-2 rounded border border-gray-700/80 bg-[#2a2a2a] px-2 py-1">
+        <div className="mb-1 text-[10px] text-gray-500">Snapshot retention</div>
+        <div className="flex items-center gap-1">
+          {([
+            { value: 1, label: '1d' },
+            { value: 7, label: '7d' },
+            { value: 30, label: '30d' },
+            { value: 0, label: 'Never' },
+          ] as Array<{ value: AutoSaveRetentionDays; label: string }>).map(option => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setAutoSaveRetentionDays(option.value)}
+              className={`rounded border px-1.5 py-0.5 text-[10px] ${autoSaveRetentionDays === option.value ? 'border-blue-500 text-blue-300' : 'border-gray-600 text-gray-400 hover:text-white'}`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {lastAutoSavedAt && (
+        <>
+          <div className="mb-1 whitespace-nowrap text-[10px] text-gray-500">
+            Auto-saved {formatRelativeSavedTime(lastAutoSavedAt, recentOpenedNow)} at {formatClockTime(lastAutoSavedAt)}
+          </div>
+          <div className="mb-2 whitespace-nowrap text-[10px] text-gray-500">
+            {formatAutoSaveRetentionCountdown(lastAutoSavedAt, autoSaveRetentionDays, recentOpenedNow)}
+          </div>
+        </>
+      )}
+      {autoSaveRestorePreview.length > 0 && (
+        <div className="mb-2 rounded border border-gray-700/80 bg-[#2a2a2a] px-2 py-1">
+          <div className="mb-1 text-[10px] text-gray-500">Restore preview</div>
+          <div className="flex flex-col gap-0.5 text-[10px] text-gray-400">
+            {autoSaveRestorePreview.map(line => (
+              <span key={line} className="truncate">• {line}</span>
+            ))}
+          </div>
+        </div>
+      )}
+      {restorableAutoSaveHistory.length > 1 && (
+        <div className="mb-2 rounded border border-gray-700/80 bg-[#2a2a2a] px-2 py-1">
+          <div className="mb-1 text-[10px] text-gray-500">Recent auto-saves</div>
+          <div className="flex max-h-24 flex-col gap-1 overflow-auto pr-1">
+            {restorableAutoSaveHistory.slice(0, AUTO_SAVE_HISTORY_LIMIT).map(snapshot => (
+              <div key={snapshot.savedAt} className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300">
+                <div className="mb-1 whitespace-nowrap">{formatClockTime(snapshot.savedAt)} • {formatRelativeSavedTime(snapshot.savedAt, recentOpenedNow)}</div>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => applyAutoSaveSnapshot(snapshot, 'replace-current')}
+                    className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                  >
+                    Restore
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyAutoSaveSnapshot(snapshot, 'new-document')}
+                    className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                  >
+                    As New
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => deleteAutoSaveHistoryEntry(snapshot.savedAt)}
+                    className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      <div className="mb-2 rounded border border-gray-700/80 bg-[#2a2a2a] px-2 py-1">
+        <div className="mb-1 text-[10px] text-gray-500">Named checkpoints</div>
+        <div className="mb-1 flex items-center gap-1">
+          <input
+            type="text"
+            value={checkpointNameDraft}
+            onChange={(event) => setCheckpointNameDraft(event.target.value)}
+            placeholder="Checkpoint name"
+            className="min-w-0 flex-1 rounded border border-gray-600 bg-[#1e1e1e] px-1.5 py-1 text-[10px] text-gray-200"
+          />
+          <button
+            type="button"
+            onClick={createNamedCheckpoint}
+            className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+          >
+            Save
+          </button>
+        </div>
+        {namedCheckpoints.length > 0 && (
+          <div className="flex max-h-24 flex-col gap-1 overflow-auto pr-1">
+            {namedCheckpoints.map(checkpoint => (
+              <div key={checkpoint.id} className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300">
+                <div className="mb-1 truncate">{checkpoint.name} • {formatRelativeSavedTime(checkpoint.savedAt, recentOpenedNow)}</div>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => restoreNamedCheckpoint(checkpoint, 'replace-current')}
+                    className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                  >
+                    Restore
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => restoreNamedCheckpoint(checkpoint, 'new-document')}
+                    className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                  >
+                    As New
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => deleteNamedCheckpoint(checkpoint.id)}
+                    className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="flex flex-col gap-1">
+        <button
+          type="button"
+          onClick={revertToLastManualSave}
+          disabled={!lastManualSavedSnapshot}
+          className="w-full rounded border border-gray-600 px-2 py-1 text-left text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+        >
+          Revert to last manual save
+        </button>
+        <button
+          type="button"
+          onClick={() => restoreFromAutoSave('replace-current')}
+          disabled={!isAutoSaveSnapshotRestorable}
+          className="w-full rounded border border-gray-600 px-2 py-1 text-left text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+        >
+          {isAutoSaveSnapshotExpiredNow ? 'Snapshot expired' : 'Restore latest auto-save'}
+        </button>
+        <button
+          type="button"
+          onClick={() => restoreFromAutoSave('new-document')}
+          disabled={!isAutoSaveSnapshotRestorable}
+          className="w-full rounded border border-gray-600 px-2 py-1 text-left text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+        >
+          {isAutoSaveSnapshotExpiredNow ? 'Snapshot expired' : 'Restore as new doc'}
+        </button>
+        <button
+          type="button"
+          onClick={discardAutoSaveSnapshot}
+          disabled={!hasAutoSaveSnapshot}
+          className="w-full rounded border border-gray-600 px-2 py-1 text-left text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+        >
+          Discard saved snapshot
+        </button>
+      </div>
+    </div>
+  );
+
+  const autoSaveHintControl = (
+    <div className="relative" ref={autoSaveHintRef}>
+      <button
+        className={`inline-flex items-center gap-1 text-[10px] ${autoSaveEnabled ? 'text-emerald-300 hover:text-emerald-200' : 'text-gray-500 hover:text-gray-300'}`}
+        onClick={() => setShowAutoSaveHint(prev => !prev)}
+        aria-expanded={showAutoSaveHint}
+        aria-haspopup="dialog"
+      >
+        <span className={`h-1.5 w-1.5 rounded-full ${autoSaveEnabled ? 'bg-emerald-300' : 'bg-gray-500'}`} aria-hidden="true" />
+        {autoSaveEnabled
+          ? `Auto-save on (${autoSaveIntervalSeconds === 30 ? '30s' : autoSaveIntervalSeconds === 60 ? '1m' : '5m'})`
+          : 'Auto-save off'}
+      </button>
+      {showAutoSaveHint && autoSavePopoverContent}
+    </div>
+  );
+
+  const autoSaveRecoveryActions = (
+    <div className="flex items-center gap-2">
+      <Button size="sm" onClick={() => restoreFromAutoSave('replace-current')} disabled={!isAutoSaveSnapshotRestorable}>
+        {isAutoSaveSnapshotExpiredNow ? 'Snapshot expired' : 'Restore Draft'}
+      </Button>
+      <Button size="sm" onClick={() => restoreFromAutoSave('new-document')} disabled={!isAutoSaveSnapshotRestorable}>
+        {isAutoSaveSnapshotExpiredNow ? 'Snapshot expired' : 'Restore as New'}
+      </Button>
+      <button
+        type="button"
+        onClick={dismissAutoSaveRecoveryPrompt}
+        className="rounded border border-gray-600 px-2 py-1 text-xs text-gray-300 hover:text-white"
+      >
+        Not now
+      </button>
+    </div>
+  );
 
   // ==================== RENDER ====================
 
   return (
     <div className="flex h-screen w-full flex-col bg-[#2d2d2d] text-gray-100">
+      <input
+        ref={projectFileInputRef}
+        type="file"
+        accept=".json,application/json"
+        className="hidden"
+        onChange={openProjectFromFile}
+      />
+      <input
+        ref={versionFileInputRef}
+        type="file"
+        accept=".json,application/json"
+        multiple
+        className="hidden"
+        onChange={importTimelineVersion}
+      />
+
       <div className="flex items-center justify-between border-b border-gray-700 bg-[#1e1e1e] px-4 py-3">
         <div className="flex items-center gap-4">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 via-pink-500 to-blue-500 text-lg font-bold">
@@ -3706,6 +6890,68 @@ layerId: string,
             onChange={(e) => setPsDoc(prev => ({ ...prev, name: e.target.value }))}
             className="w-56 rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-sm"
           />
+          <div className="relative flex items-center gap-2" ref={headerSaveMenuRef}>
+              {isDocumentDirty ? (
+                <>
+                  <span className="rounded border border-amber-500/40 bg-amber-500/10 px-2 py-1 text-xs text-amber-300">
+                    Unsaved
+                  </span>
+                  <Button size="sm" onClick={() => saveProjectJson()}>
+                    Save
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => setShowHeaderSaveMenu(prev => !prev)}
+                    aria-expanded={showHeaderSaveMenu}
+                    aria-haspopup="menu"
+                  >
+                    ▾
+                  </Button>
+                  {showHeaderSaveMenu && (
+                    <div className="absolute left-0 top-full z-50 mt-1 min-w-[140px] rounded border border-gray-700 bg-[#1e1e1e] shadow-xl">
+                      <button
+                        className="w-full px-3 py-2 text-left text-xs"
+                      >
+                        <div className="flex items-center gap-1">
+                          <input
+                            type="text"
+                            placeholder={psDoc.name || 'Project name...'}
+                            value={projectSaveAsDraft}
+                            onChange={(e) => setProjectSaveAsDraft(e.target.value)}
+                            className="flex-1 rounded border border-gray-600 bg-[#2d2d30] px-1.5 py-0.5 text-[11px] text-gray-300 placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                          />
+                          <button
+                            type="button"
+                            onClick={handleSaveAs}
+                            className="rounded border border-gray-600 px-1.5 py-0.5 text-[11px] text-gray-300 hover:text-white"
+                          >
+                            Save As
+                          </button>
+                        </div>
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : saveFeedbackState === 'saved' ? (
+                <div className="flex items-center gap-2">
+                  <span className="rounded border border-emerald-500/40 bg-emerald-500/10 px-2 py-1 text-xs text-emerald-300">
+                    Saved ✓
+                  </span>
+                  <span className="text-xs text-gray-400">Last saved {formatRelativeSavedTime(lastSavedAt, recentOpenedNow)} at {formatClockTime(lastSavedAt)}</span>
+                  {autoSaveHintControl}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-500">Last saved {formatRelativeSavedTime(lastSavedAt, recentOpenedNow)} at {formatClockTime(lastSavedAt)}</span>
+                  {autoSaveHintControl}
+                </div>
+              )}
+              {autoSaveNotice && (
+                <span className="rounded border border-cyan-500/40 bg-cyan-500/10 px-2 py-1 text-[10px] text-cyan-200">
+                  {autoSaveNotice}
+                </span>
+              )}
+            </div>
         </div>
 
         <div className="flex items-center gap-2 text-sm">
@@ -3714,19 +6960,176 @@ layerId: string,
           <Button size="sm" onClick={redo}>↷</Button>
           <Button size="sm" onClick={exportAsPNG}>Download</Button>
           <Button size="sm" onClick={() => console.log('Share')}>Share</Button>
+
+          <div className="flex items-center gap-4 border-l border-gray-700 pl-4 ml-4 text-xs text-gray-400">
+            <div className="flex items-center gap-1.5">
+              <kbd className="rounded bg-gray-700 px-1.5 py-0.5 font-mono text-[10px]">{shortcutModifierLabel}+N</kbd>
+              <span>New Doc</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <kbd className="rounded bg-gray-700 px-1.5 py-0.5 font-mono text-[10px]">{shortcutModifierLabel}+O</kbd>
+              <span>Open JSON</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <kbd className="rounded bg-gray-700 px-1.5 py-0.5 font-mono text-[10px]">{shortcutModifierLabel}+S</kbd>
+              <span>Save JSON</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <kbd className="rounded bg-gray-700 px-1.5 py-0.5 font-mono text-[10px]">Shift+{shortcutModifierLabel}+S</kbd>
+              <span>Export PSD</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <kbd className="rounded bg-gray-700 px-1.5 py-0.5 font-mono text-[10px]">Shift+{shortcutModifierLabel}+E</kbd>
+              <span>Export PNG</span>
+            </div>
+          </div>
         </div>
       </div>
+
+      {showAutoSaveRecoveryPrompt && pendingAutoSaveSnapshot && (
+        <div className="flex items-center justify-between gap-3 border-b border-emerald-500/40 bg-emerald-500/10 px-4 py-2">
+          <div className="text-xs text-emerald-100">
+            <div>
+              Auto-saved draft found from {formatRelativeSavedTime(pendingAutoSaveSnapshot.savedAt, recentOpenedNow)} at {formatClockTime(pendingAutoSaveSnapshot.savedAt)}.
+            </div>
+            {autoSaveRestorePreview.length > 0 && (
+              <div className="mt-1 text-[10px] text-emerald-200/90">
+                Preview: {autoSaveRestorePreview.join(' • ')}
+              </div>
+            )}
+          </div>
+          {autoSaveRecoveryActions}
+        </div>
+      )}
 
       <div className="border-b border-gray-700 bg-[#1e1e1e] px-2 py-1 text-xs">
         <div className="flex gap-4">
           <div className="relative group">
             <button className="hover:text-white">File</button>
             <div className="hidden group-hover:block absolute top-full left-0 bg-[#1e1e1e] border border-gray-700 mt-1 min-w-[160px] shadow-xl z-50">
-              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={() => console.log('New')}>New...</button>
-              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={() => console.log('Open')}>Open...</button>
-              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={() => console.log('Save')}>Save</button>
-              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={() => console.log('Save As')}>Save As...</button>
-              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={() => console.log('Export')}>Export...</button>
+              <button className="w-full text-left px-3 py-2 hover:bg-gray-700">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Document name..."
+                    value={newDocumentNameDraft}
+                    onChange={(e) => setNewDocumentNameDraft(e.target.value)}
+                    className="flex-1 rounded border border-gray-600 bg-[#2d2d30] px-2 py-1 text-[12px] text-gray-300 placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={newBlankDocument}
+                    className="rounded border border-gray-600 px-2 py-1 text-[12px] text-gray-300 hover:text-white"
+                  >
+                    + New
+                  </button>
+                </div>
+              </button>
+              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={openProjectDialog}>Open...</button>
+              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={closeCurrentDocument}>Close</button>
+              <div className="border-t border-gray-700 my-1"></div>
+              <div className="flex items-center justify-between px-3 py-1">
+                <span className="text-[10px] uppercase tracking-wide text-gray-500">Open Recent</span>
+                <button
+                  className="text-[10px] text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  onClick={clearRecentProjects}
+                  disabled={recentOpenProjects.length === 0}
+                >
+                  Clear
+                </button>
+              </div>
+              {recentOpenProjects.length > 0 ? (
+                <>
+                  {pinnedRecentProjects.length > 0 && (
+                    <>
+                      <div className="px-3 py-1 text-[10px] uppercase tracking-wide text-gray-500">Pinned (drag to reorder)</div>
+                      {pinnedRecentProjects.map(project => (
+                        <div
+                          key={project.id}
+                          className={`flex items-center gap-1 px-1 py-1 ${draggedPinnedRecentId === project.id ? 'bg-gray-700/70' : 'hover:bg-gray-700'}`}
+                          draggable
+                          onDragStart={() => setDraggedPinnedRecentId(project.id)}
+                          onDragEnd={() => setDraggedPinnedRecentId(null)}
+                          onDragOver={(e) => {
+                            if (!draggedPinnedRecentId || draggedPinnedRecentId === project.id) return;
+                            e.preventDefault();
+                          }}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            if (!draggedPinnedRecentId || draggedPinnedRecentId === project.id) return;
+                            reorderPinnedRecentProjects(draggedPinnedRecentId, project.id);
+                            setDraggedPinnedRecentId(null);
+                          }}
+                        >
+                          <button
+                            className="flex-1 text-left px-2 py-1"
+                            onClick={() => openRecentProject(project.id)}
+                            title={`${project.name} • ${new Date(project.openedAt).toLocaleString()}`}
+                          >
+                            <div className="truncate">📌 {project.name}</div>
+                            <div className="text-[10px] text-gray-500">{formatRelativeOpenedTime(project.openedAt, recentOpenedNow)}</div>
+                          </button>
+                          <button
+                            className="rounded px-2 py-1 text-[10px] text-gray-400 hover:text-white"
+                            title="Unpin from recent"
+                            onClick={() => togglePinRecentProject(project.id)}
+                          >
+                            Unpin
+                          </button>
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  {unpinnedRecentProjects.length > 0 && (
+                    <>
+                      <div className="px-3 py-1 text-[10px] uppercase tracking-wide text-gray-500">Recent</div>
+                      {unpinnedRecentProjects.map(project => (
+                        <div key={project.id} className="flex items-center gap-1 px-1 py-1 hover:bg-gray-700">
+                          <button
+                            className="flex-1 text-left px-2 py-1"
+                            onClick={() => openRecentProject(project.id)}
+                            title={`${project.name} • ${new Date(project.openedAt).toLocaleString()}`}
+                          >
+                            <div className="truncate">{project.name}</div>
+                            <div className="text-[10px] text-gray-500">{formatRelativeOpenedTime(project.openedAt, recentOpenedNow)}</div>
+                          </button>
+                          <button
+                            className="rounded px-2 py-1 text-[10px] text-gray-400 hover:text-white"
+                            title="Pin in recent"
+                            onClick={() => togglePinRecentProject(project.id)}
+                          >
+                            Pin
+                          </button>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </>
+              ) : (
+                <div className="px-3 py-2 text-gray-500">No recent files</div>
+              )}
+              <div className="border-t border-gray-700 my-1"></div>
+              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={() => saveProjectJson()}>Save</button>
+              <button className="w-full text-left px-3 py-2 hover:bg-gray-700">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder={psDoc.name || 'Project name...'}
+                    value={projectSaveAsDraft}
+                    onChange={(e) => setProjectSaveAsDraft(e.target.value)}
+                    className="flex-1 rounded border border-gray-600 bg-[#2d2d30] px-2 py-1 text-[12px] text-gray-300 placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleSaveAs}
+                    className="rounded border border-gray-600 px-2 py-1 text-[12px] text-gray-300 hover:text-white"
+                  >
+                    Save As...
+                  </button>
+                </div>
+              </button>
+              <button className="w-full text-left px-3 py-2 hover:bg-gray-700" onClick={exportAsPNG}>Export...</button>
             </div>
           </div>
           <div className="relative group">
@@ -3993,40 +7396,6 @@ layerId: string,
               </select>
               <Button size="sm" onClick={applyResizePreset}>Apply preset</Button>
 
-              <div>
-                <div className="mb-1 text-xs font-medium text-gray-600">Quick presets</div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => applyResizeDimensions(1080, 1080)}
-                    className="rounded border border-gray-300 px-2 py-2 text-xs hover:bg-gray-100"
-                  >
-                    Instagram Post
-                    <span className="block text-[11px] text-gray-500">1080 × 1080</span>
-                  </button>
-                  <button
-                    onClick={() => applyResizeDimensions(1080, 1920)}
-                    className="rounded border border-gray-300 px-2 py-2 text-xs hover:bg-gray-100"
-                  >
-                    Story
-                    <span className="block text-[11px] text-gray-500">1080 × 1920</span>
-                  </button>
-                  <button
-                    onClick={() => applyResizeDimensions(1200, 628)}
-                    className="rounded border border-gray-300 px-2 py-2 text-xs hover:bg-gray-100"
-                  >
-                    LinkedIn
-                    <span className="block text-[11px] text-gray-500">1200 × 628</span>
-                  </button>
-                  <button
-                    onClick={() => applyResizeDimensions(1920, 1080)}
-                    className="rounded border border-gray-300 px-2 py-2 text-xs hover:bg-gray-100"
-                  >
-                    YouTube
-                    <span className="block text-[11px] text-gray-500">1920 × 1080</span>
-                  </button>
-                </div>
-              </div>
-
               <div className="grid grid-cols-2 gap-2">
                 <input
                   type="number"
@@ -4068,9 +7437,8 @@ layerId: string,
                   </div>
                 </div>
               )}
-            </div>
 
-            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="mt-2 grid grid-cols-2 gap-2">
               <button
                 onClick={applyResizePreset}
                 className="rounded-xl border border-gray-300 bg-white p-3 text-left hover:bg-gray-100"
@@ -4140,6 +7508,7 @@ layerId: string,
               </label>
             </div>
           </div>
+          </div>
         )}
 
         <div className="w-14 border-r border-gray-700 bg-[#1e1e1e] p-1">
@@ -4198,7 +7567,7 @@ layerId: string,
         <div className="w-80 border-l border-gray-700 bg-[#1e1e1e] flex flex-col">
           {/* Panel Tabs */}
           <div className="flex border-b border-gray-700 flex-wrap">
-            {(['layers', 'channels', 'properties', 'adjustments', 'styles', 'history'] as const).map(panel => (
+            {(['layers', 'channels', 'properties', 'adjustments', 'styles', 'history', 'timeline'] as const).map(panel => (
               <button
                 key={panel}
                 onClick={() => setActivePanel(panel)}
@@ -4771,6 +8140,872 @@ layerId: string,
                 </div>
               </div>
             )}
+
+            {activePanel === 'timeline' && (
+              <div className="space-y-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={timelineSearch}
+                    onChange={(event) => setTimelineSearch(event.target.value)}
+                    placeholder="Search timeline"
+                    className="flex-1 rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  />
+                  <select
+                    value={timelineFilter}
+                    onChange={(event) => setTimelineFilter(event.target.value as 'all' | 'autosave' | 'checkpoint' | 'manual')}
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  >
+                    <option value="all">All</option>
+                    <option value="autosave">Auto-save</option>
+                    <option value="checkpoint">Checkpoint</option>
+                    <option value="manual">Manual</option>
+                  </select>
+                  <select
+                    value={timelineSort}
+                    onChange={(event) => setTimelineSort(event.target.value as 'newest' | 'oldest' | 'type')}
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  >
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="type">Type</option>
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => setTimelinePinnedOnly(prev => !prev)}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+                  >
+                    {timelinePinnedOnly ? 'Pinned Only: On' : 'Pinned Only: Off'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => versionFileInputRef.current?.click()}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+                  >
+                    Import
+                  </button>
+                  <button
+                    type="button"
+                    onClick={purgeExpiredAutoSaveEntries}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+                  >
+                    Purge Expired
+                  </button>
+                  <button
+                    type="button"
+                    onClick={resetTimelineView}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+                  >
+                    Reset
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 text-[10px] text-gray-400">
+                  <span className="rounded border border-gray-700 px-2 py-1 text-gray-300">
+                    Health: {timelineHealth.score} ({timelineHealth.level})
+                  </span>
+                  <span className="rounded border border-gray-700 px-2 py-1 text-gray-300">
+                    Stale Tags: {timelineHealth.staleTagCount}
+                  </span>
+                  <label className="flex items-center gap-1 rounded border border-gray-700 px-2 py-1">
+                    <input
+                      type="checkbox"
+                      checked={milestoneDetectionEnabled}
+                      onChange={(event) => setMilestoneDetectionEnabled(event.target.checked)}
+                    />
+                    Milestone Detection
+                  </label>
+                  <label className="flex items-center gap-1 rounded border border-gray-700 px-2 py-1">
+                    <input
+                      type="checkbox"
+                      checked={timelineTagAutomation.autoTagImported}
+                      onChange={(event) => setTimelineTagAutomation(prev => ({ ...prev, autoTagImported: event.target.checked }))}
+                    />
+                    Auto-tag Imports
+                  </label>
+                  <label className="flex items-center gap-1 rounded border border-gray-700 px-2 py-1">
+                    <input
+                      type="checkbox"
+                      checked={timelineTagAutomation.autoTagCheckpoint}
+                      onChange={(event) => setTimelineTagAutomation(prev => ({ ...prev, autoTagCheckpoint: event.target.checked }))}
+                    />
+                    Auto-tag Checkpoints
+                  </label>
+                  <input
+                    type="text"
+                    value={timelineTagAutomation.autoTagLabelIncludes}
+                    onChange={(event) => setTimelineTagAutomation(prev => ({ ...prev, autoTagLabelIncludes: event.target.value }))}
+                    placeholder="Auto-tag when label includes..."
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-[10px]"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <select
+                    value={activeTimelineBranch}
+                    onChange={(event) => setActiveTimelineBranch(event.target.value)}
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  >
+                    <option value="all">All Branches</option>
+                    {timelineBranches.map(branch => (
+                      <option key={branch} value={branch}>{branch}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={timelineNewBranchName}
+                    onChange={(event) => setTimelineNewBranchName(event.target.value)}
+                    placeholder="New branch"
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => createTimelineBranch()}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+                  >
+                    New Branch
+                  </button>
+                  <button
+                    type="button"
+                    onClick={assignSelectedToActiveBranch}
+                    disabled={selectedTimelineCount === 0 || activeTimelineBranch === 'all'}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Move Selected To Branch
+                  </button>
+                  <select
+                    value={activePinCollectionId}
+                    onChange={(event) => {
+                      const collectionId = event.target.value;
+                      setActivePinCollectionId(collectionId);
+                      if (collectionId) {
+                        applyPinCollection(collectionId);
+                      }
+                    }}
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  >
+                    <option value="">Pin collections</option>
+                    {timelinePinCollections.map(collection => (
+                      <option key={collection.id} value={collection.id}>{collection.name}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={timelinePinCollectionNameDraft}
+                    onChange={(event) => setTimelinePinCollectionNameDraft(event.target.value)}
+                    placeholder="Pin collection name"
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => savePinnedCollection()}
+                    disabled={timelinePinnedIds.length === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Save Pins
+                  </button>
+                </div>
+
+                {timelineViews.some(view => view.branch === 'all') && (
+                  <div className="flex items-center gap-2 text-[10px] text-gray-400">
+                    <span className="rounded border border-gray-700 px-2 py-1 text-gray-300">
+                      Legacy views: {timelineViews.filter(view => view.branch === 'all').length}
+                    </span>
+                    <select
+                      value={timelineViewMigrationBranch}
+                      onChange={(event) => setTimelineViewMigrationBranch(event.target.value)}
+                      className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                    >
+                      {timelineBranches.map(branch => (
+                        <option key={`migrate-${branch}`} value={branch}>{branch}</option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      onClick={migrateLegacyTimelineViews}
+                      className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+                    >
+                      Migrate Views
+                    </button>
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={timelineTagFilter}
+                    onChange={(event) => setTimelineTagFilter(event.target.value)}
+                    placeholder="Filter by tag"
+                    className="flex-1 rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  />
+                  {TIMELINE_TAG_PRESETS.map(preset => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setTimelineTagFilter(preset)}
+                      className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
+
+                {timelineTagStats.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1 text-[10px] text-gray-400">
+                    <span className="mr-1">Top tags:</span>
+                    {topTimelineTagStats.map(entry => (
+                      <button
+                        key={entry.tag}
+                        type="button"
+                        onClick={() => {
+                          setTimelineTagFilter(entry.tag);
+                          selectTimelineItemsByTag(entry.tag);
+                        }}
+                        className={`rounded border px-1.5 py-0.5 hover:text-white ${
+                          timelineTagFilter.trim().toLowerCase() === entry.tag.toLowerCase()
+                            ? 'border-sky-500/70 bg-sky-500/10 text-sky-200'
+                            : 'border-gray-600 text-gray-300'
+                        }`}
+                        title={`Select all entries with tag: ${entry.tag}`}
+                      >
+                        {entry.tag} ({entry.count})
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => setTimelineTagFilter('')}
+                      disabled={timelineTagFilter.trim().length === 0}
+                      className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                    >
+                      Clear Tag Filter
+                    </button>
+                    <button
+                      type="button"
+                      onClick={applyTagRetentionPolicies}
+                      className="rounded border border-amber-700/60 px-1.5 py-0.5 text-amber-300 hover:text-amber-100"
+                    >
+                      Apply Retention
+                    </button>
+                    <input
+                      type="text"
+                      value={timelineRetentionTagDraft}
+                      onChange={(event) => setTimelineRetentionTagDraft(event.target.value)}
+                      placeholder="Tag"
+                      className="rounded border border-gray-600 bg-[#2d2d2d] px-1.5 py-0.5 text-[10px]"
+                    />
+                    <input
+                      type="number"
+                      min={0}
+                      value={timelineRetentionDaysDraft}
+                      onChange={(event) => setTimelineRetentionDaysDraft(event.target.value)}
+                      className="w-16 rounded border border-gray-600 bg-[#2d2d2d] px-1.5 py-0.5 text-[10px]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const tag = timelineRetentionTagDraft.trim();
+                        const days = Number(timelineRetentionDaysDraft);
+                        if (tag.length > 0 && Number.isFinite(days)) {
+                          setTagRetentionPolicy(tag, days);
+                        }
+                      }}
+                      className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                    >
+                      Set Policy
+                    </button>
+                    {topTimelineTagStats.slice(0, 3).map(entry => (
+                      <button
+                        key={`retention-${entry.tag}`}
+                        type="button"
+                        onClick={() => setTagRetentionPolicy(entry.tag, timelineTagRetentionPolicies[entry.tag] ?? 30)}
+                        className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                        title={`Retention: ${timelineTagRetentionPolicies[entry.tag] ?? 30} days`}
+                      >
+                        {entry.tag}: {timelineTagRetentionPolicies[entry.tag] ?? 30}d
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {timelineBranchStats.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1 text-[10px] text-gray-400">
+                    <span className="mr-1">Branches:</span>
+                    {timelineBranchStats.map(entry => (
+                      <button
+                        key={entry.branch}
+                        type="button"
+                        onClick={() => setActiveTimelineBranch(entry.branch)}
+                        className={`rounded border px-1.5 py-0.5 hover:text-white ${
+                          activeTimelineBranch === entry.branch
+                            ? 'border-sky-500/70 bg-sky-500/10 text-sky-200'
+                            : 'border-gray-600 text-gray-300'
+                        }`}
+                      >
+                        {entry.branch} ({entry.count})
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2">
+                  <select
+                    value={activeTimelineViewId}
+                    onChange={(event) => {
+                      const viewId = event.target.value;
+                      setActiveTimelineViewId(viewId);
+                      if (viewId) {
+                        applyTimelineView(viewId);
+                      }
+                    }}
+                    className="flex-1 rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  >
+                    <option value="">Timeline views</option>
+                    {timelineViews.map(view => (
+                      <option key={view.id} value={view.id}>{view.name}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={timelineViewNameDraft}
+                    onChange={(event) => setTimelineViewNameDraft(event.target.value)}
+                    placeholder="View name"
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={saveCurrentTimelineView}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white"
+                  >
+                    Save View
+                  </button>
+                  <button
+                    type="button"
+                    onClick={updateActiveTimelineView}
+                    disabled={!activeTimelineViewId}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Update View
+                  </button>
+                  <button
+                    type="button"
+                    onClick={renameActiveTimelineView}
+                    disabled={!activeTimelineViewId}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Rename View
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => activeTimelineViewId && deleteTimelineView(activeTimelineViewId)}
+                    disabled={!activeTimelineViewId}
+                    className="rounded border border-gray-600 px-2 py-1 text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Delete View
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2 text-[10px] text-gray-400">
+                  <span>
+                    {selectedTimelineCount} selected
+                    {selectedTimelineCount > 0
+                      ? ` (A:${selectedTimelineKindCounts.autosave} C:${selectedTimelineKindCounts.checkpoint} M:${selectedTimelineKindCounts.manual})`
+                      : ''}
+                  </span>
+                  <input
+                    type="text"
+                    value={timelineBulkTagDraft}
+                    onChange={(event) => setTimelineBulkTagDraft(event.target.value)}
+                    placeholder="Bulk tag"
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-[10px]"
+                  />
+                  <button
+                    type="button"
+                    onClick={selectAllTimelineItems}
+                    disabled={timelineItems.length === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Select All
+                  </button>
+                  <button
+                    type="button"
+                    onClick={clearTimelineSelection}
+                    disabled={selectedTimelineCount === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => selectTimelineItemsByKind('autosave')}
+                    disabled={timelineItems.every(item => item.kind !== 'autosave')}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Auto-saves
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => selectTimelineItemsByKind('checkpoint')}
+                    disabled={timelineItems.every(item => item.kind !== 'checkpoint')}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Checkpoints
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => selectTimelineItemsByKind('manual')}
+                    disabled={timelineItems.every(item => item.kind !== 'manual')}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Manual
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => restoreLatestSelectedTimelineItem('replace-current')}
+                    disabled={selectedTimelineCount === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Restore Latest
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => addTagToSelectedTimelineItems()}
+                    disabled={selectedTimelineCount === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Tag Selected
+                  </button>
+                  <select
+                    value={timelineBulkUntagDraft}
+                    onChange={(event) => setTimelineBulkUntagDraft(event.target.value)}
+                    disabled={selectedTimelineCount === 0 || selectedTimelineTags.length === 0}
+                    className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1 text-[10px] disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    {selectedTimelineTags.length === 0 ? (
+                      <option value="">No tags</option>
+                    ) : (
+                      selectedTimelineTags.map(tag => (
+                        <option key={`untag-${tag}`} value={tag}>{tag}</option>
+                      ))
+                    )}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => removeTagFromSelectedTimelineItems()}
+                    disabled={selectedTimelineCount === 0 || selectedTimelineTags.length === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Untag Selected
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => restoreLatestSelectedTimelineItem('new-document')}
+                    disabled={selectedTimelineCount === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Latest As New
+                  </button>
+                  <button
+                    type="button"
+                    onClick={exportSelectedTimelineItems}
+                    disabled={selectedTimelineCount === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Export Selected
+                  </button>
+                  <button
+                    type="button"
+                    onClick={checkpointSelectedTimelineItems}
+                    disabled={selectedTimelineCount === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Checkpoint Selected
+                  </button>
+                  <button
+                    type="button"
+                    onClick={deleteSelectedTimelineItems}
+                    disabled={selectedTimelineCount === 0}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Delete Selected
+                  </button>
+                  <button
+                    type="button"
+                    onClick={undoLastTimelineDelete}
+                    disabled={!hasUndoableTimelineDelete}
+                    className="rounded border border-gray-600 px-2 py-1 text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                  >
+                    Undo Delete
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  {timelineItems.length === 0 && (
+                    <div className="rounded border border-gray-700 px-2 py-2 text-gray-500">No timeline entries.</div>
+                  )}
+
+                  {timelineItems.map(item => {
+                    const isExpired = item.kind === 'autosave' && item.snapshot
+                      ? isAutoSaveSnapshotExpired(item.snapshot.savedAt, autoSaveRetentionDays)
+                      : false;
+                    const isSelected = item.id === selectedTimelineItemId;
+                    const isCompare = item.id === compareTimelineItemId;
+
+                    return (
+                      <div
+                        key={item.id}
+                        className={`rounded border px-2 py-2 ${
+                          isSelected ? 'border-sky-500/70 bg-sky-500/10' : 'border-gray-700'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <label className="flex items-center gap-2 font-semibold text-gray-100">
+                            <input
+                              type="checkbox"
+                              checked={selectedTimelineItemIds.includes(item.id)}
+                              onChange={(event) => toggleTimelineItemSelection(item.id, event.target.checked)}
+                            />
+                            <span>
+                              {item.pinned ? '★ ' : ''}{item.label}
+                              {isCompare ? ' (Compare)' : ''}
+                            </span>
+                          </label>
+                          <span className="text-[10px] text-gray-500">{formatRelativeSavedTime(item.savedAt, recentOpenedNow)}</span>
+                        </div>
+                        <div className="text-[10px] text-gray-500">{formatClockTime(item.savedAt)}</div>
+                        <div className="text-[10px] text-gray-500">Branch: {item.branch}</div>
+                        {item.note && (
+                          <div className="mt-1 rounded border border-gray-700 bg-[#262626] px-2 py-1 text-[10px] text-gray-300">
+                            {item.note}
+                          </div>
+                        )}
+                        {item.tags.length > 0 && (
+                          <div className="mt-1 flex flex-wrap gap-1">
+                            {item.tags.map(tag => (
+                              <span
+                                key={tag}
+                                className="inline-flex items-center gap-1 rounded border border-emerald-700/50 bg-emerald-900/20 px-1.5 py-0.5 text-[10px] text-emerald-300"
+                              >
+                                {tag}
+                                <button
+                                  type="button"
+                                  onClick={() => removeTimelineTag(item.id, tag)}
+                                  className="text-emerald-400 hover:text-emerald-200"
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedTimelineItemId(item.id)}
+                            className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                          >
+                            Preview
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => toggleTimelinePin(item.id)}
+                            className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                          >
+                            {item.pinned ? 'Unpin' : 'Pin'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => editTimelineNote(item)}
+                            className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                          >
+                            {item.note ? 'Edit Note' : 'Add Note'}
+                          </button>
+                          {item.note && (
+                            <button
+                              type="button"
+                              onClick={() => removeTimelineNote(item.id)}
+                              className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                            >
+                              Remove Note
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => editTimelineTags(item.id)}
+                            className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                          >
+                            {item.tags.length > 0 ? 'Edit Tags' : 'Add Tags'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setCompareTimelineItemId(prev => prev === item.id ? null : item.id)}
+                            className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                          >
+                            {isCompare ? 'Unset Compare' : 'Set Compare'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openTimelineSandbox(item)}
+                            className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                          >
+                            Sandbox
+                          </button>
+                          {item.kind === 'autosave' && item.snapshot && (
+                            <>
+                              <button
+                                type="button"
+                                onClick={() => applyAutoSaveSnapshot(item.snapshot!, 'replace-current')}
+                                disabled={isExpired}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                              >
+                                {isExpired ? 'Expired' : 'Restore'}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => applyAutoSaveSnapshot(item.snapshot!, 'new-document')}
+                                disabled={isExpired}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:text-gray-600"
+                              >
+                                {isExpired ? 'Expired' : 'As New'}
+                              </button>
+                              <div className="flex items-center gap-1">
+                                <input
+                                  type="text"
+                                  placeholder="Checkpoint..."
+                                  value={timelineCheckpointNameDraft}
+                                  onChange={(e) => setTimelineCheckpointNameDraft(e.target.value)}
+                                  className="rounded border border-gray-600 bg-[#2d2d30] px-1.5 py-0.5 text-[10px] text-gray-300 placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                                  disabled={isExpired}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => saveTimelineItemAsCheckpoint(item)}
+                                  className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                                  disabled={isExpired}
+                                >
+                                  Checkpoint
+                                </button>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => exportTimelineItem(item)}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                              >
+                                Export
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deleteAutoSaveHistoryEntry(item.snapshot!.savedAt)}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                              >
+                                Delete
+                              </button>
+                            </>
+                          )}
+                          {item.kind === 'checkpoint' && item.checkpoint && (
+                            <>
+                              <button
+                                type="button"
+                                onClick={() => restoreNamedCheckpoint(item.checkpoint!, 'replace-current')}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                              >
+                                Restore
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => restoreNamedCheckpoint(item.checkpoint!, 'new-document')}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                              >
+                                As New
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => exportTimelineItem(item)}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                              >
+                                Export
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deleteNamedCheckpoint(item.checkpoint!.id)}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                              >
+                                Delete
+                              </button>
+                            </>
+                          )}
+                          {item.kind === 'manual' && (
+                            <>
+                              <button
+                                type="button"
+                                onClick={revertToLastManualSave}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                              >
+                                Revert
+                              </button>
+                              <div className="flex items-center gap-1">
+                                <input
+                                  type="text"
+                                  placeholder="Checkpoint..."
+                                  value={timelineCheckpointNameDraft}
+                                  onChange={(e) => setTimelineCheckpointNameDraft(e.target.value)}
+                                  className="rounded border border-gray-600 bg-[#2d2d30] px-1.5 py-0.5 text-[10px] text-gray-300 placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => saveTimelineItemAsCheckpoint(item)}
+                                  className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                                >
+                                  Checkpoint
+                                </button>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => exportTimelineItem(item)}
+                                className="rounded border border-gray-600 px-1.5 py-0.5 text-[10px] text-gray-300 hover:text-white"
+                              >
+                                Export
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="rounded border border-gray-700 px-2 py-2">
+                  <div className="text-[10px] font-semibold uppercase tracking-wide text-gray-400">Preview</div>
+                  {selectedTimelineItem && compareTimelineItem && timelineComparePreview.length > 0 ? (
+                    <div className="mt-2 space-y-1 text-[11px] text-gray-200">
+                      <div className="text-[10px] text-gray-500">
+                        Compare: {selectedTimelineItem.label} → {compareTimelineItem.label}
+                      </div>
+                      {timelineComparePreview.map(entry => (
+                        <div key={entry}>{entry}</div>
+                      ))}
+                    </div>
+                  ) : selectedTimelineItem && selectedTimelinePreview.length > 0 ? (
+                    <div className="mt-2 space-y-1 text-[11px] text-gray-200">
+                      <div className="text-[10px] text-gray-500">{selectedTimelineItem.label}</div>
+                      {selectedTimelinePreview.map(entry => (
+                        <div key={entry}>{entry}</div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="mt-2 text-[10px] text-gray-500">Select a timeline entry to preview changes.</div>
+                  )}
+
+                  {selectedTimelineItem && (
+                    <div className="mt-3 rounded border border-gray-700 bg-[#262626] px-2 py-2 text-[10px] text-gray-300">
+                      <div className="mb-2 font-semibold uppercase tracking-wide text-gray-400">Inline Note & Tags</div>
+                      <div className="mb-2 grid gap-2 md:grid-cols-2">
+                        <div className="space-y-1">
+                          <div className="text-gray-400">Note</div>
+                          <textarea
+                            value={timelineSelectedNoteDraft}
+                            onChange={(event) => setTimelineSelectedNoteDraft(event.target.value)}
+                            rows={3}
+                            className="w-full rounded border border-gray-600 bg-[#1f1f1f] px-2 py-1 text-[10px]"
+                          />
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={saveSelectedTimelineNote}
+                              className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                            >
+                              Save Note
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTimelineSelectedNoteDraft('');
+                                removeTimelineNote(selectedTimelineItem.id);
+                              }}
+                              className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                            >
+                              Clear Note
+                            </button>
+                          </div>
+                        </div>
+                        <div className="space-y-1">
+                          <div className="text-gray-400">Tags (comma-separated)</div>
+                          <input
+                            type="text"
+                            value={timelineSelectedTagsDraft}
+                            onChange={(event) => setTimelineSelectedTagsDraft(event.target.value)}
+                            className="w-full rounded border border-gray-600 bg-[#1f1f1f] px-2 py-1 text-[10px]"
+                          />
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={saveSelectedTimelineTags}
+                              className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                            >
+                              Save Tags
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTimelineSelectedTagsDraft('');
+                                setTimelineTags(prev => {
+                                  const { [selectedTimelineItem.id]: _, ...rest } = prev;
+                                  return rest;
+                                });
+                                setAutoSaveNotice('All tags removed');
+                              }}
+                              className="rounded border border-gray-600 px-1.5 py-0.5 text-gray-300 hover:text-white"
+                            >
+                              Clear Tags
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {timelineVisualDiff && (
+                    <div className="mt-3 rounded border border-gray-700 bg-[#262626] px-2 py-2 text-[10px] text-gray-300">
+                      <div className="mb-1 font-semibold uppercase tracking-wide text-gray-400">Visual Diff Overlay</div>
+                      <div>Layers: {timelineVisualDiff.selectedLayerCount} vs {timelineVisualDiff.compareLayerCount}</div>
+                      <div>Layer Delta: {timelineVisualDiff.layerDelta}</div>
+                      <div>Change Indicators: {timelineVisualDiff.changeIndicators}</div>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span>Diff Score:</span>
+                        <div className="h-1.5 flex-1 rounded bg-gray-700">
+                          <div
+                            className="h-1.5 rounded bg-sky-500"
+                            style={{ width: `${timelineVisualDiff.roughDiffScore}%` }}
+                          />
+                        </div>
+                        <span>{timelineVisualDiff.roughDiffScore}%</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {compareMatrix.length > 0 && (
+                    <div className="mt-3 rounded border border-gray-700 bg-[#262626] px-2 py-2 text-[10px] text-gray-300">
+                      <div className="mb-1 font-semibold uppercase tracking-wide text-gray-400">Batch Compare Matrix</div>
+                      <div className="space-y-1">
+                        {compareMatrix.map(row => (
+                          <button
+                            key={`${row.leftId}-${row.rightId}`}
+                            type="button"
+                            onClick={() => {
+                              setSelectedTimelineItemId(row.leftId);
+                              setCompareTimelineItemId(row.rightId);
+                            }}
+                            className="flex w-full items-center justify-between rounded border border-gray-700 px-2 py-1 text-left hover:border-sky-500/70 hover:text-white"
+                          >
+                            <span>{row.leftLabel} ↔ {row.rightLabel}</span>
+                            <span className="text-sky-300">Match {row.score}%</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             
             {activePanel === 'history' && (
               <div className="space-y-1">
@@ -4889,198 +9124,6 @@ layerId: string,
         </div>
       </div>
       
-      {showTranslateDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-gray-700 bg-[#1e1e1e] p-6 text-gray-100">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold">Translate</h3>
-              <button
-                onClick={() => setShowTranslateDialog(false)}
-                className="rounded px-2 py-1 text-lg hover:bg-gray-800"
-                title="Close"
-              >
-                ×
-              </button>
-            </div>
-            <label className="block text-xs font-medium text-gray-400">Target language</label>
-            <select
-              value={translateLanguage}
-              onChange={(e) => setTranslateLanguage(e.target.value)}
-              className="mt-2 w-full rounded border border-gray-600 bg-[#2d2d2d] px-3 py-2 text-sm"
-            >
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="de">German</option>
-              <option value="pt">Portuguese</option>
-              <option value="ja">Japanese</option>
-            </select>
-            <div className="mt-4">
-              <label className="block text-xs font-medium text-gray-400">Scope</label>
-              <select
-                value={translateScope}
-                onChange={(e) => setTranslateScope(e.target.value as 'all' | 'active' | 'selection')}
-                className="mt-2 w-full rounded border border-gray-600 bg-[#2d2d2d] px-3 py-2 text-sm"
-              >
-                <option value="all">All text layers</option>
-                <option value="active">Active text layer</option>
-                <option value="selection">Selection only</option>
-              </select>
-              {translateScope === 'selection' && !selection.active && (
-                <p className="mt-2 text-xs text-amber-300">No active selection detected.</p>
-              )}
-            </div>
-            <div className="mt-4">
-              <div className="mb-2 text-xs font-medium text-gray-400">Quick phrasing presets</div>
-              <div className="flex flex-wrap gap-2">
-                {['Launch your next idea', 'Limited time offer', 'New collection', 'Save 20% today'].map((preset) => (
-                  <button
-                    key={preset}
-                    onClick={() => setQuickReplaceText(preset)}
-                    className="rounded border border-gray-600 px-2 py-1 text-xs hover:bg-gray-800"
-                  >
-                    {preset}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <p className="mt-3 text-xs text-gray-400">
-              Applies to text layers in the active page.
-            </p>
-            <div className="mt-6 flex justify-end gap-2">
-              <Button size="sm" onClick={() => setShowTranslateDialog(false)}>Cancel</Button>
-              <Button size="sm" onClick={applyTranslate}>Translate</Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showBulkCreateDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-lg rounded-2xl border border-gray-700 bg-[#1e1e1e] p-6 text-gray-100">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold">Bulk create</h3>
-              <button
-                onClick={() => setShowBulkCreateDialog(false)}
-                className="rounded px-2 py-1 text-lg hover:bg-gray-800"
-                title="Close"
-              >
-                ×
-              </button>
-            </div>
-            <label className="block text-xs font-medium text-gray-400">One line per page</label>
-            <textarea
-              value={bulkCreateInput}
-              onChange={(e) => setBulkCreateInput(e.target.value)}
-              className="mt-2 h-40 w-full rounded border border-gray-600 bg-[#2d2d2d] px-3 py-2 text-sm"
-            />
-            <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-              <label className="flex flex-col gap-1">
-                <span className="text-gray-400">Title column</span>
-                <select
-                  value={bulkMapTitleCol}
-                  onChange={(e) => setBulkMapTitleCol(parseInt(e.target.value))}
-                  className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1"
-                >
-                  {[0, 1, 2, 3].map(col => (
-                    <option key={col} value={col}>{col + 1}</option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex flex-col gap-1">
-                <span className="text-gray-400">Body column</span>
-                <select
-                  value={bulkMapBodyCol}
-                  onChange={(e) => setBulkMapBodyCol(parseInt(e.target.value))}
-                  className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1"
-                >
-                  {[0, 1, 2, 3].map(col => (
-                    <option key={col} value={col}>{col + 1}</option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex flex-col gap-1">
-                <span className="text-gray-400">CTA column</span>
-                <select
-                  value={bulkMapCtaCol}
-                  onChange={(e) => setBulkMapCtaCol(parseInt(e.target.value))}
-                  className="rounded border border-gray-600 bg-[#2d2d2d] px-2 py-1"
-                >
-                  {[0, 1, 2, 3].map(col => (
-                    <option key={col} value={col}>{col + 1}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-            <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
-              <span>Tip: upload a CSV for bulk titles.</span>
-              <button
-                onClick={() => bulkCreateFileRef.current?.click()}
-                className="rounded border border-gray-600 px-2 py-1 hover:bg-gray-800"
-              >
-                Import CSV
-              </button>
-            </div>
-            <input
-              ref={bulkCreateFileRef}
-              type="file"
-              accept=".csv,text/csv"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  handleBulkCsvImport(file);
-                }
-              }}
-            />
-            <div className="mt-4">
-              <div className="mb-2 text-xs font-medium text-gray-400">Template library</div>
-              <input
-                type="text"
-                value={templateSearch}
-                onChange={(e) => setTemplateSearch(e.target.value)}
-                placeholder="Search templates"
-                className="mb-2 w-full rounded border border-gray-600 bg-[#2d2d2d] px-3 py-2 text-sm"
-              />
-              <div className="mb-2 flex flex-wrap gap-2">
-                {(['all', 'social', 'marketing', 'business', 'event'] as const).map(category => (
-                  <button
-                    key={category}
-                    onClick={() => setTemplateCategory(category)}
-                    className={`rounded-full border px-3 py-1 text-xs capitalize ${
-                      templateCategory === category
-                        ? 'border-blue-500 bg-blue-500/20 text-blue-200'
-                        : 'border-gray-600 text-gray-300 hover:bg-gray-800'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {filteredTemplates.map(template => (
-                  <button
-                    key={template.id}
-                    onClick={() => applyTemplate(template)}
-                    className="rounded border border-gray-600 bg-[#2d2d2d] p-3 text-left text-xs hover:bg-gray-800"
-                  >
-                    <div className="mb-2 h-16 rounded-md bg-gradient-to-br from-slate-700 via-slate-600 to-slate-500" />
-                    <div className="font-semibold text-gray-100">{template.title}</div>
-                    <div className="text-[11px] text-gray-400">{template.width} × {template.height}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <p className="mt-3 text-xs text-gray-400">
-              The first line becomes the active page title and text.
-            </p>
-            <div className="mt-6 flex justify-end gap-2">
-              <Button size="sm" onClick={() => setShowBulkCreateDialog(false)}>Cancel</Button>
-              <Button size="sm" onClick={applyBulkCreate}>Create pages</Button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Text Input Dialog */}
       {isEditingText && activeLayer?.type === 'text' && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -5179,6 +9222,49 @@ layerId: string,
         </div>
       )}
 
+      {showTranslateDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-[420px] rounded-lg border border-gray-700 bg-[#2d2d2d] p-5">
+            <h2 className="mb-3 text-lg font-bold">Translate</h2>
+            <label className="mb-2 block text-xs text-gray-300">Target language</label>
+            <select
+              value={translateLanguage}
+              onChange={(e) => setTranslateLanguage(e.target.value)}
+              className="mb-4 w-full rounded border border-gray-600 bg-[#1e1e1e] px-3 py-2 text-sm"
+            >
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="it">Italian</option>
+              <option value="pt">Portuguese</option>
+              <option value="ja">Japanese</option>
+              <option value="ko">Korean</option>
+            </select>
+            <div className="flex justify-end gap-2">
+              <Button size="sm" onClick={() => setShowTranslateDialog(false)}>Cancel</Button>
+              <Button size="sm" onClick={applyTranslate}>Apply</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showBulkCreateDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-[520px] rounded-lg border border-gray-700 bg-[#2d2d2d] p-5">
+            <h2 className="mb-3 text-lg font-bold">Bulk create</h2>
+            <p className="mb-2 text-xs text-gray-400">Use one line per variant title.</p>
+            <textarea
+              value={bulkCreateInput}
+              onChange={(e) => setBulkCreateInput(e.target.value)}
+              className="mb-4 h-48 w-full rounded border border-gray-600 bg-[#1e1e1e] px-3 py-2 text-sm"
+            />
+            <div className="flex justify-end gap-2">
+              <Button size="sm" onClick={() => setShowBulkCreateDialog(false)}>Cancel</Button>
+              <Button size="sm" onClick={applyBulkCreate}>Generate</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

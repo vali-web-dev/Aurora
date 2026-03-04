@@ -119,6 +119,16 @@
 - [ ] **Announce go-live** to team
 - [ ] **Monitor for 24-48 hours** post-launch
 
+### Build Lock & Recovery (Windows)
+- [x] Build wrapper uses `.next-build.lock` to prevent concurrent `next build` processes.
+- [x] Stale lock recovery is enabled in `scripts/next-build-retry.js`.
+- [ ] If a build is interrupted unexpectedly, verify lock cleanup before rerunning CI:
+
+```powershell
+Remove-Item .next-build.lock -Force -ErrorAction SilentlyContinue
+npm run build:ci
+```
+
 ## 📊 Production Status Summary
 
 ### What's Ready

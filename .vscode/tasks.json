@@ -165,6 +165,14 @@
 			"isBackground": true,
 			"problemMatcher": [],
 			"group": "build"
+		},
+		{
+			"label": "temp",
+			"type": "shell",
+			"command": "echo",
+			"args": [
+				"skip"
+			]
 		}
 	]
 }

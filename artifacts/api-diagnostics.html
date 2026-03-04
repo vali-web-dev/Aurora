@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>API Diagnostics Report</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; font-family: "Space Grotesk", "Sora", "Segoe UI", sans-serif; background: #f5f3ee; color: #1f2328; }
+  header { padding: 32px 40px; background: radial-gradient(circle at top, #dfe9f3, #f5f3ee); }
+  h1 { margin: 0 0 8px; font-size: 28px; }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 10px; border-bottom: 1px solid #eee; font-size: 14px; }
+  tr.ok td { color: #0f5d4d; }
+  tr.failed td { color: #b42318; }
+  tr.skipped td { color: #9b8b20; }
+  .note { font-size: 12px; color: #6b7280; }
+</style>
+</head>
+<body>
+<header>
+  <h1>API Diagnostics</h1>
+  <div>Timestamp: 2026-02-22T16:27:17.211Z</div>
+</header>
+<main style="padding: 24px 40px;">
+  <section class="grid">
+    <div class="card"><strong>Status</strong><div>PASS</div></div>
+    <div class="card"><strong>Base URL</strong><div>not detected</div></div>
+    <div class="card"><strong>Passed</strong><div>8</div></div>
+    <div class="card"><strong>Failed</strong><div>0</div></div>
+    <div class="card"><strong>Skipped</strong><div>7</div></div>
+  </section>
+  <section style="margin-top: 24px;" class="card">
+    <h2 style="margin-top: 0;">Checks</h2>
+    <table>
+      <thead><tr><th>Check</th><th>Status</th><th>Duration (ms)</th><th>Notes</th></tr></thead>
+      <tbody><tr class="ok"><td>routes</td><td>ok</td><td>429</td><td></td></tr><tr class="skipped"><td>health-batch</td><td>skipped</td><td>0</td><td><div class="note">Skipped (no local API server detected; run `npm run dev` and retry).</div></td></tr><tr class="skipped"><td>perf</td><td>skipped</td><td>0</td><td><div class="note">Skipped (no local API server detected; run `npm run dev` and retry).</div></td></tr><tr class="skipped"><td>schema-sanity</td><td>skipped</td><td>0</td><td><div class="note">Skipped (no local API server detected).</div></td></tr><tr class="skipped"><td>schema-contract</td><td>skipped</td><td>0</td><td><div class="note">Skipped (no local API server detected).</div></td></tr><tr class="skipped"><td>auth-checks</td><td>skipped</td><td>0</td><td><div class="note">Skipped (no local API server detected).</div></td></tr><tr class="skipped"><td>openapi-conformance</td><td>skipped</td><td>0</td><td><div class="note">Skipped (OpenAPI spec not found).</div></td></tr><tr class="skipped"><td>regression-gate</td><td>skipped</td><td>0</td><td><div class="note">Skipped (no baseline summary found).</div></td></tr></tbody>
+    </table>
+  </section>
+  <section style="margin-top: 24px;" class="card">
+    <h2 style="margin-top: 0;">Universe Coverage</h2>
+    <table>
+      <thead><tr><th>Universe</th><th>Endpoints</th></tr></thead>
+      <tbody><tr><td colspan="2">No data</td></tr></tbody>
+    </table>
+  </section>
+</main>
+</body>
+</html>

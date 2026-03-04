@@ -43,10 +43,33 @@ export function BrandUniverse() {
             <Link href="/brand/arc-panel-lab" aria-label="Open Arc Panel Lab logo designer">
               <Button variant="primary">Open Arc Panel Lab</Button>
             </Link>
+            <Link href="/navigation/topology" aria-label="Open feature topology directory">
+              <Button variant="secondary">Feature Topology</Button>
+            </Link>
             <Button variant="secondary">Open Brand Brain</Button>
           </>
         )}
       />
+
+      <SurfaceSection title="Editing Tools" description="Direct links to all visual editing surfaces.">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3" role="list" aria-label="Brand editing tools">
+          {[
+            { href: '/brand/photoshop-pro', label: 'Photoshop Pro' },
+            { href: '/brand/photoshop-canvas', label: 'Photoshop Canvas' },
+            { href: '/brand/photoshop-canvas-advanced', label: 'Photoshop Canvas Advanced' },
+            { href: '/brand/photoshop-enhanced', label: 'Photoshop Enhanced' },
+            { href: '/brand/aurora-logo-studio', label: 'Aurora Logo Studio' },
+            { href: '/create/editor', label: 'Aurora Editor' },
+          ].map((tool) => (
+            <Card key={tool.href} role="listitem" className="flex items-center justify-between gap-3">
+              <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{tool.label}</p>
+              <Link href={tool.href} aria-label={`Open ${tool.label}`}>
+                <Button variant="secondary" size="sm">Open</Button>
+              </Link>
+            </Card>
+          ))}
+        </div>
+      </SurfaceSection>
 
       <SurfaceSection title="Brand Overview">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -131,6 +154,32 @@ export function BrandUniverse() {
             </div>
           ))}
         </Card>
+      </SurfaceSection>
+
+      <SurfaceSection
+        title="Editing Tools"
+        description="Direct launch links to all brand and image editing workspaces."
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" role="list" aria-label="Editing tools">
+          {[
+            { href: '/brand/aurora-logo-studio', label: 'Aurora Logo Studio', helper: 'Integrated logo and canvas studio' },
+            { href: '/brand/arc-panel-lab', label: 'Arc Panel Lab', helper: 'Logo design arc panel workspace' },
+            { href: '/brand/photoshop-pro', label: 'Photoshop Pro', helper: 'Professional image editing suite' },
+            { href: '/brand/photoshop-canvas', label: 'Photoshop Canvas', helper: 'Standalone PS-style canvas editor' },
+            { href: '/brand/photoshop-canvas-advanced', label: 'Photoshop Canvas Advanced', helper: 'Advanced layers, masks, and adjustments' },
+            { href: '/brand/photoshop-enhanced', label: 'Photoshop Enhanced', helper: 'Enhanced editing workflow' },
+          ].map((tool) => (
+            <Card key={tool.href} role="listitem" className="space-y-3">
+              <div>
+                <CardTitle>{tool.label}</CardTitle>
+                <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{tool.helper}</p>
+              </div>
+              <Link href={tool.href}>
+                <Button variant="secondary" size="sm" className="w-full">Open</Button>
+              </Link>
+            </Card>
+          ))}
+        </div>
       </SurfaceSection>
     </Surface>
   );

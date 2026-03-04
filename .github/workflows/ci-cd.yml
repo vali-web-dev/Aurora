@@ -76,12 +76,52 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Build application
-        run: npm run build
+      - name: Build application (JSON telemetry)
+        run: npm run build:json > build-ci-json.log 2>&1
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/test
           NEXTAUTH_SECRET: test-secret-for-ci-build-only
           NEXTAUTH_URL: http://localhost:3000
+
+      - name: Enforce Build Telemetry Gate (Balanced)
+        run: node scripts/summarize-build-events.js --file build-ci-json.log --profile balanced
+
+      - name: Publish Build Badge Annotation
+        if: always()
+        run: |
+          if [ ! -f build-ci-json.log ]; then
+            echo "::warning title=Build Telemetry::build-ci-json.log not found"
+            exit 0
+          fi
+
+          node scripts/summarize-build-events.js --file build-ci-json.log --profile balanced --github-summary || true
+          node scripts/summarize-build-events.js --file build-ci-json.log --profile balanced --json > build-summary.json || true
+          node scripts/summarize-build-events.js --file build-ci-json.log --profile balanced --markdown --out build-report.md || true
+
+          BADGE_STATUS=$(node -e "const fs=require('fs');try{const s=JSON.parse(fs.readFileSync('build-summary.json','utf8'));process.stdout.write(String(s.badgeStatus||'unknown'));}catch{process.stdout.write('unknown');}")
+          GATE_STATUS=$(node -e "const fs=require('fs');try{const s=JSON.parse(fs.readFileSync('build-summary.json','utf8'));process.stdout.write(String(s.gateStatus||'unknown'));}catch{process.stdout.write('unknown');}")
+          ATTEMPTS_USED=$(node -e "const fs=require('fs');try{const s=JSON.parse(fs.readFileSync('build-summary.json','utf8'));process.stdout.write(String(s.attemptsUsed??'unknown'));}catch{process.stdout.write('unknown');}")
+          TOTAL_MS=$(node -e "const fs=require('fs');try{const s=JSON.parse(fs.readFileSync('build-summary.json','utf8'));process.stdout.write(String(s.totalMs??'unknown'));}catch{process.stdout.write('unknown');}")
+
+          if [ "$BADGE_STATUS" = "stable" ]; then
+            echo "::notice title=Build Badge::✅ stable (attempts=$ATTEMPTS_USED totalMs=$TOTAL_MS gate=$GATE_STATUS)"
+          elif [ "$BADGE_STATUS" = "retried" ]; then
+            echo "::warning title=Build Badge::⚠️ retried (attempts=$ATTEMPTS_USED totalMs=$TOTAL_MS gate=$GATE_STATUS)"
+          else
+            echo "::error title=Build Badge::❌ $BADGE_STATUS (attempts=$ATTEMPTS_USED totalMs=$TOTAL_MS gate=$GATE_STATUS)"
+          fi
+
+      - name: Upload Build Telemetry Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-telemetry-${{ github.run_id }}
+          path: |
+            build-ci-json.log
+            build-summary.json
+            build-report.md
+          if-no-files-found: ignore
+          retention-days: 7
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3

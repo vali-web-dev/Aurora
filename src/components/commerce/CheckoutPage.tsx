@@ -230,7 +230,7 @@ export function CheckoutPage() {
     };
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     // Validate address
     const addr = getSelectedAddress();
     if (!addr.name || !addr.street || !addr.city || !addr.province || !addr.zip) {
@@ -265,17 +265,73 @@ export function CheckoutPage() {
 
     setPaymentStatus('processing');
     const selectedPayment = payments.find(p => p.id === selectedPaymentId);
-    timerRef.current = window.setTimeout(() => {
-      setReceiptMethod(selectedPayment?.type || 'card');
-      const order = buildMockOrder();
-      setMockOrder(order);
-      setOrderId(order.id);
-      // Save order to persistent storage
-      addOrder(order);
-      setPaymentStatus('success');
-      clearCart();
-      pushNotice('Order placed successfully.', 'success');
-    }, 800);
+
+    try {
+      // Create temporary order ID for payment tracking
+      const tempOrderId = `AUR-${Date.now().toString(36).toUpperCase()}`;
+
+      // Step 1: Create payment intent
+      const intentResponse = await fetch('/api/payments/intents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: total,
+          currency: 'USD',
+          metadata: {
+            orderId: tempOrderId,
+            userId: 'user-1',
+            itemCount: items.length,
+            customerId: profile?.id || 'guest',
+          },
+          provider: process.env.NEXT_PUBLIC_PAYMENT_PROVIDER || 'stripe',
+        }),
+      });
+
+      if (!intentResponse.ok) {
+        throw new Error('Failed to create payment intent');
+      }
+
+      const intent = await intentResponse.json();
+
+      // Step 2: Confirm payment
+      const confirmResponse = await fetch('/api/payments/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          intentId: intent.id,
+          paymentMethodId: selectedPaymentId,
+          provider: process.env.NEXT_PUBLIC_PAYMENT_PROVIDER || 'stripe',
+        }),
+      });
+
+      if (!confirmResponse.ok) {
+        throw new Error('Failed to confirm payment');
+      }
+
+      const confirmation = await confirmResponse.json();
+
+      if (confirmation.status === 'succeeded') {
+        // Payment successful - create order
+        setReceiptMethod(selectedPayment?.type || 'card');
+        const order = buildMockOrder();
+        setMockOrder(order);
+        setOrderId(order.id);
+        addOrder(order);
+        setPaymentStatus('success');
+        clearCart();
+        pushNotice('Order placed successfully and payment confirmed.', 'success');
+      } else if (confirmation.status === 'processing') {
+        pushNotice('Payment is processing. Your order will be confirmed shortly.', 'info');
+        setPaymentStatus('success');
+        setOrderId(tempOrderId);
+      } else {
+        throw new Error(confirmation.errorMessage || 'Payment failed');
+      }
+    } catch (error: any) {
+      console.error('Payment error:', error);
+      setPaymentStatus('idle');
+      pushNotice(`Payment failed: ${error.message}`, 'error');
+    }
   };
 
   const buildReceiptText = () => {

@@ -1,0 +1,34 @@
+[
+  {
+    "profile": "dev",
+    "totalRuns": 1,
+    "sampledRuns": 1,
+    "successRate": 100,
+    "lastRunAt": "2026-02-26T01:31:43.667Z",
+    "lastExitCode": 0
+  },
+  {
+    "profile": "runtime",
+    "totalRuns": 0,
+    "sampledRuns": 0,
+    "successRate": 0,
+    "lastRunAt": null,
+    "lastExitCode": null
+  },
+  {
+    "profile": "ci",
+    "totalRuns": 0,
+    "sampledRuns": 0,
+    "successRate": 0,
+    "lastRunAt": null,
+    "lastExitCode": null
+  },
+  {
+    "profile": "full",
+    "totalRuns": 0,
+    "sampledRuns": 0,
+    "successRate": 0,
+    "lastRunAt": null,
+    "lastExitCode": null
+  }
+]

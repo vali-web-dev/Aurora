@@ -5,8 +5,10 @@ import { useSession } from 'next-auth/react';
 import { Card, CardDescription } from '@/components/aurora/Card';
 import { Button } from '@/components/ui/Button';
 import { InlineNotice } from '@/components/ui/InlineNotice';
+import { TypingIndicator } from '@/components/realtime/NotificationCenter';
 import { onEvent } from '@/lib/websocket-client';
 import { WSEventType } from '@/lib/websocket-types';
+import { useCommentTyping } from '@/components/social/SocialFeedRealtime';
 
 interface Post {
   id: number;
@@ -71,6 +73,8 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
   const noticeTimerRef = useRef<number | null>(null);
   const topLevelVisibleCount = 3;
   const replyVisibleCount = 2;
+  const [typingUsers, setTypingUsers] = useState<string[]>([]);
+  const broadcastTyping = useCommentTyping(post.id);
 
   const isOwnPost = session?.user?.id && post.authorUserId.toString() === session.user.id;
 
@@ -230,6 +234,31 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
 
     return () => unsubscribe();
   }, [post.id]);
+
+  // Listen for typing indicators
+  useEffect(() => {
+    const unsubscribe = onEvent(WSEventType.TYPING_INDICATOR, (data: any) => {
+      if (data.postId !== post.id) return;
+      if (data.userId === session?.user?.id) return; // Ignore own typing
+
+      setTypingUsers((prev) => {
+        const updated = prev.filter((name) => name !== data.userName);
+        if (data.isTyping) {
+          updated.push(data.userName);
+        }
+        return updated;
+      });
+
+      // Auto-clear after 3 seconds
+      const timeout = setTimeout(() => {
+        setTypingUsers((prev) => prev.filter((name) => name !== data.userName));
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    });
+
+    return () => unsubscribe();
+  }, [post.id, session?.user?.id]);
 
   // Listen for real-time reaction updates
   useEffect(() => {
@@ -728,7 +757,12 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                       className="aurora-label flex-1 px-3 py-2 bg-slate-50/80 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:opacity-70"
                       placeholder="Add a comment..."
                       value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
+                      onChange={(e) => {
+                        setNewComment(e.target.value);
+                        if (e.target.value.length > 0) {
+                          broadcastTyping();
+                        }
+                      }}
                       ref={commentInputRef}
                       data-no-autofocus="true"
                       onKeyDown={(e) => {
@@ -748,6 +782,11 @@ export function SocialPostCard({ post, onUpdate, onDelete }: SocialPostCardProps
                       {isSubmittingComment ? '...' : 'Send'}
                     </Button>
                   </div>
+                  {typingUsers.length > 0 && (
+                    <div className="pl-2">
+                      <TypingIndicator users={typingUsers} />
+                    </div>
+                  )}
                   <div className="aurora-label flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                     <button
                       type="button"

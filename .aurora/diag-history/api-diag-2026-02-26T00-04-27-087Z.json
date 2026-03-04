@@ -1,0 +1,163 @@
+{
+  "timestamp": "2026-02-26T00:04:27.082Z",
+  "attempt": 1,
+  "baseUrl": null,
+  "profile": "balanced",
+  "strictMode": true,
+  "allowSkip": true,
+  "preset": null,
+  "endpointPreset": null,
+  "matrixPreset": null,
+  "summaryMode": false,
+  "jsonSummaryMode": true,
+  "retries": 0,
+  "retryDelayMs": 500,
+  "ports": [
+    3000,
+    3001,
+    3002,
+    3003,
+    3004,
+    3005
+  ],
+  "endpoints": [
+    "/api/health",
+    "/api/health/db"
+  ],
+  "thresholds": {
+    "latencyWarnMs": 500,
+    "latencyFailMs": 1200,
+    "errorRateWarn": 0.05,
+    "errorRateFail": 0.2
+  },
+  "universeCoverage": {
+    "total": 0,
+    "byUniverse": {},
+    "unclassified": 0
+  },
+  "openApiSource": null,
+  "checks": [
+    {
+      "name": "preflight-env",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 0,
+      "required": [
+        "DATABASE_URL",
+        "NEXTAUTH_SECRET"
+      ],
+      "missing": [
+        "DATABASE_URL",
+        "NEXTAUTH_SECRET"
+      ]
+    },
+    {
+      "name": "routes",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 1196,
+      "startedAt": 1772064265881,
+      "attempts": 1,
+      "discoveredApiRoutes": [],
+      "totalRoutes": 0,
+      "parseOk": false
+    },
+    {
+      "name": "dependencies",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no dependency targets configured).",
+      "targets": []
+    },
+    {
+      "name": "health-batch",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected; run `npm run dev` and retry).",
+      "results": []
+    },
+    {
+      "name": "perf",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected; run `npm run dev` and retry).",
+      "metrics": null
+    },
+    {
+      "name": "route-slo",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected).",
+      "routes": []
+    },
+    {
+      "name": "flaky-score",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no endpoint health results to score).",
+      "score": 0,
+      "endpoints": []
+    },
+    {
+      "name": "schema-sanity",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected).",
+      "checks": []
+    },
+    {
+      "name": "schema-contract",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected).",
+      "checks": []
+    },
+    {
+      "name": "auth-checks",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected).",
+      "checks": []
+    },
+    {
+      "name": "openapi-conformance",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (OpenAPI spec not found)."
+    },
+    {
+      "name": "regression-gate",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no baseline summary found)."
+    }
+  ],
+  "ok": false,
+  "totals": {
+    "passed": 11,
+    "failed": 1,
+    "skipped": 10,
+    "durationMs": 3307
+  },
+  "exitReason": "PREFLIGHT_FAIL"
+}

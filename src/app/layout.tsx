@@ -7,6 +7,7 @@ import { CompanionContextEngineProvider } from '@/lib/companion/companion-contex
 import { AuroraLogoProvider } from '@/lib/brand/aurora-logo-provider';
 import { MemoryProvider } from '@/lib/memory/memory-provider';
 import { AuthSessionProvider } from '@/components/auth/SessionProvider';
+import { AuthSessionHealthBadge } from '@/components/auth/AuthSessionHealthBadge';
 import { SkipLinks } from '@/components/accessibility/SkipLinks';
 import { AutoFocusManager } from '@/components/accessibility/AutoFocusManager';
 import { MemoryTracker } from '@/components/aurora/MemoryTracker';
@@ -14,6 +15,7 @@ import { CompanionPanel } from '@/components/aurora/CompanionPanel';
 import { RealtimeToasts } from '@/components/aurora/RealtimeToasts';
 import { CompanionHint } from '@/components/aurora/CompanionHint';
 import { MotionGate } from '@/components/aurora/MotionGate';
+import { auth } from '@/lib/auth';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -24,11 +26,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -80,7 +84,7 @@ export default function RootLayout({
           </div>
         </div>
         <MotionGate />
-        <AuthSessionProvider>
+        <AuthSessionProvider session={session}>
           <ThemeProvider>
             <AccessibilityProvider>
               <RealtimeProvider>
@@ -94,6 +98,7 @@ export default function RootLayout({
                         <MemoryTracker />
                         <CompanionPanel />
                         <CompanionHint />
+                        <AuthSessionHealthBadge />
                         <RealtimeToasts />
                       </AuroraLogoProvider>
                     </CompanionContextEngineProvider>

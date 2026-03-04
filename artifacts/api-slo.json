@@ -1,0 +1,10 @@
+{
+  "default": {
+    "p95Ms": 1200,
+    "errorRate": 0.2
+  },
+  "routes": {
+    "/api/health": { "p95Ms": 500, "errorRate": 0.05 },
+    "/api/health/db": { "p95Ms": 800, "errorRate": 0.1 }
+  }
+}

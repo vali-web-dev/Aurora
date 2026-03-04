@@ -1,0 +1,7 @@
+{
+  "endpoints": {
+    "/api/health": ["status"],
+    "/api/health/db": ["status"],
+    "/api/users/profile": ["id", "email"]
+  }
+}

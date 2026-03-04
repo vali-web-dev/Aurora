@@ -387,6 +387,34 @@ export default function ArcPanelLabPage() {
   }, [customPresets]);
 
   useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
+        event.preventDefault();
+        setHistoryIndex((prev) => (prev > 0 ? prev - 1 : prev));
+      }
+      if ((event.ctrlKey || event.metaKey) && (event.key === 'y' || (event.key === 'z' && event.shiftKey))) {
+        event.preventDefault();
+        setHistoryIndex((prev) => (prev < history.length - 1 ? prev + 1 : prev));
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'g') {
+        event.preventDefault();
+        setShowGrid((prev) => !prev);
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === '/') {
+        event.preventDefault();
+        setShowShortcuts((prev) => !prev);
+      }
+      if (event.key === 'Escape') {
+        setOpenMenuPanel(null);
+        setShowShortcuts(false);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [history.length]);
+
+  useEffect(() => {
     if (!isVerticalResizing && !isHorizontalResizing && !isFloatingResizing && !isFloatingDragging && !activeCanvasHandle) return;
 
     const onMouseMove = (event: MouseEvent) => {
@@ -854,34 +882,6 @@ export default function ArcPanelLabPage() {
     setHistoryIndex(newIndex);
     applySnapshot(history[newIndex]);
   }, [applySnapshot, history, historyIndex]);
-
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
-        event.preventDefault();
-        undo();
-      }
-      if ((event.ctrlKey || event.metaKey) && (event.key === 'y' || (event.key === 'z' && event.shiftKey))) {
-        event.preventDefault();
-        redo();
-      }
-      if ((event.ctrlKey || event.metaKey) && event.key === 'g') {
-        event.preventDefault();
-        setShowGrid((prev) => !prev);
-      }
-      if ((event.ctrlKey || event.metaKey) && event.key === '/') {
-        event.preventDefault();
-        setShowShortcuts((prev) => !prev);
-      }
-      if (event.key === 'Escape') {
-        setOpenMenuPanel(null);
-        setShowShortcuts(false);
-      }
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [redo, undo]);
 
   const resetAll = () => {
     pushHistory();

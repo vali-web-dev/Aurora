@@ -1,0 +1,90 @@
+{
+  "timestamp": "2026-02-22T16:29:16.646Z",
+  "ok": true,
+  "baseUrl": null,
+  "strictMode": true,
+  "allowSkip": true,
+  "preset": null,
+  "endpointPreset": null,
+  "matrixPreset": null,
+  "profile": "balanced",
+  "thresholds": {
+    "latencyWarnMs": 500,
+    "latencyFailMs": 1200,
+    "errorRateWarn": 0.05,
+    "errorRateFail": 0.2
+  },
+  "openApiSource": null,
+  "universeCoverage": {
+    "total": 0,
+    "byUniverse": {},
+    "unclassified": 0
+  },
+  "trace": null,
+  "totals": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 7,
+    "durationMs": 2478
+  },
+  "checks": [
+    {
+      "name": "routes",
+      "ok": true,
+      "skipped": false,
+      "exitCode": 0,
+      "durationMs": 296
+    },
+    {
+      "name": "health-batch",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "name": "perf",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "name": "schema-sanity",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "name": "schema-contract",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "name": "auth-checks",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "name": "openapi-conformance",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0
+    },
+    {
+      "name": "regression-gate",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0
+    }
+  ],
+  "exitReason": "OK",
+  "diff": null
+}

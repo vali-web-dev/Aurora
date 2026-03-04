@@ -1,11 +1,13 @@
 'use client';
 
+import Link from 'next/link';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/ui/Button';
 import { StatCard } from '@/components/aurora/StatCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { AuroraDataService } from '@/data/types';
+import { Anatomy3DExplorer } from '@/components/health/Anatomy3DExplorer';
 
 const vitals = AuroraDataService.getHealthVitals();
 const activities = AuroraDataService.getActivities();
@@ -23,6 +25,16 @@ export function HealthUniverse() {
       <SurfaceHeader
         title="Health & Wellness Universe"
         description="Vitals, activities, nutrition, sleep, and holistic wellness intelligence."
+        actions={(
+          <div className="flex items-center gap-2">
+            <Link href="/health/human-model" aria-label="Open Human Model page">
+              <Button variant="primary">Open Human Model</Button>
+            </Link>
+            <Link href="/navigation/topology" aria-label="Open feature topology directory">
+              <Button variant="secondary">Feature Topology</Button>
+            </Link>
+          </div>
+        )}
       />
 
       <SurfaceSection title="Wellness Snapshot">
@@ -141,6 +153,13 @@ export function HealthUniverse() {
             ))}
           </div>
         </Card>
+      </SurfaceSection>
+
+      <SurfaceSection
+        title="Interactive Anatomy"
+        description="Transparent full-body model with visible organs, live responsiveness, and deep-linked organ references."
+      >
+        <Anatomy3DExplorer />
       </SurfaceSection>
     </Surface>
   );

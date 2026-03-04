@@ -1,0 +1,34 @@
+[
+  {
+    "profile": "dev",
+    "totalRuns": 0,
+    "sampledRuns": 0,
+    "successRate": 0,
+    "lastRunAt": null,
+    "lastExitCode": null
+  },
+  {
+    "profile": "runtime",
+    "totalRuns": 0,
+    "sampledRuns": 0,
+    "successRate": 0,
+    "lastRunAt": null,
+    "lastExitCode": null
+  },
+  {
+    "profile": "ci",
+    "totalRuns": 0,
+    "sampledRuns": 0,
+    "successRate": 0,
+    "lastRunAt": null,
+    "lastExitCode": null
+  },
+  {
+    "profile": "full",
+    "totalRuns": 0,
+    "sampledRuns": 0,
+    "successRate": 0,
+    "lastRunAt": null,
+    "lastExitCode": null
+  }
+]

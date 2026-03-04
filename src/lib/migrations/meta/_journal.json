@@ -15,6 +15,13 @@
       "when": 1771092451308,
       "tag": "0001_social_comment_reactions",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771472140353,
+      "tag": "0002_lovely_sentinel",
+      "breakpoints": true
     }
   ]
 }

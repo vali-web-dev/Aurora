@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-02-22T05:07:11.261Z",
+  "baseUrl": null,
+  "profile": "balanced",
+  "strictMode": true,
+  "allowSkip": true,
+  "summaryMode": false,
+  "jsonSummaryMode": false,
+  "retries": 0,
+  "retryDelayMs": 500,
+  "ports": [
+    3000,
+    3001,
+    3002,
+    3003,
+    3004,
+    3005
+  ],
+  "endpoints": [
+    "/api/health",
+    "/api/health/db"
+  ],
+  "thresholds": {
+    "latencyWarnMs": 500,
+    "latencyFailMs": 1200,
+    "errorRateWarn": 0.05,
+    "errorRateFail": 0.2
+  },
+  "checks": [
+    {
+      "name": "routes",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 433,
+      "attempts": 1,
+      "discoveredApiRoutes": [],
+      "totalRoutes": 0,
+      "parseOk": false
+    },
+    {
+      "name": "health-batch",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected; run `npm run dev` and retry).",
+      "results": []
+    },
+    {
+      "name": "perf",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected; run `npm run dev` and retry).",
+      "metrics": null
+    },
+    {
+      "name": "schema-sanity",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no local API server detected).",
+      "checks": []
+    },
+    {
+      "name": "openapi-conformance",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no --openapi file provided)."
+    }
+  ],
+  "ok": true,
+  "totals": {
+    "passed": 5,
+    "failed": 0,
+    "skipped": 4,
+    "durationMs": 3376
+  },
+  "exitReason": "OK"
+}

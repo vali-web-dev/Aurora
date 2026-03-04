@@ -1,0 +1,296 @@
+{
+  "timestamp": "2026-02-23T20:51:34.518Z",
+  "attempt": 1,
+  "baseUrl": "http://localhost:3001",
+  "profile": "balanced",
+  "strictMode": false,
+  "allowSkip": false,
+  "preset": null,
+  "endpointPreset": null,
+  "matrixPreset": null,
+  "summaryMode": false,
+  "jsonSummaryMode": true,
+  "retries": 0,
+  "retryDelayMs": 500,
+  "ports": [
+    3000,
+    3001,
+    3002,
+    3003,
+    3004,
+    3005
+  ],
+  "endpoints": [
+    "/api/health",
+    "/api/health/db"
+  ],
+  "thresholds": {
+    "latencyWarnMs": 500,
+    "latencyFailMs": 1200,
+    "errorRateWarn": 0.05,
+    "errorRateFail": 0.2
+  },
+  "universeCoverage": {
+    "total": 0,
+    "byUniverse": {},
+    "unclassified": 0
+  },
+  "openApiSource": "http://localhost:3001/openapi.json",
+  "checks": [
+    {
+      "name": "preflight-env",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 0,
+      "required": [
+        "DATABASE_URL",
+        "NEXTAUTH_SECRET"
+      ],
+      "missing": [
+        "DATABASE_URL",
+        "NEXTAUTH_SECRET"
+      ]
+    },
+    {
+      "name": "routes",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 315,
+      "startedAt": 1771879894077,
+      "attempts": 1,
+      "discoveredApiRoutes": [],
+      "totalRoutes": 0,
+      "parseOk": false
+    },
+    {
+      "name": "dependencies",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 6,
+      "targets": [
+        {
+          "target": "http://localhost:3001/api/health",
+          "ok": false,
+          "status": 404,
+          "elapsed": 3
+        },
+        {
+          "target": "http://localhost:3001/api/health/db",
+          "ok": false,
+          "status": 404,
+          "elapsed": 2
+        }
+      ]
+    },
+    {
+      "name": "health-batch",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 8,
+      "attempts": 1,
+      "results": [
+        {
+          "endpoint": "/api/health",
+          "ok": false,
+          "status": 404,
+          "elapsed": 4,
+          "body": "{\"error\":\"Endpoint not found\",\"code\":\"NOT_FOUND\",\"path\":\"/api/health\",\"method\":\"GET\",\"availableEndpoints\":\"/api\"}",
+          "json": {
+            "error": "Endpoint not found",
+            "code": "NOT_FOUND",
+            "path": "/api/health",
+            "method": "GET",
+            "availableEndpoints": "/api"
+          }
+        },
+        {
+          "endpoint": "/api/health/db",
+          "ok": false,
+          "status": 404,
+          "elapsed": 3,
+          "body": "{\"error\":\"Endpoint not found\",\"code\":\"NOT_FOUND\",\"path\":\"/api/health/db\",\"method\":\"GET\",\"availableEndpoints\":\"/api\"}",
+          "json": {
+            "error": "Endpoint not found",
+            "code": "NOT_FOUND",
+            "path": "/api/health/db",
+            "method": "GET",
+            "availableEndpoints": "/api"
+          }
+        }
+      ]
+    },
+    {
+      "name": "perf",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 21,
+      "attempts": 1,
+      "metrics": {
+        "endpoint": "/api/health",
+        "samples": 5,
+        "successes": 0,
+        "errors": 5,
+        "errorRate": 1,
+        "mean": 0,
+        "p95": 0,
+        "p99": 0,
+        "thresholds": {
+          "latencyWarnMs": 500,
+          "latencyFailMs": 1200,
+          "errorRateWarn": 0.05,
+          "errorRateFail": 0.2
+        },
+        "severity": "fail"
+      }
+    },
+    {
+      "name": "route-slo",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 17,
+      "routes": [
+        {
+          "route": "/api/health",
+          "ok": false,
+          "p95": 0,
+          "errorRate": 1,
+          "threshold": {
+            "p95Ms": 1200,
+            "errorRate": 0.2
+          },
+          "samples": 3,
+          "successes": 0,
+          "errors": 3
+        },
+        {
+          "route": "/api/health/db",
+          "ok": false,
+          "p95": 0,
+          "errorRate": 1,
+          "threshold": {
+            "p95Ms": 1200,
+            "errorRate": 0.2
+          },
+          "samples": 3,
+          "successes": 0,
+          "errors": 3
+        }
+      ]
+    },
+    {
+      "name": "flaky-score",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 48,
+      "score": 30,
+      "threshold": 75,
+      "endpoints": [
+        {
+          "endpoint": "/api/health",
+          "score": 30,
+          "transitions": 0,
+          "failureRate": 1,
+          "samples": 2
+        },
+        {
+          "endpoint": "/api/health/db",
+          "score": 30,
+          "transitions": 0,
+          "failureRate": 1,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "name": "schema-sanity",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 4,
+      "checks": [
+        {
+          "endpoint": "/api/health",
+          "ok": false
+        },
+        {
+          "endpoint": "/api/health/db",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "name": "schema-contract",
+      "ok": false,
+      "exitCode": 1,
+      "durationMs": 6,
+      "checks": [
+        {
+          "endpoint": "/api/health",
+          "ok": false,
+          "missingFields": [
+            "status"
+          ],
+          "status": 404
+        },
+        {
+          "endpoint": "/api/health/db",
+          "ok": false,
+          "missingFields": [
+            "status"
+          ],
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "auth-checks",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no auth token or cookie provided).",
+      "checks": []
+    },
+    {
+      "name": "openapi-conformance",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 14,
+      "missingInSpec": [],
+      "missingInCode": [
+        "/health",
+        "/ready",
+        "/api/mobile/register",
+        "/api/mobile/devices",
+        "/api/marketplace/listings",
+        "/api/blockchain/networks",
+        "/api/blockchain/wallets",
+        "/api/multicloud/providers",
+        "/api/multicloud/connections",
+        "/api/sync/channels",
+        "/api/sync/conflicts",
+        "/api/ai/health",
+        "/api/ai/predictions",
+        "/api/ai/anomalies/detect"
+      ],
+      "totalSpecPaths": 14,
+      "totalDiscoveredPaths": 0,
+      "source": "http://localhost:3001/openapi.json"
+    },
+    {
+      "name": "regression-gate",
+      "ok": true,
+      "skipped": true,
+      "exitCode": 0,
+      "durationMs": 0,
+      "note": "Skipped (no baseline summary found)."
+    }
+  ],
+  "ok": false,
+  "totals": {
+    "passed": 5,
+    "failed": 7,
+    "skipped": 2,
+    "durationMs": 1731
+  },
+  "exitReason": "PREFLIGHT_FAIL"
+}

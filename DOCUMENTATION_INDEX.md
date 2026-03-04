@@ -29,6 +29,20 @@ This repository contains Aurora's complete identity, design philosophy, and user
 
 **Read this if:** You want to get oriented fast without deep reading.
 
+### 🧭 **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**
+**For:** Operators, DevOps, release engineers  
+**Contains:**
+- Production deployment paths (Vercel, AWS, Docker)
+- Security and go-live checks
+- Build reliability note for `npm run build` / `npm run build:ci` retry behavior
+
+**Read this if:** You run production builds or manage CI/CD deployments.
+
+### 🧩 **Recent Ops Changes**
+- Build reliability behavior documented in [README.md](README.md)
+- Deployment/operator guidance updated in [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
+- Build retry wrapper implemented in [scripts/next-build-retry.js](scripts/next-build-retry.js)
+
 ---
 
 ### 📖 **[AURORA_MANUAL.md](AURORA_MANUAL.md)**

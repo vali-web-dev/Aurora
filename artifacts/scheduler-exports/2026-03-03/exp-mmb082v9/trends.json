@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-03-03T19:32:06.402Z",
+  "runId": "exp-mmb082v9",
+  "profiles": {
+    "dev": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    },
+    "runtime": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    },
+    "ci": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    },
+    "full": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    }
+  }
+}

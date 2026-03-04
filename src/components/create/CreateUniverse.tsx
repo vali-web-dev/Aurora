@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Card, CardDescription, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
 import { Button } from '@/components/ui/Button';
@@ -46,6 +47,26 @@ export function CreateUniverse() {
         description="Build surfaces and components with clarity, beauty, and endless possibility."
       />
 
+      <SurfaceSection title="Quick Tool Access" description="Visible links to launch editing tools and human model.">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3" role="list" aria-label="Quick tool access">
+          {[
+            { href: '/create/editor', label: 'Aurora Editor' },
+            { href: '/brand/photoshop-pro', label: 'Photoshop Pro' },
+            { href: '/brand/photoshop-canvas', label: 'Photoshop Canvas' },
+            { href: '/brand/photoshop-canvas-advanced', label: 'Photoshop Canvas Advanced' },
+            { href: '/health/human-model', label: 'Human Model' },
+            { href: '/navigation/topology', label: 'Feature Topology' },
+          ].map((tool) => (
+            <Card key={tool.href} role="listitem" className="flex items-center justify-between gap-3">
+              <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{tool.label}</p>
+              <Link href={tool.href}>
+                <Button variant="secondary" size="sm">Open</Button>
+              </Link>
+            </Card>
+          ))}
+        </div>
+      </SurfaceSection>
+
       <SurfaceSection title="Create Workspace">
         <div
           className="flex gap-2 border-b border-slate-200 dark:border-slate-800"
@@ -75,9 +96,14 @@ export function CreateUniverse() {
             <Card className="p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
               <div className="text-center space-y-4">
                 <CardTitle className="text-xl">Create a new surface</CardTitle>
-                <Button variant="primary" size="lg" onClick={() => router.push('/create/editor')}>
-                  Start Building
-                </Button>
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <Button variant="primary" size="lg" onClick={() => router.push('/create/editor')}>
+                    Start Building
+                  </Button>
+                  <Button variant="secondary" size="lg" onClick={() => router.push('/create/editor#upcoming-upgrades-lab')}>
+                    Open Upcoming Upgrades Lab
+                  </Button>
+                </div>
               </div>
             </Card>
 

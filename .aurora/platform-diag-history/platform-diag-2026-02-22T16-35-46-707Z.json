@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-02-22T16:35:46.701Z",
+  "ok": true,
+  "allowDbSkip": true,
+  "baseUrl": null,
+  "totals": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 1,
+    "durationMs": 10368
+  },
+  "checks": [
+    {
+      "name": "dev",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 6321,
+      "startedAt": 1771778136335,
+      "stdout": "{\n  \"timestamp\": \"2026-02-22T16:35:36.494Z\",\n  \"sections\": {\n    \"lockFile\": {\n      \"exists\": false,\n      \"path\": \"C:\\\\Users\\\\Admin\\\\Documents\\\\VSCode\\\\Aurora_rebirth\\\\.next-dev\\\\dev\\\\lock\",\n      \"ageSeconds\": null,\n      \"stale\": false\n    },\n    \"processes\": {\n      \"list\": []\n    },\n    \"ports\": {\n      \"checked\": [\n        3000,\n        3001,\n        3002,\n        3003,\n        3004,\n        3005\n      ],\n      \"results\": [\n        {\n          \"port\": 3000,\n          \"open\": true\n        },\n        {\n          \"port\": 3001,\n          \"open\": true\n        },\n        {\n          \"port\": 3002,\n          \"open\": true\n        },\n        {\n          \"port\": 3003,\n          \"open\": true\n        },\n        {\n          \"port\": 3004,\n          \"open\": true\n        },\n        {\n          \"port\": 3005,\n          \"open\": true\n        }\n      ]\n    },\n    \"cache\": {\n      \"path\": \"C:\\\\Users\\\\Admin\\\\Documents\\\\VSCode\\\\Aurora_rebirth\\\\.next-dev\",\n      \"exists\": true,\n      \"sizeBytes\": 248736762,\n      \"sizeMB\": \"237.21\"\n    },\n    \"health\": {\n      \"results\": [\n        {\n          \"port\": 3000,\n          \"healthUrl\": \"http://localhost:3000/health\",\n          \"ok\": false,\n          \"status\": \"ECONNREFUSED\",\n          \"elapsed\": 27\n        },\n        {\n          \"port\": 3001,\n          \"healthUrl\": \"http://localhost:3001/health\",\n          \"ok\": true,\n          \"status\": 200,\n          \"elapsed\": 282\n        },\n        {\n          \"port\": 3002,\n          \"healthUrl\": \"http://localhost:3002/health\",\n          \"ok\": false,\n          \"status\": \"ECONNRESET\",\n          \"elapsed\": 2511\n        },\n        {\n          \"port\": 3003,\n          \"healthUrl\": \"http://localhost:3003/health\",\n          \"ok\": false,\n          \"status\": \"ECONNREFUSED\",\n          \"elapsed\": 4\n        },\n        {\n          \"port\": 3004,\n          \"healthUrl\": \"http://localhost:3004/health\",\n          \"ok\": false,\n          \"status\": 500,\n          \"elapsed\": 694\n        },\n        {\n          \"port\": 3005,\n          \"healthUrl\": \"http://localhost:3005/health\",\n          \"ok\": false,\n          \"status\": \"ECONNREFUSED\",\n          \"elapsed\": 3\n        }\n      ],\n      \"healthyPorts\": [\n        3001\n      ]\n    }\n  },\n  \"issues\": [],\n  \"recommendations\": [\n    {\n      \"action\": \"none\",\n      \"description\": \"All systems healthy. Dev server running on port 3001. Happy coding!\",\n      \"severity\": \"info\"\n    }\n  ]\n}",
+      "stderr": ""
+    },
+    {
+      "name": "db",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 301,
+      "startedAt": 1771778142656,
+      "stdout": "[dotenv@17.3.1] injecting env (26) from .env.local -- tip: ⚡️ secrets for agents: https://dotenvx.com/as2\n{\n  \"status\": \"unhealthy\",\n  \"error\": \"getaddrinfo ENOTFOUND db.okexoltvezkehfibaycu.supabase.co\"\n}",
+      "stderr": "",
+      "skipped": true,
+      "note": "DB check skipped due to transient network resolution/connectivity failure."
+    },
+    {
+      "name": "api",
+      "ok": true,
+      "exitCode": 0,
+      "durationMs": 3743,
+      "startedAt": 1771778142957,
+      "stdout": "{\n  \"timestamp\": \"2026-02-22T16:35:46.664Z\",\n  \"ok\": true,\n  \"baseUrl\": null,\n  \"strictMode\": true,\n  \"allowSkip\": true,\n  \"preset\": null,\n  \"endpointPreset\": null,\n  \"matrixPreset\": null,\n  \"profile\": \"balanced\",\n  \"thresholds\": {\n    \"latencyWarnMs\": 500,\n    \"latencyFailMs\": 1200,\n    \"errorRateWarn\": 0.05,\n    \"errorRateFail\": 0.2\n  },\n  \"openApiSource\": null,\n  \"universeCoverage\": {\n    \"total\": 0,\n    \"byUniverse\": {},\n    \"unclassified\": 0\n  },\n  \"trace\": null,\n  \"totals\": {\n    \"passed\": 8,\n    \"failed\": 0,\n    \"skipped\": 7,\n    \"durationMs\": 3546\n  },\n  \"checks\": [\n    {\n      \"name\": \"routes\",\n      \"ok\": true,\n      \"skipped\": false,\n      \"exitCode\": 0,\n      \"durationMs\": 293\n    },\n    {\n      \"name\": \"health-batch\",\n      \"ok\": true,\n      \"skipped\": true,\n      \"exitCode\": 0,\n      \"durationMs\": 0\n    },\n    {\n      \"name\": \"perf\",\n      \"ok\": true,\n      \"skipped\": true,\n      \"exitCode\": 0,\n      \"durationMs\": 0\n    },\n    {\n      \"name\": \"schema-sanity\",\n      \"ok\": true,\n      \"skipped\": true,\n      \"exitCode\": 0,\n      \"durationMs\": 0\n    },\n    {\n      \"name\": \"schema-contract\",\n      \"ok\": true,\n      \"skipped\": true,\n      \"exitCode\": 0,\n      \"durationMs\": 0\n    },\n    {\n      \"name\": \"auth-checks\",\n      \"ok\": true,\n      \"skipped\": true,\n      \"exitCode\": 0,\n      \"durationMs\": 0\n    },\n    {\n      \"name\": \"openapi-conformance\",\n      \"ok\": true,\n      \"skipped\": true,\n      \"exitCode\": 0,\n      \"durationMs\": 0\n    },\n    {\n      \"name\": \"regression-gate\",\n      \"ok\": true,\n      \"skipped\": true,\n      \"exitCode\": 0,\n      \"durationMs\": 0\n    }\n  ],\n  \"exitReason\": \"OK\",\n  \"diff\": null\n}",
+      "stderr": ""
+    }
+  ],
+  "exitReason": "OK",
+  "diff": {
+    "passedDelta": 0,
+    "failedDelta": 0,
+    "skippedDelta": 0,
+    "durationDelta": -5796
+  }
+}

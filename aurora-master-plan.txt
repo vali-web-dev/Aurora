@@ -1,4 +1,7 @@
- AURORA — THE COMPLETE, FULL‑SPECTRUM, 0.001% VISION TO BE COMPLETED 100%
+Handle edge cases and failure states explicitly
+Write production ready, scalable code
+Explain aassumptions and trade-offs
+ AURORA — THE COMPLETE, FULL‑SPECTRUM, 0.001% VISION upgrade TO BE COMPLETED 100%
  A Universal Digital World for Life, Creativity, Commerce, Media, Social, Learning, Intelligence, and Beyond 
 full expansion of Aurora’s capabilities — the missing layers that complete the universe.
 25 domains, each with deep sub‑features, micro‑features, and hidden systems.

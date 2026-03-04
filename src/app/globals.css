@@ -852,18 +852,6 @@ html:not(.aurora-motion-ready) * {
   animation: none;
 }
 
-/* Aurora placeholder styling for maximum coverage */
-@supports (-webkit-background-clip: text) {
-  :where(input::placeholder, textarea::placeholder) {
-    @apply aurora-text;
-    opacity: 0.7;
-  }
-  .aurora-veil-enabled :where(input::placeholder, textarea::placeholder) {
-    @apply aurora-text-veil;
-    opacity: 0.7;
-  }
-}
-
 /* Optional opt-out for non-gradient text zones */
 .aurora-text-exempt,
 .aurora-text-exempt * {

@@ -105,12 +105,8 @@ export function emitEvent(
   payload: any,
   callback?: (response: any) => void
 ): void {
-  if (!socket) {
-    console.error('[Socket.IO] Socket not initialized');
-    return;
-  }
-
-  socket.emit(eventType, payload, callback);
+  const activeSocket = socket ?? initializeSocket();
+  activeSocket.emit(eventType, payload, callback);
 }
 
 /**
@@ -120,16 +116,12 @@ export function onEvent(
   eventType: WSEventType,
   listener: (payload: any) => void
 ): () => void {
-  if (!socket) {
-    console.error('[Socket.IO] Socket not initialized');
-    return () => {};
-  }
-
-  socket.on(eventType, listener);
+  const activeSocket = socket ?? initializeSocket();
+  activeSocket.on(eventType, listener);
 
   // Return unsubscribe function
   return () => {
-    socket?.off(eventType, listener);
+    activeSocket.off(eventType, listener);
   };
 }
 
@@ -140,36 +132,24 @@ export function onceEvent(
   eventType: WSEventType,
   listener: (payload: any) => void
 ): void {
-  if (!socket) {
-    console.error('[Socket.IO] Socket not initialized');
-    return;
-  }
-
-  socket.once(eventType, listener);
+  const activeSocket = socket ?? initializeSocket();
+  activeSocket.once(eventType, listener);
 }
 
 /**
  * Join room
  */
 export function joinRoom(room: string): void {
-  if (!socket) {
-    console.error('[Socket.IO] Socket not initialized');
-    return;
-  }
-
-  socket.emit('join', { room });
+  const activeSocket = socket ?? initializeSocket();
+  activeSocket.emit('join', { room });
 }
 
 /**
  * Leave room
  */
 export function leaveRoom(room: string): void {
-  if (!socket) {
-    console.error('[Socket.IO] Socket not initialized');
-    return;
-  }
-
-  socket.emit('leave', { room });
+  const activeSocket = socket ?? initializeSocket();
+  activeSocket.emit('leave', { room });
 }
 
 /**

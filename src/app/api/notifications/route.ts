@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import * as schema from '@/lib/schema';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, and } from 'drizzle-orm';
 
 /**
  * GET /api/notifications
@@ -23,18 +23,42 @@ export async function GET(request: NextRequest) {
     const notifications = await db
       .select()
       .from(schema.notifications)
-      .where(eq(schema.notifications.userId, userId))
+      .where(
+        unreadOnly
+          ? and(eq(schema.notifications.userId, userId), eq(schema.notifications.read, false))
+          : eq(schema.notifications.userId, userId)
+      )
       .orderBy(desc(schema.notifications.createdAt))
       .limit(limit);
 
-    const unreadCount = await db
-      .select({ count: schema.notifications.id })
+    const unreadNotifications = await db
+      .select({ id: schema.notifications.id })
       .from(schema.notifications)
-      .where(eq(schema.notifications.userId, userId));
+      .where(and(eq(schema.notifications.userId, userId), eq(schema.notifications.read, false)));
+
+    const normalized = notifications.map((notification) => ({
+      id: notification.id,
+      userId: notification.userId,
+      type: (notification.kind || 'system') as
+        | 'mention'
+        | 'reaction'
+        | 'comment'
+        | 'message'
+        | 'system'
+        | 'follow',
+      title: notification.title || 'Notification',
+      message: notification.body || '',
+      link: notification.payload && typeof notification.payload === 'object'
+        ? (notification.payload as Record<string, unknown>).link as string | undefined
+        : undefined,
+      read: notification.read ?? false,
+      createdAt: notification.createdAt,
+      data: notification.payload,
+    }));
 
     return NextResponse.json({
-      notifications,
-      unreadCount: unreadCount.length,
+      notifications: normalized,
+      unreadCount: unreadNotifications.length,
     });
   } catch (error) {
     console.error('Error fetching notifications:', error);
@@ -66,9 +90,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Mark as read
-    // Note: notifications table doesn't have a 'read' field in current schema
-    // This would need to be added to the schema
+    await db
+      .update(schema.notifications)
+      .set({ read: true })
+      .where(and(eq(schema.notifications.id, Number(notificationId)), eq(schema.notifications.userId, parseInt(session.user.id, 10))));
 
     return NextResponse.json({
       message: 'Notification marked as read',
@@ -77,6 +102,31 @@ export async function POST(request: NextRequest) {
     console.error('Error marking notification as read:', error);
     return NextResponse.json(
       { error: 'Failed to mark notification as read' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * DELETE /api/notifications
+ * Clear all notifications for current user
+ */
+export async function DELETE() {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    await db
+      .delete(schema.notifications)
+      .where(eq(schema.notifications.userId, parseInt(session.user.id, 10)));
+
+    return NextResponse.json({ success: true, message: 'All notifications cleared' });
+  } catch (error) {
+    console.error('Error clearing notifications:', error);
+    return NextResponse.json(
+      { error: 'Failed to clear notifications' },
       { status: 500 }
     );
   }

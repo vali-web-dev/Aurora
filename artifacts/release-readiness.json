@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-02-23T21:15:28.101Z",
+  "score": 90,
+  "grade": "A",
+  "signals": [
+    "build_summary_missing"
+  ],
+  "buildSummaryPath": "build-summary.json",
+  "apiSummaryPath": "artifacts\\api-diagnostics.json",
+  "platformSummaryPath": ".aurora\\platform-diag-history\\latest.json"
+}

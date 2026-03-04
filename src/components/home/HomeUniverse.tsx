@@ -222,7 +222,6 @@ export function HomeUniverse() {
                     <span>{course.durationHours}h</span>
                   </div>
                   <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-css-tags */}
                     <div className="h-full bg-blue-600" style={{ width: `${progress}%` }} />
                   </div>
                 </div>

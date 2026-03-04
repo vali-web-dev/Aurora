@@ -1,0 +1,49 @@
+{
+  "jobs": {
+    "api-diagnostics": {
+      "name": "api-diagnostics",
+      "command": "npm",
+      "args": [
+        "run",
+        "api:ci:diagnose:json:summary"
+      ],
+      "lastRunAt": "2026-02-26T00:04:16.479Z",
+      "exitCode": 1,
+      "ok": false
+    },
+    "platform-diagnostics": {
+      "name": "platform-diagnostics",
+      "command": "npm",
+      "args": [
+        "run",
+        "platform:diagnose:summary"
+      ],
+      "lastRunAt": "2026-02-26T00:04:27.516Z",
+      "exitCode": 1,
+      "ok": false
+    },
+    "editor-runtime-snapshot": {
+      "name": "editor-runtime-snapshot",
+      "command": "npm",
+      "args": [
+        "run",
+        "diagnostics:editor-runtime:snapshot"
+      ],
+      "lastRunAt": "2026-02-26T01:31:39.777Z",
+      "exitCode": 0,
+      "ok": true
+    },
+    "editor-runtime-gate-strict": {
+      "name": "editor-runtime-gate-strict",
+      "command": "npm",
+      "args": [
+        "run",
+        "diagnostics:editor-runtime:gate:strict"
+      ],
+      "lastRunAt": "2026-02-26T00:12:33.971Z",
+      "exitCode": 0,
+      "ok": true
+    }
+  },
+  "updatedAt": "2026-02-26T01:31:43.648Z"
+}

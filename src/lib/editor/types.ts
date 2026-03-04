@@ -31,9 +31,11 @@ export interface FeatureMatrixItem {
   auroraStatus: ParityStatus;
   phase: DeliveryPhase;
   acceptance: string;
+  scalabilityGuardrails?: string[];
+  reliabilityGuardrails?: string[];
 }
 
-export type EditorNodeKind = 'frame' | 'rect' | 'ellipse' | 'text' | 'image';
+export type EditorNodeKind = 'frame' | 'rect' | 'ellipse' | 'text' | 'image' | 'path';
 export type LayoutMode = 'none' | 'row' | 'column';
 export type LayoutAlign = 'start' | 'center' | 'end' | 'stretch';
 export type ConstraintMode = 'start' | 'center' | 'end' | 'stretch';
@@ -63,6 +65,13 @@ export interface EditorNode {
   constraintY?: ConstraintMode;
   visible: boolean;
   locked: boolean;
+  pathData?: string;
+  strokeColor?: string;
+  strokeWidth?: number;
+  strokeDasharray?: string;
+  strokeLinecap?: 'butt' | 'round' | 'square';
+  strokeLinejoin?: 'miter' | 'round' | 'bevel';
+  pathFill?: string;
 }
 
 export interface EditorState {

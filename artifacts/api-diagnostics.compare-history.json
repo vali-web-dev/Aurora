@@ -1,0 +1,543 @@
+{
+  "items": [
+    {
+      "timestamp": "2026-02-23T21:21:35.795Z",
+      "stable": {
+        "baseUrl": "$AURORA_STABLE_URL",
+        "summary": {
+          "timestamp": "2026-02-23T21:21:34.257Z",
+          "ok": false,
+          "baseUrl": "$AURORA_STABLE_URL",
+          "strictMode": false,
+          "allowSkip": false,
+          "preset": null,
+          "endpointPreset": null,
+          "matrixPreset": null,
+          "profile": "balanced",
+          "thresholds": {
+            "latencyWarnMs": 500,
+            "latencyFailMs": 1200,
+            "errorRateWarn": 0.05,
+            "errorRateFail": 0.2
+          },
+          "preflightEnv": [
+            "DATABASE_URL",
+            "NEXTAUTH_SECRET"
+          ],
+          "dependencyTargets": [],
+          "rerunOnFail": false,
+          "openApiSource": null,
+          "universeCoverage": {
+            "total": 0,
+            "byUniverse": {},
+            "unclassified": 0
+          },
+          "trace": null,
+          "triage": null,
+          "rerun": null,
+          "totals": {
+            "passed": 5,
+            "failed": 7,
+            "skipped": 3,
+            "durationMs": 791
+          },
+          "checks": [
+            {
+              "name": "preflight-env",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 0
+            },
+            {
+              "name": "routes",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 653
+            },
+            {
+              "name": "dependencies",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 2
+            },
+            {
+              "name": "health-batch",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 6
+            },
+            {
+              "name": "perf",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 1
+            },
+            {
+              "name": "route-slo",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 0
+            },
+            {
+              "name": "flaky-score",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 113
+            },
+            {
+              "name": "schema-sanity",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 1
+            },
+            {
+              "name": "schema-contract",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 1
+            },
+            {
+              "name": "auth-checks",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            },
+            {
+              "name": "openapi-conformance",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            },
+            {
+              "name": "regression-gate",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            }
+          ],
+          "exitReason": "PREFLIGHT_FAIL",
+          "diff": null
+        }
+      },
+      "canary": {
+        "baseUrl": "$AURORA_CANARY_URL",
+        "summary": {
+          "timestamp": "2026-02-23T21:21:35.720Z",
+          "ok": false,
+          "baseUrl": "$AURORA_CANARY_URL",
+          "strictMode": false,
+          "allowSkip": false,
+          "preset": null,
+          "endpointPreset": null,
+          "matrixPreset": null,
+          "profile": "balanced",
+          "thresholds": {
+            "latencyWarnMs": 500,
+            "latencyFailMs": 1200,
+            "errorRateWarn": 0.05,
+            "errorRateFail": 0.2
+          },
+          "preflightEnv": [
+            "DATABASE_URL",
+            "NEXTAUTH_SECRET"
+          ],
+          "dependencyTargets": [],
+          "rerunOnFail": false,
+          "openApiSource": null,
+          "universeCoverage": {
+            "total": 0,
+            "byUniverse": {},
+            "unclassified": 0
+          },
+          "trace": null,
+          "triage": null,
+          "rerun": null,
+          "totals": {
+            "passed": 5,
+            "failed": 7,
+            "skipped": 3,
+            "durationMs": 889
+          },
+          "checks": [
+            {
+              "name": "preflight-env",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 0
+            },
+            {
+              "name": "routes",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 793
+            },
+            {
+              "name": "dependencies",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 3
+            },
+            {
+              "name": "health-batch",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 2
+            },
+            {
+              "name": "perf",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 0
+            },
+            {
+              "name": "route-slo",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 0
+            },
+            {
+              "name": "flaky-score",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 79
+            },
+            {
+              "name": "schema-sanity",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 1
+            },
+            {
+              "name": "schema-contract",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 0
+            },
+            {
+              "name": "auth-checks",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            },
+            {
+              "name": "openapi-conformance",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            },
+            {
+              "name": "regression-gate",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            }
+          ],
+          "exitReason": "PREFLIGHT_FAIL",
+          "diff": null
+        }
+      },
+      "deltas": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "p95": null,
+        "errorRate": null
+      },
+      "ok": false
+    },
+    {
+      "timestamp": "2026-02-23T21:36:51.149Z",
+      "stable": {
+        "baseUrl": "http://localhost:3001",
+        "summary": {
+          "timestamp": "2026-02-23T21:36:49.294Z",
+          "ok": false,
+          "baseUrl": "http://localhost:3001",
+          "strictMode": false,
+          "allowSkip": false,
+          "preset": null,
+          "endpointPreset": null,
+          "matrixPreset": null,
+          "profile": "balanced",
+          "thresholds": {
+            "latencyWarnMs": 500,
+            "latencyFailMs": 1200,
+            "errorRateWarn": 0.05,
+            "errorRateFail": 0.2
+          },
+          "preflightEnv": [
+            "DATABASE_URL",
+            "NEXTAUTH_SECRET"
+          ],
+          "dependencyTargets": [],
+          "rerunOnFail": false,
+          "openApiSource": "http://localhost:3001/openapi.json",
+          "universeCoverage": {
+            "total": 0,
+            "byUniverse": {},
+            "unclassified": 0
+          },
+          "trace": null,
+          "triage": null,
+          "rerun": null,
+          "totals": {
+            "passed": 5,
+            "failed": 7,
+            "skipped": 2,
+            "durationMs": 617
+          },
+          "checks": [
+            {
+              "name": "preflight-env",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 0
+            },
+            {
+              "name": "routes",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 333
+            },
+            {
+              "name": "dependencies",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 77
+            },
+            {
+              "name": "health-batch",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 7
+            },
+            {
+              "name": "perf",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 18
+            },
+            {
+              "name": "route-slo",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 19
+            },
+            {
+              "name": "flaky-score",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 52
+            },
+            {
+              "name": "schema-sanity",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 7
+            },
+            {
+              "name": "schema-contract",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 8
+            },
+            {
+              "name": "auth-checks",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            },
+            {
+              "name": "openapi-conformance",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 76
+            },
+            {
+              "name": "regression-gate",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            }
+          ],
+          "exitReason": "PREFLIGHT_FAIL",
+          "diff": null
+        }
+      },
+      "canary": {
+        "baseUrl": "http://localhost:3001",
+        "summary": {
+          "timestamp": "2026-02-23T21:36:51.110Z",
+          "ok": false,
+          "baseUrl": "http://localhost:3001",
+          "strictMode": false,
+          "allowSkip": false,
+          "preset": null,
+          "endpointPreset": null,
+          "matrixPreset": null,
+          "profile": "balanced",
+          "thresholds": {
+            "latencyWarnMs": 500,
+            "latencyFailMs": 1200,
+            "errorRateWarn": 0.05,
+            "errorRateFail": 0.2
+          },
+          "preflightEnv": [
+            "DATABASE_URL",
+            "NEXTAUTH_SECRET"
+          ],
+          "dependencyTargets": [],
+          "rerunOnFail": false,
+          "openApiSource": "http://localhost:3001/openapi.json",
+          "universeCoverage": {
+            "total": 0,
+            "byUniverse": {},
+            "unclassified": 0
+          },
+          "trace": null,
+          "triage": null,
+          "rerun": null,
+          "totals": {
+            "passed": 5,
+            "failed": 7,
+            "skipped": 2,
+            "durationMs": 1404
+          },
+          "checks": [
+            {
+              "name": "preflight-env",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 1
+            },
+            {
+              "name": "routes",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 1137
+            },
+            {
+              "name": "dependencies",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 106
+            },
+            {
+              "name": "health-batch",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 11
+            },
+            {
+              "name": "perf",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 27
+            },
+            {
+              "name": "route-slo",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 25
+            },
+            {
+              "name": "flaky-score",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 64
+            },
+            {
+              "name": "schema-sanity",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 5
+            },
+            {
+              "name": "schema-contract",
+              "ok": false,
+              "skipped": false,
+              "exitCode": 1,
+              "durationMs": 7
+            },
+            {
+              "name": "auth-checks",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            },
+            {
+              "name": "openapi-conformance",
+              "ok": true,
+              "skipped": false,
+              "exitCode": 0,
+              "durationMs": 11
+            },
+            {
+              "name": "regression-gate",
+              "ok": true,
+              "skipped": true,
+              "exitCode": 0,
+              "durationMs": 0
+            }
+          ],
+          "exitReason": "PREFLIGHT_FAIL",
+          "diff": null
+        }
+      },
+      "deltas": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "p95": null,
+        "errorRate": null
+      },
+      "ok": false
+    }
+  ],
+  "updatedAt": "2026-02-23T21:36:51.154Z"
+}

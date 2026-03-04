@@ -88,10 +88,15 @@ export const expandableNavigation: NavItem[] = [
     description: 'Build & design',
     children: [
       { href: '/create', label: 'Creation Studio', description: 'Start creating' },
+      { href: '/create/editor', label: 'Aurora Editor', description: 'Visual editing workspace' },
       { href: '/create/projects', label: 'My Projects', description: 'Your creations' },
       { href: '/create/templates', label: 'Templates', description: 'Quick start' },
       { href: '/create/assets', label: 'Asset Library', description: 'Media & resources' },
       { href: '/create/collaborate', label: 'Collaborate', description: 'Team creation' },
+      { href: '/brand/photoshop-pro', label: 'Photoshop Pro', description: 'Professional editing tool' },
+      { href: '/brand/photoshop-canvas', label: 'Photoshop Canvas', description: 'Canvas-based photo editor' },
+      { href: '/brand/photoshop-canvas-advanced', label: 'Photoshop Canvas Advanced', description: 'Advanced editing suite' },
+      { href: '/brand/photoshop-enhanced', label: 'Photoshop Enhanced', description: 'Enhanced editor workflow' },
     ],
   },
   
@@ -103,6 +108,12 @@ export const expandableNavigation: NavItem[] = [
     description: 'Your digital brand',
     children: [
       { href: '/brand', label: 'Brand Hub', description: 'Manage presence' },
+      { href: '/brand/aurora-logo-studio', label: 'Aurora Logo Studio', description: 'Integrated logo lab' },
+      { href: '/brand/arc-panel-lab', label: 'Arc Panel Lab', description: 'Arc-panel brand design lab' },
+      { href: '/brand/photoshop-pro', label: 'Photoshop Pro', description: 'Professional image editor' },
+      { href: '/brand/photoshop-canvas', label: 'Photoshop Canvas', description: 'Standalone PS-like canvas editor' },
+      { href: '/brand/photoshop-canvas-advanced', label: 'Photoshop Canvas Advanced', description: 'Smart objects, masks, adjustment layers' },
+      { href: '/brand/photoshop-enhanced', label: 'Photoshop Enhanced', description: 'Extended creative workflow' },
       { href: '/brand/identity', label: 'Brand Identity', description: 'Visual assets' },
       { href: '/brand/content', label: 'Content', description: 'Published work' },
       { href: '/brand/analytics', label: 'Analytics', description: 'Performance data' },
@@ -174,6 +185,7 @@ export const expandableNavigation: NavItem[] = [
     description: 'Wellness & fitness',
     children: [
       { href: '/health', label: 'Health Dashboard', description: 'Overview' },
+      { href: '/health/human-model', label: 'Human Model', description: '3D anatomy explorer and blueprint' },
       { href: '/health/activity', label: 'Activity', description: 'Exercise tracking' },
       { href: '/health/nutrition', label: 'Nutrition', description: 'Diet & meals' },
       { href: '/health/sleep', label: 'Sleep', description: 'Rest analysis' },
@@ -291,6 +303,7 @@ export const expandableNavigation: NavItem[] = [
     description: 'Maps & routes',
     children: [
       { href: '/navigation', label: 'Map View', description: 'Explore maps' },
+      { href: '/navigation/topology', label: 'Feature Topology', description: 'Complete clickable route map' },
       { href: '/navigation/saved', label: 'Saved Places', description: 'Favorites' },
       { href: '/navigation/directions', label: 'Directions', description: 'Get routes' },
     ],

@@ -12,6 +12,11 @@ export const primaryNav = [
 export const secondaryNav = [
   { href: "/identity", label: "Identity" },
   { href: "/brand", label: "Brand" },
+  { href: "/brand/aurora-logo-studio", label: "Aurora Logo Studio" },
+  { href: "/brand/photoshop-pro", label: "Photoshop Pro" },
+  { href: "/brand/photoshop-canvas", label: "Photoshop Canvas" },
+  { href: "/brand/photoshop-canvas-advanced", label: "Photoshop Canvas Advanced" },
+  { href: "/brand/photoshop-enhanced", label: "Photoshop Enhanced" },
   { href: "/communities", label: "Communities" },
   { href: "/gaming", label: "Gaming" },
   { href: "/commerce/review", label: "Shopping Review" },
@@ -21,6 +26,7 @@ export const secondaryNav = [
   { href: "/ai", label: "AI" },
   { href: "/finance", label: "Finance" },
   { href: "/health", label: "Health" },
+  { href: "/health/human-model", label: "Human Model" },
   { href: "/homecontrol", label: "Home Control" },
   { href: "/automation", label: "Automation" },
   { href: "/entertainment", label: "Entertainment" },
@@ -31,6 +37,7 @@ export const secondaryNav = [
   { href: "/luma", label: "Luma" },
   { href: "/travel", label: "Travel" },
   { href: "/navigation", label: "Navigation" },
+  { href: "/navigation/topology", label: "Feature Topology" },
   { href: "/security", label: "Security" }
 ];
 

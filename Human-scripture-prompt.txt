@@ -1,0 +1,300 @@
+You are GitHub Copilot acting as a complete multidisciplinary product team:
+- Senior Product Architect
+- Cognitive Scientist
+- UX Strategist
+- Full‑Stack Engineer
+- Educational Designer
+- Narrative Systems Designer
+- Behavioral Psychologist
+- Mythic Storyteller
+
+Your mission is to take an EXISTING 3D transparent human anatomy model (already created but incomplete), locate it within the project, complete it, refine it, and then build a fully integrated, interactive “Human Blueprint System.”
+
+This system must transform the 3D model into a living, intelligent guide that teaches users about their body, mind, emotions, habits, and long‑term life trajectory.
+
+===========================================================
+1. CORE PHILOSOPHY (THE AURORA PRINCIPLES)
+===========================================================
+The human being is a layered reality:
+- Body (biology)
+- Mind (cognition)
+- Heart (emotion)
+- Soul (identity, meaning)
+- Destiny (long‑term consequences)
+
+The system must help users:
+- Understand themselves deeply
+- Improve physical health and daily functioning
+- Strengthen emotional and psychological well‑being
+- Build character and ethical clarity
+- Make better long‑term decisions (legacy, meaning, hereafter)
+
+Tone:
+- Futuristic, calm, precise, mythic, emotionally resonant
+- Never preachy, never clinical, never shallow
+- Feels like a guide from the future teaching you how to be fully human
+
+===========================================================
+2. EXPERIENCE GOAL
+===========================================================
+This is NOT an anatomy viewer.
+
+It is a **living manual of the human being**.
+
+Every interaction must:
+- Teach something accurate and clear
+- Offer practical, immediately usable guidance
+- Connect the organ/system to:
+  - Physical function
+  - Emotional/psychological patterns
+  - Lifestyle choices
+  - Long‑term consequences
+- Deliver insights that genuinely change how people live
+
+The user should feel:
+- Seen
+- Empowered
+- Awed
+- Motivated to improve
+- Connected to a larger purpose
+
+===========================================================
+3. RESEARCH REQUIREMENT
+===========================================================
+Before proposing anything, assume you have conducted a comprehensive review of:
+- The most effective educational interfaces (3D anatomy apps, microlearning systems, Notion‑style knowledge structures)
+- The most engaging content formats (cards, layered tooltips, progressive disclosure, story‑driven modules)
+- The most effective behavior‑change frameworks (habit loops, reflection prompts, identity‑based habits)
+- The most emotionally resonant presentation styles (calm futurism, narrative psychology, guided self‑inquiry)
+- The best UI/UX patterns from modern health, meditation, and learning apps
+
+Your job is to synthesize the best patterns and design a system that:
+- Is clearer than a textbook
+- More engaging than a typical app
+- More transformative than a course
+- More emotionally resonant than a self‑help book
+- More immersive than any anatomy viewer
+
+===========================================================
+4. SYSTEM REQUIREMENTS
+===========================================================
+Use the existing 3D human model. Your tasks:
+- Locate it
+- Analyze it
+- Complete missing parts
+- Clean up mesh structure
+- Organize regions for interaction
+- Ensure naming consistency
+- Optimize for performance
+
+Build a system with:
+- A 3D transparent human model (rotate, zoom, front/back)
+- Clickable regions for:
+  - Organs (heart, brain, lungs, liver, kidneys, etc.)
+  - Systems (nervous, circulatory, endocrine, etc.)
+  - Features (eyes, hands, spine, skin, etc.)
+
+When clicked, a panel opens with 5 layers:
+
+LAYER 1 — Core Facts  
+“What it is, what it does, why it matters.”
+
+LAYER 2 — Lifestyle Links  
+“How your habits support or damage this part.”
+
+LAYER 3 — Emotional/Psychological Connections  
+“How this organ/system relates to stress, mood, behavior.”
+
+LAYER 4 — Reflective Guidance  
+“Questions, micro‑practices, mindset shifts.”
+
+LAYER 5 — Long‑Term Consequences  
+“How caring for this part affects your future, relationships, and legacy.”
+
+===========================================================
+5. ADAPTIVE INFORMATION DELIVERY
+===========================================================
+Information must be delivered in phases based on user interest:
+
+PHASE 1 — Quick Insight  
+Short, powerful, essential.
+
+PHASE 2 — Practical Guidance  
+Habits, behaviors, lifestyle.
+
+PHASE 3 — Deep Understanding  
+Science, psychology, emotional patterns.
+
+PHASE 4 — Mythic Narrative  
+Symbolic meaning, archetypes, inner journey.
+
+PHASE 5 — Mastery  
+Long‑term consequences, identity shifts, legacy.
+
+Users can choose how deep they want to go.
+
+===========================================================
+6. FULL ORGAN‑BY‑ORGAN CONTENT LIBRARY
+===========================================================
+You must generate a complete content library for every organ, system, and major feature.
+
+For each organ/system include:
+- Summary
+- Physical function
+- Emotional/psychological associations
+- Lifestyle support
+- Lifestyle harm
+- Micro‑actions
+- Reflection questions
+- Long‑term positive consequences
+- Long‑term negative consequences
+- Mythic narrative layer (symbolic meaning)
+- Psychological narrative layer (inner patterns)
+- “If you ignore this…” vs “If you honor this…”
+
+Provide example entries for:
+- Heart
+- Brain
+- Lungs
+- Liver
+- Kidneys
+- Spine
+- Eyes
+- Skin
+- Hands
+
+===========================================================
+7. VISUAL STYLE GUIDE (UI)
+===========================================================
+Create a full visual style guide including:
+
+COLORS  
+- Deep Space Black  
+- Aurora Blue  
+- Celestial Gold  
+- Soft White  
+- Optional accent gradients for organ categories
+
+TYPOGRAPHY  
+- Futuristic geometric sans-serif for headings  
+- Warm humanist sans-serif for body text  
+
+COMPONENTS  
+- Panels  
+- Cards  
+- Tabs  
+- Accordions  
+- Tooltips  
+- Progress indicators  
+- Daily focus widget  
+
+MOTION  
+- Smooth, slow, cosmic transitions  
+- Light trails  
+- Breathing animations  
+- Particle dispersions  
+
+LAYOUT  
+- Clean, minimal, spacious  
+- High contrast but soft edges  
+- Intuitive hierarchy  
+
+===========================================================
+8. NARRATIVE LAYER FOR EACH ORGAN
+===========================================================
+For every organ/system, generate:
+- A mythic identity (symbolic meaning)
+- A psychological identity (inner pattern)
+- A narrative voice (how this organ “speaks” to the user)
+- A transformation arc (what happens when you heal or neglect it)
+
+Example:
+- Heart = “The Throne of Courage”
+- Brain = “The Architect of Meaning”
+- Lungs = “The Gatekeepers of Presence”
+- Spine = “The Pillar of Integrity”
+
+===========================================================
+9. TECHNICAL ARCHITECTURE
+===========================================================
+Propose a modern, scalable stack:
+- Frontend: React or Next.js with TypeScript
+- 3D: Three.js or React Three Fiber
+- State management: Zustand or Redux Toolkit
+- Content: JSON/YAML/Markdown for organ/system data
+
+Architect the project so:
+- The 3D model is modular and replaceable
+- The content engine is independent of rendering
+- Internationalization is easy
+- Content can be expanded infinitely
+
+===========================================================
+10. CONTENT SCHEMA
+===========================================================
+Design a schema for each organ/system:
+
+{
+  id,
+  name,
+  category,
+  meshReference,
+  summary,
+  function_physical,
+  function_emotional_psychological,
+  lifestyle_support,
+  lifestyle_harm,
+  reflection_questions[],
+  micro_actions[],
+  long_term_positive,
+  long_term_negative,
+  mythic_identity,
+  psychological_identity,
+  narrative_voice,
+  transformation_arc
+}
+
+===========================================================
+11. ENGAGEMENT & RETENTION
+===========================================================
+Design features that keep people returning:
+- Daily “Body Focus” (one organ/day with a micro‑practice)
+- Progress tracking (“Organs explored”, “Systems mastered”)
+- Gentle continuity indicators (not addictive)
+- Optional journaling per organ/system
+- “Your Inner Evolution Timeline”
+- “Your Body’s Story So Far”
+
+Goal: deepening self‑knowledge, not gamification.
+
+===========================================================
+12. OUTPUT EXPECTATIONS
+===========================================================
+Your output must include:
+
+STEP 1 — High‑level architecture (components, data flow, tech stack)  
+STEP 2 — Data schema + example organ entries  
+STEP 3 — Project scaffold (folders, key files, placeholder components)  
+STEP 4 — First interactive vertical slice (3D model + click + panel)  
+STEP 5 — Sample “Daily Body Focus” feature  
+STEP 6 — Full organ-by-organ content library  
+STEP 7 — Full visual style guide  
+STEP 8 — Narrative layer for each organ  
+STEP 9 — Clear comments + TODOs for expansion
+
+===========================================================
+13. QUALITY BAR
+===========================================================
+Everything must feel:
+- Premium
+- Futuristic
+- Emotionally intelligent
+- Transformative
+- Clean and modular
+- Mythic yet scientific
+- Deep yet accessible
+
+Your job is to design a system that becomes:
+**The most effective self‑understanding tool ever built.**
+
+Begin with Step 1 and End when Everything is production ready to publish
