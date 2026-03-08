@@ -9,6 +9,76 @@ interface PageIconProps {
   className?: string;
 }
 
+const GENERATED_ICON_TONES = [
+  'aurora-label text-sky-500',
+  'aurora-label text-indigo-500',
+  'aurora-label text-emerald-500',
+  'aurora-label text-amber-500',
+  'aurora-label text-rose-500',
+  'aurora-label text-cyan-500',
+  'aurora-label text-violet-500',
+  'aurora-label text-fuchsia-500',
+];
+
+function hashString(value: string): number {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    hash = (hash << 5) - hash + value.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function normalizeIconKeyFromLabel(label: string): string {
+  return label
+    .trim()
+    .replace(/\s+/g, ' ')
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+}
+
+function createGeneratedIcon(pageName: string): JSX.Element {
+  const seed = hashString(pageName || 'Home');
+  const variant = seed % 4;
+
+  if (variant === 0) {
+    return (
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+        <path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (variant === 1) {
+    return (
+      <svg viewBox="0 0 24 24" fill="none">
+        <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="2" />
+        <path d="M8 8l8 8M16 8l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (variant === 2) {
+    return (
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 3l8 5v8l-8 5-8-5V8l8-5z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <circle cx="12" cy="12" r="2" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M4 18L12 4l8 14H4z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M12 10v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="12" cy="17" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
 const ICONS: Record<string, JSX.Element> = {
   Home: (
     <svg viewBox="0 0 24 24" fill="none">
@@ -34,6 +104,37 @@ const ICONS: Record<string, JSX.Element> = {
     <svg viewBox="0 0 24 24" fill="none">
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
       <path d="M8 14.5l8-5-8-5v10z" fill="currentColor" />
+    </svg>
+  ),
+  Music: (
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V6l10-2v12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="7" cy="18" r="3" stroke="currentColor" strokeWidth="2" />
+      <circle cx="17" cy="16" r="3" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  ),
+  Movies: (
+    <svg viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2" />
+      <path d="M3 9h18M7 5l2 4M13 5l2 4M17 5l2 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  ),
+  'TV Shows': (
+    <svg viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="7" width="18" height="11" rx="2" stroke="currentColor" strokeWidth="2" />
+      <path d="M8 21h8M12 18v3M9 3l3 3 3-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Podcasts: (
+    <svg viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="2" />
+      <path d="M12 13v4M9 22h6M7.5 17a6 6 0 019 0M5 14a9 9 0 0114 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Books: (
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M4 4.5A2.5 2.5 0 016.5 2H20v18H6.5A2.5 2.5 0 014 17.5v-13z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M8 6h8M8 10h8M8 14h5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   ),
   Commerce: (
@@ -99,6 +200,14 @@ const ICONS: Record<string, JSX.Element> = {
   Finance: (
     <svg viewBox="0 0 24 24" fill="none">
       <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Economy: (
+    <svg viewBox="0 0 24 24" fill="none">
+      <circle cx="7" cy="16" r="3" stroke="currentColor" strokeWidth="2" />
+      <circle cx="17" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
+      <path d="M10 16h7a3 3 0 003-3V8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 13V9a3 3 0 013-3h7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   Health: (
@@ -192,8 +301,151 @@ const ICONS: Record<string, JSX.Element> = {
 };
 
 export function PageIcon({ pageName, className = '' }: PageIconProps) {
-  const icon = ICONS[pageName] || ICONS.Home;
+  const icon = ICONS[pageName] || createGeneratedIcon(pageName);
   return React.cloneElement(icon, { className });
+}
+
+const SEGMENT_ICON_MAP: Record<string, string> = {
+  home: 'Home',
+  dashboard: 'Dashboard',
+  profile: 'Profile',
+  settings: 'Settings',
+  notifications: 'Social',
+  entertainment: 'Entertainment',
+  commerce: 'Commerce',
+  product: 'Commerce',
+  social: 'Social',
+  learning: 'Learning',
+  create: 'Create',
+  brand: 'Brand',
+  communities: 'Communities',
+  gaming: 'Gaming',
+  productivity: 'Productivity',
+  travel: 'Travel',
+  navigation: 'Travel',
+  finance: 'Finance',
+  economy: 'Economy',
+  health: 'Health',
+  homecontrol: 'Home Control',
+  luma: 'Home Control',
+  automation: 'Automation',
+  ai: 'AI',
+  identity: 'Identity',
+  auth: 'Identity',
+  security: 'Security',
+  legal: 'Security',
+  roadmap: 'Roadmap',
+  blog: 'Blog',
+  contact: 'Contact',
+  accessibility: 'Accessibility',
+  admin: 'Admin',
+  realms: 'Realms',
+  guilds: 'Guilds',
+  developer: 'Developer',
+  docs: 'Developer',
+  dev: 'Developer',
+};
+
+const ENTERTAINMENT_SUBSEGMENT_ICON_MAP: Record<string, string> = {
+  music: 'Music',
+  movies: 'Movies',
+  shows: 'TV Shows',
+  podcasts: 'Podcasts',
+  books: 'Books',
+};
+
+const LABEL_ICON_ALIAS: Record<string, string> = {
+  'aurora logo studio': 'Brand',
+  'photoshop pro': 'Create',
+  'photoshop canvas': 'Create',
+  'photoshop canvas advanced': 'Create',
+  'photoshop enhanced': 'Create',
+  'human model': 'Health',
+  music: 'Music',
+  movies: 'Movies',
+  'tv shows': 'TV Shows',
+  podcasts: 'Podcasts',
+  books: 'Books',
+  'shopping review': 'Commerce',
+  'order history': 'Commerce',
+  luma: 'Home Control',
+  economy: 'Finance',
+  navigation: 'Travel',
+  'feature topology': 'Travel',
+  about: 'Identity',
+  'about aurora': 'Identity',
+  team: 'Identity',
+  philosophy: 'Identity',
+  docs: 'Developer',
+  legal: 'Security',
+  product: 'Commerce',
+};
+
+const LABEL_KEYWORD_HINTS: Array<{ keyword: string; icon: string }> = [
+  { keyword: 'team', icon: 'Identity' },
+  { keyword: 'philosophy', icon: 'Identity' },
+  { keyword: 'identity', icon: 'Identity' },
+  { keyword: 'profile', icon: 'Profile' },
+  { keyword: 'settings', icon: 'Settings' },
+  { keyword: 'roadmap', icon: 'Roadmap' },
+  { keyword: 'changelog', icon: 'Roadmap' },
+  { keyword: 'blog', icon: 'Blog' },
+  { keyword: 'contact', icon: 'Contact' },
+  { keyword: 'support', icon: 'Contact' },
+  { keyword: 'legal', icon: 'Security' },
+  { keyword: 'security', icon: 'Security' },
+  { keyword: 'privacy', icon: 'Security' },
+  { keyword: 'auth', icon: 'Identity' },
+  { keyword: 'docs', icon: 'Developer' },
+  { keyword: 'developer', icon: 'Developer' },
+  { keyword: 'dev', icon: 'Developer' },
+  { keyword: 'economy', icon: 'Economy' },
+  { keyword: 'finance', icon: 'Finance' },
+  { keyword: 'travel', icon: 'Travel' },
+  { keyword: 'navigation', icon: 'Travel' },
+  { keyword: 'luma', icon: 'Home Control' },
+];
+
+/**
+ * Resolve the best available icon key from a navigation label and/or href.
+ */
+export function resolvePageIconName(label: string, href?: string): string {
+  const normalizedKey = normalizeIconKeyFromLabel(label);
+  if (ICONS[normalizedKey]) {
+    return normalizedKey;
+  }
+
+  const normalizedLabel = label.trim().toLowerCase();
+  if (LABEL_ICON_ALIAS[normalizedLabel]) {
+    return LABEL_ICON_ALIAS[normalizedLabel];
+  }
+
+  for (const hint of LABEL_KEYWORD_HINTS) {
+    if (normalizedLabel.includes(hint.keyword)) {
+      return hint.icon;
+    }
+  }
+
+  if (href) {
+    const segments = href.split('/').filter(Boolean).map((segment) => segment.toLowerCase());
+    const topSegment = segments[0];
+    const secondSegment = segments[1];
+
+    if (topSegment === 'entertainment' && secondSegment && ENTERTAINMENT_SUBSEGMENT_ICON_MAP[secondSegment]) {
+      return ENTERTAINMENT_SUBSEGMENT_ICON_MAP[secondSegment];
+    }
+
+    // Use label-derived key for all sub-routes to keep each sub-universe icon unique.
+    if (segments.length > 1 && normalizedKey) {
+      return normalizedKey;
+    }
+
+    if (topSegment && SEGMENT_ICON_MAP[topSegment]) {
+      return SEGMENT_ICON_MAP[topSegment];
+    }
+  }
+
+  return normalizedKey || 'Home';
 }
 
 export function getPageIconColor(pageName: string): string {
@@ -202,6 +454,11 @@ export function getPageIconColor(pageName: string): string {
     Dashboard: 'aurora-label text-blue-400',
     Profile: 'aurora-label text-blue-600',
     Entertainment: 'aurora-label text-purple-500',
+    Music: 'aurora-label text-fuchsia-500',
+    Movies: 'aurora-label text-violet-500',
+    'TV Shows': 'aurora-label text-indigo-500',
+    Podcasts: 'aurora-label text-sky-500',
+    Books: 'aurora-label text-amber-500',
     Commerce: 'aurora-label text-emerald-500',
     Social: 'aurora-label text-blue-500',
     Learning: 'aurora-label text-amber-500',
@@ -212,6 +469,7 @@ export function getPageIconColor(pageName: string): string {
     Productivity: 'aurora-label text-indigo-600',
     Travel: 'aurora-label text-cyan-500',
     Finance: 'aurora-label text-emerald-600',
+    Economy: 'aurora-label text-emerald-600',
     Health: 'aurora-label text-rose-600',
     'Home Control': 'aurora-label text-slate-500',
     Automation: 'aurora-label text-sky-500',
@@ -229,6 +487,8 @@ export function getPageIconColor(pageName: string): string {
     Developer: 'aurora-label text-slate-500',
   };
 
-  const toneClass = colorMap[pageName] || 'aurora-label text-slate-400';
+  const toneClass = colorMap[pageName]
+    || GENERATED_ICON_TONES[hashString(pageName || 'Home') % GENERATED_ICON_TONES.length]
+    || 'aurora-label text-slate-400';
   return toneClass.includes('aurora-label') ? toneClass : `aurora-label ${toneClass}`;
 }

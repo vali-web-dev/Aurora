@@ -2,12 +2,44 @@
  * Adyen Payment Provider Implementation
  */
 
+import crypto from 'crypto';
 import { IPaymentProvider, PaymentIntent, PaymentMethod, PaymentConfirmation, PaymentRefund, WebhookEvent } from './types';
 
 interface AdyenConfig {
   apiKey: string;
   merchantAccount: string;
   clientKey: string;
+}
+
+const adyenSessionCache = new Map<string, PaymentIntent>();
+
+function timingSafeEqualString(a: string, b: string): boolean {
+  const aBuf = Buffer.from(a || '', 'utf8');
+  const bBuf = Buffer.from(b || '', 'utf8');
+  if (aBuf.length !== bBuf.length) {
+    return false;
+  }
+  return crypto.timingSafeEqual(aBuf, bBuf);
+}
+
+function escapeHmacValue(value: string): string {
+  return (value || '').replace(/\\/g, '\\\\').replace(/:/g, '\\:');
+}
+
+function buildAdyenSigningData(item: any): string {
+  const amount = item?.amount || {};
+  const fields = [
+    item?.pspReference,
+    item?.originalReference,
+    item?.merchantAccountCode,
+    item?.merchantReference,
+    amount?.value != null ? String(amount.value) : '',
+    amount?.currency,
+    item?.eventCode,
+    item?.success,
+  ];
+
+  return fields.map((value) => escapeHmacValue(value || '')).join(':');
 }
 
 export class AdyenProvider implements IPaymentProvider {
@@ -49,7 +81,7 @@ export class AdyenProvider implements IPaymentProvider {
 
       const data = await response.json();
 
-      return {
+      const intent: PaymentIntent = {
         id: data.id || `adyen-${Date.now()}`,
         provider: 'adyen',
         clientSecret: data.sessionData || '',
@@ -58,24 +90,58 @@ export class AdyenProvider implements IPaymentProvider {
         status: 'requires_payment_method',
         metadata: data.metadata || metadata,
       };
+
+      adyenSessionCache.set(intent.id, intent);
+      return intent;
     } catch (error: any) {
       throw new Error(`Adyen session creation failed: ${error.message}`);
     }
   }
 
   async retrievePaymentIntent(intentId: string): Promise<PaymentIntent> {
-    // Adyen doesn't have a direct retrieve for sessions, mock return
-    return {
-      id: intentId,
-      provider: 'adyen',
-      amount: 0,
-      currency: 'USD',
-      status: 'requires_payment_method',
-      metadata: {},
-    };
+    const cached = adyenSessionCache.get(intentId);
+
+    try {
+      const response = await fetch(`${this.baseUrl}/sessions/${encodeURIComponent(intentId)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': this.apiKey,
+        },
+      });
+
+      if (!response.ok) {
+        if (cached) {
+          return cached;
+        }
+        const text = await response.text().catch(() => '');
+        throw new Error(`Adyen session retrieve failed: ${response.status} ${text}`);
+      }
+
+      const data = await response.json();
+      const intent: PaymentIntent = {
+        id: data.id || intentId,
+        provider: 'adyen',
+        clientSecret: data.sessionData || cached?.clientSecret || '',
+        amount: cached?.amount || 0,
+        currency: cached?.currency || 'USD',
+        status: 'requires_payment_method',
+        metadata: data.metadata || cached?.metadata || {},
+      };
+
+      adyenSessionCache.set(intent.id, intent);
+      return intent;
+    } catch (error: any) {
+      if (cached) {
+        return cached;
+      }
+      throw new Error(`Adyen intent retrieval failed: ${error.message}`);
+    }
   }
 
   async confirmPayment(intentId: string, paymentMethodId: string): Promise<PaymentConfirmation> {
+    const cached = adyenSessionCache.get(intentId);
+
     try {
       const response = await fetch(`${this.baseUrl}/payments`, {
         method: 'POST',
@@ -84,7 +150,10 @@ export class AdyenProvider implements IPaymentProvider {
           'X-API-Key': this.apiKey,
         },
         body: JSON.stringify({
-          amount: { value: 0, currency: 'USD' },
+          amount: {
+            value: cached?.amount || 0,
+            currency: cached?.currency || 'USD',
+          },
           reference: intentId,
           paymentMethod: { type: 'scheme', storedPaymentMethodId: paymentMethodId },
           merchantAccount: this.merchantAccount,
@@ -97,7 +166,10 @@ export class AdyenProvider implements IPaymentProvider {
         intentId,
         provider: 'adyen',
         status: data.resultCode === 'Authorised' ? 'succeeded' : 'processing',
-        metadata: data,
+        metadata: {
+          ...data,
+          ...(cached?.metadata || {}),
+        },
       };
     } catch (error: any) {
       return {
@@ -143,14 +215,24 @@ export class AdyenProvider implements IPaymentProvider {
   }
 
   async savePaymentMethod(customerId: string, paymentMethodData: Record<string, any>): Promise<PaymentMethod> {
-    // Mock implementation - In production, implement Adyen's recurring payment setup
+    const storedPaymentMethodId =
+      paymentMethodData.storedPaymentMethodId || paymentMethodData.id;
+
+    if (!storedPaymentMethodId || typeof storedPaymentMethodId !== 'string') {
+      throw new Error(
+        'Adyen payment method save requires a tokenized storedPaymentMethodId from Checkout Components.'
+      );
+    }
+
     return {
-      id: `adyen-${Date.now()}`,
+      id: storedPaymentMethodId,
       provider: 'adyen',
       type: 'card',
       last4: paymentMethodData.last4 || '****',
       brand: paymentMethodData.brand || 'visa',
-      isDefault: false,
+      expMonth: paymentMethodData.expMonth,
+      expYear: paymentMethodData.expYear,
+      isDefault: Boolean(paymentMethodData.isDefault),
     };
   }
 
@@ -213,14 +295,57 @@ export class AdyenProvider implements IPaymentProvider {
   }
 
   async handleWebhook(body: any, signature: string): Promise<WebhookEvent> {
-    // Adyen webhook verification would go here
+    let parsedBody: any = body;
+    if (typeof body === 'string') {
+      try {
+        parsedBody = JSON.parse(body);
+      } catch {
+        return {
+          id: '',
+          type: 'invalid_payload',
+          provider: 'adyen',
+          data: {},
+          timestamp: new Date(),
+          verified: false,
+        };
+      }
+    }
+
+    const item = parsedBody?.notificationItems?.[0]?.NotificationRequestItem;
+    const authToken = process.env.ADYEN_WEBHOOK_AUTH_TOKEN || '';
+    const hmacKey = process.env.ADYEN_HMAC_KEY || '';
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    let verified = false;
+
+    if (authToken) {
+      verified = timingSafeEqualString(signature || '', authToken);
+    }
+
+    if (!verified && hmacKey && item?.additionalData?.hmacSignature) {
+      const signingData = buildAdyenSigningData(item);
+      const expected = crypto
+        .createHmac('sha256', Buffer.from(hmacKey, 'base64'))
+        .update(signingData, 'utf8')
+        .digest('base64');
+
+      verified = timingSafeEqualString(item.additionalData.hmacSignature, expected);
+    }
+
+    if (!authToken && !hmacKey) {
+      verified = !isProduction;
+      if (!verified) {
+        console.error('[Adyen] Webhook verification configuration missing in production.');
+      }
+    }
+
     return {
-      id: body.notificationItems?.[0]?.NotificationRequestItem?.pspReference || '',
-      type: body.notificationItems?.[0]?.NotificationRequestItem?.eventCode || 'unknown',
+      id: item?.pspReference || '',
+      type: item?.eventCode || 'unknown',
       provider: 'adyen',
-      data: body,
+      data: parsedBody,
       timestamp: new Date(),
-      verified: true, // In production, verify signature
+      verified,
     };
   }
 }

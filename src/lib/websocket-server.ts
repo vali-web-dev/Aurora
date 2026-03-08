@@ -12,11 +12,16 @@ import {
   WSRooms,
 } from './websocket-types';
 
+declare global {
+  // eslint-disable-next-line no-var
+  var __auroraWebSocketServer__: Server | undefined;
+}
+
 // ============================================================================
 // SINGLETON WEBSOCKET SERVER INSTANCE
 // ============================================================================
 
-let ioInstance: Server | null = null;
+let ioInstance: Server | null = globalThis.__auroraWebSocketServer__ ?? null;
 const connections = new Map<string, WSConnectionContext>();
 const userSockets = new Map<string, string[]>(); // userId -> socketIds
 
@@ -35,6 +40,7 @@ export function initializeWebSocket(server: any): Server {
     pingInterval: 25000,
     pingTimeout: 60000,
   });
+  globalThis.__auroraWebSocketServer__ = ioInstance;
 
   // Connection handler
   ioInstance.on('connection', (socket: Socket) => {
@@ -72,6 +78,10 @@ export function initializeWebSocket(server: any): Server {
       handleSyncRequest(socket, data)
     );
 
+    // Room controls
+    socket.on('join', (data) => handleJoinRoom(socket, data));
+    socket.on('leave', (data) => handleLeaveRoom(socket, data));
+
     // Disconnect
     socket.on('disconnect', () => handleDisconnect(socket));
     socket.on('error', (error) => handleError(socket, error));
@@ -84,7 +94,8 @@ export function initializeWebSocket(server: any): Server {
  * Get WebSocket server instance
  */
 export function getWebSocketServer(): Server | null {
-  return ioInstance;
+  if (ioInstance) return ioInstance;
+  return globalThis.__auroraWebSocketServer__ ?? null;
 }
 
 // ============================================================================
@@ -198,6 +209,20 @@ function handleError(socket: Socket, error: any) {
   });
 }
 
+function handleJoinRoom(socket: Socket, data: any) {
+  const room = typeof data?.room === 'string' ? data.room.trim() : '';
+  if (!room) return;
+
+  socket.join(room);
+}
+
+function handleLeaveRoom(socket: Socket, data: any) {
+  const room = typeof data?.room === 'string' ? data.room.trim() : '';
+  if (!room) return;
+
+  socket.leave(room);
+}
+
 // ============================================================================
 // SOCIAL UNIVERSE EVENTS
 // ============================================================================
@@ -258,7 +283,9 @@ function handleFeedUpdate(socket: Socket, data: any) {
   try {
     // Subscribe to universe feed
     const universe = data.universe || 'social';
-    socket.join(WSRooms.universe(universe));
+    const room = WSRooms.universe(universe);
+    socket.join(room);
+    context.rooms = Array.from(new Set([...(context.rooms || []), room]));
 
     console.log(
       `[WebSocket] ${context.userId} subscribed to ${universe} universe`
@@ -289,6 +316,8 @@ function handleMessage(socket: Socket, data: any) {
     };
 
     if (ioInstance && data.communityId) {
+      socket.join(WSRooms.community(data.communityId));
+
       // Broadcast to community room
       ioInstance
         .to(WSRooms.community(data.communityId))
@@ -308,12 +337,30 @@ function handleTypingIndicator(socket: Socket, data: any) {
   if (!context) return;
 
   try {
-    if (ioInstance && data.communityId) {
+    if (!ioInstance) return;
+
+    if (data.communityId) {
+      socket.join(WSRooms.community(data.communityId));
       ioInstance.to(WSRooms.community(data.communityId)).emit(
         WSEventType.TYPING_INDICATOR,
         {
           userId: context.userId,
+          userName: data.userName,
           communityId: data.communityId,
+          isTyping: data.isTyping,
+          timestamp: Date.now(),
+        }
+      );
+      return;
+    }
+
+    if (data.postId) {
+      ioInstance.to(WSRooms.universe('social')).emit(
+        WSEventType.TYPING_INDICATOR,
+        {
+          userId: context.userId,
+          userName: data.userName,
+          postId: data.postId,
           isTyping: data.isTyping,
           timestamp: Date.now(),
         }

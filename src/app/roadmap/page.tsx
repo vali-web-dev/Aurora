@@ -1,10 +1,10 @@
 import { AuroraShell } from "@/components/os/AuroraShell";
-import { ProductOverview } from "@/components/product/ProductOverview";
+import { ProductOverview } from "./ProductOverview";
 
-export default function ProductPage() {
-return (
-<AuroraShell>
-    <ProductOverview />
-</AuroraShell>
-);
+export default function RoadmapPage() {
+    return (
+        <AuroraShell>
+            <ProductOverview />
+        </AuroraShell>
+    );
 }

@@ -13,6 +13,13 @@ import {
 } from '@/lib/request-validation';
 import { broadcastToUniverse } from '@/lib/websocket-server';
 import { WSEventType } from '@/lib/websocket-types';
+import type { z } from 'zod';
+
+type CommentReactionCreatePayload = z.infer<typeof commentReactionCreateSchema>;
+
+interface EmojiReaction {
+  emoji: string;
+}
 
 /**
  * GET /api/social/comment-reactions
@@ -32,8 +39,9 @@ export async function GET(request: NextRequest) {
     return successResponse({
       commentId,
       reactions,
-      summary: reactions.reduce((acc: any, r: any) => {
-        acc[r.emoji] = (acc[r.emoji] || 0) + 1;
+      summary: reactions.reduce<Record<string, number>>((acc, r) => {
+        const reaction = r as EmojiReaction;
+        acc[reaction.emoji] = (acc[reaction.emoji] || 0) + 1;
         return acc;
       }, {}),
     });
@@ -59,8 +67,8 @@ export async function POST(request: NextRequest) {
       return validation.response;
     }
 
-    const data = validation.data as any;
-    const commentId = data.commentId as number;
+    const data = validation.data as CommentReactionCreatePayload;
+    const commentId = data.commentId;
 
     const reaction = await createCommentReaction({
       commentId,

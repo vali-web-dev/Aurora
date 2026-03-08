@@ -7,7 +7,7 @@ import { db } from './db';
 import { getWebSocketServer } from './websocket-server';
 import { WSEventType, WSRooms } from './websocket-types';
 import * as schema from './schema';
-import { eq, and } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 export interface Notification {
   id: string;
@@ -34,9 +34,8 @@ export async function createNotification(
     data?: Record<string, any>;
   }
 ): Promise<Notification> {
-  const id = `notif-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   const notification: Notification = {
-    id,
+    id: `notif-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     userId,
     type,
     title,
@@ -47,10 +46,29 @@ export async function createNotification(
     data: options?.data,
   };
 
-  // Persist in database (table needs to be created)
   try {
-    // TODO: Insert into notifications table when schema is updated
-    // await db.insert(schema.notifications).values(notification);
+    const inserted = await db
+      .insert(schema.notifications)
+      .values({
+        userId,
+        kind: type,
+        title,
+        body: message,
+        payload: {
+          ...(options?.data || {}),
+          ...(options?.link ? { link: options.link } : {}),
+        },
+        read: false,
+      })
+      .returning({
+        id: schema.notifications.id,
+        createdAt: schema.notifications.createdAt,
+      });
+
+    if (inserted[0]) {
+      notification.id = String(inserted[0].id);
+      notification.createdAt = inserted[0].createdAt || notification.createdAt;
+    }
   } catch (err) {
     console.error('[Notifications] Failed to persist:', err);
   }
@@ -175,7 +193,18 @@ export async function markNotificationAsRead(
   userId: number,
   notificationId: string
 ) {
-  // TODO: Update in database when notifications table is added
+  const numericId = Number.parseInt(notificationId, 10);
+  if (Number.isFinite(numericId)) {
+    try {
+      await db
+        .update(schema.notifications)
+        .set({ read: true })
+        .where(and(eq(schema.notifications.id, numericId), eq(schema.notifications.userId, userId)));
+    } catch (err) {
+      console.error('[Notifications] Failed to mark as read:', err);
+    }
+  }
+
   const io = getWebSocketServer();
   if (io) {
     io.to(WSRooms.notifications(String(userId))).emit('notification:read', {
@@ -188,7 +217,12 @@ export async function markNotificationAsRead(
  * Clear all notifications for user
  */
 export async function clearNotifications(userId: number) {
-  // TODO: Delete from database
+  try {
+    await db.delete(schema.notifications).where(eq(schema.notifications.userId, userId));
+  } catch (err) {
+    console.error('[Notifications] Failed to clear:', err);
+  }
+
   const io = getWebSocketServer();
   if (io) {
     io.to(WSRooms.notifications(String(userId))).emit('notifications:cleared');

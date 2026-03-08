@@ -40,6 +40,38 @@ export default function SettingsPage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!session?.user?.id) return;
+
+    const loadSettings = async () => {
+      try {
+        const response = await fetch('/api/users/settings');
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const notifications = data?.notifications;
+        const privacy = data?.privacy;
+
+        if (notifications && typeof notifications === 'object') {
+          setEmailNotifications(Boolean(notifications.emailNotifications));
+          setPushNotifications(Boolean(notifications.pushNotifications));
+          setMessageNotifications(Boolean(notifications.messageNotifications));
+          setMentionNotifications(Boolean(notifications.mentionNotifications));
+        }
+
+        if (privacy && typeof privacy === 'object') {
+          setProfileVisibility(privacy.profileVisibility === 'private' ? 'private' : 'public');
+          setShowEmail(Boolean(privacy.showEmail));
+          setShowActivity(Boolean(privacy.showActivity));
+        }
+      } catch (error) {
+        console.error('Failed to load settings:', error);
+      }
+    };
+
+    loadSettings();
+  }, [session?.user?.id]);
+
   const pushNotice = (message: string, tone: 'success' | 'error' | 'info' | 'warning' = 'info') => {
     setNotice({ message, tone });
     if (noticeTimerRef.current !== null) {
@@ -101,13 +133,29 @@ export default function SettingsPage() {
   const handleNotificationSave = async () => {
     setIsSaving(true);
     try {
-      // TODO: Implement API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('/api/users/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          notifications: {
+            emailNotifications,
+            pushNotifications,
+            messageNotifications,
+            mentionNotifications,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || 'Failed to save notification preferences');
+      }
+
       setSuccess('Notification preferences saved');
       pushNotice('Notification preferences saved.', 'success');
       setTimeout(() => setSuccess(''), 3000);
-    } catch (error) {
-      pushNotice('Failed to save notification preferences.', 'error');
+    } catch (error: any) {
+      pushNotice(error?.message || 'Failed to save notification preferences.', 'error');
     } finally {
       setIsSaving(false);
     }
@@ -116,13 +164,28 @@ export default function SettingsPage() {
   const handlePrivacySave = async () => {
     setIsSaving(true);
     try {
-      // TODO: Implement API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('/api/users/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          privacy: {
+            profileVisibility,
+            showEmail,
+            showActivity,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || 'Failed to save privacy settings');
+      }
+
       setSuccess('Privacy settings saved');
       pushNotice('Privacy settings saved.', 'success');
       setTimeout(() => setSuccess(''), 3000);
-    } catch (error) {
-      pushNotice('Failed to save privacy settings.', 'error');
+    } catch (error: any) {
+      pushNotice(error?.message || 'Failed to save privacy settings.', 'error');
     } finally {
       setIsSaving(false);
     }

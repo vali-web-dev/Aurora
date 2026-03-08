@@ -24,7 +24,8 @@ import {
 } from '@/data/types';
 import { useRouter } from 'next/navigation';
 import { expandableNavigation } from '@/lib/expandable-navigation';
-import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
+import Link from 'next/link';
 
 const tasks = AuroraDataService.getTasks();
 const notes = AuroraDataService.getNotes();
@@ -47,23 +48,16 @@ const activeCourses = courses
   .slice(0, 3);
 
 const quickActions = [
-  { label: 'Start Focus Realm', icon: 'target', href: '/realms' },
-  { label: 'Open Create', icon: 'create', href: '/create' },
-  { label: 'New Note', icon: 'note', href: '/productivity' },
-  { label: 'Plan the Day', icon: 'calendar', href: '/productivity' },
+  { label: 'Start Focus Realm', href: '/realms' },
+  { label: 'Open Create', href: '/create' },
+  { label: 'New Note', href: '/productivity' },
+  { label: 'Plan the Day', href: '/productivity' },
 ];
 
 const dailyBrief = {
   greeting: 'Good evening, Aurora Founder',
   summary: 'You have 3 focus tasks, 2 events, and 1 active learning path.',
   highlight: 'Creation Realm is your most active space this week.',
-};
-
-const iconMap: Record<string, string> = {
-  target: 'Target',
-  create: 'Create',
-  note: 'Note',
-  calendar: 'Plan',
 };
 
 export function HomeUniverse() {
@@ -126,12 +120,12 @@ export function HomeUniverse() {
           </p>
         </div>
         <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900">
-          <div className="space-y-2">
+          <Link href="/realms" className="block space-y-2 rounded-lg p-1 -m-1 hover:bg-white/40 dark:hover:bg-slate-800/40 transition-colors">
             <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">Daily Brief</p>
             <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
               {dailyBrief.highlight}
             </p>
-          </div>
+          </Link>
         </Card>
       </SurfaceSection>
 
@@ -144,9 +138,15 @@ export function HomeUniverse() {
       <HomeUpgrades />
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard label="Focus Tasks" value={topTasks.length} helper="Active priorities" />
-        <StatCard label="Upcoming Events" value={upcomingEvents.length} helper="Next 3" />
-        <StatCard label="Active Courses" value={activeCourses.length} helper="In progress" />
+        <Link href="/productivity" className="block">
+          <StatCard label="Focus Tasks" value={topTasks.length} helper="Active priorities" />
+        </Link>
+        <Link href="/productivity/calendar" className="block">
+          <StatCard label="Upcoming Events" value={upcomingEvents.length} helper="Next 3" />
+        </Link>
+        <Link href="/learning" className="block">
+          <StatCard label="Active Courses" value={activeCourses.length} helper="In progress" />
+        </Link>
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-[1.2fr,1fr] gap-8">
@@ -157,7 +157,9 @@ export function HomeUniverse() {
               <Button variant="ghost" size="sm">Customize</Button>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="list" aria-label="Quick actions">
-              {quickActions.map((action) => (
+              {quickActions.map((action) => {
+                const iconName = resolvePageIconName(action.label, action.href);
+                return (
                 <button
                   key={action.label}
                   type="button"
@@ -165,12 +167,18 @@ export function HomeUniverse() {
                   onClick={() => handleNavigate(action.href, action.label)}
                   className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                 >
-                  <div className="aurora-label text-sm text-slate-900 dark:text-slate-50">
-                    {iconMap[action.icon]}
+                  <div className="flex items-center gap-2">
+                    <span className={getPageIconColor(iconName)}>
+                      <PageIcon pageName={iconName} className="w-4 h-4" />
+                    </span>
+                    <div className="aurora-label text-sm text-slate-900 dark:text-slate-50">
+                      {action.label}
+                    </div>
                   </div>
-                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{action.label}</p>
+                  <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">Open {action.label}</p>
                 </button>
-              ))}
+                );
+              })}
             </div>
           </Card>
 
@@ -187,7 +195,7 @@ export function HomeUniverse() {
             </div>
             <div className="space-y-3" role="list" aria-label="Priority tasks">
               {topTasks.map((task) => (
-                <div key={task.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+                <Link key={task.id} href="/productivity" role="listitem" className="block p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                   <div className="flex items-center justify-between">
                     <p className="aurora-label text-slate-900 dark:text-slate-50">{task.title}</p>
                     <Badge variant={task.priority === 'high' ? 'error' : task.priority === 'medium' ? 'warning' : 'default'} size="sm">
@@ -197,7 +205,7 @@ export function HomeUniverse() {
                   {task.description && (
                     <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{task.description}</p>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
           </Card>
@@ -215,7 +223,7 @@ export function HomeUniverse() {
             </div>
             <div className="space-y-3" role="list" aria-label="Learning progress">
               {activeCourses.map(({ course, progress }) => (
-                <div key={course.id} role="listitem" className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2">
+                <Link key={course.id} href="/learning" role="listitem" className="block p-4 rounded-lg bg-slate-50 dark:bg-slate-800 space-y-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                   <p className="aurora-label text-slate-900 dark:text-slate-50">{course.title}</p>
                   <div className="aurora-label flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                     <span>{progress}% complete</span>
@@ -224,7 +232,7 @@ export function HomeUniverse() {
                   <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div className="h-full bg-blue-600" style={{ width: `${progress}%` }} />
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </Card>
@@ -235,12 +243,12 @@ export function HomeUniverse() {
             <CardTitle>Upcoming Events</CardTitle>
             <div className="space-y-3">
               {upcomingEvents.map((event) => (
-                <div key={event.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <Link key={event.id} href="/productivity/calendar" className="block p-3 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                   <p className="aurora-label text-slate-900 dark:text-slate-50">{event.title}</p>
                   <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                     {formatDateTime(event.startsAt)} • {event.durationMinutes} min
                   </p>
-                </div>
+                </Link>
               ))}
             </div>
           </Card>
@@ -270,10 +278,10 @@ export function HomeUniverse() {
             <CardTitle>Notes</CardTitle>
             <div className="space-y-3">
               {notes.slice(0, 3).map((note) => (
-                <div key={note.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+                <Link key={note.id} href="/productivity/notes" className="block p-3 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                   <p className="aurora-label text-slate-900 dark:text-slate-50">{note.title}</p>
                   <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">{note.body}</p>
-                </div>
+                </Link>
               ))}
             </div>
           </Card>

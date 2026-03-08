@@ -1,0 +1,2649 @@
+{
+  "generatedAt": "2026-03-08T20:58:22.783Z",
+  "totals": {
+    "uniqueNavLinks": 121,
+    "ok": 121,
+    "missing": 0,
+    "iconEntries": 232,
+    "iconFallbacks": 0,
+    "staticRoutes": 71,
+    "catchAllBases": 29,
+    "singleDynamicBases": 3
+  },
+  "missing": [],
+  "iconFallbacks": [],
+  "iconResults": [
+    {
+      "href": "/",
+      "label": "Home",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Home",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment",
+      "label": "Entertainment",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Entertainment",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce",
+      "label": "Commerce",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/social",
+      "label": "Social",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Social",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/learning",
+      "label": "Learning",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Learning",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create",
+      "label": "Create",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/identity",
+      "label": "Identity",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand",
+      "label": "Brand",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Brand",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/aurora-logo-studio",
+      "label": "Aurora Logo Studio",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Brand",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-pro",
+      "label": "Photoshop Pro",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-canvas",
+      "label": "Photoshop Canvas",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-canvas-advanced",
+      "label": "Photoshop Canvas Advanced",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-enhanced",
+      "label": "Photoshop Enhanced",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/communities",
+      "label": "Communities",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Communities",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/gaming",
+      "label": "Gaming",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Gaming",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/review",
+      "label": "Shopping Review",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/orders",
+      "label": "Order History",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/economy",
+      "label": "Economy",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Economy",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/developer",
+      "label": "Developer",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Developer",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/ai",
+      "label": "AI",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "AI",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/finance",
+      "label": "Finance",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Finance",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health",
+      "label": "Health",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Health",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health/human-model",
+      "label": "Human Model",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Health",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/homecontrol",
+      "label": "Home Control",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Home Control",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/automation",
+      "label": "Automation",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Automation",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment",
+      "label": "Entertainment",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Entertainment",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/social",
+      "label": "Social",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Social",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/productivity",
+      "label": "Productivity",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Productivity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/realms",
+      "label": "Realms",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Realms",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/guilds",
+      "label": "Guilds",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Guilds",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/luma",
+      "label": "Luma",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Home Control",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/travel",
+      "label": "Travel",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/navigation",
+      "label": "Navigation",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/navigation/topology",
+      "label": "Feature Topology",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/security",
+      "label": "Security",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Security",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/accessibility",
+      "label": "Accessibility",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Accessibility",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/admin",
+      "label": "Admin",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Admin",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/about",
+      "label": "About",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/roadmap",
+      "label": "Roadmap",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Roadmap",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/blog",
+      "label": "Blog",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Blog",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/contact",
+      "label": "Contact",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Contact",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/identity",
+      "label": "Identity",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/product",
+      "label": "Overview",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/review",
+      "label": "Shopping Review",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/orders",
+      "label": "Order History",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand",
+      "label": "Brand",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Brand",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/communities",
+      "label": "Communities",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Communities",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/gaming",
+      "label": "Gaming",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Gaming",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/economy",
+      "label": "Economy",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Economy",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/developer",
+      "label": "Developer",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Developer",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/ai",
+      "label": "AI",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "AI",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/finance",
+      "label": "Finance",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Finance",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health",
+      "label": "Health",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Health",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/homecontrol",
+      "label": "Home Control",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Home Control",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/automation",
+      "label": "Automation",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Automation",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment",
+      "label": "Entertainment",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Entertainment",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/social",
+      "label": "Social",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Social",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/learning",
+      "label": "Learning",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Learning",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/productivity",
+      "label": "Productivity",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Productivity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/travel",
+      "label": "Travel",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/navigation",
+      "label": "Navigation",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/realms",
+      "label": "Realms",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Realms",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create",
+      "label": "Create",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/guilds",
+      "label": "Guilds",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Guilds",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/luma",
+      "label": "Luma",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Home Control",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/about",
+      "label": "About Aurora",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/roadmap",
+      "label": "Roadmap",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Roadmap",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/blog",
+      "label": "Updates",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Blog",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/legal",
+      "label": "Privacy & Terms",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Security",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/security",
+      "label": "Security",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Security",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/accessibility",
+      "label": "Accessibility",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Accessibility",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health",
+      "label": "Health",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Health",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/admin",
+      "label": "Admin",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Admin",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/contact",
+      "label": "Contact",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Contact",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/identity",
+      "label": "Identity",
+      "source": "src\\lib\\navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/dashboard",
+      "label": "Dashboard",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Dashboard",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/profile",
+      "label": "Your Profile",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Profile",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/settings",
+      "label": "Settings",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Settings",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/home",
+      "label": "Home",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Home",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment",
+      "label": "Explore Entertainment",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Entertainment",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment/music",
+      "label": "Music",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Music",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment/movies",
+      "label": "Movies",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Movies",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment/shows",
+      "label": "TV Shows",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "TV Shows",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment/podcasts",
+      "label": "Podcasts",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Podcasts",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment/books",
+      "label": "Books",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Books",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/gaming",
+      "label": "Gaming",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Gaming",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/entertainment",
+      "label": "Entertainment",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Entertainment",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce",
+      "label": "Shop Now",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/cart",
+      "label": "Shopping Cart",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Shopping Cart",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/checkout",
+      "label": "Checkout",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Checkout",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/orders",
+      "label": "Order History",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/review",
+      "label": "Shopping Review",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce/delivery",
+      "label": "Delivery Tracking",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Delivery Tracking",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/commerce",
+      "label": "Commerce",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Commerce",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/social",
+      "label": "Social Feed",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Social",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/social/friends",
+      "label": "Friends",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Friends",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/social/messages",
+      "label": "Messages",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Messages",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/social/notifications",
+      "label": "Notifications",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Notifications",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/communities",
+      "label": "Communities",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Communities",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/guilds",
+      "label": "Guilds",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Guilds",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/social",
+      "label": "Social",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Social",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/learning",
+      "label": "Explore Courses",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Learning",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/learning/my-courses",
+      "label": "My Courses",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "My Courses",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/learning/achievements",
+      "label": "Achievements",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Achievements",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/learning/library",
+      "label": "Library",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Library",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/learning/instructors",
+      "label": "Instructors",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Instructors",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/learning",
+      "label": "Learning",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Learning",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create",
+      "label": "Creation Studio",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create/editor",
+      "label": "Aurora Editor",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Aurora Editor",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create/projects",
+      "label": "My Projects",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "My Projects",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create/templates",
+      "label": "Templates",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Templates",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create/assets",
+      "label": "Asset Library",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Asset Library",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create/collaborate",
+      "label": "Collaborate",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Collaborate",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-pro",
+      "label": "Photoshop Pro",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-canvas",
+      "label": "Photoshop Canvas",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-canvas-advanced",
+      "label": "Photoshop Canvas Advanced",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-enhanced",
+      "label": "Photoshop Enhanced",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/create",
+      "label": "Create",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand",
+      "label": "Brand Hub",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Brand",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/aurora-logo-studio",
+      "label": "Aurora Logo Studio",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Brand",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/arc-panel-lab",
+      "label": "Arc Panel Lab",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Arc Panel Lab",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-pro",
+      "label": "Photoshop Pro",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-canvas",
+      "label": "Photoshop Canvas",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-canvas-advanced",
+      "label": "Photoshop Canvas Advanced",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/photoshop-enhanced",
+      "label": "Photoshop Enhanced",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/identity",
+      "label": "Brand Identity",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Brand Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/content",
+      "label": "Content",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Content",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand/analytics",
+      "label": "Analytics",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Analytics",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/brand",
+      "label": "Brand",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Brand",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/communities",
+      "label": "Discover",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Communities",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/communities/my-groups",
+      "label": "My Groups",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "My Groups",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/communities/create",
+      "label": "Create Community",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create Community",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/communities",
+      "label": "Communities",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Communities",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/gaming",
+      "label": "Game Library",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Gaming",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/gaming/store",
+      "label": "Game Store",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Game Store",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/gaming/achievements",
+      "label": "Achievements",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Achievements",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/gaming/leaderboards",
+      "label": "Leaderboards",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Leaderboards",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/guilds",
+      "label": "Guilds",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Guilds",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/gaming",
+      "label": "Gaming",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Gaming",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/productivity/calendar",
+      "label": "Calendar",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Calendar",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/productivity/notes",
+      "label": "Notes",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Notes",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/productivity/projects",
+      "label": "Projects",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Projects",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/productivity",
+      "label": "Productivity",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Productivity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/travel/bookings",
+      "label": "My Trips",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "My Trips",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/travel/guides",
+      "label": "Travel Guides",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Travel Guides",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/travel",
+      "label": "Travel",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/finance",
+      "label": "Overview",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Finance",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/finance/accounts",
+      "label": "Accounts",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Accounts",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/finance/transactions",
+      "label": "Transactions",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Transactions",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/finance/budget",
+      "label": "Budget",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Budget",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/finance/invest",
+      "label": "Investing",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Investing",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/economy",
+      "label": "Economy",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Economy",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/finance",
+      "label": "Finance",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Finance",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health",
+      "label": "Health Dashboard",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Health",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health/human-model",
+      "label": "Human Model",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Health",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health/activity",
+      "label": "Activity",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Activity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health/nutrition",
+      "label": "Nutrition",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Nutrition",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health/sleep",
+      "label": "Sleep",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Sleep",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health/mindfulness",
+      "label": "Mindfulness",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Mindfulness",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/health",
+      "label": "Health",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Health",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/homecontrol",
+      "label": "Home Dashboard",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Home Control",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/homecontrol/devices",
+      "label": "Devices",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Devices",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/homecontrol/rooms",
+      "label": "Rooms",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Rooms",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/homecontrol/scenes",
+      "label": "Scenes",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Scenes",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/automation",
+      "label": "Automation",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Automation",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/homecontrol",
+      "label": "Home Control",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Home Control",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/automation",
+      "label": "Workflows",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Automation",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/automation/rules",
+      "label": "Rules",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Rules",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/automation/schedules",
+      "label": "Schedules",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Schedules",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/ai",
+      "label": "AI Assistant",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "AI",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/automation",
+      "label": "Automation",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Automation",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/ai",
+      "label": "AI Hub",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "AI",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/ai/chat",
+      "label": "Chat",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Chat",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/ai/tools",
+      "label": "AI Tools",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Ai Tools",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/ai/history",
+      "label": "History",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "History",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/ai",
+      "label": "AI",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "AI",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/developer",
+      "label": "Developer Portal",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Developer",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/developer/api",
+      "label": "API Keys",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Api Keys",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/developer/webhooks",
+      "label": "Webhooks",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Webhooks",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/developer/apps",
+      "label": "Applications",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Applications",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/developer",
+      "label": "Developer",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Developer",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/identity",
+      "label": "Identity Hub",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/identity/credentials",
+      "label": "Credentials",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Credentials",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/identity/privacy",
+      "label": "Privacy",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Privacy",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/identity",
+      "label": "Identity",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/economy",
+      "label": "Economy Hub",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Economy",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/economy/marketplace",
+      "label": "Marketplace",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Marketplace",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/economy/wallet",
+      "label": "Wallet",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Wallet",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/economy",
+      "label": "Economy",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Economy",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/realms",
+      "label": "Explore Realms",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Realms",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/realms/my-realms",
+      "label": "My Realms",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "My Realms",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/realms/create",
+      "label": "Create Realm",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create Realm",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/realms",
+      "label": "Realms",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Realms",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/guilds",
+      "label": "Find Guilds",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Guilds",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/guilds/my-guilds",
+      "label": "My Guilds",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "My Guilds",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/guilds/create",
+      "label": "Create Guild",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Create Guild",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/guilds",
+      "label": "Guilds",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Guilds",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/luma",
+      "label": "Luma Control",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Home Control",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/luma/scenes",
+      "label": "Light Scenes",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Light Scenes",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/luma/schedule",
+      "label": "Schedule",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Schedule",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/luma",
+      "label": "Luma",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Home Control",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/navigation",
+      "label": "Map View",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/navigation/topology",
+      "label": "Feature Topology",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/navigation/saved",
+      "label": "Saved Places",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Saved Places",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/navigation/directions",
+      "label": "Directions",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Directions",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/navigation",
+      "label": "Navigation",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Travel",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/about",
+      "label": "About Aurora",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/about/team",
+      "label": "Team",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/about/philosophy",
+      "label": "Philosophy",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/about",
+      "label": "About",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Identity",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/roadmap",
+      "label": "Product Roadmap",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Roadmap",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/roadmap/changelog",
+      "label": "Changelog",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Changelog",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/roadmap",
+      "label": "Roadmap",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Roadmap",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/blog",
+      "label": "All Posts",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Blog",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/blog/announcements",
+      "label": "Announcements",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Announcements",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/blog",
+      "label": "Blog",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Blog",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/contact",
+      "label": "Contact Form",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Contact",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/contact/support",
+      "label": "Support",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Support",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/contact",
+      "label": "Contact",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Contact",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/accessibility",
+      "label": "Accessibility Hub",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Accessibility",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/accessibility/keyboard",
+      "label": "Keyboard Nav",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Keyboard Nav",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/accessibility",
+      "label": "Accessibility",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Accessibility",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/admin",
+      "label": "Admin Dashboard",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Admin",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/admin/users",
+      "label": "Users",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Users",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/admin/settings",
+      "label": "System Settings",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "System Settings",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/admin",
+      "label": "Admin",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Admin",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/settings",
+      "label": "All Settings",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Settings",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/settings/account",
+      "label": "Account",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Account",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/settings/privacy",
+      "label": "Privacy",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Privacy",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/settings/notifications",
+      "label": "Notifications",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Notifications",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/security",
+      "label": "Security",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Security",
+      "fallbackToHome": false
+    },
+    {
+      "href": "/settings",
+      "label": "Settings",
+      "source": "src\\lib\\expandable-navigation.ts",
+      "resolvedIcon": "Settings",
+      "fallbackToHome": false
+    }
+  ],
+  "results": [
+    {
+      "href": "/",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts"
+      ]
+    },
+    {
+      "href": "/about",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/about/philosophy",
+      "status": "ok",
+      "reason": "catch-all:/about",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/about/team",
+      "status": "ok",
+      "reason": "catch-all:/about",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/accessibility",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/accessibility/keyboard",
+      "status": "ok",
+      "reason": "catch-all:/accessibility",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/admin",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/admin/settings",
+      "status": "ok",
+      "reason": "catch-all:/admin",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/admin/users",
+      "status": "ok",
+      "reason": "catch-all:/admin",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/ai",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/ai/chat",
+      "status": "ok",
+      "reason": "catch-all:/ai",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/ai/history",
+      "status": "ok",
+      "reason": "catch-all:/ai",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/ai/tools",
+      "status": "ok",
+      "reason": "catch-all:/ai",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/automation",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/automation/rules",
+      "status": "ok",
+      "reason": "catch-all:/automation",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/automation/schedules",
+      "status": "ok",
+      "reason": "catch-all:/automation",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/blog",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/blog/announcements",
+      "status": "ok",
+      "reason": "catch-all:/blog",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/analytics",
+      "status": "ok",
+      "reason": "catch-all:/brand",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/arc-panel-lab",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/aurora-logo-studio",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/content",
+      "status": "ok",
+      "reason": "catch-all:/brand",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/identity",
+      "status": "ok",
+      "reason": "catch-all:/brand",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/photoshop-canvas",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/photoshop-canvas-advanced",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/photoshop-enhanced",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/brand/photoshop-pro",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/commerce",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/commerce/cart",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/commerce/checkout",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/commerce/delivery",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/commerce/orders",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/commerce/review",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/communities",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/communities/create",
+      "status": "ok",
+      "reason": "catch-all:/communities",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/communities/my-groups",
+      "status": "ok",
+      "reason": "catch-all:/communities",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/contact",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/contact/support",
+      "status": "ok",
+      "reason": "catch-all:/contact",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/create",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/create/assets",
+      "status": "ok",
+      "reason": "catch-all:/create",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/create/collaborate",
+      "status": "ok",
+      "reason": "catch-all:/create",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/create/editor",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/create/projects",
+      "status": "ok",
+      "reason": "catch-all:/create",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/create/templates",
+      "status": "ok",
+      "reason": "catch-all:/create",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/dashboard",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/developer",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/developer/api",
+      "status": "ok",
+      "reason": "catch-all:/developer",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/developer/apps",
+      "status": "ok",
+      "reason": "catch-all:/developer",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/developer/webhooks",
+      "status": "ok",
+      "reason": "catch-all:/developer",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/economy",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/economy/marketplace",
+      "status": "ok",
+      "reason": "catch-all:/economy",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/economy/wallet",
+      "status": "ok",
+      "reason": "catch-all:/economy",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/entertainment",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/entertainment/books",
+      "status": "ok",
+      "reason": "catch-all:/entertainment",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/entertainment/movies",
+      "status": "ok",
+      "reason": "catch-all:/entertainment",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/entertainment/music",
+      "status": "ok",
+      "reason": "catch-all:/entertainment",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/entertainment/podcasts",
+      "status": "ok",
+      "reason": "catch-all:/entertainment",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/entertainment/shows",
+      "status": "ok",
+      "reason": "catch-all:/entertainment",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/finance",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/finance/accounts",
+      "status": "ok",
+      "reason": "catch-all:/finance",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/finance/budget",
+      "status": "ok",
+      "reason": "catch-all:/finance",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/finance/invest",
+      "status": "ok",
+      "reason": "catch-all:/finance",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/finance/transactions",
+      "status": "ok",
+      "reason": "catch-all:/finance",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/gaming",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/gaming/achievements",
+      "status": "ok",
+      "reason": "catch-all:/gaming",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/gaming/leaderboards",
+      "status": "ok",
+      "reason": "catch-all:/gaming",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/gaming/store",
+      "status": "ok",
+      "reason": "catch-all:/gaming",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/guilds",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/guilds/create",
+      "status": "ok",
+      "reason": "catch-all:/guilds",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/guilds/my-guilds",
+      "status": "ok",
+      "reason": "catch-all:/guilds",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/health",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/health/activity",
+      "status": "ok",
+      "reason": "catch-all:/health",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/health/human-model",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/health/mindfulness",
+      "status": "ok",
+      "reason": "catch-all:/health",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/health/nutrition",
+      "status": "ok",
+      "reason": "catch-all:/health",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/health/sleep",
+      "status": "ok",
+      "reason": "catch-all:/health",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/home",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/homecontrol",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/homecontrol/devices",
+      "status": "ok",
+      "reason": "catch-all:/homecontrol",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/homecontrol/rooms",
+      "status": "ok",
+      "reason": "catch-all:/homecontrol",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/homecontrol/scenes",
+      "status": "ok",
+      "reason": "catch-all:/homecontrol",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/identity",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/identity/credentials",
+      "status": "ok",
+      "reason": "catch-all:/identity",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/identity/privacy",
+      "status": "ok",
+      "reason": "catch-all:/identity",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/learning",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/learning/achievements",
+      "status": "ok",
+      "reason": "catch-all:/learning",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/learning/instructors",
+      "status": "ok",
+      "reason": "catch-all:/learning",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/learning/library",
+      "status": "ok",
+      "reason": "catch-all:/learning",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/learning/my-courses",
+      "status": "ok",
+      "reason": "catch-all:/learning",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/legal",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts"
+      ]
+    },
+    {
+      "href": "/luma",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/luma/scenes",
+      "status": "ok",
+      "reason": "catch-all:/luma",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/luma/schedule",
+      "status": "ok",
+      "reason": "catch-all:/luma",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/navigation",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/navigation/directions",
+      "status": "ok",
+      "reason": "catch-all:/navigation",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/navigation/saved",
+      "status": "ok",
+      "reason": "catch-all:/navigation",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/navigation/topology",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/product",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts"
+      ]
+    },
+    {
+      "href": "/productivity",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/productivity/calendar",
+      "status": "ok",
+      "reason": "catch-all:/productivity",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/productivity/notes",
+      "status": "ok",
+      "reason": "catch-all:/productivity",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/productivity/projects",
+      "status": "ok",
+      "reason": "catch-all:/productivity",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/profile",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/realms",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/realms/create",
+      "status": "ok",
+      "reason": "catch-all:/realms",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/realms/my-realms",
+      "status": "ok",
+      "reason": "catch-all:/realms",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/roadmap",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/roadmap/changelog",
+      "status": "ok",
+      "reason": "catch-all:/roadmap",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/security",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/settings",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/settings/account",
+      "status": "ok",
+      "reason": "catch-all:/settings",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/settings/notifications",
+      "status": "ok",
+      "reason": "catch-all:/settings",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/settings/privacy",
+      "status": "ok",
+      "reason": "catch-all:/settings",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/social",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/social/friends",
+      "status": "ok",
+      "reason": "catch-all:/social",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/social/messages",
+      "status": "ok",
+      "reason": "catch-all:/social",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/social/notifications",
+      "status": "ok",
+      "reason": "catch-all:/social",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/travel",
+      "status": "ok",
+      "reason": "static",
+      "sources": [
+        "src\\lib\\navigation.ts",
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/travel/bookings",
+      "status": "ok",
+      "reason": "catch-all:/travel",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    },
+    {
+      "href": "/travel/guides",
+      "status": "ok",
+      "reason": "catch-all:/travel",
+      "sources": [
+        "src\\lib\\expandable-navigation.ts"
+      ]
+    }
+  ]
+}

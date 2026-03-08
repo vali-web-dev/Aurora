@@ -7,7 +7,7 @@ if (process.platform !== 'win32') {
 
 const command = [
   "$cwd=(Get-Location).Path",
-  "$targets=Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match 'next dev' -and $_.CommandLine -like \"*$cwd*\" }",
+  "$targets=Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match '(next dev|server\\.js)' -and $_.CommandLine -like \"*$cwd*\" }",
   "$count=($targets | Measure-Object).Count",
   "$targets | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }",
   "Write-Output $count",
@@ -19,4 +19,4 @@ const result = spawnSync('powershell', ['-NoProfile', '-Command', command], {
 });
 
 const stopped = Number((result.stdout || '').trim()) || 0;
-console.log(`[dev:stop] Stopped ${stopped} next dev process(es).`);
+console.log(`[dev:stop] Stopped ${stopped} dev process(es).`);

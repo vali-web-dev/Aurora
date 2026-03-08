@@ -1,4 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import { auth } from '@/lib/auth';
+import { db } from '@/lib/db';
+import * as schema from '@/lib/schema';
 import { getPlaylists } from '@/lib/api-data';
 import { playlistCreateSchema } from '@/lib/validations';
 import { validateRequestBody, successResponse, errorResponse } from '@/lib/request-validation';
@@ -30,13 +33,38 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return errorResponse('Authentication required', 401);
+    }
+
+    const userId = Number.parseInt(session.user.id, 10);
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return errorResponse('Invalid user session', 400);
+    }
+
     const validation = await validateRequestBody(request, playlistCreateSchema);
     if (!validation.success) {
       return validation.response;
     }
 
-    // TODO: Implement create logic with auth check
-    return errorResponse('Not implemented yet', 501);
+    const data = validation.data as {
+      title: string;
+      description?: string;
+      type?: 'playlist' | 'watch-later' | 'favorites';
+    };
+
+    const [playlist] = await db
+      .insert(schema.playlists)
+      .values({
+        ownerUserId: userId,
+        title: data.title,
+        description: data.description ?? null,
+        type: data.type ?? 'playlist',
+      })
+      .returning();
+
+    return successResponse({ playlist }, 201);
   } catch (error) {
     console.error('Error creating playlist:', error);
     return errorResponse('Internal server error', 500);

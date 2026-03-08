@@ -8,7 +8,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
-import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 import type { NavItem } from '@/lib/expandable-navigation';
 import clsx from 'clsx';
 
@@ -32,6 +32,7 @@ export function ExpandableMenuItem({
   const itemRef = useRef<HTMLDivElement>(null);
   const isActive = pathname === item.href;
   const hasChildren = item.children && item.children.length > 0;
+  const itemIconName = resolvePageIconName(item.label, item.href);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {
@@ -150,7 +151,9 @@ export function ExpandableMenuItem({
               'py-2 animate-in fade-in slide-in-from-top-2 duration-200'
             )}
           >
-            {item.children!.map((child) => (
+            {item.children!.map((child) => {
+              const childIconName = resolvePageIconName(child.label, child.href);
+              return (
               <Link
                 key={child.href}
                 href={child.href}
@@ -162,8 +165,8 @@ export function ExpandableMenuItem({
                   pathname === child.href && 'bg-slate-100 dark:bg-slate-800 font-medium'
                 )}
               >
-                <span className={clsx('w-4 h-4 flex-shrink-0 mt-0.5', getPageIconColor(child.label))}>
-                  <PageIcon pageName={child.label} className="w-full h-full" />
+                <span className={clsx('inline-flex h-4 w-4 flex-shrink-0 items-center justify-center mt-0.5', getPageIconColor(childIconName))} aria-hidden="true">
+                  <PageIcon pageName={childIconName} className="w-full h-full" />
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="aurora-label font-medium">{child.label}</div>
@@ -174,7 +177,8 @@ export function ExpandableMenuItem({
                   )}
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -200,8 +204,8 @@ export function ExpandableMenuItem({
             isActive && 'bg-slate-100 dark:bg-slate-800 font-medium'
           )}
         >
-          <span className={clsx('w-4 h-4 flex-shrink-0', getPageIconColor(item.label))}>
-            <PageIcon pageName={item.label} className="w-full h-full" />
+          <span className={clsx('inline-flex h-4 w-4 flex-shrink-0 items-center justify-center', getPageIconColor(itemIconName))} aria-hidden="true">
+            <PageIcon pageName={itemIconName} className="w-full h-full" />
           </span>
           <div className="flex-1 min-w-0">
             <div className="font-medium">{item.label}</div>
@@ -240,7 +244,9 @@ export function ExpandableMenuItem({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            {item.children!.map((child) => (
+            {item.children!.map((child) => {
+              const childIconName = resolvePageIconName(child.label, child.href);
+              return (
               <Link
                 key={child.href}
                 href={child.href}
@@ -252,8 +258,8 @@ export function ExpandableMenuItem({
                   pathname === child.href && 'bg-slate-100 dark:bg-slate-800 font-medium'
                 )}
               >
-                <span className={clsx('w-4 h-4 flex-shrink-0 mt-0.5', getPageIconColor(child.label))}>
-                  <PageIcon pageName={child.label} className="w-full h-full" />
+                <span className={clsx('inline-flex h-4 w-4 flex-shrink-0 items-center justify-center mt-0.5', getPageIconColor(childIconName))} aria-hidden="true">
+                  <PageIcon pageName={childIconName} className="w-full h-full" />
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="font-medium">{child.label}</div>
@@ -264,7 +270,8 @@ export function ExpandableMenuItem({
                   )}
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -288,8 +295,8 @@ export function ExpandableMenuItem({
           isActive && 'bg-slate-100 dark:bg-slate-800 font-medium'
         )}
       >
-        <span className={clsx('w-4 h-4 flex-shrink-0', getPageIconColor(item.label))}>
-          <PageIcon pageName={item.label} className="w-full h-full" />
+        <span className={clsx('inline-flex h-4 w-4 flex-shrink-0 items-center justify-center', getPageIconColor(itemIconName))} aria-hidden="true">
+          <PageIcon pageName={itemIconName} className="w-full h-full" />
         </span>
         <div className="flex-1 min-w-0">
           <div className="font-medium">{item.label}</div>
@@ -322,7 +329,9 @@ export function ExpandableMenuItem({
             'animate-in fade-in slide-in-from-left-1 duration-200'
           )}
         >
-          {item.children!.map((child) => (
+          {item.children!.map((child) => {
+            const childIconName = resolvePageIconName(child.label, child.href);
+            return (
             <Link
               key={child.href}
               href={child.href}
@@ -334,8 +343,8 @@ export function ExpandableMenuItem({
                 pathname === child.href && 'bg-slate-100 dark:bg-slate-800 font-medium'
               )}
             >
-              <span className={clsx('w-3.5 h-3.5 flex-shrink-0 mt-0.5', getPageIconColor(child.label))}>
-                <PageIcon pageName={child.label} className="w-full h-full" />
+              <span className={clsx('inline-flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center mt-0.5', getPageIconColor(childIconName))} aria-hidden="true">
+                <PageIcon pageName={childIconName} className="w-full h-full" />
               </span>
               <div className="flex-1 min-w-0">
                 <div className="aurora-label text-xs font-medium">{child.label}</div>
@@ -346,7 +355,8 @@ export function ExpandableMenuItem({
                 )}
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

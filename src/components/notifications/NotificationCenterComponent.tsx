@@ -23,12 +23,12 @@ interface Notification {
 type FilterType = 'all' | 'unread' | 'mention' | 'reaction' | 'comment' | 'message' | 'system' | 'follow';
 
 const notificationTypeConfig = {
-  mention: { emoji: '👤', label: 'Mentions', color: 'bg-blue-100 dark:bg-blue-900/30' },
-  reaction: { emoji: '👍', label: 'Reactions', color: 'bg-yellow-100 dark:bg-yellow-900/30' },
-  comment: { emoji: '💬', label: 'Comments', color: 'bg-purple-100 dark:bg-purple-900/30' },
-  message: { emoji: '✉️', label: 'Messages', color: 'bg-green-100 dark:bg-green-900/30' },
-  system: { emoji: '⚡', label: 'System', color: 'bg-slate-100 dark:bg-slate-900/30' },
-  follow: { emoji: '⭐', label: 'Follows', color: 'bg-pink-100 dark:bg-pink-900/30' },
+  mention: { marker: 'M', label: 'Mentions', color: 'bg-blue-100 dark:bg-blue-900/30' },
+  reaction: { marker: 'R', label: 'Reactions', color: 'bg-yellow-100 dark:bg-yellow-900/30' },
+  comment: { marker: 'C', label: 'Comments', color: 'bg-purple-100 dark:bg-purple-900/30' },
+  message: { marker: 'Msg', label: 'Messages', color: 'bg-green-100 dark:bg-green-900/30' },
+  system: { marker: 'Sys', label: 'System', color: 'bg-slate-100 dark:bg-slate-900/30' },
+  follow: { marker: 'F', label: 'Follows', color: 'bg-pink-100 dark:bg-pink-900/30' },
 };
 
 export function NotificationCenterComponent() {
@@ -237,10 +237,13 @@ export function NotificationCenterComponent() {
                 }`}
               >
                 {f === 'all'
-                  ? '📋 All'
+                  ? 'All'
                   : f === 'unread'
-                    ? '🟢 Unread'
-                    : `${notificationTypeConfig[f as keyof typeof notificationTypeConfig]?.emoji || '•'} ${notificationTypeConfig[f as keyof typeof notificationTypeConfig]?.label || f}`}
+                    ? 'Unread'
+                    : `${notificationTypeConfig[f as keyof typeof notificationTypeConfig]?.label || f}`}
+                <span className="ml-1 inline-flex items-center rounded-full border border-current/30 px-1.5 py-0.5 text-[10px] leading-none" aria-hidden="true">
+                  {f === 'all' ? 'ALL' : f === 'unread' ? 'NEW' : notificationTypeConfig[f as keyof typeof notificationTypeConfig]?.marker || 'N'}
+                </span>
               </button>
             )
           )}
@@ -276,7 +279,7 @@ export function NotificationCenterComponent() {
                   {/* Icon */}
                   <div className="flex-shrink-0">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${typeConfig?.color}`}>
-                      {typeConfig?.emoji || '•'}
+                      <span className="aurora-label text-xs font-semibold" aria-hidden="true">{typeConfig?.marker || 'N'}</span>
                     </div>
                   </div>
 
@@ -306,7 +309,7 @@ export function NotificationCenterComponent() {
                       className="aurora-label p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                       title={notification.read ? 'Mark as unread' : 'Mark as read'}
                     >
-                      {notification.read ? '📖' : '📕'}
+                      {notification.read ? 'Read' : 'Mark'}
                     </button>
                     <button
                       onClick={(e) => {
@@ -316,7 +319,7 @@ export function NotificationCenterComponent() {
                       className="aurora-label p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors text-red-600 dark:text-red-400"
                       title="Delete notification"
                     >
-                      🗑️
+                      Delete
                     </button>
                   </div>
                 </div>

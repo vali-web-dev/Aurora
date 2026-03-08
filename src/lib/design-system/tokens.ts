@@ -213,7 +213,7 @@ export const buttonTokens = {
 };
 
 // Theme modes
-export type ThemeMode = 'light' | 'dark' | 'illuminated' | 'system';
+export type ThemeMode = 'light' | 'dark' | 'illuminated' | 'system' | 'text30';
 export type ThemeFamily = 'home' | 'office' | 'outdoor' | 'lifestyle' | 'creative';
 
 export interface ThemeConfig {

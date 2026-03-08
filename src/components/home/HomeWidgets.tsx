@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
@@ -66,9 +67,11 @@ export function HomeWidgets() {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
       <Card className="space-y-3">
-        <p className="aurora-label text-slate-500 dark:text-slate-400">Time</p>
-        <p className="aurora-label text-4xl font-bold text-slate-900 dark:text-slate-50">{timeString}</p>
-        <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">{dateString}</p>
+        <Link href="/productivity/calendar" className="block space-y-3">
+          <p className="aurora-label text-slate-500 dark:text-slate-400">Time</p>
+          <p className="aurora-label text-4xl font-bold text-slate-900 dark:text-slate-50">{timeString}</p>
+          <p className="aurora-label text-sm text-slate-600 dark:text-slate-400">{dateString}</p>
+        </Link>
       </Card>
 
       <Card className="space-y-3">
@@ -110,7 +113,9 @@ export function HomeWidgets() {
       <Card className="space-y-3">
         <div className="flex items-center justify-between">
           <p className="aurora-label text-slate-500 dark:text-slate-400">Finance</p>
-          <Button variant="ghost" size="sm">View</Button>
+          <Link href="/finance">
+            <Button variant="ghost" size="sm">View</Button>
+          </Link>
         </div>
         <p className="aurora-label text-2xl font-bold text-slate-900 dark:text-slate-50">
           ${financeSummary.spent} / ${financeSummary.budget}
@@ -126,14 +131,20 @@ export function HomeWidgets() {
       <Card className="space-y-3">
         <div className="flex items-center justify-between">
           <p className="aurora-label text-slate-500 dark:text-slate-400">Trending</p>
-          <Button variant="ghost" size="sm">Explore</Button>
+          <Link href="/entertainment">
+            <Button variant="ghost" size="sm">Explore</Button>
+          </Link>
         </div>
         <div className="space-y-2">
           {trending.map((item) => (
-            <div key={item.label} className="aurora-label flex items-center justify-between text-sm">
+            <Link
+              key={item.label}
+              href={item.type === 'Community' ? '/communities' : item.type === 'Marketplace' ? '/commerce' : '/entertainment'}
+              className="aurora-label flex items-center justify-between text-sm rounded-md px-2 py-1 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
               <span className="aurora-label text-slate-900 dark:text-slate-50">{item.label}</span>
               <span className="aurora-label text-xs text-slate-500 dark:text-slate-400">{item.type}</span>
-            </div>
+            </Link>
           ))}
         </div>
       </Card>

@@ -6,7 +6,7 @@ import { Card, CardTitle } from '@/components/aurora/Card';
 import { Button } from '@/components/ui/Button';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { InlineNotice } from '@/components/ui/InlineNotice';
-import { initializeSocket, disconnectSocket, onEvent } from '@/lib/websocket-client';
+import { initializeSocket, disconnectSocket, onEvent, joinRoom, leaveRoom, emitEvent, authenticateSocket } from '@/lib/websocket-client';
 import { WSEventType } from '@/lib/websocket-types';
 import { TypingIndicator, PresenceIndicator } from '@/components/realtime/NotificationCenter';
 import { AuroraShell } from '@/components/os/AuroraShell';
@@ -72,13 +72,23 @@ export function CommunityChat({ communityId, communityName }: CommunityChatProps
   useEffect(() => {
     if (!session || !communityId) return;
 
-    initializeSocket();
-    
-    // Subscribe to community-specific room
-    const socket = (window as any).__socket;
-    if (socket) {
-      socket.emit('subscribe', { room: `community:${communityId}` });
+    const socket = initializeSocket();
+
+    const authenticate = () => {
+      const sessionId = `session-${session.expires ?? Date.now()}`;
+      const userId = session.user?.email ?? session.user?.name ?? `user-${Date.now()}`;
+      const token = `token-${session.expires ?? Date.now()}`;
+      authenticateSocket(sessionId, userId, token).catch(() => {
+        // best effort auth for realtime path
+      });
+    };
+
+    socket.on('connect', authenticate);
+    if (socket.connected) {
+      authenticate();
     }
+
+    joinRoom(`community:${communityId}`);
 
     // Listen for new messages
     const unsubscribeMessage = onEvent(WSEventType.MESSAGE, (data: any) => {
@@ -139,11 +149,9 @@ export function CommunityChat({ communityId, communityName }: CommunityChatProps
       });
 
       // Auto-clear after 3 seconds
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         setTypingUsers((prev) => prev.filter((name) => name !== data.userName));
       }, 3000);
-
-      return () => clearTimeout(timeout);
     });
 
     return () => {
@@ -152,6 +160,8 @@ export function CommunityChat({ communityId, communityName }: CommunityChatProps
       unsubscribeDelete();
       unsubscribePresence();
       unsubscribeTyping();
+      socket.off('connect', authenticate);
+      leaveRoom(`community:${communityId}`);
       disconnectSocket();
     };
   }, [session, communityId]);
@@ -165,11 +175,7 @@ export function CommunityChat({ communityId, communityName }: CommunityChatProps
   const broadcastTyping = useCallback(() => {
     if (!session) return;
 
-    const socket = (window as any).__socket;
-    if (!socket) return;
-
-    socket.emit('event:typing', {
-      type: WSEventType.TYPING_INDICATOR,
+    emitEvent(WSEventType.TYPING_INDICATOR, {
       communityId,
       userId: session.user?.id,
       userName: session.user?.name || 'User',
@@ -179,10 +185,10 @@ export function CommunityChat({ communityId, communityName }: CommunityChatProps
 
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     typingTimeoutRef.current = setTimeout(() => {
-      socket.emit('event:typing', {
-        type: WSEventType.TYPING_INDICATOR,
+      emitEvent(WSEventType.TYPING_INDICATOR, {
         communityId,
         userId: session.user?.id,
+        userName: session.user?.name || 'User',
         isTyping: false,
       });
     }, 2000);
@@ -209,15 +215,12 @@ export function CommunityChat({ communityId, communityName }: CommunityChatProps
         messageInputRef.current?.focus();
 
         // Clear typing indicator
-        const socket = (window as any).__socket;
-        if (socket) {
-          socket.emit('event:typing', {
-            type: WSEventType.TYPING_INDICATOR,
-            communityId,
-            userId: session?.user?.id,
-            isTyping: false,
-          });
-        }
+        emitEvent(WSEventType.TYPING_INDICATOR, {
+          communityId,
+          userId: session?.user?.id,
+          userName: session?.user?.name || 'User',
+          isTyping: false,
+        });
       }
     } catch (error) {
       console.error('Error sending message:', error);

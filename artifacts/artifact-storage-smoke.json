@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-03-08T20:58:26.041Z",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "local",
+      "status": "pass",
+      "durationMs": 22,
+      "details": {
+        "directories": [
+          "inv_local_1",
+          "inv_local_2"
+        ]
+      }
+    },
+    {
+      "name": "azure-mock",
+      "status": "pass",
+      "durationMs": 59,
+      "details": {
+        "directories": [
+          "inv_cloud_1",
+          "inv_cloud_2"
+        ]
+      }
+    }
+  ]
+}

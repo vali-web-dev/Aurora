@@ -6,10 +6,11 @@ import type { ThemeMode, ThemeFamily } from '@/lib/design-system/tokens';
 import clsx from 'clsx';
 
 const modes: Array<{ value: ThemeMode; label: string; icon: string }> = [
-  { value: 'light', label: 'Light', icon: '☀️' },
-  { value: 'dark', label: 'Dark', icon: '🌙' },
-  { value: 'illuminated', label: 'Illuminated', icon: '✨' },
-  { value: 'system', label: 'System', icon: '⚙️' },
+  { value: 'light', label: 'Light', icon: 'L' },
+  { value: 'dark', label: 'Dark', icon: 'D' },
+  { value: 'illuminated', label: 'Illuminated', icon: 'I' },
+  { value: 'text30', label: 'Text 30%', icon: 'T' },
+  { value: 'system', label: 'System', icon: 'S' },
 ];
 
 const families: Array<{ value: ThemeFamily; label: string; description: string; color: string }> = [
@@ -84,10 +85,10 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
         <div className="space-y-4">
           {showLabel && (
             <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50 flex items-center gap-2">
-              <span className="text-lg">🎨</span> Theme Mode
+              <span className="text-lg" aria-hidden="true">A</span> Theme Mode
             </h3>
           )}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {modes.map((m) => (
               <button
                 key={m.value}
@@ -116,7 +117,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
         <div className="space-y-4">
           {showLabel && (
             <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50 flex items-center gap-2">
-              <span className="text-lg">🎭</span> Theme Family
+              <span className="text-lg" aria-hidden="true">F</span> Theme Family
             </h3>
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -125,7 +126,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
         <div className="space-y-4">
           {showLabel && (
             <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50 flex items-center gap-2">
-              <span className="text-lg">🫧</span> Typography
+              <span className="text-lg" aria-hidden="true">T</span> Typography
             </h3>
           )}
           <button
@@ -223,7 +224,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
         )}
         title="Theme & Mode"
       >
-        <span className="aurora-label text-lg">🎨</span>
+        <span className="aurora-label text-lg" aria-hidden="true">A</span>
       </button>
 
       {/* Dropdown Panel */}
@@ -257,9 +258,9 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
             {/* Mode Selection */}
             <div className="space-y-2">
               <label className="aurora-label text-slate-500 dark:text-slate-500">
-                💡 Mode
+                Mode
               </label>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-5 gap-2">
                 {modes.map((m) => (
                   <button
                     key={m.value}
@@ -286,7 +287,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
             {/* Typography Selection */}
             <div className="space-y-2">
               <label className="aurora-label text-slate-500 dark:text-slate-500">
-                🫧 Typography
+                Typography
               </label>
               <button
                 type="button"
@@ -331,7 +332,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
             {/* Family Selection */}
             <div className="space-y-2">
               <label className="aurora-label text-slate-500 dark:text-slate-500">
-                🎭 Family
+                Family
               </label>
               <div className="grid grid-cols-5 gap-2">
                 {families.map((f) => (

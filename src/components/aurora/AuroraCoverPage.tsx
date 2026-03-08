@@ -8,7 +8,7 @@ import { AuroraLogo } from '@/components/aurora/AuroraLogo';
 import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
 import clsx from 'clsx';
 import { expandableNavigation, type NavItem } from '@/lib/expandable-navigation';
-import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 interface UniversePortal {
   name: string;
@@ -339,7 +339,9 @@ export function AuroraCoverPage() {
                 <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
                   <div className="space-y-3">
                     <div className="aurora-label tracking-[0.3em] text-purple-200/70">Aurora Portals</div>
-                    {primaryNav.map((item, index) => (
+                    {primaryNav.map((item, index) => {
+                      const iconName = resolvePageIconName(item.label, item.href);
+                      return (
                       <button
                         key={item.href}
                         type="button"
@@ -359,14 +361,20 @@ export function AuroraCoverPage() {
                         )}
                       >
                         <div className="flex items-center justify-between">
-                          <div>
-                            <div className="aurora-label text-white font-semibold">{item.label}</div>
-                            <div className="aurora-label text-xs text-purple-200/70">{item.description}</div>
+                          <div className="flex items-start gap-2.5">
+                            <span className={clsx('mt-0.5 inline-flex h-4 w-4', getPageIconColor(iconName))} aria-hidden="true">
+                              <PageIcon pageName={iconName} className="h-4 w-4" />
+                            </span>
+                            <div>
+                              <div className="aurora-label text-white font-semibold">{item.label}</div>
+                              <div className="aurora-label text-xs text-purple-200/70">{item.description}</div>
+                            </div>
                           </div>
                           <span className="aurora-label text-purple-200/70">&gt;</span>
                         </div>
                       </button>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   <div>
@@ -395,21 +403,29 @@ export function AuroraCoverPage() {
                     </div>
 
                     <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {(activeMenu?.children ?? []).map((child) => (
+                      {(activeMenu?.children ?? []).map((child) => {
+                        const iconName = resolvePageIconName(child.label, child.href);
+                        return (
                         <Link
                           key={child.href}
                           href={child.href}
                           className="life-gateway-button group p-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-200 hover:-translate-y-0.5 hover:translate-x-0.5"
                         >
                           <div className="flex items-center justify-between">
-                            <div>
+                            <div className="flex items-start gap-2.5">
+                              <span className={clsx('mt-0.5 inline-flex h-4 w-4', getPageIconColor(iconName))} aria-hidden="true">
+                                <PageIcon pageName={iconName} className="h-4 w-4" />
+                              </span>
+                              <div>
                               <div className="aurora-label text-white font-medium group-hover:text-white">{child.label}</div>
                               <div className="aurora-label text-xs text-purple-200/70 mt-1">{child.description}</div>
+                              </div>
                             </div>
                             <span className="aurora-label text-purple-200/70">&gt;</span>
                           </div>
                         </Link>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     <div className="aurora-label mt-6 flex flex-wrap items-center gap-4 text-xs text-purple-200/70">

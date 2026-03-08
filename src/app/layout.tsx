@@ -20,7 +20,8 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Aurora - Your Digital Civilization',
-  description: 'A calm, beautifully designed digital world for your creative life.',
+  description:
+    'A calm, beautifully designed digital world for your creative life. Aurora brings clarity, inspiration, and emotional resonance to everything you create. One place for your ideas, projects, and creativity.',
   icons: {
     icon: '/favicon.ico',
   },
@@ -41,7 +42,13 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                const mode = localStorage.getItem('aurora-theme-mode') || 'system';
+                const migrationKey = 'aurora-theme-migrated-text30-v1';
+                if (!localStorage.getItem(migrationKey)) {
+                  localStorage.setItem('aurora-theme-mode', 'text30');
+                  localStorage.setItem(migrationKey, 'true');
+                }
+
+                const mode = localStorage.getItem('aurora-theme-mode') || 'text30';
                 const family = localStorage.getItem('aurora-theme-family') || 'home';
                 const html = document.documentElement;
                 
@@ -50,6 +57,8 @@ export default async function RootLayout({
                   if (prefersDark) html.classList.add('dark');
                 } else if (mode === 'illuminated') {
                   html.classList.add('dark', 'illuminated');
+                } else if (mode === 'text30') {
+                  html.classList.add('dark', 'theme-text30');
                 } else if (mode === 'dark') {
                   html.classList.add('dark');
                 }

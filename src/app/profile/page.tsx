@@ -4,8 +4,8 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/aurora/Card';
 import { Button } from '@/components/ui/Button';
+import { InlineNotice } from '@/components/ui/InlineNotice';
 import { AuroraShell } from '@/components/os/AuroraShell';
-import clsx from 'clsx';
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -15,6 +15,7 @@ export default function ProfilePage() {
   const [location, setLocation] = useState('');
   const [website, setWebsite] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [notice, setNotice] = useState<{ message: string; tone: 'success' | 'error' | 'info' | 'warning' } | null>(null);
   const nameInputRef = useRef<HTMLInputElement | null>(null);
 
   const isLoading = status === 'loading';
@@ -27,23 +28,73 @@ export default function ProfilePage() {
     return () => clearTimeout(handle);
   }, [isEditing]);
 
+  useEffect(() => {
+    if (!session?.user?.id) return;
+
+    const loadProfile = async () => {
+      try {
+        const [profileResponse, settingsResponse] = await Promise.all([
+          fetch('/api/users/profile'),
+          fetch('/api/users/settings'),
+        ]);
+
+        if (profileResponse.ok) {
+          const profile = await profileResponse.json();
+          if (typeof profile?.name === 'string') {
+            setName(profile.name);
+          }
+        }
+
+        if (settingsResponse.ok) {
+          const settings = await settingsResponse.json();
+          const extras = settings?.profile;
+          if (extras && typeof extras === 'object') {
+            setBio(typeof extras.bio === 'string' ? extras.bio : '');
+            setLocation(typeof extras.location === 'string' ? extras.location : '');
+            setWebsite(typeof extras.website === 'string' ? extras.website : '');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load profile settings:', error);
+      }
+    };
+
+    loadProfile();
+  }, [session?.user?.id]);
+
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      // TODO: Implement API call to update profile
-      const response = await fetch('/api/users/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, bio, location, website }),
-      });
+      const [profileResponse, settingsResponse] = await Promise.all([
+        fetch('/api/users/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name }),
+        }),
+        fetch('/api/users/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            profile: { bio, location, website },
+          }),
+        }),
+      ]);
 
-      if (response.ok) {
+      if (profileResponse.ok && settingsResponse.ok) {
         setIsEditing(false);
-        // TODO: Show success message
+        setNotice({ message: 'Profile updated successfully.', tone: 'success' });
+      } else {
+        const profileError = profileResponse.ok ? null : await profileResponse.json().catch(() => null);
+        const settingsError = settingsResponse.ok ? null : await settingsResponse.json().catch(() => null);
+        const message =
+          profileError?.error ||
+          settingsError?.error ||
+          'Failed to update profile.';
+        setNotice({ message, tone: 'error' });
       }
     } catch (error) {
       console.error('Failed to update profile:', error);
-      // TODO: Show error message
+      setNotice({ message: 'Failed to update profile.', tone: 'error' });
     } finally {
       setIsSaving(false);
     }
@@ -78,6 +129,8 @@ export default function ProfilePage() {
             </Button>
           )}
         </div>
+
+        {notice && <InlineNotice message={notice.message} tone={notice.tone} />}
 
         {/* Profile Card */}
         <Card className="p-8">
@@ -212,7 +265,7 @@ export default function ProfilePage() {
                     variant="secondary"
                     onClick={() => {
                       setIsEditing(false);
-                      setName(session?.user?.name || '');
+                      setNotice(null);
                     }}
                     disabled={isSaving}
                   >

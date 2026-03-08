@@ -9,6 +9,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 export type UniverseId = 
   | 'home'
@@ -60,24 +61,6 @@ const UNIVERSE_NAMES: Record<UniverseId, string> = {
   automation: 'Automation',
 };
 
-const UNIVERSE_EMOJIS: Record<UniverseId, string> = {
-  home: '🏠',
-  entertainment: '🎬',
-  commerce: '🛍️',
-  social: '👥',
-  learning: '📚',
-  create: '✨',
-  brand: '🏷️',
-  communities: '🤝',
-  gaming: '🎮',
-  productivity: '✅',
-  travel: '✈️',
-  finance: '📈',
-  health: '❤️',
-  homecontrol: '🏡',
-  automation: '⚙️',
-};
-
 export const UniverseLogo: React.FC<UniverseLogoProps> = ({
   universe,
   size = 32,
@@ -89,7 +72,7 @@ export const UniverseLogo: React.FC<UniverseLogoProps> = ({
   const logoSrc = `/docs/brand/universe-logos/${universe}.svg`;
   const label = ariaLabel || `${UNIVERSE_NAMES[universe]} Universe`;
   const universeName = UNIVERSE_NAMES[universe];
-  const emoji = UNIVERSE_EMOJIS[universe];
+  const universeIconName = resolvePageIconName(universeName, `/${universe}`);
 
   const containerClass = showLabel
     ? labelPosition === 'right'
@@ -108,11 +91,11 @@ export const UniverseLogo: React.FC<UniverseLogoProps> = ({
         aria-label={label}
       />
       {showLabel && (
-        <span 
-          className={`text-sm font-medium ${labelPosition === 'bottom' ? 'text-center' : ''}`}
-          aria-hidden="true"
-        >
-          {emoji} {universeName}
+        <span className={`inline-flex items-center gap-1.5 text-sm font-medium ${labelPosition === 'bottom' ? 'text-center' : ''}`}>
+          <span className={`${getPageIconColor(universeIconName)} inline-flex`} aria-hidden="true">
+            <PageIcon pageName={universeIconName} className="h-4 w-4" />
+          </span>
+          <span aria-hidden="true">{universeName}</span>
         </span>
       )}
     </div>
@@ -192,4 +175,4 @@ export const UniverseIcon: React.FC<UniverseIconProps> = ({
   );
 };
 
-export { UNIVERSE_NAMES, UNIVERSE_EMOJIS };
+export { UNIVERSE_NAMES };

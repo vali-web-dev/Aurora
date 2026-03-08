@@ -14,14 +14,20 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [mode, setModeState] = useState<ThemeMode>('system');
+  const [mode, setModeState] = useState<ThemeMode>('text30');
   const [family, setFamilyState] = useState<ThemeFamily>('home');
   const [mounted, setMounted] = useState(false);
 
   // Initialize theme from localStorage
   useEffect(() => {
     setMounted(true);
-    const savedMode = (localStorage.getItem('aurora-theme-mode') as ThemeMode) || 'system';
+    const migrationKey = 'aurora-theme-migrated-text30-v1';
+    if (!localStorage.getItem(migrationKey)) {
+      localStorage.setItem('aurora-theme-mode', 'text30');
+      localStorage.setItem(migrationKey, 'true');
+    }
+
+    const savedMode = (localStorage.getItem('aurora-theme-mode') as ThemeMode) || 'text30';
     const savedFamily = (localStorage.getItem('aurora-theme-family') as ThemeFamily) || 'home';
     setModeState(savedMode);
     setFamilyState(savedFamily);
@@ -42,6 +48,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const applyTheme = (themeMode: ThemeMode, themeFamily: ThemeFamily) => {
     const html = document.documentElement;
+    const isText30Mode = themeMode === 'text30';
+    html.classList.toggle('theme-text30', isText30Mode);
     
     // Apply mode
     if (themeMode === 'system') {
@@ -51,7 +59,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     } else if (themeMode === 'illuminated') {
       html.classList.add('dark', 'illuminated');
     } else {
-      html.classList.toggle('dark', themeMode === 'dark');
+      html.classList.toggle('dark', themeMode === 'dark' || isText30Mode);
       html.classList.remove('illuminated');
     }
     
@@ -98,7 +106,7 @@ export function useTheme() {
   if (!context) {
     // Return default values if context is not available (e.g., during SSR)
     return {
-      mode: 'system' as const,
+      mode: 'text30' as const,
       family: 'home' as const,
       setMode: () => {},
       setFamily: () => {},

@@ -6,6 +6,10 @@
 npm run dev
 ```
 
+Dev now runs Aurora’s websocket-enabled runtime by default (internal realtime connectivity is active without extra flags).
+
+Quick verify (optional): open `http://localhost:3000/api/ws` and confirm status is `ok`.
+
 Then open these in your browser:
 - **Enhanced Editor**: http://localhost:3000/brand/photoshop-enhanced
 - **Studio Pro**: http://localhost:3000/brand/studio-pro

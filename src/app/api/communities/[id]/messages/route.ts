@@ -5,8 +5,10 @@ import {
   createMessage,
   updateMessage,
   deleteMessage,
-  getCommunityMembers,
 } from '@/lib/api-data';
+import { db } from '@/lib/db';
+import * as schema from '@/lib/schema';
+import { and, eq } from 'drizzle-orm';
 import { messageCreateSchema, messageUpdateSchema } from '@/lib/validations';
 import {
   validateRequestBody,
@@ -18,6 +20,10 @@ import {
   sendNotification,
 } from '@/lib/websocket-server';
 import { WSEventType } from '@/lib/websocket-types';
+import type { z } from 'zod';
+
+type MessageCreatePayload = z.infer<typeof messageCreateSchema>;
+type MessageUpdatePayload = z.infer<typeof messageUpdateSchema>;
 
 /**
  * GET /api/communities/[id]/messages
@@ -38,15 +44,25 @@ export async function GET(
       return errorResponse('Invalid community ID', 400);
     }
 
+    const userId = parseInt(session.user.id, 10);
     const { searchParams } = new URL(request.url);
-   const limit = parseInt(searchParams.get('limit') || '100', 10);
+    const limit = parseInt(searchParams.get('limit') || '100', 10);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
 
-    // TODO: Verify user is member of community
-    // const isMember = await isUserMemberOfCommunity(communityId, session.user.id);
-    // if (!isMember) {
-    //   return errorResponse('Not a member of this community', 403);
-    // }
+    const [membership] = await db
+      .select({ id: schema.communityMembers.id })
+      .from(schema.communityMembers)
+      .where(
+        and(
+          eq(schema.communityMembers.communityId, communityId),
+          eq(schema.communityMembers.userId, userId)
+        )
+      )
+      .limit(1);
+
+    if (!membership) {
+      return errorResponse('Not a member of this community', 403);
+    }
 
     const messages = await getCommunityMessages(communityId, limit, offset);
 
@@ -91,23 +107,33 @@ export async function POST(
       return errorResponse('Invalid community ID', 400);
     }
 
+    const userId = parseInt(session.user.id, 10);
     const validation = await validateRequestBody(request, messageCreateSchema);
     if (!validation.success) {
       return validation.response;
     }
 
-    const data = validation.data as any;
+    const data = validation.data as MessageCreatePayload;
 
-    // TODO: Verify user is member of community
-    // const isMember = await isUserMemberOfCommunity(communityId, session.user.id);
-    // if (!isMember) {
-    //   return errorResponse('Not a member of this community', 403);
-    // }
+    const [membership] = await db
+      .select({ id: schema.communityMembers.id })
+      .from(schema.communityMembers)
+      .where(
+        and(
+          eq(schema.communityMembers.communityId, communityId),
+          eq(schema.communityMembers.userId, userId)
+        )
+      )
+      .limit(1);
+
+    if (!membership) {
+      return errorResponse('Not a member of this community', 403);
+    }
 
     // Create message
     const message = await createMessage({
       communityId,
-      userId: parseInt(session.user.id, 10),
+      userId,
       content: data.content,
       metadata: data.metadata || {},
     });
@@ -116,7 +142,7 @@ export async function POST(
     broadcastToCommunity(communityId.toString(), WSEventType.MESSAGE, {
       id: message.id,
       communityId,
-      userId: parseInt(session.user.id, 10),
+      userId,
       content: data.content,
       metadata: data.metadata || {},
       createdAt: message.createdAt,
@@ -128,8 +154,8 @@ export async function POST(
 
     // Send notifications to @mentioned users
     if (data.mentions && data.mentions.length > 0) {
-      for (const userId of data.mentions) {
-        sendNotification(userId, {
+      for (const mentionedUserId of data.mentions) {
+        sendNotification(mentionedUserId, {
           type: 'mention',
           title: `${session.user.name} mentioned you`,
           message: data.content.substring(0, 100),
@@ -175,15 +201,34 @@ export async function PUT(
       return errorResponse('Invalid community ID', 400);
     }
 
+    const userId = parseInt(session.user.id, 10);
     const validation = await validateRequestBody(request, messageUpdateSchema);
     if (!validation.success) {
       return validation.response;
     }
 
-    const data = validation.data as any;
+    const data = validation.data as MessageUpdatePayload;
     const messageId = parseInt(data.messageId, 10);
 
-    // TODO: Verify message ownership
+    const [message] = await db
+      .select({ id: schema.communityMessages.id, userId: schema.communityMessages.userId })
+      .from(schema.communityMessages)
+      .where(
+        and(
+          eq(schema.communityMessages.id, messageId),
+          eq(schema.communityMessages.communityId, communityId)
+        )
+      )
+      .limit(1);
+
+    if (!message) {
+      return errorResponse('Message not found', 404);
+    }
+
+    if (message.userId !== userId) {
+      return errorResponse('You can only edit your own messages', 403);
+    }
+
     // Update message
     const updatedMessage = await updateMessage(messageId, {
       content: data.content,
@@ -194,7 +239,7 @@ export async function PUT(
     broadcastToCommunity(communityId.toString(), WSEventType.MESSAGE_EDITED, {
       id: messageId,
       communityId,
-      userId: parseInt(session.user.id, 10),
+      userId,
       content: data.content,
       edited: true,
       updatedAt: new Date().toISOString(),
@@ -234,6 +279,7 @@ export async function DELETE(
       return errorResponse('Invalid community ID', 400);
     }
 
+    const userId = parseInt(session.user.id, 10);
     const { searchParams } = new URL(request.url);
     const messageId = parseInt(searchParams.get('messageId') || '0', 10);
 
@@ -241,7 +287,43 @@ export async function DELETE(
       return errorResponse('Message ID required', 400);
     }
 
-    // TODO: Verify message ownership or admin status
+    const [message] = await db
+      .select({ id: schema.communityMessages.id, userId: schema.communityMessages.userId })
+      .from(schema.communityMessages)
+      .where(
+        and(
+          eq(schema.communityMessages.id, messageId),
+          eq(schema.communityMessages.communityId, communityId)
+        )
+      )
+      .limit(1);
+
+    if (!message) {
+      return errorResponse('Message not found', 404);
+    }
+
+    const [membership] = await db
+      .select({ role: schema.communityMembers.role })
+      .from(schema.communityMembers)
+      .where(
+        and(
+          eq(schema.communityMembers.communityId, communityId),
+          eq(schema.communityMembers.userId, userId)
+        )
+      )
+      .limit(1);
+
+    if (!membership) {
+      return errorResponse('Not a member of this community', 403);
+    }
+
+    const elevatedRoles = new Set(['admin', 'owner', 'moderator']);
+    const roleValue = (membership.role || '').toLowerCase();
+    const canDelete = message.userId === userId || elevatedRoles.has(roleValue);
+    if (!canDelete) {
+      return errorResponse('You can only delete your own messages', 403);
+    }
+
     // Delete message
     await deleteMessage(messageId);
 

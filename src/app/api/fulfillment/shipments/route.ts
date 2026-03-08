@@ -4,32 +4,60 @@
  * GET /api/fulfillment/shipments - List shipments for an order
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import fulfillmentService from '@/lib/fulfillment/service';
 import { Carrier } from '@/lib/fulfillment/types';
+import {
+  errorResponse,
+  successResponse,
+  validateQuery,
+  validateRequestBody,
+} from '@/lib/request-validation';
+import {
+  fulfillmentShipmentsQuerySchema,
+  fulfillmentShipmentCreateSchema,
+} from '@/lib/validations';
+import type { z } from 'zod';
+
+type ShipmentCreatePayload = z.infer<typeof fulfillmentShipmentCreateSchema>;
+type ShipmentQueryPayload = z.infer<typeof fulfillmentShipmentsQuerySchema>;
+
+interface StoredShipment {
+  orderId: string;
+  trackingNumber: string;
+  carrier: Carrier;
+  createdAt: Date;
+  shipmentAddress: ShipmentCreatePayload['shipmentAddress'];
+}
 
 // In-memory store for shipments (should be in database)
-const shipmentsDb: Record<string, any> = {};
+const shipmentsDb: Record<string, StoredShipment> = {};
 
 export async function POST(req: NextRequest) {
   try {
-    const { orderId, carrier, recipientName, recipientEmail, shipmentAddress, packages, shippingMethod } = await req.json();
-
-    if (!orderId || !carrier || !shipmentAddress) {
-      return NextResponse.json(
-        { error: 'Order ID, carrier, and shipment address required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(req, fulfillmentShipmentCreateSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
-    const carrierInstance = fulfillmentService.getCarrier(carrier as Carrier);
+    const {
+      orderId,
+      carrier,
+      recipientName,
+      recipientEmail,
+      shipmentAddress,
+      packages,
+      shippingMethod,
+    } = validation.data as ShipmentCreatePayload;
+
+    const carrierInstance = fulfillmentService.getCarrier(carrier);
     const label = await carrierInstance.createShipment({
       orderId,
-      carrier: carrier as Carrier,
-      recipientName: recipientName || 'Recipient',
+      carrier,
+      recipientName,
       recipientEmail: recipientEmail || '',
       shipmentAddress,
-      packages: packages || [{ weight: 1, length: 10, width: 10, height: 10, value: 0 }],
+      packages,
       shippingMethod,
     });
 
@@ -43,41 +71,41 @@ export async function POST(req: NextRequest) {
       shipmentAddress,
     };
 
-    return NextResponse.json({
+    return successResponse({
       success: true,
       ...label,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Shipment creation error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    const message = error instanceof Error ? error.message : '';
+    if (message.includes('not found')) {
+      return errorResponse('Carrier not found', 404);
+    }
+    if (message.includes('mock adapter cannot execute')) {
+      return errorResponse('Carrier unavailable in live fulfillment mode', 503);
+    }
+    return errorResponse('Failed to create shipment', 500);
   }
 }
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const orderId = searchParams.get('orderId');
+    const queryValidation = validateQuery<ShipmentQueryPayload>(
+      searchParams,
+      fulfillmentShipmentsQuerySchema
+    );
 
-    if (!orderId) {
-      return NextResponse.json(
-        { error: 'Order ID required' },
-        { status: 400 }
-      );
+    if (!queryValidation.success) {
+      return errorResponse(queryValidation.error, 400);
     }
+    const { orderId } = queryValidation.data;
 
-    const shipments = Object.values(shipmentsDb).filter(
-      (s: any) => s.orderId === orderId
-    );
+    const shipments = Object.values(shipmentsDb).filter((s) => s.orderId === orderId);
 
-    return NextResponse.json({ shipments });
-  } catch (error: any) {
+    return successResponse({ shipments });
+  } catch (error: unknown) {
     console.error('List shipments error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return errorResponse('Failed to list shipments', 500);
   }
 }

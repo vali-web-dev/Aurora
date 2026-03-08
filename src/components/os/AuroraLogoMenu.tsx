@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useRef, useEffect, type MouseEvent as ReactMouseEvent } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { expandableNavigation } from '@/lib/expandable-navigation';
-import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 import { AuroraLogo } from '@/components/aurora/AuroraLogo';
 import { useTheme } from '@/lib/design-system/theme-provider';
 import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
@@ -22,6 +22,7 @@ export function AuroraLogoMenu() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
   const { mode } = useTheme();
   const { concept, setConcept } = useAuroraLogo();
   const isIlluminated = mode === 'illuminated';
@@ -32,6 +33,12 @@ export function AuroraLogoMenu() {
     Explore: expandableNavigation.filter((item) => item.group === 'Explore'),
     Support: expandableNavigation.filter((item) => item.group === 'Support'),
   };
+
+  const groupIcons = {
+    Primary: 'P',
+    Explore: 'E',
+    Support: 'S',
+  } as const;
 
   useEffect(() => {
     return () => {
@@ -104,11 +111,8 @@ export function AuroraLogoMenu() {
           type="button"
           ref={triggerRef}
           onClick={() => {
-            if (isPanelOpen) {
-              closeMenu();
-              return;
-            }
-            openMenu();
+            closeMenu();
+            router.push('/');
           }}
           className={clsx(
             'relative flex items-center justify-center h-10 w-10 rounded-xl overflow-hidden',
@@ -203,10 +207,10 @@ export function AuroraLogoMenu() {
                         : 'aurora-label text-slate-500 dark:text-slate-400'
                     )}
                   >
-                    <span>
-                      {groupName === 'Primary' && '⭐ '}
-                      {groupName === 'Explore' && '🌍 '}
-                      {groupName === 'Support' && '🛠️ '}
+                    <span className="inline-flex items-center gap-2">
+                      <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-current/30 text-[10px] font-semibold" aria-hidden="true">
+                        {groupIcons[groupName as keyof typeof groupIcons]}
+                      </span>
                       {groupName}
                     </span>
                     <svg
@@ -230,7 +234,9 @@ export function AuroraLogoMenu() {
                   {/* Group Items */}
                   {isExpanded && (
                     <div className="mt-1 space-y-0.5">
-                      {items.map((item) => (
+                      {items.map((item) => {
+                        const iconName = resolvePageIconName(item.label, item.href);
+                        return (
                         <div key={item.href}>
                           {/* Main Universe Link */}
                           <Link
@@ -249,11 +255,11 @@ export function AuroraLogoMenu() {
                             <span
                               className={clsx(
                                 'w-5 h-5 flex-shrink-0 mt-0.5',
-                                getPageIconColor(item.label)
+                                getPageIconColor(iconName)
                               )}
                             >
                               <PageIcon
-                                pageName={item.label}
+                                pageName={iconName}
                                 className="w-full h-full"
                               />
                             </span>
@@ -272,7 +278,9 @@ export function AuroraLogoMenu() {
                           {/* Submenu Items */}
                           {item.children && item.children.length > 0 && (
                             <div className="ml-8 mt-0.5 pl-3 border-l-2 border-slate-200 dark:border-slate-800 space-y-0.5">
-                              {item.children.map((child) => (
+                              {item.children.map((child) => {
+                                const iconName = resolvePageIconName(child.label, child.href);
+                                return (
                                 <Link
                                   key={child.href}
                                   href={child.href}
@@ -286,18 +294,25 @@ export function AuroraLogoMenu() {
                                       : 'aurora-label text-slate-600 dark:text-slate-400'
                                   )}
                                 >
-                                  <div className="font-medium">{child.label}</div>
+                                  <div className="font-medium inline-flex items-center gap-1.5">
+                                    <span className={clsx('inline-flex h-3.5 w-3.5', getPageIconColor(iconName))} aria-hidden="true">
+                                      <PageIcon pageName={iconName} className="h-3.5 w-3.5" />
+                                    </span>
+                                    <span>{child.label}</span>
+                                  </div>
                                   {child.description && (
                                     <div className="aurora-label text-[10px] text-slate-500 dark:text-slate-500 truncate mt-0.5">
                                       {child.description}
                                     </div>
                                   )}
                                 </Link>
-                              ))}
+                                );
+                              })}
                             </div>
                           )}
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>

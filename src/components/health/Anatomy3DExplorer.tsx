@@ -1124,7 +1124,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
               <Badge variant="default" size="sm">Save {lastSavedAt ? formatTimelineDate(lastSavedAt) : 'Pending'}</Badge>
               {progress.achievements.length > 0 && (
                 <Badge variant="warning" size="sm" title={progress.achievements.join(', ')}>
-                  🏆 {progress.achievements.length}
+                  Achievements {progress.achievements.length}
                 </Badge>
               )}
               <Badge variant="success" size="sm">Live</Badge>
@@ -1136,17 +1136,17 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
               </Button>
               {activeOrganId && (
                 <Button variant="secondary" size="sm" onClick={copyShareLink} title="Copy shareable link">
-                  {linkCopied ? '✓ Copied!' : '🔗 Share'}
+                  {linkCopied ? 'Copied' : 'Share Link'}
                 </Button>
               )}
               <Button variant="secondary" size="sm" onClick={exportPDF} title="Export progress as text report">
-                📄 PDF Report
+                PDF Report
               </Button>
               <Button variant="secondary" size="sm" onClick={exportMarkdown} title="Export markdown report">
-                {markdownExported ? '✅ Markdown' : '📝 Markdown'}
+                {markdownExported ? 'Markdown Ready' : 'Export Markdown'}
               </Button>
               <Button variant="secondary" size="sm" onClick={undoLastProgressChange} disabled={!undoSnapshot}>
-                ↩️ Undo
+                Undo
               </Button>
               <Button
                 variant={collaborationMode ? 'primary' : 'secondary'}
@@ -1154,7 +1154,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
                 onClick={() => setCollaborationMode((prev) => !prev)}
                 title="Share with healthcare providers"
               >
-                🤝 {collaborationMode ? 'Collab On' : 'Collab Off'}
+                {collaborationMode ? 'Collaboration On' : 'Collaboration Off'}
               </Button>
               <Button
                 variant={showGoalsPanel ? 'primary' : 'secondary'}
@@ -1162,7 +1162,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
                 onClick={() => setShowGoalsPanel((prev) => !prev)}
                 title="Set learning goals"
               >
-                🎯 Goals
+                Goals
               </Button>
               <Button
                 variant={showInsightsDashboard ? 'primary' : 'secondary'}
@@ -1170,7 +1170,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
                 onClick={() => setShowInsightsDashboard((prev) => !prev)}
                 title="View health insights"
               >
-                📊 Dashboard
+                Dashboard
               </Button>
               <Button
                 variant={showProgressViz ? 'primary' : 'secondary'}
@@ -1179,16 +1179,16 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
                 title="Visualize learning journey"
                 aria-label="Toggle progress timeline panel"
               >
-                🌟 Timeline
+                Timeline
               </Button>
               <Button variant={showCommandCenter ? 'primary' : 'secondary'} size="sm" onClick={() => setShowCommandCenter((prev) => !prev)}>
-                🧰 Command Center
+                Command Center
               </Button>
               <Button variant="secondary" size="sm" onClick={collapseUtilityPanels}>
-                🗂️ Collapse Panels
+                Collapse Panels
               </Button>
               <Button variant={compactToolbar ? 'primary' : 'secondary'} size="sm" onClick={() => setCompactToolbar((prev) => !prev)}>
-                🧩 {compactToolbar ? 'Compact' : 'Expanded'}
+                {compactToolbar ? 'Compact' : 'Expanded'}
               </Button>
             </div>
           </div>
@@ -1209,7 +1209,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
         {exploredCount === 0 && (
           <div className="rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950 p-3">
             <p className="aurora-label text-sm text-sky-700 dark:text-sky-300">
-              Start with one organ using Quick Links or hit 🎲 Random Node to begin your first guided exploration.
+              Start with one organ using Quick Links or hit Random Node to begin your first guided exploration.
             </p>
           </div>
         )}
@@ -1224,7 +1224,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
         {showCommandCenter && (
           <div className="rounded-lg border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-violet-700 dark:text-violet-300">🧰 Command Center</p>
+              <p className="aurora-label text-sm font-semibold text-violet-700 dark:text-violet-300">Command Center</p>
               <Button variant="secondary" size="sm" onClick={() => setShowCommandCenter(false)}>Close</Button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -1278,7 +1278,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
             onClick={() => setLearningPathMode((prev) => !prev)}
             title="Follow guided learning path"
           >
-            📚 {learningPathMode ? 'Path Mode' : 'Free Mode'}
+            {learningPathMode ? 'Path Mode' : 'Free Mode'}
           </Button>
           <Button
             variant={quizMode ? 'primary' : 'secondary'}
@@ -1286,7 +1286,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
             onClick={() => setQuizMode((prev) => !prev)}
             title="Test your knowledge"
           >
-            🧠 {quizMode ? 'Quiz On' : 'Quiz Off'}
+            {quizMode ? 'Quiz On' : 'Quiz Off'}
           </Button>
           <Button
             variant={voiceEnabled ? 'primary' : 'secondary'}
@@ -1294,7 +1294,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
             onClick={() => setVoiceEnabled((prev) => !prev)}
             title="Enable voice navigation"
           >
-            🎤 {voiceEnabled ? 'Voice On' : 'Voice Off'}
+            {voiceEnabled ? 'Voice On' : 'Voice Off'}
           </Button>
           <select
             value={visualTheme}
@@ -1302,10 +1302,10 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
             className="aurora-label px-2 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             title="Visual theme"
           >
-            <option value="medical">🏭 Medical</option>
-            <option value="artistic">🎨 Artistic</option>
-            <option value="minimalist">✨ Minimalist</option>
-            <option value="colorblind">🟦 Colorblind</option>
+            <option value="medical">Medical</option>
+            <option value="artistic">Artistic</option>
+            <option value="minimalist">Minimalist</option>
+            <option value="colorblind">Colorblind</option>
           </select>
           <Button
             variant={showOnlyFavorites ? 'primary' : 'secondary'}
@@ -1313,10 +1313,10 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
             onClick={() => setShowOnlyFavorites((prev) => !prev)}
             aria-label="Toggle favorites filter"
           >
-            ⭐ Favorites {progress.favorites.length > 0 && `(${progress.favorites.length})`}
+            Favorites {progress.favorites.length > 0 && `(${progress.favorites.length})`}
           </Button>
           <Button variant={favoritesFirstSort ? 'primary' : 'secondary'} size="sm" onClick={() => setFavoritesFirstSort((prev) => !prev)}>
-            📌 Favorites First
+            Favorites First
           </Button>
           {!compactToolbar && (
             <>
@@ -1326,7 +1326,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
                 onClick={() => setComparisonMode((prev) => !prev)}
                 title="Compare body systems"
               >
-                ⚖️ {comparisonMode ? 'Compare On' : 'Compare Off'}
+                {comparisonMode ? 'Compare On' : 'Compare Off'}
               </Button>
               <Button
                 variant={showCommunityInsights ? 'primary' : 'secondary'}
@@ -1334,39 +1334,39 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
                 onClick={() => setShowCommunityInsights((prev) => !prev)}
                 title="See community trends"
               >
-                👥 Community
+                Community
               </Button>
             </>
           )}
           <Button variant={showRecommendations ? 'primary' : 'secondary'} size="sm" onClick={() => setShowRecommendations((prev) => !prev)}>
-            🧭 Recommendations
+            Recommendations
           </Button>
           <Button variant={showHeatmap ? 'primary' : 'secondary'} size="sm" onClick={() => setShowHeatmap((prev) => !prev)}>
-            🔥 Heatmap
+            Heatmap
           </Button>
           <Button variant={focusMode ? 'primary' : 'secondary'} size="sm" onClick={() => setFocusMode((prev) => !prev)}>
-            🎯 {focusMode ? 'Focus On' : 'Focus Off'}
+            {focusMode ? 'Focus On' : 'Focus Off'}
           </Button>
           <Button variant={phaseAutoplay ? 'primary' : 'secondary'} size="sm" onClick={() => setPhaseAutoplay((prev) => !prev)}>
-            ⏯️ {phaseAutoplay ? 'Phase Auto' : 'Phase Manual'}
+            {phaseAutoplay ? 'Phase Auto' : 'Phase Manual'}
           </Button>
           <Button variant="secondary" size="sm" onClick={goToNextPhase}>
-            ⏭️ Next Phase
+            Next Phase
           </Button>
           <Button variant={eyeStrainMode ? 'primary' : 'secondary'} size="sm" onClick={() => setEyeStrainMode((prev) => !prev)}>
-            🌙 Eye Strain {eyeStrainMode ? 'On' : 'Off'}
+            Eye Strain {eyeStrainMode ? 'On' : 'Off'}
           </Button>
           <Button variant={autoHideTooltip ? 'primary' : 'secondary'} size="sm" onClick={() => setAutoHideTooltip((prev) => !prev)}>
-            💬 Tooltip Auto-hide
+            Tooltip Auto-hide
           </Button>
           <Button variant={showShortcutHelp ? 'primary' : 'secondary'} size="sm" onClick={() => setShowShortcutHelp((prev) => !prev)}>
-            ⌨️ Shortcuts
+            Shortcuts
           </Button>
           <Button variant="secondary" size="sm" onClick={randomExplore}>
-            🎲 Random Node
+            Random Node
           </Button>
           <Button variant={animationsEnabled ? 'primary' : 'secondary'} size="sm" onClick={() => setAnimationsEnabled((prev) => !prev)}>
-            {animationsEnabled ? '🎬 Animations On' : '🎬 Animations Off'}
+            {animationsEnabled ? 'Animations On' : 'Animations Off'}
           </Button>
           {animationsEnabled && (
             <select
@@ -1380,7 +1380,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
             </select>
           )}
           <Button variant={screenReaderMode ? 'primary' : 'secondary'} size="sm" onClick={() => setScreenReaderMode((prev) => !prev)}>
-            {screenReaderMode ? '📖 Text Mode' : '🎨 Visual Mode'}
+            {screenReaderMode ? 'Text Mode' : 'Visual Mode'}
           </Button>
           <Button variant={viewPreset === 'front' ? 'primary' : 'secondary'} size="sm" onClick={() => setViewPreset('front')}>
             Front View
@@ -1452,7 +1452,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
         {showRecommendations && (
           <div className="rounded-lg border border-cyan-200 dark:border-cyan-800 bg-cyan-50 dark:bg-cyan-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-cyan-700 dark:text-cyan-300">🧭 Smart Recommendations</p>
+              <p className="aurora-label text-sm font-semibold text-cyan-700 dark:text-cyan-300">Smart Recommendations</p>
               <Button variant="secondary" size="sm" onClick={() => setShowRecommendations(false)}>Close</Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -1472,7 +1472,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
 
         {showShortcutHelp && (
           <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-4 space-y-2">
-            <p className="aurora-label text-sm font-semibold text-slate-700 dark:text-slate-300">⌨️ Keyboard Shortcuts</p>
+            <p className="aurora-label text-sm font-semibold text-slate-700 dark:text-slate-300">Keyboard Shortcuts</p>
             <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">`←`/`→` phase · `1-5` jump phase · `F/B` view · `Esc` close modal</p>
           </div>
         )}
@@ -1480,7 +1480,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
         {showHeatmap && (
           <div className="rounded-lg border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-rose-700 dark:text-rose-300">🔥 Revisit Heatmap</p>
+              <p className="aurora-label text-sm font-semibold text-rose-700 dark:text-rose-300">Revisit Heatmap</p>
               <Button variant="secondary" size="sm" onClick={() => setShowHeatmap(false)}>Close</Button>
             </div>
             <div className="space-y-2">
@@ -1503,7 +1503,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
 
         <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 p-3 space-y-2">
           <div className="flex items-center justify-between">
-            <p className="aurora-label text-sm font-semibold text-amber-700 dark:text-amber-300">📅 Weekly Challenge</p>
+            <p className="aurora-label text-sm font-semibold text-amber-700 dark:text-amber-300">Weekly Challenge</p>
             <p className="aurora-label text-xs text-amber-700 dark:text-amber-300">{weeklyProgress}/{weeklyTarget}</p>
           </div>
           <div className="h-2 rounded bg-amber-100 dark:bg-amber-900 overflow-hidden">
@@ -1513,7 +1513,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
 
         {challengeReached && (
           <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 p-3 flex items-center justify-between gap-2">
-            <p className="aurora-label text-sm text-emerald-700 dark:text-emerald-300">✅ Weekly target reached. Excellent consistency.</p>
+            <p className="aurora-label text-sm text-emerald-700 dark:text-emerald-300">Weekly target reached. Excellent consistency.</p>
             <Button size="sm" variant="secondary" onClick={() => setChallengeReached(false)}>Dismiss</Button>
           </div>
         )}
@@ -1521,7 +1521,7 @@ Journal: ${progress.journalByNode[node.id] || 'No journal entry'}
         {quizMode && (
           <div className="rounded-lg border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-indigo-700 dark:text-indigo-300">🧠 Knowledge Check</p>
+              <p className="aurora-label text-sm font-semibold text-indigo-700 dark:text-indigo-300">Knowledge Check</p>
               <Button variant="secondary" size="sm" onClick={() => setQuizMode(false)}>Close Quiz</Button>
             </div>
             <div className="space-y-3">
@@ -1552,7 +1552,7 @@ Explore some organs first to unlock quiz questions!
         {showGoalsPanel && (
           <div className="rounded-lg border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-green-700 dark:text-green-300">🎯 Learning Goals</p>
+              <p className="aurora-label text-sm font-semibold text-green-700 dark:text-green-300">Learning Goals</p>
               <Button variant="secondary" size="sm" onClick={() => setShowGoalsPanel(false)}>Close</Button>
             </div>
             <div className="space-y-2">
@@ -1563,7 +1563,7 @@ Explore some organs first to unlock quiz questions!
                   <div key={goal.id} className="rounded bg-white dark:bg-slate-900 p-3">
                     <div className="flex items-center justify-between mb-2">
                       <span className="aurora-label text-sm text-slate-800 dark:text-slate-200">
-                        {goal.type === 'explore' ? '🔍 Explore' : goal.type === 'master' ? '⭐ Master' : '📚 Phase'} {goal.target} nodes
+                        {goal.type === 'explore' ? 'Explore' : goal.type === 'master' ? 'Master' : 'Phase'} {goal.target} nodes
                       </span>
                       <button onClick={() => removeGoal(goal.id)} className="text-red-500 hover:text-red-700 text-xs">✕</button>
                     </div>
@@ -1588,7 +1588,7 @@ Explore some organs first to unlock quiz questions!
         {showInsightsDashboard && (
           <div className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-blue-700 dark:text-blue-300">📊 Health Insights Dashboard</p>
+              <p className="aurora-label text-sm font-semibold text-blue-700 dark:text-blue-300">Health Insights Dashboard</p>
               <Button variant="secondary" size="sm" onClick={() => setShowInsightsDashboard(false)}>Close</Button>
             </div>
             <p className="aurora-label text-xs text-blue-700 dark:text-blue-300">Heart-rate trend: {heartTrendLabel}</p>
@@ -1613,7 +1613,7 @@ Explore some organs first to unlock quiz questions!
               <div className="rounded bg-white dark:bg-slate-900 p-3">
                 <p className="aurora-label text-xs text-slate-500 dark:text-slate-400">Study Streak</p>
                 <p className="aurora-label text-2xl font-bold text-blue-600 dark:text-blue-400">
-                  {daysSinceVisit !== null ? (daysSinceVisit === 0 ? '🔥 Today' : `${daysSinceVisit}d ago`) : '—'}
+                  {daysSinceVisit !== null ? (daysSinceVisit === 0 ? 'Today' : `${daysSinceVisit}d ago`) : '—'}
                 </p>
               </div>
               <div className="rounded bg-white dark:bg-slate-900 p-3">
@@ -1629,7 +1629,7 @@ Explore some organs first to unlock quiz questions!
         {showCommunityInsights && (
           <div className="rounded-lg border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-purple-700 dark:text-purple-300">👥 Community Insights</p>
+              <p className="aurora-label text-sm font-semibold text-purple-700 dark:text-purple-300">Community Insights</p>
               <Button variant="secondary" size="sm" onClick={() => setShowCommunityInsights(false)}>Close</Button>
             </div>
             <div className="space-y-2">
@@ -1657,7 +1657,7 @@ Explore some organs first to unlock quiz questions!
         {showProgressViz && (
           <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-amber-700 dark:text-amber-300">🌟 Learning Journey Timeline</p>
+              <p className="aurora-label text-sm font-semibold text-amber-700 dark:text-amber-300">Learning Journey Timeline</p>
               <Button variant="secondary" size="sm" onClick={() => setShowProgressViz(false)}>Close</Button>
             </div>
             <div className="space-y-2">
@@ -1674,7 +1674,7 @@ Explore some organs first to unlock quiz questions!
         {comparisonMode && activeOrganId && (
           <div className="rounded-lg border border-teal-200 dark:border-teal-800 bg-teal-50 dark:bg-teal-950 p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <p className="aurora-label text-sm font-semibold text-teal-700 dark:text-teal-300">⚖️ Comparison Mode</p>
+              <p className="aurora-label text-sm font-semibold text-teal-700 dark:text-teal-300">Comparison Mode</p>
               <Button variant="secondary" size="sm" onClick={() => setComparisonMode(false)}>Close</Button>
             </div>
             <p className="aurora-label text-sm text-slate-700 dark:text-slate-300">
@@ -1953,7 +1953,7 @@ Explore some organs first to unlock quiz questions!
 
             {selectedNode.relatedNodes && selectedNode.relatedNodes.length > 0 && (
               <div className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950 p-3">
-                <p className="aurora-label text-xs text-blue-600 dark:text-blue-400 mb-2">🔗 Related Content</p>
+                <p className="aurora-label text-xs text-blue-600 dark:text-blue-400 mb-2">Related Content</p>
                 <div className="flex flex-wrap gap-2">
                   {selectedNode.relatedNodes.map((relatedId) => {
                     const related = HUMAN_BLUEPRINT_LIBRARY_BY_ID[relatedId];
@@ -1973,7 +1973,7 @@ Explore some organs first to unlock quiz questions!
 
             {progress.phaseHistory[selectedNode.id] && (
               <div className="rounded-lg border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950 p-3">
-                <p className="aurora-label text-xs text-purple-600 dark:text-purple-400 mb-2">📅 Phase History</p>
+                <p className="aurora-label text-xs text-purple-600 dark:text-purple-400 mb-2">Phase History</p>
                 <div className="flex flex-wrap gap-1 text-xs">
                   {progress.phaseHistory[selectedNode.id].slice(-5).map((entry, idx) => (
                     <Badge key={idx} variant="default" size="sm">
@@ -1985,7 +1985,7 @@ Explore some organs first to unlock quiz questions!
             )}
 
             <div className="rounded-lg border border-teal-200 dark:border-teal-800 bg-teal-50 dark:bg-teal-950 p-3">
-              <p className="aurora-label text-xs text-teal-600 dark:text-teal-400 mb-2">📝 Personal Notes</p>
+              <p className="aurora-label text-xs text-teal-600 dark:text-teal-400 mb-2">Personal Notes</p>
               <div className="space-y-2">
                 {(progress.notes[selectedNode.id] ?? []).map((note, idx) => (
                   <div key={idx} className="flex items-start gap-2 text-sm bg-white dark:bg-slate-900 rounded p-2">
@@ -2031,7 +2031,7 @@ Explore some organs first to unlock quiz questions!
                 Mark Mastery
               </Button>
               <Button variant="secondary" size="sm" onClick={copyNodeSummary}>
-                📋 Copy Summary
+                Copy Summary
               </Button>
               <Button
                 variant={meditationActive ? 'primary' : 'secondary'}
@@ -2039,7 +2039,7 @@ Explore some organs first to unlock quiz questions!
                 onClick={() => selectedNode && startMeditation(selectedNode.id)}
                 disabled={meditationActive}
               >
-                {meditationActive ? '🧘 Meditating...' : '🧘 Guided Meditation'}
+                {meditationActive ? 'Meditating...' : 'Guided Meditation'}
               </Button>
               <Button
                 variant="secondary"
@@ -2052,7 +2052,7 @@ Explore some organs first to unlock quiz questions!
                 }}
                 disabled={!collaborationMode}
               >
-                📤 Share with Team
+                Share with Team
               </Button>
               <Button
                 variant="secondary"
@@ -2065,10 +2065,10 @@ Explore some organs first to unlock quiz questions!
                   }
                 }}
               >
-                ➕ Log Metric
+                Log Metric
               </Button>
               <Button variant="secondary" size="sm" onClick={resetSelectedNodeData}>
-                ♻️ Reset Node Data
+                Reset Node Data
               </Button>
               <Button variant="secondary" size="sm" onClick={() => setActiveOrganId(null)}>
                 Close

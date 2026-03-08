@@ -4,6 +4,7 @@
  */
 
 import { ICarrier, Carrier, Shipment, ShipmentCreationRequest, CarrierLabel, TrackingEvent } from './types';
+import { assertMockModeAllowed } from './mode';
 
 const mockTrackingHistory: Record<string, Shipment> = {};
 
@@ -73,6 +74,7 @@ export class DHLCarrier implements ICarrier {
   private apiKey = process.env.DHL_API_KEY || 'mock-key';
 
   async createShipment(request: ShipmentCreationRequest): Promise<CarrierLabel> {
+    assertMockModeAllowed(this.name, 'createShipment');
     const trackingNumber = generateTrackingNumber();
     
     const shipment: Shipment = {
@@ -105,6 +107,7 @@ export class DHLCarrier implements ICarrier {
   }
 
   async getTracking(trackingNumber: string): Promise<Shipment> {
+    assertMockModeAllowed(this.name, 'getTracking');
     if (mockTrackingHistory[trackingNumber]) {
       const shipment = mockTrackingHistory[trackingNumber];
       return {
@@ -120,6 +123,7 @@ export class DHLCarrier implements ICarrier {
   }
 
   async cancelShipment(trackingNumber: string): Promise<void> {
+    assertMockModeAllowed(this.name, 'cancelShipment');
     if (mockTrackingHistory[trackingNumber]) {
       delete mockTrackingHistory[trackingNumber];
     }
@@ -130,6 +134,7 @@ export class DHLCarrier implements ICarrier {
     dest: { zip: string; country: string; state: string },
     weight: number
   ): Promise<{ amount: number; estimatedDays: number }> {
+    assertMockModeAllowed(this.name, 'getRate');
     const baseRate = 14.99;
     const weightFactor = weight * 0.55;
     const totalAmount = Math.round((baseRate + weightFactor) * 100);
@@ -141,6 +146,7 @@ export class DHLCarrier implements ICarrier {
   }
 
   async initiateReturn(trackingNumber: string): Promise<{ returnTrackingNumber: string; labelUrl: string }> {
+    assertMockModeAllowed(this.name, 'initiateReturn');
     return {
       returnTrackingNumber: generateTrackingNumber(),
       labelUrl: `https://www.dhl.com/shipmenttracking?returnAWB=${trackingNumber}.pdf`,
@@ -148,6 +154,7 @@ export class DHLCarrier implements ICarrier {
   }
 
   async verifyDelivery(trackingNumber: string): Promise<boolean> {
+    assertMockModeAllowed(this.name, 'verifyDelivery');
     const shipment = await this.getTracking(trackingNumber);
     return shipment.status === 'delivered';
   }

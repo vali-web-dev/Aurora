@@ -3,19 +3,37 @@
  * GET /api/analytics/metrics - Get aggregated metrics for dashboarding
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { eventStore } from '@/lib/analytics/events';
+import { NextRequest } from 'next/server';
+import { eventStore, EventAction, EventCategory } from '@/lib/analytics/events';
+import { errorResponse, successResponse, validateQuery } from '@/lib/request-validation';
+import { analyticsMetricsQuerySchema } from '@/lib/validations';
+import type { z } from 'zod';
+
+type AnalyticsMetricsQueryPayload = z.infer<typeof analyticsMetricsQuerySchema>;
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const category = searchParams.get('category') || undefined;
-    const action = searchParams.get('action') || undefined;
+    const queryValidation = validateQuery<AnalyticsMetricsQueryPayload>(
+      searchParams,
+      analyticsMetricsQuerySchema
+    );
+    if (!queryValidation.success) {
+      return errorResponse(queryValidation.error, 400);
+    }
 
-    const metrics = eventStore.getMetrics(category as any, action as any);
+    const { category, action } = queryValidation.data;
+
+    const metrics = eventStore.getMetrics(
+      category as EventCategory | undefined,
+      action as EventAction | undefined
+    );
 
     // Group by date for time-series data
-    const timeSeries = new Map<string, any>();
+    const timeSeries = new Map<
+      string,
+      { date: string; metrics: typeof metrics; totalCount: number; totalValue: number }
+    >();
     metrics.forEach(m => {
       const date = m.date.toISOString().split('T')[0];
       if (!timeSeries.has(date)) {
@@ -57,18 +75,15 @@ export async function GET(req: NextRequest) {
       .sort((a, b) => (b.value || 0) - (a.value || 0))
       .slice(0, 10);
 
-    return NextResponse.json({
+    return successResponse({
       summary,
       timeSeries: Array.from(timeSeries.values()),
       topActions,
       topValueActions,
       metrics,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Metrics query error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return errorResponse('Failed to query analytics metrics', 500);
   }
 }

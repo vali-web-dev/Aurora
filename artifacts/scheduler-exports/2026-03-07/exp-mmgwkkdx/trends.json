@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-03-07T22:36:27.571Z",
+  "runId": "exp-mmgwkkdx",
+  "profiles": {
+    "dev": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    },
+    "runtime": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    },
+    "ci": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    },
+    "full": {
+      "label": "No data",
+      "recentSuccessRate": 0,
+      "olderSuccessRate": 0,
+      "sampleSize": 0
+    }
+  }
+}

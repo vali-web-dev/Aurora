@@ -3,46 +3,49 @@
  * GET /api/fulfillment/tracking - Get tracking information for a shipment
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import fulfillmentService from '@/lib/fulfillment/service';
 import { Carrier } from '@/lib/fulfillment/types';
+import { errorResponse, successResponse, validateQuery } from '@/lib/request-validation';
+import { fulfillmentTrackingQuerySchema } from '@/lib/validations';
+import type { z } from 'zod';
+
+type TrackingQueryPayload = z.infer<typeof fulfillmentTrackingQuerySchema>;
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const trackingNumber = searchParams.get('trackingNumber');
-    const carrier = searchParams.get('carrier') as Carrier;
-
-    if (!trackingNumber) {
-      return NextResponse.json(
-        { error: 'Tracking number required' },
-        { status: 400 }
-      );
+    const queryValidation = validateQuery<TrackingQueryPayload>(
+      searchParams,
+      fulfillmentTrackingQuerySchema
+    );
+    if (!queryValidation.success) {
+      return errorResponse(queryValidation.error, 400);
     }
+
+    const { trackingNumber, carrier } = queryValidation.data;
 
     try {
       const shipment = await fulfillmentService.getTracking(trackingNumber, carrier);
 
-      return NextResponse.json({
+      return successResponse({
         shipment,
         lastEvent: shipment.events[shipment.events.length - 1] || null,
         status: shipment.status,
         isDelivered: shipment.status === 'delivered',
       });
-    } catch (error: any) {
-      if (error.message.includes('not found')) {
-        return NextResponse.json(
-          { error: 'Tracking number not found' },
-          { status: 404 }
-        );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : '';
+      if (message.includes('not found')) {
+        return errorResponse('Tracking number not found', 404);
+      }
+      if (message.includes('mock adapter cannot execute')) {
+        return errorResponse('Carrier unavailable in live fulfillment mode', 503);
       }
       throw error;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Tracking error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return errorResponse('Failed to fetch tracking details', 500);
   }
 }

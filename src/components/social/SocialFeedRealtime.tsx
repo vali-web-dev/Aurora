@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { onEvent } from '@/lib/websocket-client';
+import { emitEvent, onEvent } from '@/lib/websocket-client';
 import { WSEventType } from '@/lib/websocket-types';
 import { TypingIndicator } from '@/components/realtime/NotificationCenter';
 
@@ -24,7 +24,7 @@ interface SocialFeedRealtimeProps {
  */
 export function SocialFeedRealtime({ postId, children }: SocialFeedRealtimeProps) {
   const { data: session } = useSession();
-  const typingUsersRef = useRef<Map<string, TypingUser>>(new Map());
+  const [typingUsers, setTypingUsers] = useState<Map<string, TypingUser>>(new Map());
   const typingChannelRef = useRef<string>(`post:${postId}:typing`);
 
   // Listen for typing indicators
@@ -36,21 +36,34 @@ export function SocialFeedRealtime({ postId, children }: SocialFeedRealtimeProps
       if (data.userId === session.user?.id) return; // Ignore own typing
 
       const key = `${data.userId}:${postId}`;
-      typingUsersRef.current.set(key, {
-        userId: data.userId,
-        postId,
-        userName: data.userName || 'User',
-        timestamp: Date.now(),
+      setTypingUsers((prev) => {
+        const next = new Map(prev);
+
+        if (data.isTyping === false) {
+          next.delete(key);
+          return next;
+        }
+
+        next.set(key, {
+          userId: data.userId,
+          postId,
+          userName: data.userName || 'User',
+          timestamp: Date.now(),
+        });
+        return next;
       });
 
       // Auto-remove typing indicator after 3 seconds of inactivity
       setTimeout(() => {
-        if (
-          typingUsersRef.current.has(key) &&
-          Date.now() - typingUsersRef.current.get(key)!.timestamp > 3000
-        ) {
-          typingUsersRef.current.delete(key);
-        }
+        setTypingUsers((prev) => {
+          const candidate = prev.get(key);
+          if (!candidate || Date.now() - candidate.timestamp <= 3000) {
+            return prev;
+          }
+          const next = new Map(prev);
+          next.delete(key);
+          return next;
+        });
       }, 3100);
     });
 
@@ -59,7 +72,7 @@ export function SocialFeedRealtime({ postId, children }: SocialFeedRealtimeProps
     };
   }, [session, postId]);
 
-  const typingUsersList = Array.from(typingUsersRef.current.values()).map((u) => u.userName);
+  const typingUsersList = Array.from(typingUsers.values()).map((u) => u.userName);
 
   return (
     <div className="space-y-2">
@@ -84,15 +97,11 @@ export function useCommentTyping(postId: number) {
   const broadcastTyping = useCallback(() => {
     if (!session) return;
 
-    // Emit typing event to server
-    const socket = (window as any).__socket;
-    if (!socket) return;
-
-    socket.emit('event:typing', {
-      type: WSEventType.TYPING_INDICATOR,
+    emitEvent(WSEventType.TYPING_INDICATOR, {
       postId,
       userId: session.user?.id,
       userName: session.user?.name || 'User',
+      isTyping: true,
       timestamp: Date.now(),
     });
 
@@ -101,9 +110,11 @@ export function useCommentTyping(postId: number) {
 
     // Set new timeout to stop typing after 2 seconds of inactivity
     typingTimeoutRef.current = setTimeout(() => {
-      socket.emit('event:typing-stop', {
+      emitEvent(WSEventType.TYPING_INDICATOR, {
         postId,
         userId: session.user?.id,
+        userName: session.user?.name || 'User',
+        isTyping: false,
       });
     }, 2000);
   }, [session, postId]);

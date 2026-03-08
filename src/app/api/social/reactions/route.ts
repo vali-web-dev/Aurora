@@ -14,9 +14,18 @@ import {
 import {
   broadcastToUniverse,
   sendNotification,
-  getUserSockets,
 } from '@/lib/websocket-server';
 import { WSEventType } from '@/lib/websocket-types';
+import { db } from '@/lib/db';
+import * as schema from '@/lib/schema';
+import { eq } from 'drizzle-orm';
+import type { z } from 'zod';
+
+type ReactionCreatePayload = z.infer<typeof reactionCreateSchema>;
+
+interface EmojiReaction {
+  emoji: string;
+}
 
 /**
  * GET /api/social/reactions
@@ -36,8 +45,9 @@ export async function GET(request: NextRequest) {
     return successResponse({
       postId,
       reactions,
-      summary: reactions.reduce((acc: any, r: any) => {
-        acc[r.emoji] = (acc[r.emoji] || 0) + 1;
+      summary: reactions.reduce<Record<string, number>>((acc, r) => {
+        const reaction = r as EmojiReaction;
+        acc[reaction.emoji] = (acc[reaction.emoji] || 0) + 1;
         return acc;
       }, {}),
     });
@@ -58,25 +68,37 @@ export async function POST(request: NextRequest) {
       return errorResponse('Authentication required', 401);
     }
 
+    const userId = parseInt(session.user.id, 10);
+
     const validation = await validateRequestBody(request, reactionCreateSchema);
     if (!validation.success) {
       return validation.response;
     }
 
-    const data = validation.data as any;
-    const postId = data.postId as number;
+    const data = validation.data as ReactionCreatePayload;
+    const postId = data.postId;
+
+    const [post] = await db
+      .select({ id: schema.socialPosts.id, authorUserId: schema.socialPosts.authorUserId })
+      .from(schema.socialPosts)
+      .where(eq(schema.socialPosts.id, postId))
+      .limit(1);
+
+    if (!post) {
+      return errorResponse('Post not found', 404);
+    }
 
     // Create reaction
     const reaction = await createReaction({
       postId,
-      userId: parseInt(session.user.id, 10),
+      userId,
       emoji: data.emoji,
     });
 
     // Broadcast reaction to all feed subscribers
     broadcastToUniverse('social', WSEventType.POST_REACTION, {
       postId,
-      userId: parseInt(session.user.id, 10),
+      userId,
       emoji: data.emoji,
       action: 'add',
       timestamp: new Date().toISOString(),
@@ -86,16 +108,15 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Send notification to post author (if not self-reaction)
-    // TODO: Get post author ID from database
-    // if (postAuthorId !== session.user.id) {
-    //   sendNotification(postAuthorId, {
-    //     type: 'reaction',
-    //     title: `${session.user.name} reacted to your post`,
-    //     message: `Reacted with ${data.emoji}`,
-    //     link: `/social/posts/${postId}`,
-    //   });
-    // }
+    if (post.authorUserId !== userId) {
+      const actorName = session.user.name || session.user.email || 'Someone';
+      sendNotification(post.authorUserId.toString(), {
+        type: 'reaction',
+        title: `${actorName} reacted to your post`,
+        message: `Reacted with ${data.emoji}`,
+        link: `/social/posts/${postId}`,
+      });
+    }
 
     console.log(
       `[Feed] User ${session.user.id} reacted to post ${postId} with ${data.emoji}`
@@ -126,6 +147,7 @@ export async function DELETE(request: NextRequest) {
       return errorResponse('Authentication required', 401);
     }
 
+    const userId = parseInt(session.user.id, 10);
     const { searchParams } = new URL(request.url);
     const postId = parseInt(searchParams.get('postId') || '0', 10);
     const emoji = searchParams.get('emoji');
@@ -137,14 +159,14 @@ export async function DELETE(request: NextRequest) {
     // Delete reaction
     await deleteReaction(
       postId,
-      parseInt(session.user.id, 10),
+      userId,
       emoji
     );
 
     // Broadcast reaction removal
     broadcastToUniverse('social', WSEventType.POST_REACTION, {
       postId,
-      userId: parseInt(session.user.id, 10),
+      userId,
       emoji,
       action: 'remove',
       timestamp: new Date().toISOString(),

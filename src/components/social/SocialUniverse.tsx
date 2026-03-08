@@ -9,7 +9,7 @@ import { StatCard } from '@/components/aurora/StatCard';
 import { SocialPostCard } from '@/components/social/SocialPostCard';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { InlineNotice } from '@/components/ui/InlineNotice';
-import { initializeSocket, disconnectSocket, subscribeFeed, onEvent } from '@/lib/websocket-client';
+import { initializeSocket, disconnectSocket, subscribeFeed, onEvent, authenticateSocket } from '@/lib/websocket-client';
 import { WSEventType } from '@/lib/websocket-types';
 import { AuroraDataService } from '@/data/types';
 
@@ -102,7 +102,22 @@ export function SocialUniverse() {
   useEffect(() => {
     if (!session) return;
 
-    initializeSocket();
+    const socket = initializeSocket();
+
+    const authenticate = () => {
+      const sessionId = `session-${session.expires ?? Date.now()}`;
+      const userId = session.user?.email ?? session.user?.name ?? `user-${Date.now()}`;
+      const token = `token-${session.expires ?? Date.now()}`;
+      authenticateSocket(sessionId, userId, token).catch(() => {
+        // best effort auth for realtime path
+      });
+    };
+
+    socket.on('connect', authenticate);
+    if (socket.connected) {
+      authenticate();
+    }
+
     subscribeFeed('social');
 
     // Listen for new posts
@@ -126,6 +141,7 @@ export function SocialUniverse() {
       unsubscribeCreate();
       unsubscribeUpdate();
       unsubscribeDelete();
+      socket.off('connect', authenticate);
       disconnectSocket();
     };
   }, [session]);

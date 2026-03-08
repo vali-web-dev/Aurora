@@ -4,9 +4,18 @@ import { useState, useRef, useEffect, useId } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { secondaryNav, utilityNav } from '@/lib/navigation';
+import { expandableNavigation } from '@/lib/expandable-navigation';
 import { useTheme } from '@/lib/design-system/theme-provider';
 import clsx from 'clsx';
 import { announce } from '@/lib/a11y/announcer';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
+
+function isActive(pathname: string, href: string): boolean {
+  if (href === '/') {
+    return pathname === '/';
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function CollapsibleNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +25,7 @@ export function CollapsibleNav() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelId = useId();
   const hasAnnouncedRef = useRef(false);
+  const primaryItems = expandableNavigation.filter((item) => item.group === 'Primary');
 
   const isIlluminated = mode === 'illuminated';
 
@@ -119,13 +129,56 @@ export function CollapsibleNav() {
             ref={panelRef}
             id={panelId}
             className={clsx(
-              'aurora-menu-panel aurora-menu-panel--clear absolute top-full right-0 mt-2 w-64 rounded-xl border',
+              'aurora-menu-panel aurora-menu-panel--clear absolute top-full right-0 mt-2 w-[min(18rem,calc(100vw-1.5rem))] rounded-xl border',
               'border-slate-200 dark:border-slate-800',
               'shadow-xl dark:shadow-2xl',
               'z-[9999] overflow-hidden',
               'animate-slide-in-down duration-300'
             )}
           >
+            {/* Primary Navigation Section */}
+            <div className="border-b border-slate-100 dark:border-slate-800">
+              <div className="px-2 py-3">
+                <p className="aurora-label mb-2 px-3 text-slate-500 dark:text-slate-500">
+                  Primary
+                </p>
+                <div className="space-y-1">
+                  {primaryItems.map((item, index) => {
+                    const iconName = resolvePageIconName(item.label, item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className={clsx(
+                          'aurora-label block rounded-lg px-3 py-2 text-sm font-medium',
+                          'transition-all duration-200',
+                          isActive(pathname, item.href)
+                            ? clsx(
+                                'aurora-label bg-indigo-100 text-indigo-900 dark:bg-indigo-950 dark:text-indigo-100',
+                                isIlluminated && 'shadow-[inset_0_0_20px_rgba(99,102,241,0.3)]'
+                              )
+                            : 'aurora-label text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800',
+                          'hover:translate-x-1',
+                          isIlluminated && 'hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]'
+                        )}
+                        style={{
+                          transitionDelay: `${index * 20}ms`
+                        }}
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <span className={clsx('inline-flex h-4 w-4', getPageIconColor(iconName))} aria-hidden="true">
+                            <PageIcon pageName={iconName} className="h-4 w-4" />
+                          </span>
+                          <span>{item.label}</span>
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
             {/* Secondary Navigation Section */}
             <div className="border-b border-slate-100 dark:border-slate-800">
               <div className="px-2 py-3">
@@ -133,7 +186,9 @@ export function CollapsibleNav() {
                   Explore
                 </p>
                 <div className="space-y-1">
-                  {secondaryNav.map((item, index) => (
+                  {secondaryNav.map((item, index) => {
+                    const iconName = resolvePageIconName(item.label, item.href);
+                    return (
                     <Link
                       key={item.href}
                       href={item.href}
@@ -141,7 +196,7 @@ export function CollapsibleNav() {
                       className={clsx(
                         'aurora-label block px-3 py-2 rounded-lg text-sm font-medium',
                         'transition-all duration-200',
-                        pathname === item.href
+                        isActive(pathname, item.href)
                           ? clsx(
                               'aurora-label bg-blue-100 dark:bg-blue-950 text-blue-900 dark:text-blue-100',
                               isIlluminated && 'shadow-[inset_0_0_20px_rgba(59,130,246,0.3)]'
@@ -151,12 +206,18 @@ export function CollapsibleNav() {
                         isIlluminated && 'hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]'
                       )}
                       style={{
-                        transitionDelay: `${index * 20}ms`
+                          transitionDelay: `${(primaryItems.length + index) * 20}ms`
                       }}
                     >
-                      {item.label}
+                      <span className="inline-flex items-center gap-2">
+                        <span className={clsx('inline-flex h-4 w-4', getPageIconColor(iconName))} aria-hidden="true">
+                          <PageIcon pageName={iconName} className="h-4 w-4" />
+                        </span>
+                        <span>{item.label}</span>
+                      </span>
                     </Link>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -167,7 +228,9 @@ export function CollapsibleNav() {
                 Support
               </p>
               <div className="space-y-1">
-                {utilityNav.map((item, index) => (
+                {utilityNav.map((item, index) => {
+                  const iconName = resolvePageIconName(item.label, item.href);
+                  return (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -175,7 +238,7 @@ export function CollapsibleNav() {
                     className={clsx(
                       'aurora-label block px-3 py-2 rounded-lg text-sm font-medium',
                       'transition-all duration-200',
-                      pathname === item.href
+                      isActive(pathname, item.href)
                         ? clsx(
                             'aurora-label bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-100',
                             isIlluminated && 'shadow-[inset_0_0_20px_rgba(16,185,129,0.3)]'
@@ -185,12 +248,18 @@ export function CollapsibleNav() {
                       isIlluminated && 'hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]'
                     )}
                     style={{
-                      transitionDelay: `${(secondaryNav.length + index) * 20}ms`
+                      transitionDelay: `${(primaryItems.length + secondaryNav.length + index) * 20}ms`
                     }}
                   >
-                    {item.label}
+                    <span className="inline-flex items-center gap-2">
+                      <span className={clsx('inline-flex h-4 w-4', getPageIconColor(iconName))} aria-hidden="true">
+                        <PageIcon pageName={iconName} className="h-4 w-4" />
+                      </span>
+                      <span>{item.label}</span>
+                    </span>
                   </Link>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

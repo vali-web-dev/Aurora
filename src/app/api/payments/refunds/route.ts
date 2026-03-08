@@ -3,20 +3,23 @@
  * POST /api/payments/refunds - Create a refund
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import paymentService from '@/lib/payments/service';
 import { PaymentProvider } from '@/lib/payments/types';
+import { errorResponse, successResponse, validateRequestBody } from '@/lib/request-validation';
+import { paymentRefundSchema } from '@/lib/validations';
+import type { z } from 'zod';
+
+type PaymentRefundPayload = z.infer<typeof paymentRefundSchema>;
 
 export async function POST(req: NextRequest) {
   try {
-    const { chargeId, amount, reason, provider } = await req.json();
-
-    if (!chargeId) {
-      return NextResponse.json(
-        { error: 'Charge ID required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(req, paymentRefundSchema);
+    if (!validation.success) {
+      return validation.response;
     }
+
+    const { chargeId, amount, reason, provider } = validation.data as PaymentRefundPayload;
 
     const refund = await paymentService.refundPayment(
       chargeId,
@@ -25,12 +28,13 @@ export async function POST(req: NextRequest) {
       provider as PaymentProvider
     );
 
-    return NextResponse.json({ refund });
-  } catch (error: any) {
+    return successResponse({ refund });
+  } catch (error: unknown) {
     console.error('Refund error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    const message = error instanceof Error ? error.message : '';
+    if (message.includes('not found')) {
+      return errorResponse('Charge or provider not found', 404);
+    }
+    return errorResponse('Failed to create refund', 500);
   }
 }

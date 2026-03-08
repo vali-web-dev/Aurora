@@ -20,6 +20,46 @@ export const changePasswordSchema = z.object({
   path: ['confirmPassword'],
 });
 
+const notificationPrefsSchema = z
+  .object({
+    emailNotifications: z.boolean().optional(),
+    pushNotifications: z.boolean().optional(),
+    messageNotifications: z.boolean().optional(),
+    mentionNotifications: z.boolean().optional(),
+  })
+  .strict();
+
+const privacyPrefsSchema = z
+  .object({
+    profileVisibility: z.enum(['public', 'private']).optional(),
+    showEmail: z.boolean().optional(),
+    showActivity: z.boolean().optional(),
+  })
+  .strict();
+
+const profileExtrasSchema = z
+  .object({
+    bio: z.string().max(1000).optional(),
+    location: z.string().max(255).optional(),
+    website: z.string().url('Invalid website URL').max(500).optional(),
+  })
+  .strict();
+
+export const userSettingsUpdateSchema = z
+  .object({
+    notifications: notificationPrefsSchema.optional(),
+    privacy: privacyPrefsSchema.optional(),
+    profile: profileExtrasSchema.optional(),
+  })
+  .strict()
+  .refine(
+    (data) => Boolean(data.notifications || data.privacy || data.profile),
+    {
+      message: 'At least one settings group must be provided',
+      path: [],
+    }
+  );
+
 // ============================================================================
 // PRODUCT & COMMERCE SCHEMAS
 // ============================================================================
@@ -165,6 +205,215 @@ export const serviceCreateSchema = z.object({
 });
 
 export const serviceUpdateSchema = serviceCreateSchema.partial();
+
+// ============================================================================
+// PAYMENTS SCHEMAS
+// ============================================================================
+
+const paymentProviderSchema = z.enum(['stripe', 'adyen']);
+
+export const paymentIntentCreateSchema = z.object({
+  amount: z.coerce.number().int().positive('Amount must be a positive integer'),
+  currency: z.string().length(3, 'Currency must be a 3-letter code').transform((v) => v.toUpperCase()),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+  provider: paymentProviderSchema.optional(),
+});
+
+export const paymentIntentRetrieveQuerySchema = z.object({
+  id: z.string().min(1, 'Intent ID is required'),
+  provider: paymentProviderSchema.optional(),
+});
+
+export const paymentMethodsListQuerySchema = z.object({
+  customerId: z.string().min(1, 'Customer ID is required'),
+  provider: paymentProviderSchema.optional(),
+});
+
+export const paymentMethodSaveSchema = z.object({
+  customerId: z.string().min(1, 'Customer ID is required'),
+  paymentMethodData: z.record(z.string(), z.unknown()),
+  provider: paymentProviderSchema.optional(),
+});
+
+export const paymentMethodDeleteQuerySchema = z.object({
+  id: z.string().min(1, 'Payment method ID is required'),
+  provider: paymentProviderSchema.optional(),
+});
+
+export const paymentConfirmSchema = z.object({
+  intentId: z.string().min(1, 'Intent ID is required'),
+  paymentMethodId: z.string().min(1, 'Payment method ID is required'),
+  provider: paymentProviderSchema.optional(),
+});
+
+export const paymentRefundSchema = z.object({
+  chargeId: z.string().min(1, 'Charge ID is required'),
+  amount: z.coerce.number().int().positive('Refund amount must be positive').optional(),
+  reason: z.enum(['duplicate', 'fraudulent', 'requested_by_customer', 'other']).optional(),
+  provider: paymentProviderSchema.optional(),
+});
+
+// ============================================================================
+// ANALYTICS SCHEMAS
+// ============================================================================
+
+const analyticsCategorySchema = z.enum([
+  'commerce',
+  'payment',
+  'fulfillment',
+  'user',
+  'system',
+  'performance',
+  'error',
+]);
+
+const analyticsActionSchema = z.enum([
+  'browse_products',
+  'view_product',
+  'add_to_cart',
+  'remove_from_cart',
+  'view_cart',
+  'start_checkout',
+  'complete_checkout',
+  'create_payment_intent',
+  'confirm_payment',
+  'payment_success',
+  'payment_failed',
+  'refund_initiated',
+  'refund_completed',
+  'shipment_created',
+  'tracking_updated',
+  'delivery_confirmed',
+  'return_initiated',
+  'sign_up',
+  'sign_in',
+  'sign_out',
+  'profile_updated',
+  'api_call',
+  'page_load',
+  'error_occurred',
+  'performance_metric',
+]);
+
+const analyticsEventInputSchema = z.object({
+  timestamp: z.coerce.date().optional(),
+  category: analyticsCategorySchema,
+  action: analyticsActionSchema,
+  userId: z.string().optional(),
+  sessionId: z.string().optional(),
+  orderId: z.string().optional(),
+  productId: z.string().optional(),
+  value: z.coerce.number().int().nonnegative().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+});
+
+export const analyticsEventsPostSchema = z
+  .object({
+    events: analyticsEventInputSchema.optional(),
+    batch: z.array(analyticsEventInputSchema).min(1).optional(),
+  })
+  .refine((data) => Boolean(data.events || data.batch), {
+    message: 'Events or batch data required',
+    path: [],
+  });
+
+export const analyticsEventsQuerySchema = z.object({
+  category: analyticsCategorySchema.optional(),
+  action: analyticsActionSchema.optional(),
+  userId: z.string().optional(),
+  limit: z.coerce.number().int().positive().max(1000).default(100),
+  days: z.coerce.number().int().positive().max(365).default(7),
+});
+
+export const analyticsMetricsQuerySchema = z.object({
+  category: analyticsCategorySchema.optional(),
+  action: analyticsActionSchema.optional(),
+});
+
+// ============================================================================
+// INVOICE SCHEMAS
+// ============================================================================
+
+export const invoiceCreateSchema = z.object({
+  orderId: z.string().min(1, 'Order ID is required'),
+  orderData: z
+    .object({
+      customerEmail: z.string().email().optional(),
+    })
+    .catchall(z.unknown()),
+});
+
+export const invoicesListQuerySchema = z.object({
+  customerId: z.string().min(1, 'Customer ID required'),
+});
+
+// ============================================================================
+// FULFILLMENT SCHEMAS
+// ============================================================================
+
+const carrierSchema = z.enum(['fedex', 'ups', 'dhl']);
+
+const packageSchema = z.object({
+  weight: z.coerce.number().positive(),
+  length: z.coerce.number().positive(),
+  width: z.coerce.number().positive(),
+  height: z.coerce.number().positive(),
+  value: z.coerce.number().nonnegative(),
+});
+
+const addressSchema = z.object({
+  street: z.string().min(1).max(255),
+  city: z.string().min(1).max(255),
+  state: z.string().min(1).max(100),
+  zip: z.string().min(1).max(20),
+  country: z.string().min(2).max(2),
+});
+
+export const fulfillmentShipmentCreateSchema = z.object({
+  orderId: z.string().min(1),
+  carrier: carrierSchema,
+  recipientName: z.string().min(1).max(255),
+  recipientEmail: z.string().email().optional(),
+  shipmentAddress: addressSchema,
+  packages: z.array(packageSchema).min(1),
+  shippingMethod: z.enum(['standard', 'overnight', 'express']).optional(),
+});
+
+export const fulfillmentRatesRequestSchema = z.object({
+  origin: z.object({
+    zip: z.string().min(1).max(20),
+    country: z.string().min(2).max(2),
+  }),
+  destination: z.object({
+    zip: z.string().min(1).max(20),
+    country: z.string().min(2).max(2),
+    state: z.string().min(1).max(100),
+  }),
+  weight: z.coerce.number().positive(),
+  dimensions: z
+    .object({
+      length: z.coerce.number().positive().optional(),
+      width: z.coerce.number().positive().optional(),
+      height: z.coerce.number().positive().optional(),
+    })
+    .optional(),
+  carriers: z.array(carrierSchema).nonempty().optional(),
+});
+
+export const fulfillmentReturnSchema = z.object({
+  trackingNumber: z.string().min(1).max(64),
+  carrier: carrierSchema.optional(),
+  reason: z.string().max(1000).optional(),
+});
+
+export const fulfillmentTrackingQuerySchema = z.object({
+  trackingNumber: z.string().min(1).max(64),
+  carrier: carrierSchema.optional(),
+});
+
+export const fulfillmentShipmentsQuerySchema = z.object({
+  orderId: z.string().min(1).max(100),
+});
 
 // ============================================================================
 // QUERY SCHEMAS

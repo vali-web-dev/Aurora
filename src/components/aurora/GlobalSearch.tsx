@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { flattenedNavigation } from '@/lib/expandable-navigation';
 import { AuroraModal } from '@/components/aurora/Modal';
 import { Badge } from '@/components/aurora/Badge';
-import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 interface SearchItem {
   href: string;
@@ -164,7 +164,7 @@ export function GlobalSearch({
             }}
             placeholder={placeholder}
             className={clsx(
-              'aurora-label w-full rounded-lg border px-10 py-2 text-sm',
+              'aurora-label h-11 w-full rounded-lg border pl-3 pr-10 text-sm',
               'bg-white/90 dark:bg-slate-900/70',
               'border-slate-200 dark:border-slate-800',
               'aurora-label text-slate-700 dark:text-slate-200',
@@ -174,7 +174,7 @@ export function GlobalSearch({
             aria-label="Search"
             aria-controls="global-search-inline-results"
           />
-          <span className="aurora-label pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+          <span className="aurora-label pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
             <svg
               className="h-4 w-4"
               viewBox="0 0 24 24"
@@ -205,7 +205,9 @@ export function GlobalSearch({
                   No results found.
                 </div>
               ) : (
-                results.map((item, index) => (
+                results.map((item, index) => {
+                  const iconName = resolvePageIconName(item.label, item.href);
+                  return (
                   <button
                     key={`${item.group}-${item.href}-${index}`}
                     type="button"
@@ -220,8 +222,11 @@ export function GlobalSearch({
                     role="option"
                     aria-selected={index === activeIndex}
                   >
-                    <span className={clsx('aurora-label w-4 h-4 flex-shrink-0 mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(item.label))}>
-                      <PageIcon pageName={item.label} className="w-full h-full" />
+                    <span
+                      className={clsx('aurora-label inline-flex h-4 w-4 flex-shrink-0 items-center justify-center mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(iconName))}
+                      aria-hidden="true"
+                    >
+                      <PageIcon pageName={iconName} className="w-full h-full" />
                     </span>
                     <div className="flex-1 min-w-0">
                       <div className="font-medium">{item.label}</div>
@@ -235,7 +240,8 @@ export function GlobalSearch({
                       {item.group}
                     </span>
                   </button>
-                ))
+                  );
+                })
               )}
             </div>
           )}
@@ -314,7 +320,9 @@ export function GlobalSearch({
               </div>
             )}
             <div className="space-y-2" role="listbox" aria-label="Search results">
-              {results.map((item, index) => (
+              {results.map((item, index) => {
+                const iconName = resolvePageIconName(item.label, item.href);
+                return (
                 <button
                   key={`${item.group}-${item.href}-${index}`}
                   id={`${dialogId}-option-${index}`}
@@ -329,8 +337,11 @@ export function GlobalSearch({
                   role="option"
                   aria-selected={index === activeIndex}
                 >
-                  <span className={clsx('aurora-label w-5 h-5 flex-shrink-0 mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(item.label))}>
-                    <PageIcon pageName={item.label} className="w-full h-full" />
+                  <span
+                    className={clsx('aurora-label inline-flex h-5 w-5 flex-shrink-0 items-center justify-center mt-0.5', index === activeIndex ? 'text-white' : getPageIconColor(iconName))}
+                    aria-hidden="true"
+                  >
+                    <PageIcon pageName={iconName} className="w-full h-full" />
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="font-medium">{item.label}</div>
@@ -348,7 +359,8 @@ export function GlobalSearch({
                     {item.group}
                   </Badge>
                 </button>
-              ))}
+                );
+              })}
             </div>
           </div>
         </AuroraModal>

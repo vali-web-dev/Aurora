@@ -63,7 +63,7 @@ export function ArcPanelStudioPro() {
   const handleSync = useCallback(() => {
     setSyncStatus('Syncing...');
     setTimeout(() => {
-      setSyncStatus('✓ Synced successfully');
+      setSyncStatus('Synced successfully');
       setTimeout(() => setSyncStatus(''), 2000);
     }, 500);
   }, []);
@@ -74,7 +74,7 @@ export function ArcPanelStudioPro() {
 
   const handleSave = useCallback(() => {
     setIsDirty(false);
-    setSyncStatus('💾 Saved to browser storage');
+    setSyncStatus('Saved to browser storage');
     setTimeout(() => setSyncStatus(''), 2000);
   }, []);
 
@@ -109,7 +109,7 @@ export function ArcPanelStudioPro() {
           {/* BRANDING */}
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 font-bold text-white">
-              ✨
+              A
             </div>
             <div>
               <h1 className="text-sm font-bold">Aurora Design Studio Pro</h1>
@@ -130,7 +130,7 @@ export function ArcPanelStudioPro() {
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
-                  📐
+                  AP
                 </button>
               </Tooltip>
               <Tooltip content="Photoshop Basic">
@@ -142,7 +142,7 @@ export function ArcPanelStudioPro() {
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
-                  🎨
+                  PB
                 </button>
               </Tooltip>
               <Tooltip content="Photoshop Pro">
@@ -154,7 +154,7 @@ export function ArcPanelStudioPro() {
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
-                  🖼️
+                  PP
                 </button>
               </Tooltip>
               <Tooltip content="Split Horizontal">
@@ -166,7 +166,7 @@ export function ArcPanelStudioPro() {
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
-                  ↔️
+                  H
                 </button>
               </Tooltip>
               <Tooltip content="Split Vertical">
@@ -178,7 +178,7 @@ export function ArcPanelStudioPro() {
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
-                  ⇅
+                  V
                 </button>
               </Tooltip>
             </div>
@@ -191,18 +191,18 @@ export function ArcPanelStudioPro() {
                   onClick={handleSave}
                   className={`gap-1 ${isDirty ? 'bg-yellow-600 text-white hover:bg-yellow-700' : 'hover:bg-slate-700'}`}
                 >
-                  💾
+                  Save
                   {isDirty && <span className="h-2 w-2 rounded-full bg-yellow-300" />}
                 </Button>
               </Tooltip>
               <Tooltip content="Sync Between Editors">
                 <Button size="sm" onClick={handleSync} className="gap-1">
-                  🔄
+                  Sync
                 </Button>
               </Tooltip>
               <Tooltip content="Export (Ctrl+E)">
                 <Button size="sm" onClick={handleExport}>
-                  📥
+                  Export
                 </Button>
               </Tooltip>
               <Tooltip content="Toggle Panels (Tab)">
@@ -234,7 +234,7 @@ export function ArcPanelStudioPro() {
           <div className="flex-1 flex flex-col border-r border-slate-700 bg-slate-900">
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center text-slate-400">
-                <div className="text-4xl mb-2">📐</div>
+                <div className="text-4xl mb-2">AP</div>
                 <div className="font-bold">Arc Panel Logo Lab</div>
                 <div className="text-xs mt-1">Professional logo design</div>
               </div>
@@ -244,7 +244,7 @@ export function ArcPanelStudioPro() {
           <div className="flex-1 flex flex-col bg-slate-900">
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center text-slate-400">
-                <div className="text-4xl mb-2">🎨</div>
+                <div className="text-4xl mb-2">PB</div>
                 <div className="font-bold">Photoshop Canvas</div>
                 <div className="text-xs mt-1">Full feature editing</div>
               </div>
@@ -257,7 +257,7 @@ export function ArcPanelStudioPro() {
           <div className="flex-1 flex flex-col border-r border-slate-700 bg-slate-900">
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center text-slate-400">
-                <div className="text-4xl mb-2">🖼️</div>
+                <div className="text-4xl mb-2">PP</div>
                 <div className="font-bold">Photoshop Pro</div>
                 <div className="text-xs mt-1">Advanced features</div>
               </div>
@@ -272,10 +272,10 @@ export function ArcPanelStudioPro() {
               {/* TABS */}
               <TabGroup
                 tabs={[
-                  { id: 'properties', label: 'Properties', icon: '⚙️' },
-                  { id: 'layers', label: 'Layers', icon: '📑' },
-                  { id: 'colors', label: 'Colors', icon: '🎨' },
-                  { id: 'shortcuts', label: 'Shortcuts', icon: '⌨️' },
+                  { id: 'properties', label: 'Properties', icon: 'PR' },
+                  { id: 'layers', label: 'Layers', icon: 'LY' },
+                  { id: 'colors', label: 'Colors', icon: 'CL' },
+                  { id: 'shortcuts', label: 'Shortcuts', icon: 'KB' },
                 ]}
                 activeTab={activeTab}
                 onChange={setActiveTab}
@@ -284,7 +284,7 @@ export function ArcPanelStudioPro() {
               <div className="p-3 space-y-3">
                 {activeTab === 'properties' && (
                   <>
-                    <SectionHeader title="Canvas" icon="🖼️" />
+                    <SectionHeader title="Canvas" icon="CV" />
                     <Slider
                       label="Zoom"
                       value={zoom}
@@ -311,7 +311,7 @@ export function ArcPanelStudioPro() {
 
                     <div className="my-2 h-px bg-slate-600" />
 
-                    <SectionHeader title="Export Presets" icon="💾" />
+                    <SectionHeader title="Export Presets" icon="EX" />
                     <div className="space-y-1">
                       <Button size="sm" className="w-full justify-start text-xs">
                         PNG (Web) - 1920x1080
@@ -331,7 +331,7 @@ export function ArcPanelStudioPro() {
 
                 {activeTab === 'layers' && (
                   <>
-                    <SectionHeader title="Layers" icon="📑" />
+                    <SectionHeader title="Layers" icon="LY" />
                     <CollapsiblePanel title="Layer 1: Background" icon="⬜" defaultOpen={true}>
                       <div className="space-y-1 text-xs text-slate-400">
                         <div>Type: Raster</div>
@@ -339,7 +339,7 @@ export function ArcPanelStudioPro() {
                         <div>Opacity: 100%</div>
                       </div>
                     </CollapsiblePanel>
-                    <CollapsiblePanel title="Layer 2: Content" icon="📝" defaultOpen={true}>
+                    <CollapsiblePanel title="Layer 2: Content" icon="TX" defaultOpen={true}>
                       <div className="space-y-1 text-xs text-slate-400">
                         <div>Type: Text</div>
                         <div>Content: &apos;Hello Aurora&apos;</div>
@@ -351,7 +351,7 @@ export function ArcPanelStudioPro() {
 
                 {activeTab === 'colors' && (
                   <>
-                    <SectionHeader title="Color Palette" icon="🎨" />
+                    <SectionHeader title="Color Palette" icon="CP" />
                     <div className="grid grid-cols-4 gap-2">
                       {[
                         '#000000',
@@ -386,7 +386,7 @@ export function ArcPanelStudioPro() {
       {/* FOOTER */}
       <footer className="border-t border-slate-700 bg-slate-800/50 px-4 py-2 text-xs text-slate-400 flex items-center justify-between">
         <div className="flex gap-4">
-          <div>🖱️ Click to select • Drag to move • Scroll to zoom</div>
+          <div>Click to select • Drag to move • Scroll to zoom</div>
           <div>Press <kbd className="border rounded px-1">Tab</kbd> to toggle panels</div>
         </div>
         <div>Aurora Design Studio v2.0</div>

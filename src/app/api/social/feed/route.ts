@@ -18,6 +18,10 @@ import {
   sendNotification,
 } from '@/lib/websocket-server';
 import { WSEventType } from '@/lib/websocket-types';
+import type { z } from 'zod';
+
+type PostCreatePayload = z.infer<typeof postCreateSchema>;
+type PostUpdatePayload = z.infer<typeof postUpdateSchema>;
 
 /**
  * GET /api/social/feed
@@ -77,7 +81,7 @@ export async function POST(request: NextRequest) {
       return validation.response;
     }
 
-    const data = validation.data as any;
+    const data = validation.data as PostCreatePayload;
 
     // Create post in database
     const post = await createPost({
@@ -137,7 +141,7 @@ export async function PUT(request: NextRequest) {
       return validation.response;
     }
 
-    const data = validation.data as any;
+    const data = validation.data as PostUpdatePayload;
     const postId = parseInt(data.postId, 10);
 
     // Get existing post

@@ -9,26 +9,36 @@ const ports = args
 
 const resolvedPorts = ports.length > 0 ? ports : [3000, 3001, 3002, 3003, 3004, 3005];
 
-function probe(port) {
+function probePath(port, path) {
   return new Promise((resolve) => {
     const req = http.get(
       {
         hostname: '127.0.0.1',
         port,
-        path: '/health',
+        path,
         timeout: 2500,
       },
       (res) => {
-        resolve({ port, ok: Boolean(res.statusCode && res.statusCode >= 200 && res.statusCode < 500), status: res.statusCode ?? 0 });
+        resolve({ port, ok: Boolean(res.statusCode && res.statusCode >= 200 && res.statusCode < 500), status: res.statusCode ?? 0, path });
       }
     );
 
     req.on('timeout', () => {
       req.destroy();
-      resolve({ port, ok: false, status: 0 });
+      resolve({ port, ok: false, status: 0, path });
     });
-    req.on('error', () => resolve({ port, ok: false, status: 0 }));
+    req.on('error', () => resolve({ port, ok: false, status: 0, path }));
   });
+}
+
+async function probe(port) {
+  const apiHealth = await probePath(port, '/api/health');
+  if (apiHealth.ok) return apiHealth;
+
+  const legacyHealth = await probePath(port, '/health');
+  if (legacyHealth.ok) return legacyHealth;
+
+  return apiHealth;
 }
 
 (async () => {
@@ -37,7 +47,7 @@ function probe(port) {
 
   if (jsonMode) {
     const payload = {
-      healthy: healthy ? `http://localhost:${healthy.port}/health` : null,
+      healthy: healthy ? `http://localhost:${healthy.port}${healthy.path}` : null,
       results,
       timestamp: new Date().toISOString(),
     };
@@ -46,11 +56,11 @@ function probe(port) {
   }
 
   results.forEach((entry) => {
-    console.log(`http://localhost:${entry.port}/health -> ${entry.ok ? entry.status : 'ERROR'}`);
+    console.log(`http://localhost:${entry.port}${entry.path} -> ${entry.ok ? entry.status : 'ERROR'}`);
   });
 
   if (healthy) {
-    console.log(`\n[dev:health] Healthy server at http://localhost:${healthy.port}/health`);
+    console.log(`\n[dev:health] Healthy server at http://localhost:${healthy.port}${healthy.path}`);
     process.exit(0);
   }
 

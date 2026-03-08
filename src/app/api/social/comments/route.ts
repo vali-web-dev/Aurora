@@ -5,6 +5,9 @@ import {
   createComment,
   deleteComment,
 } from '@/lib/api-data';
+import { db } from '@/lib/db';
+import * as schema from '@/lib/schema';
+import { eq } from 'drizzle-orm';
 import { commentCreateSchema } from '@/lib/validations';
 import {
   validateRequestBody,
@@ -16,6 +19,9 @@ import {
   sendNotification,
 } from '@/lib/websocket-server';
 import { WSEventType } from '@/lib/websocket-types';
+import type { z } from 'zod';
+
+type CommentCreatePayload = z.infer<typeof commentCreateSchema>;
 
 /**
  * GET /api/social/comments
@@ -54,19 +60,31 @@ export async function POST(request: NextRequest) {
       return errorResponse('Authentication required', 401);
     }
 
+    const userId = parseInt(session.user.id, 10);
+
     const validation = await validateRequestBody(request, commentCreateSchema);
     if (!validation.success) {
       return validation.response;
     }
 
-    const data = validation.data as any;
-    const postId = data.postId as number;
-    const parentCommentId = data.parentCommentId as number | undefined;
+    const data = validation.data as CommentCreatePayload;
+    const postId = data.postId;
+    const parentCommentId = data.parentCommentId;
+
+    const [post] = await db
+      .select({ id: schema.socialPosts.id, authorUserId: schema.socialPosts.authorUserId })
+      .from(schema.socialPosts)
+      .where(eq(schema.socialPosts.id, postId))
+      .limit(1);
+
+    if (!post) {
+      return errorResponse('Post not found', 404);
+    }
 
     // Create comment
     const comment = await createComment({
       postId,
-      userId: parseInt(session.user.id, 10),
+      userId,
       content: data.content,
       parentCommentId,
     });
@@ -84,7 +102,7 @@ export async function POST(request: NextRequest) {
     broadcastToUniverse('social', WSEventType.POST_COMMENT, {
       id: comment.id,
       postId,
-      userId: parseInt(session.user.id, 10),
+      userId,
       content: data.content,
       parentCommentId: comment.parentCommentId ?? null,
       createdAt: comment.createdAt,
@@ -94,16 +112,14 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Send notification to post author
-    // TODO: Get post author ID from database
-    // if (postAuthorId !== session.user.id) {
-    //   sendNotification(postAuthorId, {
-    //     type: 'comment',
-    //     title: `${session.user.name} commented on your post`,
-    //     message: data.content.substring(0, 100),
-    //     link: `/social/posts/${postId}`,
-    //   });
-    // }
+    if (post.authorUserId !== userId) {
+      sendNotification(post.authorUserId.toString(), {
+        type: 'comment',
+        title: `${authorName} commented on your post`,
+        message: data.content.substring(0, 100),
+        link: `/social/posts/${postId}`,
+      });
+    }
 
     console.log(
       `[Feed] User ${session.user.id} commented on post ${postId}`
@@ -134,6 +150,8 @@ export async function DELETE(request: NextRequest) {
       return errorResponse('Authentication required', 401);
     }
 
+    const userId = parseInt(session.user.id, 10);
+
     const { searchParams } = new URL(request.url);
     const commentId = parseInt(searchParams.get('commentId') || '0', 10);
 
@@ -141,7 +159,20 @@ export async function DELETE(request: NextRequest) {
       return errorResponse('Comment ID required', 400);
     }
 
-    // TODO: Verify comment ownership
+    const [comment] = await db
+      .select({ id: schema.socialComments.id, userId: schema.socialComments.userId })
+      .from(schema.socialComments)
+      .where(eq(schema.socialComments.id, commentId))
+      .limit(1);
+
+    if (!comment) {
+      return errorResponse('Comment not found', 404);
+    }
+
+    if (comment.userId !== userId) {
+      return errorResponse('You can only delete your own comments', 403);
+    }
+
     // Delete comment
     await deleteComment(commentId);
 

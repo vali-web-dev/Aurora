@@ -8,8 +8,15 @@ export function ThemeSwitcher() {
   const { mode, family, setMode, setFamily } = useTheme();
   const [showMenu, setShowMenu] = useState(false);
 
-  const modes = ['light', 'dark', 'illuminated', 'system'] as const;
+  const modes = ['light', 'dark', 'illuminated', 'text30', 'system'] as const;
   const families = ['home', 'office', 'outdoor', 'lifestyle', 'creative'] as const;
+  const modeBadge: Record<(typeof modes)[number], string> = {
+    light: 'L',
+    dark: 'D',
+    illuminated: 'I',
+    text30: 'T',
+    system: 'S',
+  };
 
   return (
     <div className="relative">
@@ -19,7 +26,7 @@ export function ThemeSwitcher() {
         onClick={() => setShowMenu(!showMenu)}
         className="text-sm"
       >
-        Theme ✨
+        Theme
       </Button>
 
       {showMenu && (
@@ -44,8 +51,7 @@ export function ThemeSwitcher() {
                         : 'aurora-label bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-50 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
-                    {m === 'system' ? '🖥️' : m === 'light' ? '☀️' : m === 'dark' ? '🌙' : '✨'}
-                    {' '}
+                    {modeBadge[m]}{' '}
                     {m}
                   </button>
                 ))}

@@ -4,30 +4,40 @@
  * GET /api/invoices - List invoices
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import invoiceService from '@/lib/invoicing/service';
+import { withApiTrace } from '@/lib/api-trace';
+import {
+  errorResponse,
+  successResponse,
+  validateQuery,
+  validateRequestBody,
+} from '@/lib/request-validation';
+import { invoiceCreateSchema, invoicesListQuerySchema } from '@/lib/validations';
+import type { z } from 'zod';
 
-export async function POST(req: NextRequest) {
+type InvoiceCreatePayload = z.infer<typeof invoiceCreateSchema>;
+type InvoicesListQuery = z.infer<typeof invoicesListQuerySchema>;
+
+const postInvoiceHandler = async (req: NextRequest) => {
   try {
-    const { orderId, orderData } = await req.json();
-
-    if (!orderId || !orderData) {
-      return NextResponse.json(
-        { error: 'Order ID and order data required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(req, invoiceCreateSchema);
+    if (!validation.success) {
+      return validation.response;
     }
+
+    const { orderId, orderData } = validation.data as InvoiceCreatePayload;
 
     const invoice = await invoiceService.generateFromOrder(orderId, orderData);
 
     // Generate HTML
     const html = await invoiceService.renderHTML(invoice);
+    const pdf = await invoiceService.renderPDF(html, `${invoice.invoiceNumber}.pdf`);
 
-    // TODO: Save PDF to storage
     invoice.htmlUrl = `/api/invoices/${invoice.id}/html`;
     invoice.pdfUrl = `/api/invoices/${invoice.id}/download`;
 
-    await invoiceService.saveInvoice(invoice);
+    await invoiceService.saveInvoice(invoice, { html, pdf });
 
     // Send email if email provided
     if (orderData.customerEmail) {
@@ -36,7 +46,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({
+    return successResponse({
       success: true,
       invoice: {
         id: invoice.id,
@@ -49,30 +59,33 @@ export async function POST(req: NextRequest) {
         viewUrl: `/api/invoices/${invoice.id}/html`,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Invoice generation error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return errorResponse('Failed to generate invoice', 500);
   }
-}
+};
 
-export async function GET(req: NextRequest) {
+export const POST = withApiTrace('/api/invoices', async (req, _context) =>
+  postInvoiceHandler(req)
+);
+
+const getInvoicesHandler = async (req: NextRequest) => {
   try {
     const { searchParams } = new URL(req.url);
-    const customerId = searchParams.get('customerId');
+    const queryValidation = validateQuery<InvoicesListQuery>(
+      searchParams,
+      invoicesListQuerySchema
+    );
 
-    if (!customerId) {
-      return NextResponse.json(
-        { error: 'Customer ID required' },
-        { status: 400 }
-      );
+    if (!queryValidation.success) {
+      return errorResponse(queryValidation.error, 400);
     }
+
+    const { customerId } = queryValidation.data;
 
     const invoices = await invoiceService.listInvoices(customerId);
 
-    return NextResponse.json({
+    return successResponse({
       invoices: invoices.map(inv => ({
         id: inv.id,
         invoiceNumber: inv.invoiceNumber,
@@ -83,11 +96,12 @@ export async function GET(req: NextRequest) {
         downloadUrl: invoiceService.getDownloadUrl(inv.id),
       })),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('List invoices error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return errorResponse('Failed to list invoices', 500);
   }
-}
+};
+
+export const GET = withApiTrace('/api/invoices', async (req, _context) =>
+  getInvoicesHandler(req)
+);

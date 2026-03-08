@@ -4,6 +4,7 @@
 
 import { db } from './db';
 import { sql } from 'drizzle-orm';
+import { getArtifactStorageConfigCheck } from './artifacts/storage';
 
 export interface HealthCheckResult {
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -66,6 +67,14 @@ export function checkEnvironment(): { status: 'pass' | 'warn' | 'fail'; message?
     return {
       status: 'warn',
       message: 'Using default NEXTAUTH_SECRET. Generate a strong secret for production.',
+    };
+  }
+
+  const artifactStorageCheck = getArtifactStorageConfigCheck();
+  if (artifactStorageCheck.status !== 'pass') {
+    return {
+      status: artifactStorageCheck.status,
+      message: artifactStorageCheck.message,
     };
   }
   

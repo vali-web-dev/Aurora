@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { Card, CardTitle } from '@/components/aurora/Card';
 import { Badge } from '@/components/aurora/Badge';
@@ -9,6 +10,7 @@ import { AuroraDataService } from '@/data/types';
 import { formatDateTime } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useOrderStore } from '@/lib/commerce/order-store';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 const notifications = AuroraDataService.getNotifications();
 const learningTimeline = AuroraDataService.getLearningTimeline();
@@ -18,6 +20,9 @@ const unreadCount = notifications.filter((item) => !item.read).length;
 
 export function HomeUpgrades() {
   const router = useRouter();
+  const socialIcon = resolvePageIconName('Social', '/notifications');
+  const learningIcon = resolvePageIconName('Learning', '/learning');
+  const commerceIcon = resolvePageIconName('Commerce', '/commerce/orders');
   const { orders, orderCount, pendingCount } = useOrderStore();
   const recentOrders = useMemo(() => Array.isArray(orders) ? orders.slice(0, 3) : [], [orders]);
   const [notice, setNotice] = useState<{ message: string; tone: 'success' | 'error' | 'info' | 'warning' } | null>(null);
@@ -57,17 +62,28 @@ export function HomeUpgrades() {
       )}
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <CardTitle>Notifications</CardTitle>
+          <CardTitle>
+            <span className="inline-flex items-center gap-2">
+              <span className={getPageIconColor(socialIcon)}><PageIcon pageName={socialIcon} className="w-4 h-4" /></span>
+              Notifications
+            </span>
+          </CardTitle>
           <Badge size="sm" variant={unreadCount > 0 ? 'warning' : 'default'}>
             {unreadCount} new
           </Badge>
         </div>
         <div className="space-y-3">
           {notifications.map((item) => (
-            <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+            <Link
+              key={item.id}
+              href="/notifications"
+              className="block p-3 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+            >
               <div className="flex items-center justify-between">
                 <p className="aurora-label text-slate-900 dark:text-slate-50">
+                  <span className="inline-flex items-center gap-1.5"><span className={getPageIconColor(socialIcon)}><PageIcon pageName={socialIcon} className="w-3.5 h-3.5" /></span>
                   {item.title}
+                  </span>
                 </p>
                 <Badge size="sm" variant={item.read ? 'default' : 'info'}>
                   {item.kind}
@@ -79,15 +95,22 @@ export function HomeUpgrades() {
               <p className="aurora-label text-xs text-slate-500 dark:text-slate-500">
                 {formatDateTime(item.createdAt)}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
-        <Button variant="ghost" size="sm">View All</Button>
+        <Button variant="ghost" size="sm" onClick={() => handleNavigate('/notifications', 'Notifications')}>
+          View All
+        </Button>
       </Card>
 
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <CardTitle>Learning Timeline</CardTitle>
+          <CardTitle>
+            <span className="inline-flex items-center gap-2">
+              <span className={getPageIconColor(learningIcon)}><PageIcon pageName={learningIcon} className="w-4 h-4" /></span>
+              Learning Timeline
+            </span>
+          </CardTitle>
           <Button
             variant="ghost"
             size="sm"
@@ -98,10 +121,16 @@ export function HomeUpgrades() {
         </div>
         <div className="space-y-3">
           {learningTimeline.map((item) => (
-            <div key={item.id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800">
+            <Link
+              key={item.id}
+              href="/learning"
+              className="block p-3 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+            >
               <div className="flex items-center justify-between">
                 <p className="aurora-label text-slate-900 dark:text-slate-50">
+                  <span className="inline-flex items-center gap-1.5"><span className={getPageIconColor(learningIcon)}><PageIcon pageName={learningIcon} className="w-3.5 h-3.5" /></span>
                   {item.title}
+                  </span>
                 </p>
                 <Badge size="sm" variant="info">
                   {item.percent}%
@@ -110,14 +139,19 @@ export function HomeUpgrades() {
               <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
                 Course {item.courseId} • {item.dateLabel}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       </Card>
 
       <Card className="space-y-4">
         <div className="flex items-center justify-between">
-          <CardTitle>Recent Orders</CardTitle>
+          <CardTitle>
+            <span className="inline-flex items-center gap-2">
+              <span className={getPageIconColor(commerceIcon)}><PageIcon pageName={commerceIcon} className="w-4 h-4" /></span>
+              Recent Orders
+            </span>
+          </CardTitle>
           <div className="flex items-center gap-2">
             {pendingCount > 0 && (
               <Badge size="sm" variant="info">
@@ -168,7 +202,9 @@ export function HomeUpgrades() {
                   >
                     <div className="flex items-center justify-between mb-1">
                       <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">
+                        <span className="inline-flex items-center gap-1.5"><span className={getPageIconColor(commerceIcon)}><PageIcon pageName={commerceIcon} className="w-3.5 h-3.5" /></span>
                         Order {order.id}
+                        </span>
                       </p>
                       <Badge size="sm" variant={statusColors[order.status]}>
                         {order.status}

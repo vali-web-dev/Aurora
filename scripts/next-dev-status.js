@@ -10,7 +10,7 @@ function run(command) {
 
 const processQuery = [
   "$cwd=(Get-Location).Path",
-  "$targets=Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match 'next dev' -and $_.CommandLine -like \"*$cwd*\" }",
+  "$targets=Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match '(next dev|server\\.js)' -and $_.CommandLine -like \"*$cwd*\" }",
   "$targets | Select-Object ProcessId, CommandLine | ConvertTo-Json -Compress",
 ].join('; ');
 
@@ -35,7 +35,7 @@ try {
 }
 
 if (targets.length === 0) {
-  console.log('[dev:status] No next dev process found for this workspace.');
+  console.log('[dev:status] No dev process found for this workspace.');
 } else {
   console.log(`[dev:status] Found ${targets.length} process(es):`);
   targets.forEach((entry) => {

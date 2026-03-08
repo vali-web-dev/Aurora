@@ -42,6 +42,28 @@ This repository contains Aurora's complete identity, design philosophy, and user
 - Build reliability behavior documented in [README.md](README.md)
 - Deployment/operator guidance updated in [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 - Build retry wrapper implemented in [scripts/next-build-retry.js](scripts/next-build-retry.js)
+- Default `npm run dev` now starts websocket-enabled runtime (Socket.IO active)
+- Dev health/status scripts now use `/api/health` (fallback `/health`)
+- WebSocket runtime status endpoint available at `/api/ws`
+
+### ✅ **Realtime Dev Checklist**
+Run these commands during local development to verify responsiveness and internal connectivity:
+
+```bash
+# Start websocket-enabled dev runtime
+npm run dev
+
+# Confirm running process + detected healthy endpoint
+npm run dev:status
+
+# Machine-readable health report (ports 3000-3005)
+npm run dev:health:json
+```
+
+Quick runtime checks:
+- `http://localhost:3000/api/health` → service health
+- `http://localhost:3000/api/ws` → websocket status (`ok`)
+- `http://localhost:3000/socket.io/?EIO=4&transport=polling` → Socket.IO handshake
 
 ---
 
@@ -360,6 +382,8 @@ These documents are maintained by:
 
 **Last Updated:** February 2026 (added Feature Development Guide + Master Logo Console RFC + Ring Engine Draft)  
 **Next Review:** May 2026
+
+_Runtime note (March 2026):_ Local dev defaults to websocket-enabled mode via `npm run dev`; verify internal connectivity at `http://localhost:3000/api/ws`.
 
 ---
 

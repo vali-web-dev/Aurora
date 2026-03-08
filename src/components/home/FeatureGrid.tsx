@@ -1,35 +1,37 @@
 import { Card, CardDescription, CardTitle } from '@/components/aurora/Card';
+import Link from 'next/link';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 const features = [
   {
     title: 'Create',
-    icon: '🔨',
     body: 'Build components, surfaces, and creative studio for your ideas.',
+    href: '/create',
   },
   {
     title: 'Realms',
-    icon: '🌍',
     body: 'Explore interactive environments designed for focus and creativity.',
+    href: '/realms',
   },
   {
     title: 'Guilds',
-    icon: '👥',
     body: 'Join creator groups and collaborate on meaningful work.',
+    href: '/guilds',
   },
   {
     title: 'Themes',
-    icon: '✨',
     body: 'Adapt interfaces to your mood with light, dark, and illuminated modes.',
+    href: '/settings',
   },
   {
     title: 'Companion',
-    icon: '🤝',
     body: 'A calm, supportive guide that understands your needs.',
+    href: '/ai',
   },
   {
     title: 'Lightfoundry',
-    icon: '💡',
     body: 'Our rendering system built for beauty and clarity.',
+    href: '/brand',
   },
 ];
 
@@ -46,15 +48,22 @@ export function FeatureGrid() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        {features.map((feature) => (
-          <Card key={feature.title} hoverable className="flex flex-col gap-3">
-            <div className="text-3xl">{feature.icon}</div>
-            <div>
-              <CardTitle>{feature.title}</CardTitle>
-              <CardDescription>{feature.body}</CardDescription>
-            </div>
-          </Card>
-        ))}
+        {features.map((feature) => {
+          const iconName = resolvePageIconName(feature.title, feature.href);
+          return (
+          <Link key={feature.title} href={feature.href} className="block">
+            <Card hoverable className="flex flex-col gap-3">
+              <div className={getPageIconColor(iconName)}>
+                <PageIcon pageName={iconName} className="w-6 h-6" />
+              </div>
+              <div>
+                <CardTitle>{feature.title}</CardTitle>
+                <CardDescription>{feature.body}</CardDescription>
+              </div>
+            </Card>
+          </Link>
+          );
+        })}
       </div>
     </section>
   );

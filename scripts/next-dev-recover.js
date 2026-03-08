@@ -9,10 +9,11 @@ const LOCK_PATH = path.join(ROOT, '.next-dev', 'dev', 'lock');
 const CANDIDATE_PORTS = [3000, 3001, 3002, 3003, 3004, 3005];
 
 function parseArgs(argv) {
-  const args = { forceRestart: false, preferredPort: null };
+  const args = { forceRestart: false, preferredPort: null, customServer: false };
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === '--force-restart') args.forceRestart = true;
+    if (token === '--custom-server') args.customServer = true;
     if (token === '--port') {
       const next = Number(argv[index + 1]);
       if (Number.isInteger(next) && next > 0) args.preferredPort = next;
@@ -37,17 +38,17 @@ function isPortAvailable(port) {
   });
 }
 
-function checkHealth(port) {
+function requestHealth(port, targetPath) {
   return new Promise((resolve) => {
     const req = http.get(
       {
         hostname: '127.0.0.1',
         port,
-        path: '/health',
+        path: targetPath,
         timeout: 2500,
       },
       (res) => {
-        resolve(res.statusCode && res.statusCode >= 200 && res.statusCode < 500);
+        resolve(Boolean(res.statusCode && res.statusCode >= 200 && res.statusCode < 500));
       }
     );
     req.on('timeout', () => {
@@ -56,6 +57,16 @@ function checkHealth(port) {
     });
     req.on('error', () => resolve(false));
   });
+}
+
+async function checkHealth(port) {
+  const apiHealth = await requestHealth(port, '/api/health');
+  if (apiHealth) return { ok: true, path: '/api/health' };
+
+  const legacyHealth = await requestHealth(port, '/health');
+  if (legacyHealth) return { ok: true, path: '/health' };
+
+  return { ok: false, path: '/api/health' };
 }
 
 function clearLock() {
@@ -69,11 +80,12 @@ function clearLock() {
   }
 }
 
-function killStaleNextDevWindows() {
+function killStaleNextDevWindows(customServer) {
   if (process.platform !== 'win32') return;
+  const processPattern = customServer ? '(next dev|server\\.js)' : 'next dev';
   const command = [
     "$cwd=(Get-Location).Path",
-    "$targets=Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match 'next dev' -and $_.CommandLine -like \"*$cwd*\" }",
+    `$targets=Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match '${processPattern}' -and $_.CommandLine -like \"*$cwd*\" }`,
     "$targets | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }",
   ].join('; ');
 
@@ -87,11 +99,12 @@ function killStaleNextDevWindows() {
   }
 }
 
-function listStaleNextDevWindows() {
+function listStaleNextDevWindows(customServer) {
   if (process.platform !== 'win32') return [];
+  const processPattern = customServer ? '(next dev|server\\.js)' : 'next dev';
   const command = [
     "$cwd=(Get-Location).Path",
-    "$targets=Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match 'next dev' -and $_.CommandLine -like \"*$cwd*\" }",
+    `$targets=Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match '${processPattern}' -and $_.CommandLine -like \"*$cwd*\" }`,
     "$targets | Select-Object ProcessId, CommandLine | ConvertTo-Json -Compress",
   ].join('; ');
 
@@ -118,27 +131,27 @@ async function findOpenPort() {
 }
 
 async function main() {
-  const { forceRestart, preferredPort } = parseArgs(process.argv.slice(2));
+  const { forceRestart, preferredPort, customServer } = parseArgs(process.argv.slice(2));
   const candidatePorts = preferredPort ? [preferredPort, ...CANDIDATE_PORTS.filter((port) => port !== preferredPort)] : CANDIDATE_PORTS;
 
   if (!forceRestart) {
     for (const port of candidatePorts) {
-      const healthy = await checkHealth(port);
-      if (healthy) {
-        console.log(`[dev:recover] Existing dev server detected: http://localhost:${port}/health`);
+      const health = await checkHealth(port);
+      if (health.ok) {
+        console.log(`[dev:recover] Existing dev server detected: http://localhost:${port}${health.path}`);
         process.exit(0);
       }
     }
   }
 
   if (forceRestart) {
-    const matches = listStaleNextDevWindows();
+    const matches = listStaleNextDevWindows(customServer);
     if (matches.length > 0) {
       console.log(`[dev:recover] force-restart enabled; stopping ${matches.length} existing dev process(es)`);
     }
   }
 
-  killStaleNextDevWindows();
+  killStaleNextDevWindows(customServer);
   await wait(600);
   clearLock();
 
@@ -148,19 +161,30 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`[dev:recover] Starting next dev on port ${port}`);
   const localNextBin = process.platform === 'win32'
     ? path.join(ROOT, 'node_modules', '.bin', 'next.cmd')
     : path.join(ROOT, 'node_modules', '.bin', 'next');
-  const nextCmd = fs.existsSync(localNextBin) ? localNextBin : (process.platform === 'win32' ? 'npx.cmd' : 'npx');
-  const nextArgs = fs.existsSync(localNextBin)
-    ? ['dev', '--webpack', '-p', String(port)]
-    : ['next', 'dev', '--webpack', '-p', String(port)];
+  const localTsxBin = process.platform === 'win32'
+    ? path.join(ROOT, 'node_modules', '.bin', 'tsx.cmd')
+    : path.join(ROOT, 'node_modules', '.bin', 'tsx');
 
-  const child = spawn(nextCmd, nextArgs, {
+  const nextCmd = fs.existsSync(localNextBin) ? localNextBin : (process.platform === 'win32' ? 'npx.cmd' : 'npx');
+  const tsxCmd = fs.existsSync(localTsxBin) ? localTsxBin : (process.platform === 'win32' ? 'npx.cmd' : 'npx');
+
+  const command = customServer ? tsxCmd : nextCmd;
+  const commandArgs = customServer
+    ? (fs.existsSync(localTsxBin) ? ['server.js'] : ['tsx', 'server.js'])
+    : (fs.existsSync(localNextBin)
+      ? ['dev', '--webpack', '-p', String(port)]
+      : ['next', 'dev', '--webpack', '-p', String(port)]);
+
+  console.log(`[dev:recover] Starting ${customServer ? 'custom dev server' : 'next dev'} on port ${port}`);
+
+  const child = spawn(command, commandArgs, {
     cwd: ROOT,
     env: {
       ...process.env,
+      PORT: String(port),
       NEXT_DIST_DIR: '.next-dev',
       NEXT_DISABLE_CACHE: '1',
     },

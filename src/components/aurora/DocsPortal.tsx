@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { AuroraLogo } from '@/components/aurora/AuroraLogo';
 import clsx from 'clsx';
 import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 interface DocsSection {
   title: string;
@@ -323,20 +324,26 @@ export function DocsPortal({ isOpen, onOpenChange }: DocsPortalProps) {
                 {section.description}
               </p>
               <div className="flex flex-col gap-2">
-                {section.links.map((link) => (
+                {section.links.map((link) => {
+                  const iconName = resolvePageIconName(link.label, link.href);
+                  return (
                   <a
                     key={link.label}
                     href={link.href}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"
+                    className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1.5"
                   >
-                    {link.label}
+                    <span className={getPageIconColor(iconName)} aria-hidden="true">
+                      <PageIcon pageName={iconName} className="h-3.5 w-3.5" />
+                    </span>
+                    <span>{link.label}</span>
                     {link.external && (
                       <span className="aurora-label text-xs">↗</span>
                     )}
                   </a>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}

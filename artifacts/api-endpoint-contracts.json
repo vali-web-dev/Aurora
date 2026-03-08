@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-03-08T22:24:25.428Z",
+  "status": "pass",
+  "summary": {
+    "total": 11,
+    "passed": 11,
+    "failed": 0
+  },
+  "results": [
+    {
+      "name": "payments/intents POST rejects invalid payload with 400",
+      "passed": true,
+      "expectedStatus": 400,
+      "actualStatus": 400,
+      "expectedErrorIncludes": "Validation failed",
+      "actualError": "Validation failed"
+    },
+    {
+      "name": "payments/intents GET requires intent id query with 400",
+      "passed": true,
+      "expectedStatus": 400,
+      "actualStatus": 400,
+      "expectedErrorIncludes": "Query validation failed",
+      "actualError": "Query validation failed: Invalid input: expected string, received undefined"
+    },
+    {
+      "name": "analytics/events POST requires events payload with 400",
+      "passed": true,
+      "expectedStatus": 400,
+      "actualStatus": 400,
+      "expectedErrorIncludes": "Validation failed",
+      "actualError": "Validation failed"
+    },
+    {
+      "name": "analytics/events GET rejects invalid days query with 400",
+      "passed": true,
+      "expectedStatus": 400,
+      "actualStatus": 400,
+      "expectedErrorIncludes": "Query validation failed",
+      "actualError": "Query validation failed: Too small: expected number to be >0"
+    },
+    {
+      "name": "analytics/events POST accepts valid event with 200",
+      "passed": true,
+      "expectedStatus": 200,
+      "actualStatus": 200
+    },
+    {
+      "name": "invoices GET requires customer id query with 400",
+      "passed": true,
+      "expectedStatus": 400,
+      "actualStatus": 400,
+      "expectedErrorIncludes": "Query validation failed",
+      "actualError": "Query validation failed: Invalid input: expected string, received undefined"
+    },
+    {
+      "name": "invoices/[id] GET returns 404 for unknown invoice id",
+      "passed": true,
+      "expectedStatus": 404,
+      "actualStatus": 404,
+      "expectedErrorIncludes": "Invoice not found",
+      "actualError": "Invoice not found"
+    },
+    {
+      "name": "fulfillment/shipments GET requires order id query with 400",
+      "passed": true,
+      "expectedStatus": 400,
+      "actualStatus": 400,
+      "expectedErrorIncludes": "Query validation failed",
+      "actualError": "Query validation failed: Invalid input: expected string, received undefined"
+    },
+    {
+      "name": "fulfillment/shipments GET accepts valid query with 200",
+      "passed": true,
+      "expectedStatus": 200,
+      "actualStatus": 200
+    },
+    {
+      "name": "fulfillment/tracking GET returns 404 for unknown tracking number in test mode",
+      "passed": true,
+      "expectedStatus": 404,
+      "actualStatus": 404,
+      "expectedErrorIncludes": "Tracking number not found",
+      "actualError": "Tracking number not found"
+    },
+    {
+      "name": "fulfillment/tracking GET returns 503 when live mode disables mock carrier",
+      "passed": true,
+      "expectedStatus": 503,
+      "actualStatus": 503,
+      "expectedErrorIncludes": "Carrier unavailable in live fulfillment mode",
+      "actualError": "Carrier unavailable in live fulfillment mode"
+    }
+  ]
+}

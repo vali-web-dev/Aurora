@@ -6,9 +6,21 @@
 'use client';
 
 import { io, Socket } from 'socket.io-client';
-import { WSEventType, WSMessage } from './websocket-types';
+import { WSEventType } from './websocket-types';
 
 let socket: Socket | null = null;
+const socketListeners = new Set<(nextSocket: Socket | null) => void>();
+
+function notifySocketListeners() {
+  for (const listener of socketListeners) {
+    listener(socket);
+  }
+}
+
+function bindLegacySocketReference(nextSocket: Socket | null) {
+  if (typeof window === 'undefined') return;
+  (window as unknown as { __socket?: Socket | null }).__socket = nextSocket;
+}
 
 /**
  * Initialize Socket.IO client connection
@@ -20,6 +32,11 @@ export function initializeSocket(
     return socket;
   }
 
+  if (socket && !socket.connected) {
+    socket.connect();
+    return socket;
+  }
+
   // Auto-detect URL from browser window if not provided
   const socketUrl = url || 
     (typeof window !== 'undefined' 
@@ -28,22 +45,29 @@ export function initializeSocket(
 
   console.log('[Socket.IO] Connecting to', socketUrl);
 
+  const socketPath = process.env.NEXT_PUBLIC_SOCKET_PATH || '/socket.io';
+
   socket = io(socketUrl, {
-    path: '/socket.io',
+    path: socketPath,
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
-    reconnectionAttempts: 5,
+    reconnectionAttempts: 10,
     transports: ['websocket', 'polling'],
   });
+
+  bindLegacySocketReference(socket);
+  notifySocketListeners();
 
   // Connection events
   socket.on('connect', () => {
     console.log('[Socket.IO] Connected:', socket!.id);
+    notifySocketListeners();
   });
 
   socket.on('disconnect', (reason) => {
     console.log('[Socket.IO] Disconnected:', reason);
+    notifySocketListeners();
   });
 
   socket.on('error', (error) => {
@@ -61,6 +85,18 @@ export function getSocket(): Socket | null {
 }
 
 /**
+ * Subscribe to socket lifecycle changes
+ */
+export function subscribeToSocketChanges(listener: (nextSocket: Socket | null) => void): () => void {
+  socketListeners.add(listener);
+  listener(socket);
+
+  return () => {
+    socketListeners.delete(listener);
+  };
+}
+
+/**
  * Authenticate WebSocket connection
  */
 export async function authenticateSocket(
@@ -74,25 +110,42 @@ export async function authenticateSocket(
   }
 
   return new Promise((resolve) => {
+    let settled = false;
+    const finalize = (ok: boolean) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeoutId);
+      socket!.off(WSEventType.AUTHENTICATE, handleAuthResponse);
+      socket!.off(WSEventType.ERROR, handleAuthError);
+      resolve(ok);
+    };
+
+    const handleAuthResponse = (response: any) => {
+      if (response?.success) {
+        console.log('[Socket.IO] Authenticated as', response.userId);
+        finalize(true);
+      } else {
+        console.error('[Socket.IO] Authentication failed');
+        finalize(false);
+      }
+    };
+
+    const handleAuthError = () => {
+      finalize(false);
+    };
+
     socket!.emit(WSEventType.AUTHENTICATE, {
       sessionId,
       userId,
       token,
     });
 
-    socket!.once(WSEventType.AUTHENTICATE, (response) => {
-      if (response.success) {
-        console.log('[Socket.IO] Authenticated as', response.userId);
-        resolve(true);
-      } else {
-        console.error('[Socket.IO] Authentication failed');
-        resolve(false);
-      }
-    });
+    socket!.once(WSEventType.AUTHENTICATE, handleAuthResponse);
+    socket!.once(WSEventType.ERROR, handleAuthError);
 
     // Timeout after 5 seconds
-    setTimeout(() => {
-      resolve(false);
+    const timeoutId = setTimeout(() => {
+      finalize(false);
     }, 5000);
   });
 }
@@ -159,6 +212,8 @@ export function disconnectSocket(): void {
   if (socket) {
     socket.disconnect();
     socket = null;
+    bindLegacySocketReference(null);
+    notifySocketListeners();
   }
 }
 

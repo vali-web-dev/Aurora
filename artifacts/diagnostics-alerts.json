@@ -29,7 +29,7 @@
         "run",
         "diagnostics:editor-runtime:snapshot"
       ],
-      "lastRunAt": "2026-02-26T01:31:39.777Z",
+      "lastRunAt": "2026-03-07T22:36:23.507Z",
       "exitCode": 0,
       "ok": true
     },
@@ -43,7 +43,18 @@
       "lastRunAt": "2026-02-26T00:12:33.971Z",
       "exitCode": 0,
       "ok": true
+    },
+    "scheduler-export-snapshot": {
+      "name": "scheduler-export-snapshot",
+      "command": "npm",
+      "args": [
+        "run",
+        "diagnostics:scheduler:export"
+      ],
+      "lastRunAt": "2026-03-07T22:36:25.885Z",
+      "exitCode": 0,
+      "ok": true
     }
   },
-  "updatedAt": "2026-02-26T01:31:43.648Z"
+  "updatedAt": "2026-03-07T22:36:27.679Z"
 }

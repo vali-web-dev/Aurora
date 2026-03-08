@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useRef, useEffect, type MouseEvent as ReactMouseEvent } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { expandableNavigation, flattenedNavigation } from '@/lib/expandable-navigation';
 import { useTheme } from '@/lib/design-system/theme-provider';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 /**
  * Aurora Context Menu
@@ -18,6 +19,7 @@ export function AuroraContextMenu() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
   const { mode } = useTheme();
   const isIlluminated = mode === 'illuminated';
 
@@ -67,6 +69,7 @@ export function AuroraContextMenu() {
     return 'Home';
   })();
 
+
   // Get parent universe and related pages
   const getContextualNavigation = () => {
     const pathSegments = pathname.split('/').filter(Boolean);
@@ -106,6 +109,7 @@ export function AuroraContextMenu() {
   };
 
   const contextNav = getContextualNavigation();
+  const universeIconName = resolvePageIconName(contextNav.universe.label, contextNav.universe.href);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {
@@ -139,14 +143,11 @@ export function AuroraContextMenu() {
           type="button"
           ref={triggerRef}
           onClick={() => {
-            if (isPanelOpen) {
-              closeMenu();
-              return;
-            }
-            openMenu();
+            closeMenu();
+            router.push('/home');
           }}
           className={clsx(
-            'flex flex-col items-start justify-center px-3 py-1.5 rounded-lg',
+            'flex h-11 flex-col items-start justify-center rounded-lg',
             'transition-all duration-300',
             'hover:bg-slate-100 dark:hover:bg-slate-800',
             isIlluminated && 'hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]',
@@ -159,9 +160,6 @@ export function AuroraContextMenu() {
         <span className="aurora-label text-sm font-bold tracking-wider uppercase text-slate-900 dark:text-slate-50">
           Aurora
         </span>
-        <span className="aurora-label text-[10px] font-medium text-slate-500 dark:text-slate-400 tracking-wide">
-          {currentPageName}
-        </span>
       </button>
 
       {/* Context Menu */}
@@ -170,7 +168,7 @@ export function AuroraContextMenu() {
           ref={menuRef}
           className={clsx(
             'aurora-menu-panel aurora-menu-panel--clear',
-            'absolute left-0 top-12',
+            'absolute left-0 top-11',
             'w-72 rounded-xl shadow-xl',
             'border border-slate-200 dark:border-slate-800',
             'max-h-[400px] overflow-y-auto',
@@ -183,8 +181,11 @@ export function AuroraContextMenu() {
         >
           {/* Header */}
           <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm">
-            <div className="aurora-label text-purple-600 dark:text-purple-400">
-              {contextNav.universe.label} Universe
+            <div className="inline-flex items-center gap-2 aurora-label text-purple-600 dark:text-purple-400">
+              <span className={clsx('inline-flex h-4 w-4', getPageIconColor(universeIconName))} aria-hidden="true">
+                <PageIcon pageName={universeIconName} className="h-4 w-4" />
+              </span>
+              <span>{contextNav.universe.label} Universe</span>
             </div>
             {contextNav.universe.description && (
               <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -195,7 +196,9 @@ export function AuroraContextMenu() {
 
           {/* Related Pages */}
           <div className="p-2">
-            {contextNav.relatedPages.map((page) => (
+            {contextNav.relatedPages.map((page) => {
+              const iconName = resolvePageIconName(page.label, page.href);
+              return (
               <Link
                 key={page.href}
                 href={page.href}
@@ -210,8 +213,11 @@ export function AuroraContextMenu() {
                     : ''
                 )}
               >
-                <div className="aurora-label text-sm text-slate-900 dark:text-slate-50">
-                  {page.label}
+                <div className="inline-flex items-center gap-2 aurora-label text-sm text-slate-900 dark:text-slate-50">
+                  <span className={clsx('inline-flex h-4 w-4', getPageIconColor(iconName))} aria-hidden="true">
+                    <PageIcon pageName={iconName} className="h-4 w-4" />
+                  </span>
+                  <span>{page.label}</span>
                 </div>
                 {page.description && (
                   <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -219,7 +225,8 @@ export function AuroraContextMenu() {
                   </div>
                 )}
               </Link>
-            ))}
+              );
+            })}
           </div>
 
           {/* Footer */}

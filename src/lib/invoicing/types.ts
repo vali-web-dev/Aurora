@@ -97,7 +97,7 @@ export interface IInvoiceService {
   /**
    * Save invoice
    */
-  saveInvoice(invoice: Invoice): Promise<void>;
+  saveInvoice(invoice: Invoice, artifacts?: { html?: string; pdf?: Buffer }): Promise<void>;
 
   /**
    * Retrieve invoice

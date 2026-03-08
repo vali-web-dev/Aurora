@@ -3,25 +3,28 @@
  * POST /api/fulfillment/returns - Initiate a return
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import fulfillmentService from '@/lib/fulfillment/service';
 import { Carrier } from '@/lib/fulfillment/types';
+import { errorResponse, successResponse, validateRequestBody } from '@/lib/request-validation';
+import { fulfillmentReturnSchema } from '@/lib/validations';
+import type { z } from 'zod';
+
+type ReturnPayload = z.infer<typeof fulfillmentReturnSchema>;
 
 export async function POST(req: NextRequest) {
   try {
-    const { trackingNumber, carrier, reason } = await req.json();
-
-    if (!trackingNumber) {
-      return NextResponse.json(
-        { error: 'Tracking number required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(req, fulfillmentReturnSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
-    try {
-      const returnLabel = await fulfillmentService.initiateReturn(trackingNumber, carrier as Carrier);
+    const { trackingNumber, carrier, reason } = validation.data as ReturnPayload;
 
-      return NextResponse.json({
+    try {
+      const returnLabel = await fulfillmentService.initiateReturn(trackingNumber, carrier);
+
+      return successResponse({
         success: true,
         returnTrackingNumber: returnLabel.returnTrackingNumber,
         returnLabelUrl: returnLabel.labelUrl,
@@ -33,20 +36,18 @@ export async function POST(req: NextRequest) {
         },
         reason,
       });
-    } catch (error: any) {
-      if (error.message.includes('not found')) {
-        return NextResponse.json(
-          { error: 'Tracking number not found' },
-          { status: 404 }
-        );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : '';
+      if (message.includes('not found')) {
+        return errorResponse('Tracking number not found', 404);
+      }
+      if (message.includes('mock adapter cannot execute')) {
+        return errorResponse('Carrier unavailable in live fulfillment mode', 503);
       }
       throw error;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Return initiation error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return errorResponse('Failed to initiate return', 500);
   }
 }

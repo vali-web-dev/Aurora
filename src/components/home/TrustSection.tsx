@@ -1,4 +1,5 @@
 import { Card } from '@/components/aurora/Card';
+import Link from 'next/link';
 
 export function TrustSection() {
   return (
@@ -13,6 +14,7 @@ export function TrustSection() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Link href="/ai" className="block">
         <Card>
           <div className="space-y-2">
             <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
@@ -23,7 +25,9 @@ export function TrustSection() {
             </p>
           </div>
         </Card>
+        </Link>
 
+        <Link href="/settings/privacy" className="block">
         <Card>
           <div className="space-y-2">
             <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
@@ -34,7 +38,9 @@ export function TrustSection() {
             </p>
           </div>
         </Card>
+        </Link>
 
+        <Link href="/accessibility" className="block">
         <Card>
           <div className="space-y-2">
             <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
@@ -45,7 +51,9 @@ export function TrustSection() {
             </p>
           </div>
         </Card>
+        </Link>
 
+        <Link href="/settings" className="block">
         <Card>
           <div className="space-y-2">
             <p className="aurora-label text-lg font-semibold text-slate-900 dark:text-slate-50">
@@ -56,9 +64,10 @@ export function TrustSection() {
             </p>
           </div>
         </Card>
+        </Link>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8">
+      <Link href="/roadmap" className="block bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8">
         <p className="aurora-label text-sm text-slate-600 dark:text-slate-300">
           Aurora is built with clarity, not hype. We&apos;re transparent about what&apos;s ready and what&apos;s coming.
           {' '}
@@ -66,7 +75,7 @@ export function TrustSection() {
             Your trust is everything to us.
           </span>
         </p>
-      </div>
+      </Link>
     </section>
   );
 }

@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-03-03T20:46:54.025Z",
-  "runId": "exp-mmb2w9jf",
-  "outputDir": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf",
+  "generatedAt": "2026-03-07T22:36:27.571Z",
+  "runId": "exp-mmgwkkdx",
+  "outputDir": "artifacts/scheduler-exports/2026-03-07/exp-mmgwkkdx",
   "datasets": {
     "runs": {
-      "file": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf/runs.json",
+      "file": "artifacts/scheduler-exports/2026-03-07/exp-mmgwkkdx/runs.json",
       "count": 0
     },
     "events": {
-      "file": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf/events.json",
+      "file": "artifacts/scheduler-exports/2026-03-07/exp-mmgwkkdx/events.json",
       "count": 0
     },
     "profiles": {
-      "file": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf/profiles.json",
+      "file": "artifacts/scheduler-exports/2026-03-07/exp-mmgwkkdx/profiles.json",
       "count": 4
     },
     "trends": {
-      "file": "artifacts/scheduler-exports/2026-03-03/exp-mmb2w9jf/trends.json",
+      "file": "artifacts/scheduler-exports/2026-03-07/exp-mmgwkkdx/trends.json",
       "count": 4
     }
   },
@@ -27,7 +27,7 @@
     "full": 0
   },
   "trends": {
-    "historyCount": 5,
+    "historyCount": 6,
     "profileLabels": {
       "dev": "No data",
       "runtime": "No data",
@@ -40,6 +40,6 @@
     "retainedDayFolders": 1,
     "deletedDayFolders": 0,
     "deletedRunFolders": 0,
-    "lastCleanupAt": "2026-03-03T20:46:54.025Z"
+    "lastCleanupAt": "2026-03-07T22:36:27.571Z"
   }
 }

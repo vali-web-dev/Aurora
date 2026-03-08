@@ -2,9 +2,25 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { initializeSocket, authenticateSocket, getSocket } from '@/lib/websocket-client';
-import { WSEventType, WSMessage } from '@/lib/websocket-types';
+import { initializeSocket, authenticateSocket, getSocket, subscribeToSocketChanges } from '@/lib/websocket-client';
+import { WSEventType } from '@/lib/websocket-types';
 import { Socket } from 'socket.io-client';
+
+function useSocketInstance() {
+  const [socket, setSocket] = useState<Socket | null>(() => getSocket());
+
+  useEffect(() => {
+    if (!socket) {
+      initializeSocket();
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    return subscribeToSocketChanges(setSocket);
+  }, []);
+
+  return socket;
+}
 
 /**
  * Hook to initialize WebSocket connection and handle authentication
@@ -41,12 +57,18 @@ export function useWebSocket() {
       }
     };
 
+    const handleDisconnect = () => setIsConnected(false);
+
     socket.on('connect', handleConnect);
-    socket.on('disconnect', () => setIsConnected(false));
+    socket.on('disconnect', handleDisconnect);
+
+    if (socket.connected) {
+      handleConnect();
+    }
 
     return () => {
       socket.off('connect', handleConnect);
-      socket.off('disconnect');
+      socket.off('disconnect', handleDisconnect);
     };
   }, [session]);
 
@@ -60,7 +82,7 @@ export function useWebSocket() {
  * Hook to listen for notifications
  */
 export function useNotifications() {
-  const socket = getSocket();
+  const socket = useSocketInstance();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -69,7 +91,7 @@ export function useNotifications() {
 
     // Listen for new notifications
     const handleNotification = (notification: any) => {
-      setNotifications((prev) => [notification, ...prev]);
+      setNotifications((prev) => [notification, ...prev].slice(0, 200));
       if (!notification.read) {
         setUnreadCount((prev) => prev + 1);
       }
@@ -125,7 +147,7 @@ export function useNotifications() {
  * Hook to track presence (online/offline/idle status)
  */
 export function usePresence(options?: { universe?: string }) {
-  const socket = getSocket();
+  const socket = useSocketInstance();
   const [presence, setPresence] = useState<any[]>([]);
   const [currentUserStatus, setCurrentUserStatus] = useState<string>('online');
 
@@ -199,19 +221,19 @@ export function usePresence(options?: { universe?: string }) {
  * Hook to listen for real-time feed updates (social, notifications, etc.)
  */
 export function useFeedUpdates(feedType: 'social' | 'notifications') {
-  const socket = getSocket();
+  const socket = useSocketInstance();
   const [updates, setUpdates] = useState<any[]>([]);
 
   useEffect(() => {
     if (!socket?.connected) return;
 
     const handleFeedUpdate = (data: any) => {
-      setUpdates((prev) => [data, ...prev]);
+      setUpdates((prev) => [data, ...prev].slice(0, 200));
     };
 
     const handlePostCreate = (data: any) => {
       if (feedType === 'social') {
-        setUpdates((prev) => [{ type: 'post:create', ...data }, ...prev]);
+        setUpdates((prev) => [{ type: 'post:create', ...data }, ...prev].slice(0, 200));
       }
     };
 
@@ -243,7 +265,7 @@ export function useFeedUpdates(feedType: 'social' | 'notifications') {
  * Hook for typing indicators in chat
  */
 export function useTypingIndicator(channelId: string) {
-  const socket = getSocket();
+  const socket = useSocketInstance();
   const [isTyping, setIsTyping] = useState<Record<string, boolean>>({});
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 

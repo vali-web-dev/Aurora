@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { mockRealms, mockRealmUsage } from '@/data/types';
 import { Surface, SurfaceHeader, SurfaceSection } from '@/components/aurora/Surface';
 import { expandableNavigation } from '@/lib/expandable-navigation';
-import { PageIcon, getPageIconColor } from '@/components/aurora/PageIcons';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 export function RealmsUniverse() {
   const [activeRealm, setActiveRealm] = useState<string | null>(null);
@@ -39,7 +39,9 @@ export function RealmsUniverse() {
           </div>
 
           <div className="aurora-portals-orbit aurora-portals-orbit--outer">
-            {orbitPrimary.map((item, index) => (
+            {orbitPrimary.map((item, index) => {
+              const iconName = resolvePageIconName(item.label, item.href);
+              return (
               <div
                 key={item.href}
                 className="aurora-portals-orbit-item"
@@ -49,15 +51,18 @@ export function RealmsUniverse() {
                   ['--orbit-delay' as string]: `${(index / Math.max(orbitPrimary.length, 1)) * 12}s`,
                 } as CSSProperties}
               >
-                <div className={`aurora-portals-icon ${getPageIconColor(item.label)}`}>
-                  <PageIcon pageName={item.label} className="w-4 h-4" />
+                <div className={`aurora-portals-icon ${getPageIconColor(iconName)}`}>
+                  <PageIcon pageName={iconName} className="w-4 h-4" />
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="aurora-portals-orbit aurora-portals-orbit--inner">
-            {orbitSecondary.map((item, index) => (
+            {orbitSecondary.map((item, index) => {
+              const iconName = resolvePageIconName(item.label, item.href);
+              return (
               <div
                 key={`${item.href}-${index}`}
                 className="aurora-portals-orbit-item aurora-portals-orbit-item--inner"
@@ -67,11 +72,12 @@ export function RealmsUniverse() {
                   ['--orbit-delay' as string]: `${(index / Math.max(orbitSecondary.length, 1)) * 10}s`,
                 } as CSSProperties}
               >
-                <div className={`aurora-portals-icon aurora-portals-icon--small ${getPageIconColor(item.label)}`}>
-                  <PageIcon pageName={item.label} className="w-3.5 h-3.5" />
+                <div className={`aurora-portals-icon aurora-portals-icon--small ${getPageIconColor(iconName)}`}>
+                  <PageIcon pageName={iconName} className="w-3.5 h-3.5" />
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -112,13 +118,20 @@ export function RealmsUniverse() {
             const isActive = activeRealm === realm.id;
 
             return (
-              <button
+              <div
                 key={realm.id}
                 onClick={() => setActiveRealm(realm.id)}
                 className="text-left rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
                 aria-pressed={isActive}
                 aria-label={`Enter ${realm.name} realm`}
-                type="button"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setActiveRealm(realm.id);
+                  }
+                }}
               >
                 <Card
                   hoverable
@@ -160,7 +173,7 @@ export function RealmsUniverse() {
                     </Button>
                   </div>
                 </Card>
-              </button>
+              </div>
             );
           })}
         </div>

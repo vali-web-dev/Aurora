@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { expandableNavigation } from '@/lib/expandable-navigation';
 import { EditorRuntimeDiagnosticsPanel } from '@/components/navigation/EditorRuntimeDiagnosticsPanel';
 import { SchedulerProfilesPanel, type SchedulerProfileItem } from '@/components/navigation/SchedulerProfilesPanel';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 const spotlightTools = [
   { href: '/create/editor', label: 'Aurora Editor', description: 'Main visual editor workspace' },
@@ -61,17 +62,27 @@ export default function TopologyPage() {
 
         <SurfaceSection title="Editor & Model Tools" description="Direct launch links for creative and human-model surfaces.">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" role="list" aria-label="Spotlight tools">
-            {spotlightTools.map((tool) => (
-              <Card key={tool.href} role="listitem" className="space-y-3">
-                <div>
-                  <CardTitle>{tool.label}</CardTitle>
-                  <CardDescription>{tool.description}</CardDescription>
-                </div>
-                <Link href={tool.href}>
-                  <Button variant="primary" size="sm" className="w-full">Open</Button>
-                </Link>
-              </Card>
-            ))}
+            {spotlightTools.map((tool) => {
+              const iconName = resolvePageIconName(tool.label, tool.href);
+              return (
+                <Card key={tool.href} role="listitem" className="space-y-3">
+                  <div>
+                    <CardTitle>
+                      <span className="inline-flex items-center gap-2">
+                        <span className={getPageIconColor(iconName)} aria-hidden="true">
+                          <PageIcon pageName={iconName} className="h-4 w-4" />
+                        </span>
+                        <span>{tool.label}</span>
+                      </span>
+                    </CardTitle>
+                    <CardDescription>{tool.description}</CardDescription>
+                  </div>
+                  <Link href={tool.href}>
+                    <Button variant="primary" size="sm" className="w-full">Open</Button>
+                  </Link>
+                </Card>
+              );
+            })}
           </div>
         </SurfaceSection>
 
@@ -89,12 +100,19 @@ export default function TopologyPage() {
               <Card key={groupName} className="space-y-4">
                 <CardTitle>{groupName}</CardTitle>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4" role="list" aria-label={`${groupName} navigation`}>
-                  {items.map((item) => (
+                  {items.map((item) => {
+                    const itemIconName = resolvePageIconName(item.label, item.href);
+                    return (
                     <div key={item.href} role="listitem" className="rounded-xl border border-slate-200 dark:border-slate-800 p-4 space-y-3">
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="aurora-label text-sm text-slate-500 dark:text-slate-400">Universe</p>
-                          <p className="aurora-label text-base font-semibold text-slate-900 dark:text-slate-50">{item.label}</p>
+                          <p className="aurora-label inline-flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-slate-50">
+                            <span className={getPageIconColor(itemIconName)} aria-hidden="true">
+                              <PageIcon pageName={itemIconName} className="h-4 w-4" />
+                            </span>
+                            <span>{item.label}</span>
+                          </p>
                         </div>
                         <Link href={item.href}>
                           <Button variant="secondary" size="sm">Open</Button>
@@ -103,10 +121,17 @@ export default function TopologyPage() {
 
                       {item.children && item.children.length > 0 && (
                         <div className="space-y-2" role="list" aria-label={`${item.label} routes`}>
-                          {item.children.map((child) => (
+                          {item.children.map((child) => {
+                            const childIconName = resolvePageIconName(child.label, child.href);
+                            return (
                             <div key={`${item.href}-${child.href}`} role="listitem" className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 dark:bg-slate-900 px-3 py-2">
                               <div>
-                                <p className="aurora-label text-sm text-slate-900 dark:text-slate-50">{child.label}</p>
+                                <p className="aurora-label inline-flex items-center gap-2 text-sm text-slate-900 dark:text-slate-50">
+                                  <span className={getPageIconColor(childIconName)} aria-hidden="true">
+                                    <PageIcon pageName={childIconName} className="h-3.5 w-3.5" />
+                                  </span>
+                                  <span>{child.label}</span>
+                                </p>
                                 {child.description && (
                                   <p className="aurora-label text-xs text-slate-500 dark:text-slate-400">{child.description}</p>
                                 )}
@@ -115,11 +140,13 @@ export default function TopologyPage() {
                                 <Button variant="ghost" size="sm">Go</Button>
                               </Link>
                             </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       )}
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </Card>
             ))}

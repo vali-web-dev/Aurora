@@ -4,11 +4,15 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { footerNav } from '@/lib/navigation';
 import { Button } from '@/components/ui/Button';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 export function Footer() {
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
   const isLoading = status === 'loading';
+  const dashboardIconName = resolvePageIconName('Dashboard', '/dashboard');
+  const profileIconName = resolvePageIconName('Profile', '/profile');
+  const settingsIconName = resolvePageIconName('Settings', '/settings');
 
   return (
     <footer 
@@ -54,21 +58,30 @@ export function Footer() {
                     <div className="flex flex-col gap-2">
                       <Link 
                         href="/dashboard"
-                        className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                        className="aurora-label inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
                       >
-                        → Dashboard
+                        <span className={getPageIconColor(dashboardIconName)} aria-hidden="true">
+                          <PageIcon pageName={dashboardIconName} className="h-3.5 w-3.5" />
+                        </span>
+                        <span>→ Dashboard</span>
                       </Link>
                       <Link 
                         href="/profile"
-                        className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                        className="aurora-label inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
                       >
-                        → Profile
+                        <span className={getPageIconColor(profileIconName)} aria-hidden="true">
+                          <PageIcon pageName={profileIconName} className="h-3.5 w-3.5" />
+                        </span>
+                        <span>→ Profile</span>
                       </Link>
                       <Link 
                         href="/settings"
-                        className="aurora-label text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                        className="aurora-label inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
                       >
-                        → Settings
+                        <span className={getPageIconColor(settingsIconName)} aria-hidden="true">
+                          <PageIcon pageName={settingsIconName} className="h-3.5 w-3.5" />
+                        </span>
+                        <span>→ Settings</span>
                       </Link>
                       <button
                         onClick={() => signOut({ callbackUrl: '/' })}
@@ -91,16 +104,22 @@ export function Footer() {
                   {group}
                 </p>
                 <ul className="space-y-2">
-                  {links.map((link) => (
+                  {links.map((link) => {
+                    const iconName = resolvePageIconName(link.label, link.href);
+                    return (
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="aurora-label text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-colors"
+                        className="aurora-label inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-colors"
                       >
-                        {link.label}
+                        <span className={getPageIconColor(iconName)} aria-hidden="true">
+                          <PageIcon pageName={iconName} className="h-3.5 w-3.5" />
+                        </span>
+                        <span>{link.label}</span>
                       </Link>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               </div>
             ))}

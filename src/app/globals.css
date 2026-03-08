@@ -860,6 +860,71 @@ html:not(.aurora-motion-ready) * {
   color: inherit;
 }
 
+html.theme-text30 :where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  small,
+  strong,
+  em,
+  b,
+  i,
+  u,
+  s,
+  del,
+  ins,
+  sub,
+  sup,
+  abbr,
+  cite,
+  q,
+  time,
+  li,
+  dt,
+  dd,
+  th,
+  td,
+  label,
+  legend,
+  summary,
+  figcaption,
+  blockquote,
+  mark,
+  code,
+  pre,
+  kbd,
+  a,
+  button
+):not(:empty):not(:has(> svg:only-child)):not(:has(> img:only-child))::before {
+  content: '';
+  position: absolute;
+  inset: -0.1em -0.25em;
+  border-radius: 0.35em;
+  background: rgba(15, 23, 42, 0.3);
+  z-index: -1;
+  pointer-events: none;
+}
+
+html.theme-text30 :where(
+  .aurora-menu-panel,
+  .aurora-menu-panel--clear,
+  .aurora-dropdown-btn-menu,
+  .aurora-split-btn-dropdown,
+  [role='menu'],
+  nav ul,
+  nav ol,
+  menu
+) {
+  background: rgba(15, 23, 42, 0.7) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 /* Aurora Text - Animated gradient shift */
 .aurora-text-animated {
   background: linear-gradient(

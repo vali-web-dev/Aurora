@@ -78,13 +78,13 @@ export function NotificationBellNav() {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+        className="relative inline-flex h-11 w-11 items-center justify-center rounded-lg transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
         aria-label="Notifications"
         aria-expanded={isOpen}
         aria-haspopup="menu"
       >
         <svg
-          className="w-5 h-5 text-slate-700 dark:text-slate-300"
+          className="w-6 h-6 text-slate-700 dark:text-slate-300"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

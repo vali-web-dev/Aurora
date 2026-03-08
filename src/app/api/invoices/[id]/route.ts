@@ -60,8 +60,9 @@ export async function GET(
         downloadUrl: invoiceService.getDownloadUrl(invoice.id),
       },
     });
-  } catch (error: any) {
-    if (error.message.includes('not found')) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : '';
+    if (message.includes('not found')) {
       return NextResponse.json(
         { error: 'Invoice not found' },
         { status: 404 }
@@ -69,7 +70,7 @@ export async function GET(
     }
     console.error('Invoice retrieval error:', error);
     return NextResponse.json(
-      { error: error.message },
+      { error: 'Failed to retrieve invoice' },
       { status: 500 }
     );
   }

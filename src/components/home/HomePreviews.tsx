@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/aurora/Badge';
 import { AuroraDataService } from '@/data/types';
 import { formatNumber } from '@/lib/utils';
+import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 
 const products = AuroraDataService.getProducts().slice(0, 3);
 const mediaItems = AuroraDataService.getMediaItems().slice(0, 3);
@@ -11,6 +12,11 @@ const listings = AuroraDataService.getMarketplaceListings().slice(0, 3);
 const plugins = AuroraDataService.getPlugins().slice(0, 3);
 
 export function HomePreviews() {
+  const commerceIcon = resolvePageIconName('Commerce', '/commerce');
+  const entertainmentIcon = resolvePageIconName('Entertainment', '/entertainment');
+  const economyIcon = resolvePageIconName('Economy', '/economy');
+  const developerIcon = resolvePageIconName('Developer', '/developer');
+
   return (
     <section className="space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -19,7 +25,10 @@ export function HomePreviews() {
           <div className="flex items-center justify-between">
             <div>
               <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
-                Commerce
+                <span className="inline-flex items-center gap-1.5">
+                  <span className={getPageIconColor(commerceIcon)}><PageIcon pageName={commerceIcon} className="w-3.5 h-3.5" /></span>
+                  Commerce
+                </span>
               </p>
               <CardTitle>Curated for you</CardTitle>
             </div>
@@ -30,12 +39,14 @@ export function HomePreviews() {
 
           <div className="grid gap-3">
             {products.map((product) => (
-              <div
+              <Link
                 key={product.id}
+                href="/commerce"
                 className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3"
               >
                 <div>
-                  <p className="aurora-label text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50 inline-flex items-center gap-1.5">
+                    <span className={getPageIconColor(commerceIcon)}><PageIcon pageName={commerceIcon} className="w-3.5 h-3.5" /></span>
                     {product.title}
                   </p>
                   <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
@@ -43,7 +54,7 @@ export function HomePreviews() {
                   </p>
                 </div>
                 <Badge size="sm" variant="info">★ {product.rating.toFixed(1)}</Badge>
-              </div>
+              </Link>
             ))}
           </div>
         </Card>
@@ -53,7 +64,10 @@ export function HomePreviews() {
           <div className="flex items-center justify-between">
             <div>
               <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
-                Entertainment
+                <span className="inline-flex items-center gap-1.5">
+                  <span className={getPageIconColor(entertainmentIcon)}><PageIcon pageName={entertainmentIcon} className="w-3.5 h-3.5" /></span>
+                  Entertainment
+                </span>
               </p>
               <CardTitle>Trending now</CardTitle>
             </div>
@@ -64,12 +78,14 @@ export function HomePreviews() {
 
           <div className="grid gap-3">
             {mediaItems.map((item) => (
-              <div
+              <Link
                 key={item.id}
+                href="/entertainment"
                 className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3"
               >
                 <div>
-                  <p className="aurora-label text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50 inline-flex items-center gap-1.5">
+                    <span className={getPageIconColor(entertainmentIcon)}><PageIcon pageName={entertainmentIcon} className="w-3.5 h-3.5" /></span>
                     {item.title}
                   </p>
                   <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
@@ -79,7 +95,7 @@ export function HomePreviews() {
                 <Badge size="sm" variant={item.type === 'live' ? 'error' : 'primary'}>
                   {item.type.toUpperCase()}
                 </Badge>
-              </div>
+              </Link>
             ))}
           </div>
         </Card>
@@ -91,7 +107,10 @@ export function HomePreviews() {
           <div className="flex items-center justify-between">
             <div>
               <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
-                Economy
+                <span className="inline-flex items-center gap-1.5">
+                  <span className={getPageIconColor(economyIcon)}><PageIcon pageName={economyIcon} className="w-3.5 h-3.5" /></span>
+                  Economy
+                </span>
               </p>
               <CardTitle>Marketplace momentum</CardTitle>
             </div>
@@ -102,12 +121,14 @@ export function HomePreviews() {
 
           <div className="grid gap-3">
             {listings.map((listing) => (
-              <div
+              <Link
                 key={listing.id}
+                href="/economy"
                 className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3"
               >
                 <div>
-                  <p className="aurora-label text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50 inline-flex items-center gap-1.5">
+                    <span className={getPageIconColor(economyIcon)}><PageIcon pageName={economyIcon} className="w-3.5 h-3.5" /></span>
                     {listing.title}
                   </p>
                   <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
@@ -115,7 +136,7 @@ export function HomePreviews() {
                   </p>
                 </div>
                 <Badge size="sm" variant="info">{listing.category}</Badge>
-              </div>
+              </Link>
             ))}
           </div>
         </Card>
@@ -125,7 +146,10 @@ export function HomePreviews() {
           <div className="flex items-center justify-between">
             <div>
               <p className="aurora-label text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
-                Developer
+                <span className="inline-flex items-center gap-1.5">
+                  <span className={getPageIconColor(developerIcon)}><PageIcon pageName={developerIcon} className="w-3.5 h-3.5" /></span>
+                  Developer
+                </span>
               </p>
               <CardTitle>Build surfaces faster</CardTitle>
             </div>
@@ -136,12 +160,14 @@ export function HomePreviews() {
 
           <div className="grid gap-3">
             {plugins.map((plugin) => (
-              <div
+              <Link
                 key={plugin.id}
+                href="/developer"
                 className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-800 p-3"
               >
                 <div>
-                  <p className="aurora-label text-slate-900 dark:text-slate-50">
+                  <p className="aurora-label text-slate-900 dark:text-slate-50 inline-flex items-center gap-1.5">
+                    <span className={getPageIconColor(developerIcon)}><PageIcon pageName={developerIcon} className="w-3.5 h-3.5" /></span>
                     {plugin.name}
                   </p>
                   <p className="aurora-label text-xs text-slate-600 dark:text-slate-400">
@@ -151,7 +177,7 @@ export function HomePreviews() {
                 <Badge size="sm" variant={plugin.status === 'active' ? 'success' : 'warning'}>
                   {plugin.status}
                 </Badge>
-              </div>
+              </Link>
             ))}
           </div>
         </Card>

@@ -3,23 +3,44 @@
  * POST /api/fulfillment/rates - Get shipping rate quotes
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import fulfillmentService from '@/lib/fulfillment/service';
 import { Carrier } from '@/lib/fulfillment/types';
+import { errorResponse, successResponse, validateRequestBody } from '@/lib/request-validation';
+import { fulfillmentRatesRequestSchema } from '@/lib/validations';
+import type { z } from 'zod';
+
+type RatesRequestPayload = z.infer<typeof fulfillmentRatesRequestSchema>;
+
+interface AvailableRate {
+  carrier: Carrier;
+  amount: number;
+  amountFormatted: string;
+  estimatedDays: number;
+  estimated: string;
+  available: true;
+}
+
+interface UnavailableRate {
+  carrier: Carrier;
+  available: false;
+  error: string;
+}
+
+type RateEntry = AvailableRate | UnavailableRate;
 
 export async function POST(req: NextRequest) {
   try {
-    const { origin, destination, weight, dimensions, carriers: preferredCarriers } = await req.json();
-
-    if (!origin || !destination || !weight) {
-      return NextResponse.json(
-        { error: 'Origin, destination, and weight required' },
-        { status: 400 }
-      );
+    const validation = await validateRequestBody(req, fulfillmentRatesRequestSchema);
+    if (!validation.success) {
+      return validation.response;
     }
 
+    const { origin, destination, weight, dimensions, carriers: preferredCarriers } =
+      validation.data as RatesRequestPayload;
+
     const carriersToCheck: Carrier[] = preferredCarriers || ['fedex', 'ups', 'dhl'];
-    const rates: Record<string, any> = {};
+    const rates: Record<Carrier, RateEntry> = {} as Record<Carrier, RateEntry>;
 
     for (const carrier of carriersToCheck) {
       try {
@@ -41,26 +62,30 @@ export async function POST(req: NextRequest) {
           estimated: `${rate.estimatedDays} business days`,
           available: true,
         };
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Carrier unavailable';
         rates[carrier] = {
           carrier,
           available: false,
-          error: error.message,
+          error: message,
         };
       }
     }
 
-    return NextResponse.json({
+    const cheapest = Object.values(rates)
+      .filter((rate): rate is AvailableRate => rate.available)
+      .sort((a, b) => a.amount - b.amount)[0]?.carrier || null;
+
+    return successResponse({
       rates,
-      cheapest: Object.entries(rates)
-        .filter(([_, r]: any) => r.available)
-        .sort((a, b) => (a[1].amount || 0) - (b[1].amount || 0))[0]?.[0] || null,
+      cheapest,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Shipping rates error:', error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    const message = error instanceof Error ? error.message : '';
+    if (message.includes('mock adapter cannot execute')) {
+      return errorResponse('Carrier unavailable in live fulfillment mode', 503);
+    }
+    return errorResponse('Failed to fetch shipping rates', 500);
   }
 }

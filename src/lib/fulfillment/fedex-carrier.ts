@@ -4,6 +4,7 @@
  */
 
 import { ICarrier, Carrier, Shipment, ShipmentCreationRequest, CarrierLabel, ShipmentStatus, TrackingEvent } from './types';
+import { assertMockModeAllowed } from './mode';
 
 const mockTrackingHistory: Record<string, Shipment> = {};
 
@@ -77,6 +78,7 @@ export class FedExCarrier implements ICarrier {
   private accountNum = process.env.FEDEX_ACCOUNT_NUM || '123456789';
 
   async createShipment(request: ShipmentCreationRequest): Promise<CarrierLabel> {
+    assertMockModeAllowed(this.name, 'createShipment');
     const trackingNumber = generateTrackingNumber();
     
     const shipment: Shipment = {
@@ -109,6 +111,7 @@ export class FedExCarrier implements ICarrier {
   }
 
   async getTracking(trackingNumber: string): Promise<Shipment> {
+    assertMockModeAllowed(this.name, 'getTracking');
     if (mockTrackingHistory[trackingNumber]) {
       const shipment = mockTrackingHistory[trackingNumber];
       return {
@@ -124,6 +127,7 @@ export class FedExCarrier implements ICarrier {
   }
 
   async cancelShipment(trackingNumber: string): Promise<void> {
+    assertMockModeAllowed(this.name, 'cancelShipment');
     if (mockTrackingHistory[trackingNumber]) {
       delete mockTrackingHistory[trackingNumber];
     }
@@ -137,6 +141,7 @@ export class FedExCarrier implements ICarrier {
     width: number,
     height: number
   ): Promise<{ amount: number; estimatedDays: number }> {
+    assertMockModeAllowed(this.name, 'getRate');
     // Mock calculation
     const baseRate = 9.99;
     const weightFactor = weight * 0.5; // $0.50 per lb
@@ -150,6 +155,7 @@ export class FedExCarrier implements ICarrier {
   }
 
   async initiateReturn(trackingNumber: string): Promise<{ returnTrackingNumber: string; labelUrl: string }> {
+    assertMockModeAllowed(this.name, 'initiateReturn');
     return {
       returnTrackingNumber: generateTrackingNumber(),
       labelUrl: `https://apis.fedex.com/returnLabel/${trackingNumber}.pdf`,
@@ -157,6 +163,7 @@ export class FedExCarrier implements ICarrier {
   }
 
   async verifyDelivery(trackingNumber: string): Promise<boolean> {
+    assertMockModeAllowed(this.name, 'verifyDelivery');
     const shipment = await this.getTracking(trackingNumber);
     return shipment.status === 'delivered';
   }

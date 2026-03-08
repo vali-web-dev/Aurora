@@ -4,6 +4,7 @@
  */
 
 import { ICarrier, Carrier, Shipment, ShipmentCreationRequest, CarrierLabel, ShipmentStatus, TrackingEvent } from './types';
+import { assertMockModeAllowed } from './mode';
 
 const mockTrackingHistory: Record<string, Shipment> = {};
 
@@ -84,6 +85,7 @@ export class UPSCarrier implements ICarrier {
   private accountNum = process.env.UPS_ACCOUNT_NUM || '123456789';
 
   async createShipment(request: ShipmentCreationRequest): Promise<CarrierLabel> {
+    assertMockModeAllowed(this.name, 'createShipment');
     const trackingNumber = generateTrackingNumber();
     
     const shipment: Shipment = {
@@ -116,6 +118,7 @@ export class UPSCarrier implements ICarrier {
   }
 
   async getTracking(trackingNumber: string): Promise<Shipment> {
+    assertMockModeAllowed(this.name, 'getTracking');
     if (mockTrackingHistory[trackingNumber]) {
       const shipment = mockTrackingHistory[trackingNumber];
       return {
@@ -131,6 +134,7 @@ export class UPSCarrier implements ICarrier {
   }
 
   async cancelShipment(trackingNumber: string): Promise<void> {
+    assertMockModeAllowed(this.name, 'cancelShipment');
     if (mockTrackingHistory[trackingNumber]) {
       delete mockTrackingHistory[trackingNumber];
     }
@@ -141,6 +145,7 @@ export class UPSCarrier implements ICarrier {
     dest: { zip: string; country: string; state: string },
     weight: number
   ): Promise<{ amount: number; estimatedDays: number }> {
+    assertMockModeAllowed(this.name, 'getRate');
     const baseRate = 10.99;
     const weightFactor = weight * 0.45;
     const totalAmount = Math.round((baseRate + weightFactor) * 100);
@@ -152,6 +157,7 @@ export class UPSCarrier implements ICarrier {
   }
 
   async initiateReturn(trackingNumber: string): Promise<{ returnTrackingNumber: string; labelUrl: string }> {
+    assertMockModeAllowed(this.name, 'initiateReturn');
     return {
       returnTrackingNumber: generateTrackingNumber(),
       labelUrl: `https://onlinetools.ups.com/track/v1/returnLabel/${trackingNumber}.pdf`,
@@ -159,6 +165,7 @@ export class UPSCarrier implements ICarrier {
   }
 
   async verifyDelivery(trackingNumber: string): Promise<boolean> {
+    assertMockModeAllowed(this.name, 'verifyDelivery');
     const shipment = await this.getTracking(trackingNumber);
     return shipment.status === 'delivered';
   }
