@@ -101,6 +101,21 @@ function buildDomainCounts(items) {
   return [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 }
 
+function formatDomainLines(domainCounts, total, showPercentages) {
+  const safeTotal = total || 1;
+
+  return domainCounts
+    .map(([domain, count]) => {
+      if (!showPercentages) {
+        return `- \`${mdInline(domain)}\` (${count})`;
+      }
+
+      const percent = ((count / safeTotal) * 100).toFixed(1).replace(/\.0$/, '');
+      return `- \`${mdInline(domain)}\` (${count}, ${percent}%)`;
+    })
+    .join('\n');
+}
+
 function main() {
   const reportPath = getArgValue('--file', path.join('artifacts', 'api-endpoint-contracts.json'));
   const title = getArgValue('--title', 'API Endpoint Runtime Contracts');
@@ -109,6 +124,7 @@ function main() {
   const domainFilter = parseDomainFilter(getArgValue('--domain-filter', ''));
   const showDomains = hasArg('--show-domains');
   const showDomainsOnly = hasArg('--show-domains-only');
+  const showPassedDomains = hasArg('--show-passed-domains');
   const showDomainPercentages = hasArg('--show-domain-percentages');
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
@@ -137,6 +153,7 @@ function main() {
   const summary = report.summary || {};
   const status = report.status || 'unknown';
   const results = Array.isArray(report.results) ? report.results : [];
+  const passedResults = results.filter((result) => result && result.passed === true);
   const failedResults = results.filter((result) => result && result.passed === false);
 
   const lines = [
@@ -151,23 +168,22 @@ function main() {
     '',
   ];
 
+  if (showPassedDomains && !showDomainsOnly) {
+    lines.push('#### Passed Domains');
+    if (passedResults.length === 0) {
+      lines.push('_No passed cases available._');
+    } else {
+      const passedDomainCounts = buildDomainCounts(passedResults);
+      lines.push(formatDomainLines(passedDomainCounts, passedResults.length, showDomainPercentages));
+    }
+    lines.push('');
+  }
+
   if (failedResults.length > 0) {
     if (showDomains || showDomainsOnly) {
       const domainCounts = buildDomainCounts(failedResults);
-      const totalFailed = failedResults.length || 1;
       lines.push('#### Failed Domains');
-      lines.push(
-        domainCounts
-          .map(([domain, count]) => {
-            if (!showDomainPercentages) {
-              return `- \`${mdInline(domain)}\` (${count})`;
-            }
-
-            const percent = ((count / totalFailed) * 100).toFixed(1).replace(/\.0$/, '');
-            return `- \`${mdInline(domain)}\` (${count}, ${percent}%)`;
-          })
-          .join('\n')
-      );
+      lines.push(formatDomainLines(domainCounts, failedResults.length, showDomainPercentages));
       lines.push('');
     }
 
