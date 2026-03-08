@@ -109,6 +109,7 @@ function main() {
   const domainFilter = parseDomainFilter(getArgValue('--domain-filter', ''));
   const showDomains = hasArg('--show-domains');
   const showDomainsOnly = hasArg('--show-domains-only');
+  const showDomainPercentages = hasArg('--show-domain-percentages');
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
 
@@ -153,9 +154,19 @@ function main() {
   if (failedResults.length > 0) {
     if (showDomains || showDomainsOnly) {
       const domainCounts = buildDomainCounts(failedResults);
+      const totalFailed = failedResults.length || 1;
       lines.push('#### Failed Domains');
       lines.push(
-        domainCounts.map(([domain, count]) => `- \`${mdInline(domain)}\` (${count})`).join('\n')
+        domainCounts
+          .map(([domain, count]) => {
+            if (!showDomainPercentages) {
+              return `- \`${mdInline(domain)}\` (${count})`;
+            }
+
+            const percent = ((count / totalFailed) * 100).toFixed(1).replace(/\.0$/, '');
+            return `- \`${mdInline(domain)}\` (${count}, ${percent}%)`;
+          })
+          .join('\n')
       );
       lines.push('');
     }
