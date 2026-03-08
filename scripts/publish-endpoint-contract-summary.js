@@ -142,7 +142,39 @@ function writeJsonSummaryOut(filePath, data) {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
+function printHelp() {
+  const lines = [
+    'Usage: node scripts/publish-endpoint-contract-summary.js [options]',
+    '',
+    'Options:',
+    '  --file <path>                  Report JSON file path (default: artifacts/api-endpoint-contracts.json)',
+    '  --title <text>                 Markdown heading title',
+    '  --out-file <path>              Write markdown summary to file',
+    '  --append-out-file              Append instead of overwrite for --out-file',
+    '  --json-summary-out <path>      Write machine-readable summary JSON artifact',
+    '  --max-failed-rows <n>          Max failed-case rows in table (default: 12)',
+    '  --max-message-chars <n>        Clip failed-case message column length (default: 160)',
+    '  --domain-filter <a,b,c>        Restrict failed-case table to selected domains',
+    '  --strict-domain-filter         Exit non-zero when domain filter matches zero failed cases',
+    '  --show-domains                 Show failed-domain counts section',
+    '  --show-domains-only            Show only failed-domain counts and skip failed-case table',
+    '  --show-passed-domains          Show passed-domain counts section',
+    '  --show-domain-percentages      Show percentage values in domain sections',
+    '  --sort-domains-by <name|count> Domain section ordering mode (default: name)',
+    '  --fail-on-failed               Exit non-zero when failed cases exist',
+    '  --help                         Show this help text',
+    '',
+  ];
+
+  console.log(lines.join('\n'));
+}
+
 function main() {
+  if (hasArg('--help')) {
+    printHelp();
+    return;
+  }
+
   const reportPath = getArgValue('--file', path.join('artifacts', 'api-endpoint-contracts.json'));
   const title = getArgValue('--title', 'API Endpoint Runtime Contracts');
   const maxFailedRows = getNumberArgValue('--max-failed-rows', 12);
@@ -189,6 +221,7 @@ function main() {
   const allDomainCounts = buildDomainCounts(results, sortDomainsBy);
 
   const jsonSummary = {
+    schemaVersion: '1.0.0',
     title,
     status,
     summary: {
