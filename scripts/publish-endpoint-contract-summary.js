@@ -43,6 +43,20 @@ function clipText(text, maxChars) {
   return `${text.slice(0, Math.max(1, maxChars - 3))}...`;
 }
 
+function inferDomain(caseName) {
+  const normalized = String(caseName || '').trim().toLowerCase();
+  if (!normalized) return 'unknown';
+
+  const token = normalized.split(/\s+/)[0] || '';
+  const topLevel = token.split('/')[0] || '';
+
+  if (!topLevel || !/^[a-z0-9_-]+$/i.test(topLevel)) {
+    return 'unknown';
+  }
+
+  return topLevel;
+}
+
 function main() {
   const reportPath = getArgValue('--file', path.join('artifacts', 'api-endpoint-contracts.json'));
   const title = getArgValue('--title', 'API Endpoint Runtime Contracts');
@@ -85,14 +99,25 @@ function main() {
   ];
 
   if (failedResults.length > 0) {
-    const renderedFailures = failedResults.slice(0, maxFailedRows);
+    const sortedFailures = [...failedResults].sort((a, b) => {
+      const domainA = inferDomain(a.name);
+      const domainB = inferDomain(b.name);
+      if (domainA !== domainB) {
+        return domainA.localeCompare(domainB);
+      }
+
+      return String(a.name || '').localeCompare(String(b.name || ''));
+    });
+
+    const renderedFailures = sortedFailures.slice(0, maxFailedRows);
     const hiddenFailures = failedResults.length - renderedFailures.length;
 
     lines.push('#### Failed Cases');
-    lines.push('| Case | Expected | Actual | Message |');
-    lines.push('| --- | --- | --- | --- |');
+    lines.push('| Domain | Case | Expected | Actual | Message |');
+    lines.push('| --- | --- | --- | --- | --- |');
 
     for (const failure of renderedFailures) {
+      const domain = inferDomain(failure.name);
       const expected = `status ${mdInline(failure.expectedStatus ?? 'n/a')}`;
       const actual = `status ${mdInline(failure.actualStatus ?? 'n/a')}`;
       const message = clipText(
@@ -103,7 +128,7 @@ function main() {
       );
 
       lines.push(
-        `| ${mdInline(failure.name || 'unnamed-case')} | ${expected} | ${actual} | ${message} |`
+        `| ${mdInline(domain)} | ${mdInline(failure.name || 'unnamed-case')} | ${expected} | ${actual} | ${message} |`
       );
     }
 
