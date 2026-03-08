@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const JSON_SUMMARY_SCHEMA_VERSION = '1.1.0';
 
 const args = process.argv.slice(2);
 
@@ -176,6 +177,11 @@ function printHelp() {
     '  --fail-on-failed               Exit non-zero when failed cases exist',
     '  --help                         Show this help text',
     '',
+    'JSON Summary Schema:',
+    `  current: ${JSON_SUMMARY_SCHEMA_VERSION}`,
+    '  1.1.0: add scopedFailures.domainsMatched/casesRendered/casesOmitted and options.suppressMarkdown',
+    '  1.0.0: initial machine-readable summary contract',
+    '',
   ];
 
   console.log(lines.join('\n'));
@@ -210,7 +216,7 @@ function main() {
   };
 
   if (!fs.existsSync(reportPath)) {
-    appendSummary([
+    emitMarkdown([
       `### ${title}`,
       `Report file missing: ${reportPath}`,
       '',
@@ -222,7 +228,7 @@ function main() {
   try {
     report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
   } catch {
-    appendSummary([
+    emitMarkdown([
       `### ${title}`,
       `Failed to parse report: ${reportPath}`,
       '',
@@ -269,7 +275,7 @@ function main() {
   const scopedDomainCounts = buildDomainCounts(scopedFailures, sortDomainsBy);
 
   const jsonSummary = {
-    schemaVersion: '1.0.0',
+    schemaVersion: JSON_SUMMARY_SCHEMA_VERSION,
     generatedAt,
     reportPath,
     reportStatusSource,

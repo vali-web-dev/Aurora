@@ -41,7 +41,7 @@ npm run dev:stop
 # Watchdog auto-restart mode (restarts on crash)
 npm run dev:watch
 
-# Or start with realtime support (Socket.IO)
+# Start custom server explicitly (same realtime mode used by default dev)
 npm run dev:server
 
 # If you need the original raw Next.js startup command
@@ -88,7 +88,7 @@ Aurora brings together 15 interconnected universes:
 - **UI Library:** React 18+
 - **Database:** PostgreSQL 14+ with Drizzle ORM
 - **Authentication:** NextAuth.js v5
-- **Realtime:** Socket.IO (optional)
+- **Realtime:** Socket.IO
 - **Security:** Built-in rate limiting, PII masking, audit logging
 
 ## 🎨 Design System
@@ -124,6 +124,31 @@ Aurora brings together 15 interconnected universes:
 - ✅ **Auth Security** - Conditional OAuth, secure sessions, bcrypt passwords
 - ✅ **CI/CD Pipeline** - GitHub Actions workflow for automated testing
 - ✅ **Comprehensive Docs** - Developer and deployment guides included
+
+### Endpoint Summary Recipes
+
+Use `scripts/publish-endpoint-contract-summary.js` to publish markdown summaries and optional JSON artifacts from endpoint runtime contract results.
+
+```bash
+# Markdown summary (stdout or GITHUB_STEP_SUMMARY)
+node scripts/publish-endpoint-contract-summary.js \
+	--file artifacts/api-endpoint-contracts.json \
+	--show-domains --show-domain-percentages
+
+# JSON-only summary (no markdown output)
+node scripts/publish-endpoint-contract-summary.js \
+	--file artifacts/api-endpoint-contracts.json \
+	--json-summary-out artifacts/endpoint-summary.json \
+	--json-summary-compact \
+	--suppress-markdown
+
+# Dual-output summary (markdown + JSON artifact)
+node scripts/publish-endpoint-contract-summary.js \
+	--file artifacts/api-endpoint-contracts.json \
+	--show-domains --show-passed-domains --sort-domains-by count \
+	--out-file artifacts/endpoint-summary.md \
+	--json-summary-out artifacts/endpoint-summary.json
+```
 
 ### Design Language
 - Adaptive theme system with global theme provider
@@ -170,10 +195,119 @@ npm run dev
 
 Visit `http://localhost:3000` in your browser.
 
+### Artifact Storage Configuration
+
+Aurora now supports pluggable artifact storage for invoice files and payment webhook audit logs.
+
+Default local mode:
+
+```bash
+ARTIFACT_STORAGE_PROVIDER=local
+ARTIFACT_STORAGE_LOCAL_PATH=.
+INVOICE_STORAGE_PREFIX=invoices
+WEBHOOK_LOG_KEY=artifacts/payment-webhooks.json
+```
+
+Azure Blob mode (SAS URL style):
+
+```bash
+ARTIFACT_STORAGE_PROVIDER=azure-blob
+AZURE_BLOB_BASE_URL=https://<account>.blob.core.windows.net/<container>
+AZURE_BLOB_SAS_TOKEN=?sv=...&ss=...&srt=...&sp=rwdlacupiytfx&se=...
+INVOICE_STORAGE_PREFIX=invoices
+WEBHOOK_LOG_KEY=artifacts/payment-webhooks.json
+```
+
+Notes:
+- `AZURE_BLOB_BASE_URL` should point to the container root (no trailing slash required).
+- `AZURE_BLOB_SAS_TOKEN` can be provided with or without a leading `?`.
+- In development, invalid Azure config falls back to local storage with a warning.
+- In production health checks, invalid Azure config is reported as a failure.
+- Azure Blob directory listing is enabled for artifact prefixes, so invoice listing works in cloud mode.
+
+Environment preflight commands:
+
+```bash
+# Non-strict preflight (warnings do not fail)
+npm run env:preflight
+
+# Strict preflight (warnings/failures return non-zero)
+npm run env:preflight:strict
+
+# Storage adapter smoke test (local + Azure-mocked)
+npm run artifacts:smoke
+```
+
+The smoke command writes a structured report to `artifacts/artifact-storage-smoke.json` for CI artifact uploads and troubleshooting.
+
+### Invoice Email Delivery Configuration
+
+Invoice email delivery supports a provider-based flow with durable outbox records.
+
+Default audit/log mode (no external provider call):
+
+```bash
+INVOICE_EMAIL_PROVIDER=log
+INVOICE_EMAIL_OUTBOX_PREFIX=artifacts/invoice-email
+```
+
+Resend provider mode:
+
+```bash
+INVOICE_EMAIL_PROVIDER=resend
+RESEND_API_KEY=re_xxx
+EMAIL_FROM=billing@yourdomain.com
+INVOICE_EMAIL_OUTBOX_PREFIX=artifacts/invoice-email
+```
+
+Notes:
+- Every send attempt writes `latest.json` audit state under the invoice outbox prefix.
+- If provider is `resend` and required credentials are missing, invoice API returns an error and outbox is marked `failed`.
+- In `log` mode, email is treated as locally queued and recorded without external delivery.
+- Invoice PDF rendering now uses a valid built-in minimal PDF fallback (no external binary dependency). You can still replace this with Puppeteer/Playwright for full-fidelity print rendering.
+
+### Fulfillment Carrier Preflight Requirements
+
+Strict preflight now validates default carrier credentials to avoid silent mock-key usage in hardened environments.
+
+Runtime mode:
+
+```bash
+# Allowed values: test | live
+FULFILLMENT_MODE=test
+```
+
+In `FULFILLMENT_MODE=live`, mock carrier adapters are blocked at runtime and real credentials are required by strict preflight.
+In `FULFILLMENT_MODE=test`, mock carrier flows remain available for local testing.
+
+Examples:
+
+```bash
+# FedEx default
+DEFAULT_CARRIER=fedex
+FEDEX_API_KEY=real-key
+FEDEX_ACCOUNT_NUM=123456789
+
+# UPS default
+DEFAULT_CARRIER=ups
+UPS_API_KEY=real-key
+UPS_ACCOUNT_NUM=123456789
+
+# DHL default
+DEFAULT_CARRIER=dhl
+DHL_API_KEY=real-key
+```
+
+If `DEFAULT_CARRIER` is set and credentials are missing (or API key is `mock-key`), `npm run env:preflight:strict` returns non-zero.
+
+Additional strict preflight validations:
+- `EMAIL_FROM` must be a valid sender email format when `INVOICE_EMAIL_PROVIDER=resend`.
+- `ADYEN_HMAC_KEY` must be valid base64 when provided.
+
 ### Development Server Commands
 
 ```bash
-# Standard dev server (auto-recovery on stale lock)
+# Standard dev server (auto-recovery + websocket runtime)
 npm run dev
 
 # Raw Next.js dev (for comparison or special cases)
@@ -200,7 +334,31 @@ npm run dev:port3000
 # Health check on ports 3000-3005
 npm run dev:health
 npm run dev:health:json    # for automation/CI
+
+# Navigation + icon connectivity audit (CI strict mode)
+npm run audit:navigation:ci
+
+# Full CI gate including strict navigation audit + build
+npm run build:ci:navigation
 ```
+
+### Realtime Dev Checklist
+
+```bash
+# Start websocket-enabled dev runtime
+npm run dev
+
+# Confirm running process + healthy endpoint
+npm run dev:status
+
+# Machine-readable health report
+npm run dev:health:json
+```
+
+Quick runtime checks:
+- `http://localhost:3000/api/health` → service health
+- `http://localhost:3000/api/ws` → websocket status (`ok`)
+- `http://localhost:3000/socket.io/?EIO=4&transport=polling` → Socket.IO handshake
 
 ### Comprehensive Dev Diagnostics
 
@@ -222,7 +380,7 @@ The diagnostics command scans:
 - **Processes:** Running next dev processes + PIDs
 - **Ports:** Availability of ports 3000-3005
 - **Cache:** .next-dev directory size
-- **Health:** HTTP /health checks on all candidate ports
+- **Health:** HTTP /api/health checks on all candidate ports (fallback `/health`)
 - **Issues:** Inferred problems (stale lock, multiple servers, stuck processes)
 - **Recommendations:** Suggested auto-fixes (unlock, restart, stop-all)
 
@@ -232,7 +390,7 @@ Example report structure:
 ⚙️  PROCESSES        → count + PID list
 🔌 PORTS            → availability status
 💾 CACHE            → size in MB
-❤️  HEALTH CHECK     → healthy endpoint URL
+❤️  HEALTH CHECK     → healthy endpoint URL (`/api/health`)
 ⚠️  ISSUES DETECTED  → severity + problem codes
 💡 RECOMMENDATIONS  → actions to resolve
 ```
