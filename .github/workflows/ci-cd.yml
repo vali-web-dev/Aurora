@@ -75,6 +75,18 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
+
+      - name: Core CI Gates (Navigation + Env + Artifact Smoke)
+        run: npm run ci:gates
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/test
+          NEXTAUTH_SECRET: test-secret-for-ci-build-only
+          NEXTAUTH_URL: http://localhost:3000
+          ARTIFACT_STORAGE_PROVIDER: local
+          ARTIFACT_STORAGE_LOCAL_PATH: .
+
+      - name: API Endpoint Runtime Contracts
+        run: npm run api:endpoint-contracts
       
       - name: Build application (JSON telemetry)
         run: npm run build:json > build-ci-json.log 2>&1
@@ -85,6 +97,43 @@ jobs:
 
       - name: Enforce Build Telemetry Gate (Balanced)
         run: node scripts/summarize-build-events.js --file build-ci-json.log --profile balanced
+
+      - name: Upload Navigation Connectivity Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: navigation-connectivity-${{ github.run_id }}
+          path: |
+            artifacts/navigation-connectivity-report.json
+            artifacts/navigation-connectivity-report.md
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload Artifact Storage Smoke Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact-storage-smoke-${{ github.run_id }}
+          path: artifacts/artifact-storage-smoke.json
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload Endpoint Contract Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: endpoint-contracts-${{ github.run_id }}
+          path: artifacts/api-endpoint-contracts.json
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Publish Artifact Storage Smoke Summary
+        if: always()
+        run: node scripts/publish-artifact-smoke-summary.js --file artifacts/artifact-storage-smoke.json
+
+      - name: Publish Endpoint Contract Summary
+        if: always()
+        run: node scripts/publish-endpoint-contract-summary.js --file artifacts/api-endpoint-contracts.json
 
       - name: Publish Build Badge Annotation
         if: always()
