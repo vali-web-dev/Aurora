@@ -13,6 +13,10 @@ function getArgValue(name, defaultValue = null) {
   return defaultValue;
 }
 
+function hasArg(name) {
+  return args.includes(name);
+}
+
 function appendSummary(lines) {
   const summaryPath = process.env.GITHUB_STEP_SUMMARY;
   if (!summaryPath) {
@@ -70,12 +74,24 @@ function parseDomainFilter(rawValue) {
   return [...unique];
 }
 
+function buildDomainCounts(items) {
+  const counts = new Map();
+
+  for (const item of items) {
+    const domain = inferDomain(item.name);
+    counts.set(domain, (counts.get(domain) || 0) + 1);
+  }
+
+  return [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+}
+
 function main() {
   const reportPath = getArgValue('--file', path.join('artifacts', 'api-endpoint-contracts.json'));
   const title = getArgValue('--title', 'API Endpoint Runtime Contracts');
   const maxFailedRows = getNumberArgValue('--max-failed-rows', 12);
   const maxMessageChars = getNumberArgValue('--max-message-chars', 160);
   const domainFilter = parseDomainFilter(getArgValue('--domain-filter', ''));
+  const showDomains = hasArg('--show-domains');
 
   if (!fs.existsSync(reportPath)) {
     appendSummary([
@@ -116,6 +132,15 @@ function main() {
   ];
 
   if (failedResults.length > 0) {
+    if (showDomains) {
+      const domainCounts = buildDomainCounts(failedResults);
+      lines.push('#### Failed Domains');
+      lines.push(
+        domainCounts.map(([domain, count]) => `- \`${mdInline(domain)}\` (${count})`).join('\n')
+      );
+      lines.push('');
+    }
+
     const scopedFailures =
       domainFilter.length === 0
         ? failedResults
