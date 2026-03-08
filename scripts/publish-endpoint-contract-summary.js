@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const JSON_SUMMARY_SCHEMA_VERSION = '1.1.0';
+const JSON_SUMMARY_SCHEMA_VERSION = '1.2.0';
 
 const args = process.argv.slice(2);
 
@@ -167,6 +167,7 @@ function printHelp() {
     '  --suppress-markdown            Disable markdown output (stdout, step summary, out-file)',
     '  --suppress-json                Disable JSON summary output even when --json-summary-out is set',
     '  --fail-on-no-output            Exit non-zero when current flags produce no outputs',
+    '  --dry-run-config               Print resolved output/config behavior and exit',
     '  --max-failed-rows <n>          Max failed-case rows in table (default: 12)',
     '  --max-message-chars <n>        Clip failed-case message column length (default: 160)',
     '  --domain-filter <a,b,c>        Restrict failed-case table to selected domains',
@@ -181,6 +182,7 @@ function printHelp() {
     '',
     'JSON Summary Schema:',
     `  current: ${JSON_SUMMARY_SCHEMA_VERSION}`,
+    '  1.2.0: add options.suppressJson/options.failOnNoOutput and dry-run config mode',
     '  1.1.0: add scopedFailures.domainsMatched/casesRendered/casesOmitted and options.suppressMarkdown',
     '  1.0.0: initial machine-readable summary contract',
     '',
@@ -206,18 +208,24 @@ function main() {
   const showDomainPercentages = hasArg('--show-domain-percentages');
   const sortDomainsByRaw = String(getArgValue('--sort-domains-by', 'name')).trim().toLowerCase();
   const sortDomainsBy = sortDomainsByRaw === 'count' ? 'count' : 'name';
+  const outFilePath = getArgValue('--out-file', '').trim();
   const jsonSummaryOut = getArgValue('--json-summary-out', '').trim();
   const jsonSummaryCompact = hasArg('--json-summary-compact');
   const suppressMarkdown = hasArg('--suppress-markdown');
   const suppressJson = hasArg('--suppress-json');
   const failOnNoOutput = hasArg('--fail-on-no-output');
+  const dryRunConfig = hasArg('--dry-run-config');
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
 
   const hasMarkdownOutput = !suppressMarkdown;
   const hasJsonOutput = !suppressJson && Boolean(jsonSummaryOut);
+  const noOutputEnabled = !hasMarkdownOutput && !hasJsonOutput;
+  const hasStepSummarySink = Boolean(process.env.GITHUB_STEP_SUMMARY);
+  const hasStdoutSink = hasMarkdownOutput && !hasStepSummarySink;
+  const hasMarkdownFileSink = hasMarkdownOutput && Boolean(outFilePath);
 
-  if (!hasMarkdownOutput && !hasJsonOutput) {
+  if (noOutputEnabled) {
     console.error(
       '[publish-endpoint-contract-summary] No output sink is enabled. ' +
       'Enable markdown output or provide --json-summary-out without --suppress-json.'
@@ -225,7 +233,6 @@ function main() {
 
     if (failOnNoOutput) {
       process.exitCode = 1;
-      return;
     }
   }
 
@@ -238,6 +245,43 @@ function main() {
     if (suppressJson) return;
     writeJsonSummaryOut(jsonSummaryOut, payload, jsonSummaryCompact);
   };
+
+  if (dryRunConfig) {
+    const configReport = {
+      schemaVersion: JSON_SUMMARY_SCHEMA_VERSION,
+      reportPath,
+      options: {
+        outFilePath,
+        jsonSummaryOut,
+        jsonSummaryCompact,
+        suppressMarkdown,
+        suppressJson,
+        failOnNoOutput,
+        failOnFailed,
+        strictDomainFilter,
+      },
+      outputs: {
+        markdownEnabled: hasMarkdownOutput,
+        markdownSinks: {
+          stdout: hasStdoutSink,
+          githubStepSummary: hasMarkdownOutput && hasStepSummarySink,
+          file: hasMarkdownFileSink,
+        },
+        jsonEnabled: hasJsonOutput,
+      },
+      guardrails: {
+        noOutputEnabled,
+        failOnNoOutputTriggered: noOutputEnabled && failOnNoOutput,
+      },
+    };
+
+    console.log(JSON.stringify(configReport, null, 2));
+    return;
+  }
+
+  if (noOutputEnabled && failOnNoOutput) {
+    return;
+  }
 
   if (!fs.existsSync(reportPath)) {
     emitMarkdown([
@@ -324,6 +368,7 @@ function main() {
       suppressMarkdown,
       suppressJson,
       failOnNoOutput,
+      dryRunConfig,
     },
     domains: {
       all: formatDomainObjects(allDomainCounts),
