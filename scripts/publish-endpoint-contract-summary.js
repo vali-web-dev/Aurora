@@ -90,7 +90,7 @@ function parseDomainFilter(rawValue) {
   return [...unique];
 }
 
-function buildDomainCounts(items) {
+function buildDomainCounts(items, sortBy = 'name') {
   const counts = new Map();
 
   for (const item of items) {
@@ -98,7 +98,18 @@ function buildDomainCounts(items) {
     counts.set(domain, (counts.get(domain) || 0) + 1);
   }
 
-  return [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  const entries = [...counts.entries()];
+
+  if (sortBy === 'count') {
+    return entries.sort((a, b) => {
+      if (b[1] !== a[1]) {
+        return b[1] - a[1];
+      }
+      return a[0].localeCompare(b[0]);
+    });
+  }
+
+  return entries.sort((a, b) => a[0].localeCompare(b[0]));
 }
 
 function formatDomainLines(domainCounts, total, showPercentages) {
@@ -126,6 +137,8 @@ function main() {
   const showDomainsOnly = hasArg('--show-domains-only');
   const showPassedDomains = hasArg('--show-passed-domains');
   const showDomainPercentages = hasArg('--show-domain-percentages');
+  const sortDomainsByRaw = String(getArgValue('--sort-domains-by', 'name')).trim().toLowerCase();
+  const sortDomainsBy = sortDomainsByRaw === 'count' ? 'count' : 'name';
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
 
@@ -173,7 +186,7 @@ function main() {
     if (passedResults.length === 0) {
       lines.push('_No passed cases available._');
     } else {
-      const passedDomainCounts = buildDomainCounts(passedResults);
+      const passedDomainCounts = buildDomainCounts(passedResults, sortDomainsBy);
       lines.push(formatDomainLines(passedDomainCounts, passedResults.length, showDomainPercentages));
     }
     lines.push('');
@@ -181,7 +194,7 @@ function main() {
 
   if (failedResults.length > 0) {
     if (showDomains || showDomainsOnly) {
-      const domainCounts = buildDomainCounts(failedResults);
+      const domainCounts = buildDomainCounts(failedResults, sortDomainsBy);
       lines.push('#### Failed Domains');
       lines.push(formatDomainLines(domainCounts, failedResults.length, showDomainPercentages));
       lines.push('');
