@@ -127,6 +127,21 @@ function formatDomainLines(domainCounts, total, showPercentages) {
     .join('\n');
 }
 
+function formatDomainObjects(domainCounts) {
+  return domainCounts.map(([domain, count]) => ({ domain, count }));
+}
+
+function writeJsonSummaryOut(filePath, data) {
+  if (!filePath) return;
+
+  const outputDir = path.dirname(filePath);
+  if (outputDir && outputDir !== '.') {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+}
+
 function main() {
   const reportPath = getArgValue('--file', path.join('artifacts', 'api-endpoint-contracts.json'));
   const title = getArgValue('--title', 'API Endpoint Runtime Contracts');
@@ -139,6 +154,7 @@ function main() {
   const showDomainPercentages = hasArg('--show-domain-percentages');
   const sortDomainsByRaw = String(getArgValue('--sort-domains-by', 'name')).trim().toLowerCase();
   const sortDomainsBy = sortDomainsByRaw === 'count' ? 'count' : 'name';
+  const jsonSummaryOut = getArgValue('--json-summary-out', '').trim();
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
 
@@ -168,6 +184,34 @@ function main() {
   const results = Array.isArray(report.results) ? report.results : [];
   const passedResults = results.filter((result) => result && result.passed === true);
   const failedResults = results.filter((result) => result && result.passed === false);
+  const failedDomainCounts = buildDomainCounts(failedResults, sortDomainsBy);
+  const passedDomainCounts = buildDomainCounts(passedResults, sortDomainsBy);
+  const allDomainCounts = buildDomainCounts(results, sortDomainsBy);
+
+  const jsonSummary = {
+    title,
+    status,
+    summary: {
+      total: summary.total ?? null,
+      passed: summary.passed ?? null,
+      failed: summary.failed ?? null,
+    },
+    options: {
+      domainFilter,
+      sortDomainsBy,
+      showDomains,
+      showDomainsOnly,
+      showPassedDomains,
+      showDomainPercentages,
+      failOnFailed,
+      strictDomainFilter,
+    },
+    domains: {
+      all: formatDomainObjects(allDomainCounts),
+      passed: formatDomainObjects(passedDomainCounts),
+      failed: formatDomainObjects(failedDomainCounts),
+    },
+  };
 
   const lines = [
     `### ${title}`,
@@ -194,14 +238,14 @@ function main() {
 
   if (failedResults.length > 0) {
     if (showDomains || showDomainsOnly) {
-      const domainCounts = buildDomainCounts(failedResults, sortDomainsBy);
       lines.push('#### Failed Domains');
-      lines.push(formatDomainLines(domainCounts, failedResults.length, showDomainPercentages));
+      lines.push(formatDomainLines(failedDomainCounts, failedResults.length, showDomainPercentages));
       lines.push('');
     }
 
     if (showDomainsOnly) {
       appendSummary(lines);
+      writeJsonSummaryOut(jsonSummaryOut, jsonSummary);
       if (failOnFailed) {
         process.exitCode = 1;
       }
@@ -231,6 +275,7 @@ function main() {
       lines.push('_No failed cases matched the selected domain filter._');
       lines.push('');
       appendSummary(lines);
+      writeJsonSummaryOut(jsonSummaryOut, jsonSummary);
       if (strictDomainFilter && domainFilter.length > 0) {
         process.exitCode = 1;
       }
@@ -269,6 +314,7 @@ function main() {
   }
 
   appendSummary(lines);
+  writeJsonSummaryOut(jsonSummaryOut, jsonSummary);
 
   if (failOnFailed && failedResults.length > 0) {
     process.exitCode = 1;
