@@ -165,6 +165,7 @@ function printHelp() {
     '  --json-summary-out <path>      Write machine-readable summary JSON artifact',
     '  --json-summary-compact         Emit compact (single-line) JSON for --json-summary-out',
     '  --suppress-markdown            Disable markdown output (stdout, step summary, out-file)',
+    '  --suppress-json                Disable JSON summary output even when --json-summary-out is set',
     '  --max-failed-rows <n>          Max failed-case rows in table (default: 12)',
     '  --max-message-chars <n>        Clip failed-case message column length (default: 160)',
     '  --domain-filter <a,b,c>        Restrict failed-case table to selected domains',
@@ -207,12 +208,18 @@ function main() {
   const jsonSummaryOut = getArgValue('--json-summary-out', '').trim();
   const jsonSummaryCompact = hasArg('--json-summary-compact');
   const suppressMarkdown = hasArg('--suppress-markdown');
+  const suppressJson = hasArg('--suppress-json');
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
 
   const emitMarkdown = (lines) => {
     if (suppressMarkdown) return;
     appendSummary(lines);
+  };
+
+  const emitJson = (payload) => {
+    if (suppressJson) return;
+    writeJsonSummaryOut(jsonSummaryOut, payload, jsonSummaryCompact);
   };
 
   if (!fs.existsSync(reportPath)) {
@@ -298,6 +305,7 @@ function main() {
       strictDomainFilter,
       jsonSummaryCompact,
       suppressMarkdown,
+      suppressJson,
     },
     domains: {
       all: formatDomainObjects(allDomainCounts),
@@ -347,7 +355,7 @@ function main() {
 
     if (showDomainsOnly) {
       emitMarkdown(lines);
-      writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
+      emitJson(jsonSummary);
       if (failOnFailed) {
         process.exitCode = 1;
       }
@@ -362,7 +370,7 @@ function main() {
       lines.push('_No failed cases matched the selected domain filter._');
       lines.push('');
       emitMarkdown(lines);
-      writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
+      emitJson(jsonSummary);
       if (strictDomainFilter && domainFilter.length > 0) {
         process.exitCode = 1;
       }
@@ -401,7 +409,7 @@ function main() {
   }
 
   emitMarkdown(lines);
-  writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
+  emitJson(jsonSummary);
 
   if (failOnFailed && failedResults.length > 0) {
     process.exitCode = 1;
