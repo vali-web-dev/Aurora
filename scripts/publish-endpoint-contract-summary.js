@@ -216,6 +216,10 @@ function main() {
   const results = Array.isArray(report.results) ? report.results : [];
   const passedResults = results.filter((result) => result && result.passed === true);
   const failedResults = results.filter((result) => result && result.passed === false);
+  const scopedFailures =
+    domainFilter.length === 0
+      ? failedResults
+      : failedResults.filter((failure) => domainFilter.includes(inferDomain(failure.name)));
   const failedDomainCounts = buildDomainCounts(failedResults, sortDomainsBy);
   const passedDomainCounts = buildDomainCounts(passedResults, sortDomainsBy);
   const allDomainCounts = buildDomainCounts(results, sortDomainsBy);
@@ -243,6 +247,12 @@ function main() {
       all: formatDomainObjects(allDomainCounts),
       passed: formatDomainObjects(passedDomainCounts),
       failed: formatDomainObjects(failedDomainCounts),
+    },
+    scopedFailures: {
+      filterApplied: domainFilter.length > 0,
+      matched: scopedFailures.length,
+      totalFailed: failedResults.length,
+      filteredOut: failedResults.length - scopedFailures.length,
     },
   };
 
@@ -284,11 +294,6 @@ function main() {
       }
       return;
     }
-
-    const scopedFailures =
-      domainFilter.length === 0
-        ? failedResults
-        : failedResults.filter((failure) => domainFilter.includes(inferDomain(failure.name)));
 
     const sortedFailures = [...scopedFailures].sort((a, b) => {
       const domainA = inferDomain(a.name);
