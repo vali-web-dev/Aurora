@@ -109,6 +109,7 @@ function main() {
   const domainFilter = parseDomainFilter(getArgValue('--domain-filter', ''));
   const showDomains = hasArg('--show-domains');
   const showDomainsOnly = hasArg('--show-domains-only');
+  const failOnFailed = hasArg('--fail-on-failed');
 
   if (!fs.existsSync(reportPath)) {
     appendSummary([
@@ -160,6 +161,9 @@ function main() {
 
     if (showDomainsOnly) {
       appendSummary(lines);
+      if (failOnFailed) {
+        process.exitCode = 1;
+      }
       return;
     }
 
@@ -186,6 +190,9 @@ function main() {
       lines.push('_No failed cases matched the selected domain filter._');
       lines.push('');
       appendSummary(lines);
+      if (failOnFailed) {
+        process.exitCode = 1;
+      }
       return;
     }
 
@@ -218,6 +225,10 @@ function main() {
   }
 
   appendSummary(lines);
+
+  if (failOnFailed && failedResults.length > 0) {
+    process.exitCode = 1;
+  }
 }
 
 main();
