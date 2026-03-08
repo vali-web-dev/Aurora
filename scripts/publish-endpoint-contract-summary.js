@@ -57,11 +57,25 @@ function inferDomain(caseName) {
   return topLevel;
 }
 
+function parseDomainFilter(rawValue) {
+  if (!rawValue) return [];
+
+  const unique = new Set(
+    String(rawValue)
+      .split(',')
+      .map((part) => part.trim().toLowerCase())
+      .filter(Boolean)
+  );
+
+  return [...unique];
+}
+
 function main() {
   const reportPath = getArgValue('--file', path.join('artifacts', 'api-endpoint-contracts.json'));
   const title = getArgValue('--title', 'API Endpoint Runtime Contracts');
   const maxFailedRows = getNumberArgValue('--max-failed-rows', 12);
   const maxMessageChars = getNumberArgValue('--max-message-chars', 160);
+  const domainFilter = parseDomainFilter(getArgValue('--domain-filter', ''));
 
   if (!fs.existsSync(reportPath)) {
     appendSummary([
@@ -95,11 +109,19 @@ function main() {
     `- Total: ${summary.total ?? 'n/a'}`,
     `- Passed: ${summary.passed ?? 'n/a'}`,
     `- Failed: ${summary.failed ?? 'n/a'}`,
+    ...(domainFilter.length > 0
+      ? [`- Domain Filter: ${domainFilter.map((domain) => `\`${domain}\``).join(', ')}`]
+      : []),
     '',
   ];
 
   if (failedResults.length > 0) {
-    const sortedFailures = [...failedResults].sort((a, b) => {
+    const scopedFailures =
+      domainFilter.length === 0
+        ? failedResults
+        : failedResults.filter((failure) => domainFilter.includes(inferDomain(failure.name)));
+
+    const sortedFailures = [...scopedFailures].sort((a, b) => {
       const domainA = inferDomain(a.name);
       const domainB = inferDomain(b.name);
       if (domainA !== domainB) {
@@ -110,7 +132,15 @@ function main() {
     });
 
     const renderedFailures = sortedFailures.slice(0, maxFailedRows);
-    const hiddenFailures = failedResults.length - renderedFailures.length;
+    const hiddenFailures = scopedFailures.length - renderedFailures.length;
+
+    if (scopedFailures.length === 0) {
+      lines.push('#### Failed Cases');
+      lines.push('_No failed cases matched the selected domain filter._');
+      lines.push('');
+      appendSummary(lines);
+      return;
+    }
 
     lines.push('#### Failed Cases');
     lines.push('| Domain | Case | Expected | Actual | Message |');
