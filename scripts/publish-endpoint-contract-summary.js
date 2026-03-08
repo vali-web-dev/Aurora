@@ -23,6 +23,13 @@ function appendSummary(lines) {
   fs.appendFileSync(summaryPath, `${lines.join('\n')}\n`, 'utf8');
 }
 
+function mdInline(value) {
+  return String(value ?? '')
+    .replace(/\|/g, '\\|')
+    .replace(/\r?\n/g, ' ')
+    .trim();
+}
+
 function main() {
   const reportPath = getArgValue('--file', path.join('artifacts', 'api-endpoint-contracts.json'));
   const title = getArgValue('--title', 'API Endpoint Runtime Contracts');
@@ -50,6 +57,8 @@ function main() {
 
   const summary = report.summary || {};
   const status = report.status || 'unknown';
+  const results = Array.isArray(report.results) ? report.results : [];
+  const failedResults = results.filter((result) => result && result.passed === false);
 
   const lines = [
     `### ${title}`,
@@ -59,6 +68,26 @@ function main() {
     `- Failed: ${summary.failed ?? 'n/a'}`,
     '',
   ];
+
+  if (failedResults.length > 0) {
+    lines.push('#### Failed Cases');
+    lines.push('| Case | Expected | Actual | Message |');
+    lines.push('| --- | --- | --- | --- |');
+
+    for (const failure of failedResults) {
+      const expected = `status ${mdInline(failure.expectedStatus ?? 'n/a')}`;
+      const actual = `status ${mdInline(failure.actualStatus ?? 'n/a')}`;
+      const message = mdInline(
+        failure.message || failure.actualError || failure.expectedErrorIncludes || 'No failure details provided'
+      );
+
+      lines.push(
+        `| ${mdInline(failure.name || 'unnamed-case')} | ${expected} | ${actual} | ${message} |`
+      );
+    }
+
+    lines.push('');
+  }
 
   appendSummary(lines);
 }

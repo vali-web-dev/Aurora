@@ -35,6 +35,8 @@ type EndpointResult = {
   passed: boolean;
   expectedStatus: number;
   actualStatus?: number;
+  expectedErrorIncludes?: string;
+  actualError?: string;
   message?: string;
 };
 
@@ -223,43 +225,77 @@ async function runEndpointContracts(): Promise<void> {
   let passed = 0;
 
   for (const testCase of endpointCases) {
+    let response: Response | null = null;
+    let body: Record<string, unknown> = {};
+
     try {
-      const response = await testCase.invoke();
-      const body = await responseJson(response);
-
-      assert(
-        response.status === testCase.expectedStatus,
-        `${testCase.name}: expected ${testCase.expectedStatus}, got ${response.status}`
-      );
-
-      if (testCase.expectedErrorIncludes) {
-        const errorText = String(body.error ?? '');
-        assert(
-          errorText.includes(testCase.expectedErrorIncludes),
-          `${testCase.name}: expected error to include "${testCase.expectedErrorIncludes}", got "${errorText}"`
-        );
-      }
-
-      passed += 1;
-      caseResults.push({
-        name: testCase.name,
-        passed: true,
-        expectedStatus: testCase.expectedStatus,
-        actualStatus: response.status,
-      });
-      console.log(`PASS ${testCase.name}`);
+      response = await testCase.invoke();
+      body = await responseJson(response);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
+      failures.push(`${testCase.name}: request failed before validation: ${message}`);
+      caseResults.push({
+        name: testCase.name,
+        passed: false,
+        expectedStatus: testCase.expectedStatus,
+        expectedErrorIncludes: testCase.expectedErrorIncludes,
+        message: `request failed before validation: ${message}`,
+      });
+      console.error(`FAIL ${testCase.name}`);
+      console.error(`  request failed before validation: ${message}`);
+      continue;
+    }
+
+    const actualStatus = response.status;
+    const actualError = typeof body.error === 'string' ? body.error : undefined;
+
+    if (actualStatus !== testCase.expectedStatus) {
+      const message = `expected ${testCase.expectedStatus}, got ${actualStatus}`;
       failures.push(`${testCase.name}: ${message}`);
       caseResults.push({
         name: testCase.name,
         passed: false,
         expectedStatus: testCase.expectedStatus,
+        actualStatus,
+        expectedErrorIncludes: testCase.expectedErrorIncludes,
+        actualError,
         message,
       });
       console.error(`FAIL ${testCase.name}`);
       console.error(`  ${message}`);
+      continue;
     }
+
+    if (testCase.expectedErrorIncludes) {
+      const errorText = actualError ?? '';
+      if (!errorText.includes(testCase.expectedErrorIncludes)) {
+        const message = `expected error to include "${testCase.expectedErrorIncludes}", got "${errorText}"`;
+        failures.push(`${testCase.name}: ${message}`);
+        caseResults.push({
+          name: testCase.name,
+          passed: false,
+          expectedStatus: testCase.expectedStatus,
+          actualStatus,
+          expectedErrorIncludes: testCase.expectedErrorIncludes,
+          actualError,
+          message,
+        });
+        console.error(`FAIL ${testCase.name}`);
+        console.error(`  ${message}`);
+        continue;
+      }
+    }
+
+    passed += 1;
+    caseResults.push({
+      name: testCase.name,
+      passed: true,
+      expectedStatus: testCase.expectedStatus,
+      actualStatus,
+      expectedErrorIncludes: testCase.expectedErrorIncludes,
+      actualError,
+    });
+    console.log(`PASS ${testCase.name}`);
   }
 
   console.log(`\nEndpoint contracts: ${passed}/${endpointCases.length} passed`);
