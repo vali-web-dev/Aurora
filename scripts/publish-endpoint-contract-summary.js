@@ -142,6 +142,15 @@ function writeJsonSummaryOut(filePath, data) {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
+function toNonNegativeInteger(value, fallbackValue) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return fallbackValue;
+  }
+
+  return Math.floor(parsed);
+}
+
 function printHelp() {
   const lines = [
     'Usage: node scripts/publish-endpoint-contract-summary.js [options]',
@@ -211,13 +220,24 @@ function main() {
     return;
   }
 
-  const summary = report.summary || {};
+  const reportSummary = report.summary && typeof report.summary === 'object' ? report.summary : null;
   const generatedAt = new Date().toISOString();
   const status = report.status || 'unknown';
   const reportStatusSource = Object.prototype.hasOwnProperty.call(report, 'status') ? 'report.status' : 'default';
   const results = Array.isArray(report.results) ? report.results : [];
   const passedResults = results.filter((result) => result && result.passed === true);
   const failedResults = results.filter((result) => result && result.passed === false);
+  const derivedSummary = {
+    total: results.length,
+    passed: passedResults.length,
+    failed: failedResults.length,
+  };
+  const effectiveSummary = {
+    total: toNonNegativeInteger(reportSummary?.total, derivedSummary.total),
+    passed: toNonNegativeInteger(reportSummary?.passed, derivedSummary.passed),
+    failed: toNonNegativeInteger(reportSummary?.failed, derivedSummary.failed),
+  };
+  const summarySource = reportSummary ? 'report.summary' : 'derived.results';
   const scopedFailures =
     domainFilter.length === 0
       ? failedResults
@@ -231,12 +251,13 @@ function main() {
     generatedAt,
     reportPath,
     reportStatusSource,
+    summarySource,
     title,
     status,
     summary: {
-      total: summary.total ?? null,
-      passed: summary.passed ?? null,
-      failed: summary.failed ?? null,
+      total: effectiveSummary.total,
+      passed: effectiveSummary.passed,
+      failed: effectiveSummary.failed,
     },
     options: {
       domainFilter,
@@ -264,9 +285,9 @@ function main() {
   const lines = [
     `### ${title}`,
     `Status: **${status}**`,
-    `- Total: ${summary.total ?? 'n/a'}`,
-    `- Passed: ${summary.passed ?? 'n/a'}`,
-    `- Failed: ${summary.failed ?? 'n/a'}`,
+    `- Total: ${effectiveSummary.total}`,
+    `- Passed: ${effectiveSummary.passed}`,
+    `- Failed: ${effectiveSummary.failed}`,
     ...(domainFilter.length > 0
       ? [`- Domain Filter: ${domainFilter.map((domain) => `\`${domain}\``).join(', ')}`]
       : []),
