@@ -92,6 +92,7 @@ function main() {
   const maxMessageChars = getNumberArgValue('--max-message-chars', 160);
   const domainFilter = parseDomainFilter(getArgValue('--domain-filter', ''));
   const showDomains = hasArg('--show-domains');
+  const showDomainsOnly = hasArg('--show-domains-only');
 
   if (!fs.existsSync(reportPath)) {
     appendSummary([
@@ -132,13 +133,18 @@ function main() {
   ];
 
   if (failedResults.length > 0) {
-    if (showDomains) {
+    if (showDomains || showDomainsOnly) {
       const domainCounts = buildDomainCounts(failedResults);
       lines.push('#### Failed Domains');
       lines.push(
         domainCounts.map(([domain, count]) => `- \`${mdInline(domain)}\` (${count})`).join('\n')
       );
       lines.push('');
+    }
+
+    if (showDomainsOnly) {
+      appendSummary(lines);
+      return;
     }
 
     const scopedFailures =
