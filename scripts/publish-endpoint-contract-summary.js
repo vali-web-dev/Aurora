@@ -163,6 +163,7 @@ function printHelp() {
     '  --append-out-file              Append instead of overwrite for --out-file',
     '  --json-summary-out <path>      Write machine-readable summary JSON artifact',
     '  --json-summary-compact         Emit compact (single-line) JSON for --json-summary-out',
+    '  --suppress-markdown            Disable markdown output (stdout, step summary, out-file)',
     '  --max-failed-rows <n>          Max failed-case rows in table (default: 12)',
     '  --max-message-chars <n>        Clip failed-case message column length (default: 160)',
     '  --domain-filter <a,b,c>        Restrict failed-case table to selected domains',
@@ -199,8 +200,14 @@ function main() {
   const sortDomainsBy = sortDomainsByRaw === 'count' ? 'count' : 'name';
   const jsonSummaryOut = getArgValue('--json-summary-out', '').trim();
   const jsonSummaryCompact = hasArg('--json-summary-compact');
+  const suppressMarkdown = hasArg('--suppress-markdown');
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
+
+  const emitMarkdown = (lines) => {
+    if (suppressMarkdown) return;
+    appendSummary(lines);
+  };
 
   if (!fs.existsSync(reportPath)) {
     appendSummary([
@@ -284,6 +291,7 @@ function main() {
       failOnFailed,
       strictDomainFilter,
       jsonSummaryCompact,
+      suppressMarkdown,
     },
     domains: {
       all: formatDomainObjects(allDomainCounts),
@@ -332,7 +340,7 @@ function main() {
     }
 
     if (showDomainsOnly) {
-      appendSummary(lines);
+      emitMarkdown(lines);
       writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
       if (failOnFailed) {
         process.exitCode = 1;
@@ -347,7 +355,7 @@ function main() {
       lines.push('#### Failed Cases');
       lines.push('_No failed cases matched the selected domain filter._');
       lines.push('');
-      appendSummary(lines);
+      emitMarkdown(lines);
       writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
       if (strictDomainFilter && domainFilter.length > 0) {
         process.exitCode = 1;
@@ -386,7 +394,7 @@ function main() {
     lines.push('');
   }
 
-  appendSummary(lines);
+  emitMarkdown(lines);
   writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
 
   if (failOnFailed && failedResults.length > 0) {
