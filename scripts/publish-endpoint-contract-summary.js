@@ -20,6 +20,7 @@ function hasArg(name) {
 function appendSummary(lines) {
   const summaryPath = process.env.GITHUB_STEP_SUMMARY;
   const outFilePath = getArgValue('--out-file', '').trim();
+  const appendOutFile = hasArg('--append-out-file');
   const content = `${lines.join('\n')}\n`;
 
   if (outFilePath) {
@@ -27,7 +28,11 @@ function appendSummary(lines) {
     if (outputDir && outputDir !== '.') {
       fs.mkdirSync(outputDir, { recursive: true });
     }
-    fs.writeFileSync(outFilePath, content, 'utf8');
+    if (appendOutFile) {
+      fs.appendFileSync(outFilePath, content, 'utf8');
+    } else {
+      fs.writeFileSync(outFilePath, content, 'utf8');
+    }
   }
 
   if (!summaryPath) {
