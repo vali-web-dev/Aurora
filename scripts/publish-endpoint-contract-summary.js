@@ -212,7 +212,9 @@ function main() {
   }
 
   const summary = report.summary || {};
+  const generatedAt = new Date().toISOString();
   const status = report.status || 'unknown';
+  const reportStatusSource = Object.prototype.hasOwnProperty.call(report, 'status') ? 'report.status' : 'default';
   const results = Array.isArray(report.results) ? report.results : [];
   const passedResults = results.filter((result) => result && result.passed === true);
   const failedResults = results.filter((result) => result && result.passed === false);
@@ -226,6 +228,9 @@ function main() {
 
   const jsonSummary = {
     schemaVersion: '1.0.0',
+    generatedAt,
+    reportPath,
+    reportStatusSource,
     title,
     status,
     summary: {
