@@ -19,12 +19,23 @@ function hasArg(name) {
 
 function appendSummary(lines) {
   const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+  const outFilePath = getArgValue('--out-file', '').trim();
+  const content = `${lines.join('\n')}\n`;
+
+  if (outFilePath) {
+    const outputDir = path.dirname(outFilePath);
+    if (outputDir && outputDir !== '.') {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+    fs.writeFileSync(outFilePath, content, 'utf8');
+  }
+
   if (!summaryPath) {
     console.log(lines.join('\n'));
     return;
   }
 
-  fs.appendFileSync(summaryPath, `${lines.join('\n')}\n`, 'utf8');
+  fs.appendFileSync(summaryPath, content, 'utf8');
 }
 
 function getNumberArgValue(name, defaultValue) {
