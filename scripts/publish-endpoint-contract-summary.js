@@ -245,6 +245,17 @@ function main() {
     domainFilter.length === 0
       ? failedResults
       : failedResults.filter((failure) => domainFilter.includes(inferDomain(failure.name)));
+  const sortedScopedFailures = [...scopedFailures].sort((a, b) => {
+    const domainA = inferDomain(a.name);
+    const domainB = inferDomain(b.name);
+    if (domainA !== domainB) {
+      return domainA.localeCompare(domainB);
+    }
+
+    return String(a.name || '').localeCompare(String(b.name || ''));
+  });
+  const renderedScopedFailures = sortedScopedFailures.slice(0, maxFailedRows);
+  const omittedScopedFailures = scopedFailures.length - renderedScopedFailures.length;
   const failedDomainCounts = buildDomainCounts(failedResults, sortDomainsBy);
   const passedDomainCounts = buildDomainCounts(passedResults, sortDomainsBy);
   const allDomainCounts = buildDomainCounts(results, sortDomainsBy);
@@ -285,6 +296,8 @@ function main() {
       totalFailed: failedResults.length,
       filteredOut: failedResults.length - scopedFailures.length,
       domainsMatched: scopedDomainCounts.map(([domain]) => domain),
+      casesRendered: renderedScopedFailures.length,
+      casesOmitted: omittedScopedFailures,
     },
   };
 
@@ -327,18 +340,8 @@ function main() {
       return;
     }
 
-    const sortedFailures = [...scopedFailures].sort((a, b) => {
-      const domainA = inferDomain(a.name);
-      const domainB = inferDomain(b.name);
-      if (domainA !== domainB) {
-        return domainA.localeCompare(domainB);
-      }
-
-      return String(a.name || '').localeCompare(String(b.name || ''));
-    });
-
-    const renderedFailures = sortedFailures.slice(0, maxFailedRows);
-    const hiddenFailures = scopedFailures.length - renderedFailures.length;
+    const renderedFailures = renderedScopedFailures;
+    const hiddenFailures = omittedScopedFailures;
 
     if (scopedFailures.length === 0) {
       lines.push('#### Failed Cases');
