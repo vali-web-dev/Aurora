@@ -166,6 +166,7 @@ function printHelp() {
     '  --json-summary-compact         Emit compact (single-line) JSON for --json-summary-out',
     '  --suppress-markdown            Disable markdown output (stdout, step summary, out-file)',
     '  --suppress-json                Disable JSON summary output even when --json-summary-out is set',
+    '  --fail-on-no-output            Exit non-zero when current flags produce no outputs',
     '  --max-failed-rows <n>          Max failed-case rows in table (default: 12)',
     '  --max-message-chars <n>        Clip failed-case message column length (default: 160)',
     '  --domain-filter <a,b,c>        Restrict failed-case table to selected domains',
@@ -209,8 +210,24 @@ function main() {
   const jsonSummaryCompact = hasArg('--json-summary-compact');
   const suppressMarkdown = hasArg('--suppress-markdown');
   const suppressJson = hasArg('--suppress-json');
+  const failOnNoOutput = hasArg('--fail-on-no-output');
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
+
+  const hasMarkdownOutput = !suppressMarkdown;
+  const hasJsonOutput = !suppressJson && Boolean(jsonSummaryOut);
+
+  if (!hasMarkdownOutput && !hasJsonOutput) {
+    console.error(
+      '[publish-endpoint-contract-summary] No output sink is enabled. ' +
+      'Enable markdown output or provide --json-summary-out without --suppress-json.'
+    );
+
+    if (failOnNoOutput) {
+      process.exitCode = 1;
+      return;
+    }
+  }
 
   const emitMarkdown = (lines) => {
     if (suppressMarkdown) return;
@@ -306,6 +323,7 @@ function main() {
       jsonSummaryCompact,
       suppressMarkdown,
       suppressJson,
+      failOnNoOutput,
     },
     domains: {
       all: formatDomainObjects(allDomainCounts),
