@@ -110,6 +110,7 @@ function main() {
   const showDomains = hasArg('--show-domains');
   const showDomainsOnly = hasArg('--show-domains-only');
   const failOnFailed = hasArg('--fail-on-failed');
+  const strictDomainFilter = hasArg('--strict-domain-filter');
 
   if (!fs.existsSync(reportPath)) {
     appendSummary([
@@ -190,6 +191,9 @@ function main() {
       lines.push('_No failed cases matched the selected domain filter._');
       lines.push('');
       appendSummary(lines);
+      if (strictDomainFilter && domainFilter.length > 0) {
+        process.exitCode = 1;
+      }
       if (failOnFailed) {
         process.exitCode = 1;
       }
