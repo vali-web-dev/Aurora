@@ -131,7 +131,7 @@ function formatDomainObjects(domainCounts) {
   return domainCounts.map(([domain, count]) => ({ domain, count }));
 }
 
-function writeJsonSummaryOut(filePath, data) {
+function writeJsonSummaryOut(filePath, data, compact = false) {
   if (!filePath) return;
 
   const outputDir = path.dirname(filePath);
@@ -139,7 +139,8 @@ function writeJsonSummaryOut(filePath, data) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+  const payload = compact ? JSON.stringify(data) : JSON.stringify(data, null, 2);
+  fs.writeFileSync(filePath, `${payload}\n`, 'utf8');
 }
 
 function toNonNegativeInteger(value, fallbackValue) {
@@ -161,6 +162,7 @@ function printHelp() {
     '  --out-file <path>              Write markdown summary to file',
     '  --append-out-file              Append instead of overwrite for --out-file',
     '  --json-summary-out <path>      Write machine-readable summary JSON artifact',
+    '  --json-summary-compact         Emit compact (single-line) JSON for --json-summary-out',
     '  --max-failed-rows <n>          Max failed-case rows in table (default: 12)',
     '  --max-message-chars <n>        Clip failed-case message column length (default: 160)',
     '  --domain-filter <a,b,c>        Restrict failed-case table to selected domains',
@@ -196,6 +198,7 @@ function main() {
   const sortDomainsByRaw = String(getArgValue('--sort-domains-by', 'name')).trim().toLowerCase();
   const sortDomainsBy = sortDomainsByRaw === 'count' ? 'count' : 'name';
   const jsonSummaryOut = getArgValue('--json-summary-out', '').trim();
+  const jsonSummaryCompact = hasArg('--json-summary-compact');
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
 
@@ -268,6 +271,7 @@ function main() {
       showDomainPercentages,
       failOnFailed,
       strictDomainFilter,
+      jsonSummaryCompact,
     },
     domains: {
       all: formatDomainObjects(allDomainCounts),
@@ -314,7 +318,7 @@ function main() {
 
     if (showDomainsOnly) {
       appendSummary(lines);
-      writeJsonSummaryOut(jsonSummaryOut, jsonSummary);
+      writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
       if (failOnFailed) {
         process.exitCode = 1;
       }
@@ -339,7 +343,7 @@ function main() {
       lines.push('_No failed cases matched the selected domain filter._');
       lines.push('');
       appendSummary(lines);
-      writeJsonSummaryOut(jsonSummaryOut, jsonSummary);
+      writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
       if (strictDomainFilter && domainFilter.length > 0) {
         process.exitCode = 1;
       }
@@ -378,7 +382,7 @@ function main() {
   }
 
   appendSummary(lines);
-  writeJsonSummaryOut(jsonSummaryOut, jsonSummary);
+  writeJsonSummaryOut(jsonSummaryOut, jsonSummary, jsonSummaryCompact);
 
   if (failOnFailed && failedResults.length > 0) {
     process.exitCode = 1;
