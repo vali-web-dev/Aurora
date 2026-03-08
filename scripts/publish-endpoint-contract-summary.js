@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const JSON_SUMMARY_SCHEMA_VERSION = '1.2.0';
+const JSON_SUMMARY_SCHEMA_VERSION = '1.3.0';
 
 const args = process.argv.slice(2);
 
@@ -168,6 +168,7 @@ function printHelp() {
     '  --suppress-json                Disable JSON summary output even when --json-summary-out is set',
     '  --fail-on-no-output            Exit non-zero when current flags produce no outputs',
     '  --dry-run-config               Print resolved output/config behavior and exit',
+    '  --validate-config-only         Alias for --dry-run-config with --fail-on-no-output',
     '  --max-failed-rows <n>          Max failed-case rows in table (default: 12)',
     '  --max-message-chars <n>        Clip failed-case message column length (default: 160)',
     '  --domain-filter <a,b,c>        Restrict failed-case table to selected domains',
@@ -182,6 +183,7 @@ function printHelp() {
     '',
     'JSON Summary Schema:',
     `  current: ${JSON_SUMMARY_SCHEMA_VERSION}`,
+    '  1.3.0: add validate-config-only alias and options.validateConfigOnly',
     '  1.2.0: add options.suppressJson/options.failOnNoOutput and dry-run config mode',
     '  1.1.0: add scopedFailures.domainsMatched/casesRendered/casesOmitted and options.suppressMarkdown',
     '  1.0.0: initial machine-readable summary contract',
@@ -213,8 +215,9 @@ function main() {
   const jsonSummaryCompact = hasArg('--json-summary-compact');
   const suppressMarkdown = hasArg('--suppress-markdown');
   const suppressJson = hasArg('--suppress-json');
-  const failOnNoOutput = hasArg('--fail-on-no-output');
-  const dryRunConfig = hasArg('--dry-run-config');
+  const validateConfigOnly = hasArg('--validate-config-only');
+  const failOnNoOutput = hasArg('--fail-on-no-output') || validateConfigOnly;
+  const dryRunConfig = hasArg('--dry-run-config') || validateConfigOnly;
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
 
@@ -256,6 +259,7 @@ function main() {
         jsonSummaryCompact,
         suppressMarkdown,
         suppressJson,
+        validateConfigOnly,
         failOnNoOutput,
         failOnFailed,
         strictDomainFilter,
@@ -367,6 +371,7 @@ function main() {
       jsonSummaryCompact,
       suppressMarkdown,
       suppressJson,
+      validateConfigOnly,
       failOnNoOutput,
       dryRunConfig,
     },
