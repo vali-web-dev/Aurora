@@ -248,6 +248,7 @@ function main() {
   const failedDomainCounts = buildDomainCounts(failedResults, sortDomainsBy);
   const passedDomainCounts = buildDomainCounts(passedResults, sortDomainsBy);
   const allDomainCounts = buildDomainCounts(results, sortDomainsBy);
+  const scopedDomainCounts = buildDomainCounts(scopedFailures, sortDomainsBy);
 
   const jsonSummary = {
     schemaVersion: '1.0.0',
@@ -283,6 +284,7 @@ function main() {
       matched: scopedFailures.length,
       totalFailed: failedResults.length,
       filteredOut: failedResults.length - scopedFailures.length,
+      domainsMatched: scopedDomainCounts.map(([domain]) => domain),
     },
   };
 
