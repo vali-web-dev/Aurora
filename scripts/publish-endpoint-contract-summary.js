@@ -23,6 +23,13 @@ function appendSummary(lines) {
   fs.appendFileSync(summaryPath, `${lines.join('\n')}\n`, 'utf8');
 }
 
+function getNumberArgValue(name, defaultValue) {
+  const rawValue = getArgValue(name, String(defaultValue));
+  const parsed = Number(rawValue);
+  if (!Number.isFinite(parsed) || parsed < 0) return defaultValue;
+  return Math.floor(parsed);
+}
+
 function mdInline(value) {
   return String(value ?? '')
     .replace(/\|/g, '\\|')
@@ -30,9 +37,17 @@ function mdInline(value) {
     .trim();
 }
 
+function clipText(text, maxChars) {
+  if (text.length <= maxChars) return text;
+  if (maxChars <= 1) return '...';
+  return `${text.slice(0, Math.max(1, maxChars - 3))}...`;
+}
+
 function main() {
   const reportPath = getArgValue('--file', path.join('artifacts', 'api-endpoint-contracts.json'));
   const title = getArgValue('--title', 'API Endpoint Runtime Contracts');
+  const maxFailedRows = getNumberArgValue('--max-failed-rows', 12);
+  const maxMessageChars = getNumberArgValue('--max-message-chars', 160);
 
   if (!fs.existsSync(reportPath)) {
     appendSummary([
@@ -70,20 +85,31 @@ function main() {
   ];
 
   if (failedResults.length > 0) {
+    const renderedFailures = failedResults.slice(0, maxFailedRows);
+    const hiddenFailures = failedResults.length - renderedFailures.length;
+
     lines.push('#### Failed Cases');
     lines.push('| Case | Expected | Actual | Message |');
     lines.push('| --- | --- | --- | --- |');
 
-    for (const failure of failedResults) {
+    for (const failure of renderedFailures) {
       const expected = `status ${mdInline(failure.expectedStatus ?? 'n/a')}`;
       const actual = `status ${mdInline(failure.actualStatus ?? 'n/a')}`;
-      const message = mdInline(
+      const message = clipText(
+        mdInline(
         failure.message || failure.actualError || failure.expectedErrorIncludes || 'No failure details provided'
+        ),
+        maxMessageChars
       );
 
       lines.push(
         `| ${mdInline(failure.name || 'unnamed-case')} | ${expected} | ${actual} | ${message} |`
       );
+    }
+
+    if (hiddenFailures > 0) {
+      lines.push('');
+      lines.push(`_${hiddenFailures} additional failed case(s) omitted. Re-run with --max-failed-rows to expand._`);
     }
 
     lines.push('');
