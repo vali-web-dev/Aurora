@@ -148,6 +148,11 @@ node scripts/publish-endpoint-contract-summary.js \
 	--show-domains --show-passed-domains --sort-domains-by count \
 	--out-file artifacts/endpoint-summary.md \
 	--json-summary-out artifacts/endpoint-summary.json
+
+# Validate output configuration only (dry-run + fail if no sink)
+node scripts/publish-endpoint-contract-summary.js \
+	--file artifacts/api-endpoint-contracts.json \
+	--validate-config-only
 ```
 
 ### Design Language
