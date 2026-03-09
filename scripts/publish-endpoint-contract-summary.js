@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const JSON_SUMMARY_SCHEMA_VERSION = '1.3.0';
+const JSON_SUMMARY_SCHEMA_VERSION = '1.4.0';
 
 const args = process.argv.slice(2);
 
@@ -167,6 +167,7 @@ function printHelp() {
     '  --suppress-markdown            Disable markdown output (stdout, step summary, out-file)',
     '  --suppress-json                Disable JSON summary output even when --json-summary-out is set',
     '  --fail-on-no-output            Exit non-zero when current flags produce no outputs',
+    '  --fail-on-missing-report       Exit non-zero when report file is missing or invalid JSON',
     '  --dry-run-config               Print resolved output/config behavior and exit',
     '  --validate-config-only         Alias for --dry-run-config with --fail-on-no-output',
     '  --max-failed-rows <n>          Max failed-case rows in table (default: 12)',
@@ -183,6 +184,7 @@ function printHelp() {
     '',
     'JSON Summary Schema:',
     `  current: ${JSON_SUMMARY_SCHEMA_VERSION}`,
+    '  1.4.0: add options.failOnMissingReport and fail-fast behavior for missing/invalid report files',
     '  1.3.0: add validate-config-only alias and options.validateConfigOnly',
     '  1.2.0: add options.suppressJson/options.failOnNoOutput and dry-run config mode',
     '  1.1.0: add scopedFailures.domainsMatched/casesRendered/casesOmitted and options.suppressMarkdown',
@@ -217,6 +219,7 @@ function main() {
   const suppressJson = hasArg('--suppress-json');
   const validateConfigOnly = hasArg('--validate-config-only');
   const failOnNoOutput = hasArg('--fail-on-no-output') || validateConfigOnly;
+  const failOnMissingReport = hasArg('--fail-on-missing-report');
   const dryRunConfig = hasArg('--dry-run-config') || validateConfigOnly;
   const failOnFailed = hasArg('--fail-on-failed');
   const strictDomainFilter = hasArg('--strict-domain-filter');
@@ -261,6 +264,7 @@ function main() {
         suppressJson,
         validateConfigOnly,
         failOnNoOutput,
+        failOnMissingReport,
         failOnFailed,
         strictDomainFilter,
       },
@@ -293,6 +297,9 @@ function main() {
       `Report file missing: ${reportPath}`,
       '',
     ]);
+    if (failOnMissingReport) {
+      process.exitCode = 1;
+    }
     return;
   }
 
@@ -305,6 +312,9 @@ function main() {
       `Failed to parse report: ${reportPath}`,
       '',
     ]);
+    if (failOnMissingReport) {
+      process.exitCode = 1;
+    }
     return;
   }
 
@@ -373,6 +383,7 @@ function main() {
       suppressJson,
       validateConfigOnly,
       failOnNoOutput,
+      failOnMissingReport,
       dryRunConfig,
     },
     domains: {

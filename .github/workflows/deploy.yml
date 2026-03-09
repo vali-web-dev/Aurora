@@ -139,6 +139,7 @@ jobs:
         run: |
           node scripts/publish-endpoint-contract-summary.js \
             --file artifacts/api-endpoint-contracts.json \
+            --fail-on-missing-report \
             --show-domains --show-domain-percentages \
             --json-summary-out artifacts/endpoint-contract-summary.json
 
