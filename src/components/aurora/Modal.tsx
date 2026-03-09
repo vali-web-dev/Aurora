@@ -109,7 +109,7 @@ export function AuroraModal({
   return (
     <div className="fixed inset-x-0 bottom-0 top-[80px] z-50 flex items-start justify-center p-4 pt-8">
       <div
-        className="absolute inset-0 bg-slate-950/40"
+        className="absolute inset-0 bg-slate-950/60"
         onClick={onClose}
         role="presentation"
       />
@@ -123,7 +123,7 @@ export function AuroraModal({
         tabIndex={-1}
         className={clsx(
           'aurora-menu-panel relative w-full rounded-2xl overflow-hidden',
-          'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl',
+          'bg-white dark:bg-slate-950',
           'border border-slate-200 dark:border-slate-800',
           'shadow-2xl',
           'max-h-[90vh] flex flex-col',

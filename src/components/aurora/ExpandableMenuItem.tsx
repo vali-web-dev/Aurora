@@ -8,6 +8,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
 import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
 import type { NavItem } from '@/lib/expandable-navigation';
 import clsx from 'clsx';
@@ -28,42 +29,34 @@ export function ExpandableMenuItem({
   const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(false);
   const [submenuPosition, setSubmenuPosition] = useState({ top: 0, left: 0 });
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const itemRef = useRef<HTMLDivElement>(null);
   const isActive = pathname === item.href;
   const hasChildren = item.children && item.children.length > 0;
   const itemIconName = resolvePageIconName(item.label, item.href);
 
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    if (hasChildren) {
-      setIsExpanded(true);
-      // Calculate position for cascading variant
-      if (variant === 'cascading' && itemRef.current) {
-        const rect = itemRef.current.getBoundingClientRect();
-        setSubmenuPosition({
-          top: rect.top,
-          left: rect.right + 8, // 8px gap
-        });
-      }
-    }
-  };
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setIsExpanded(false);
-    }, 200); // 200ms delay before closing
-  };
-
   useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!isExpanded) return;
+      if (containerRef.current?.contains(event.target as Node)) {
+        return;
+      }
+      setIsExpanded(false);
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsExpanded(false);
       }
     };
-  }, []);
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isExpanded]);
 
   // Update submenu position on scroll for cascading variant
   useEffect(() => {
@@ -85,31 +78,51 @@ export function ExpandableMenuItem({
     }
   }, [variant, isExpanded]);
 
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
-
-  const handleClick = () => {
+  const handleNavigate = () => {
     if (onNavigate) {
       onNavigate();
     }
+  };
+
+  const toggleExpanded = () => {
+    if (!hasChildren) return;
+
+    if (!isExpanded && variant === 'cascading' && itemRef.current) {
+      const rect = itemRef.current.getBoundingClientRect();
+      setSubmenuPosition({
+        top: rect.top,
+        left: rect.right + 8,
+      });
+    }
+
+    setIsExpanded((prev) => !prev);
+  };
+
+  const handleParentClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (!hasChildren) {
+      handleNavigate();
+      return;
+    }
+
+    if (!isExpanded) {
+      event.preventDefault();
+      toggleExpanded();
+      return;
+    }
+
+    handleNavigate();
   };
 
   if (variant === 'horizontal') {
     // Horizontal menu variant (for main nav bar)
     return (
       <div
+        ref={containerRef}
         className="relative group"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         <Link
           href={item.href}
-          onClick={handleClick}
+          onClick={handleParentClick}
           className={clsx(
             'aurora-label px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-2',
             'transition-all duration-200',
@@ -157,7 +170,7 @@ export function ExpandableMenuItem({
               <Link
                 key={child.href}
                 href={child.href}
-                onClick={handleClick}
+                onClick={handleNavigate}
                 className={clsx(
                   'aurora-label flex items-start gap-3 px-4 py-2.5 text-sm transition-colors',
                   'aurora-label text-slate-700 dark:text-slate-200',
@@ -189,14 +202,15 @@ export function ExpandableMenuItem({
   if (variant === 'cascading') {
     return (
       <div
-        ref={itemRef}
+        ref={(node) => {
+          containerRef.current = node;
+          itemRef.current = node;
+        }}
         className="relative"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         <Link
           href={item.href}
-          onClick={handleClick}
+          onClick={handleParentClick}
           className={clsx(
             'aurora-label flex items-center gap-3 px-4 py-2.5 text-sm transition-colors group',
             'aurora-label text-slate-700 dark:text-slate-200',
@@ -241,8 +255,6 @@ export function ExpandableMenuItem({
               top: `${submenuPosition.top}px`,
               left: `${submenuPosition.left}px`,
             }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
           >
             {item.children!.map((child) => {
               const childIconName = resolvePageIconName(child.label, child.href);
@@ -250,7 +262,7 @@ export function ExpandableMenuItem({
               <Link
                 key={child.href}
                 href={child.href}
-                onClick={handleClick}
+                onClick={handleNavigate}
                 className={clsx(
                   'aurora-label flex items-start gap-3 px-4 py-2.5 text-sm transition-colors',
                   'aurora-label text-slate-700 dark:text-slate-200',
@@ -281,13 +293,12 @@ export function ExpandableMenuItem({
   // Dropdown variant (for logo menu and mobile)
   return (
     <div
+      ref={containerRef}
       className="relative"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <Link
         href={item.href}
-        onClick={handleClick}
+        onClick={handleParentClick}
         className={clsx(
           'aurora-label flex items-center gap-3 px-4 py-2.5 text-sm transition-colors group',
           'aurora-label text-slate-700 dark:text-slate-200',
@@ -335,7 +346,7 @@ export function ExpandableMenuItem({
             <Link
               key={child.href}
               href={child.href}
-              onClick={handleClick}
+              onClick={handleNavigate}
               className={clsx(
                 'aurora-label flex items-start gap-3 px-4 py-2 text-sm transition-colors',
                 'aurora-label text-slate-600 dark:text-slate-300',

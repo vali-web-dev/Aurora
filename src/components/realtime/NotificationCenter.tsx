@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { useBodyScrollLock } from '@/lib/hooks/useBodyScrollLock';
 
 /**
  * Notification Bell Component
@@ -30,10 +31,20 @@ export function NotificationBell() {
     }
   }, [isOpen]);
 
+  useBodyScrollLock(isOpen);
+
   if (!session?.user) return null;
 
   return (
     <div className="relative" ref={menuRef}>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/10"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Bell Icon Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}

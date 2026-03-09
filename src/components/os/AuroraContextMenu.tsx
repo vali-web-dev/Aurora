@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect, type MouseEvent as ReactMouseEvent } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useState, useRef, useEffect, useId } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { expandableNavigation, flattenedNavigation } from '@/lib/expandable-navigation';
@@ -13,25 +13,48 @@ import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/au
  * Houses ONLY page-related menu lists - contextual navigation for current section
  * Shows current page name and related pages within the same universe
  */
-export function AuroraContextMenu() {
+interface AuroraContextMenuProps {
+  onOpenChange?: (open: boolean) => void;
+  forceCloseSignal?: number;
+}
+
+export function AuroraContextMenu({ onOpenChange, forceCloseSignal = 0 }: AuroraContextMenuProps = {}) {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
   const { mode } = useTheme();
   const isIlluminated = mode === 'illuminated';
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
+  const menuId = useId();
 
   useEffect(() => {
     setIsPanelOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (menuRef.current?.contains(target) || triggerRef.current?.contains(target)) {
+        return;
+      }
+      setIsPanelOpen(false);
+    };
+
+    if (!isPanelOpen) {
+      return;
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isPanelOpen]);
+
+  useEffect(() => {
+    onOpenChange?.(isPanelOpen);
+  }, [isPanelOpen, onOpenChange]);
+
+  useEffect(() => {
+    setIsPanelOpen(false);
+  }, [forceCloseSignal]);
 
   // Close menu on ESC key
   useEffect(() => {
@@ -44,13 +67,7 @@ export function AuroraContextMenu() {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isPanelOpen]);
 
-  const openMenu = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setIsPanelOpen(true);
-  };
-
   const closeMenu = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsPanelOpen(false);
   };
 
@@ -111,43 +128,20 @@ export function AuroraContextMenu() {
   const contextNav = getContextualNavigation();
   const universeIconName = resolvePageIconName(contextNav.universe.label, contextNav.universe.href);
 
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    openMenu();
-  };
-
-  const handleMouseLeave = (event: ReactMouseEvent<HTMLElement>) => {
-    const relatedTarget = event.relatedTarget as Node | null;
-    if (!relatedTarget && isPanelOpen) return;
-    if (relatedTarget && (menuRef.current?.contains(relatedTarget) || triggerRef.current?.contains(relatedTarget))) {
-      return;
-    }
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      closeMenu();
-    }, 300);
-  };
-
   return (
     <>
       <div
         className="relative z-[9999]"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         {/* Aurora Text Button */}
         <button
           type="button"
           ref={triggerRef}
           onClick={() => {
-            closeMenu();
-            router.push('/home');
+            setIsPanelOpen((prev) => !prev);
           }}
           className={clsx(
-            'flex h-11 flex-col items-start justify-center rounded-lg',
+            'inline-flex h-11 items-center justify-center rounded-lg px-1',
             'transition-all duration-300',
             'hover:bg-slate-100 dark:hover:bg-slate-800',
             isIlluminated && 'hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]',
@@ -156,8 +150,9 @@ export function AuroraContextMenu() {
           aria-label={`${currentPageName} related pages`}
           aria-haspopup="menu"
           aria-expanded={isPanelOpen}
+          aria-controls={isPanelOpen ? menuId : undefined}
         >
-        <span className="aurora-label text-sm font-bold tracking-wider uppercase text-slate-900 dark:text-slate-50">
+        <span className="aurora-label text-sm font-bold uppercase leading-none tracking-wider text-slate-900 dark:text-slate-50">
           Aurora
         </span>
       </button>
@@ -176,11 +171,10 @@ export function AuroraContextMenu() {
           )}
           style={{ zIndex: 9999 }}
           role="menu"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          id={menuId}
         >
           {/* Header */}
-          <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm">
+          <div className="px-4 py-3 border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
             <div className="inline-flex items-center gap-2 aurora-label text-purple-600 dark:text-purple-400">
               <span className={clsx('inline-flex h-4 w-4', getPageIconColor(universeIconName))} aria-hidden="true">
                 <PageIcon pageName={universeIconName} className="h-4 w-4" />
@@ -209,7 +203,7 @@ export function AuroraContextMenu() {
                   'hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50',
                   'dark:hover:from-purple-950/20 dark:hover:to-blue-950/20',
                   pathname === page.href
-                    ? 'bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-950/40 dark:to-blue-950/40'
+                    ? 'bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-950 dark:to-blue-950'
                     : ''
                 )}
               >
@@ -230,7 +224,7 @@ export function AuroraContextMenu() {
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-2 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95">
+          <div className="px-4 py-2 border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
             <Link
               href={contextNav.universe.href}
               onClick={closeMenu}

@@ -3,6 +3,7 @@
 import { useTheme } from '@/lib/design-system/theme-provider';
 import { Button } from './Button';
 import { useState } from 'react';
+import { useBodyScrollLock } from '@/lib/hooks/useBodyScrollLock';
 
 export function ThemeSwitcher() {
   const { mode, family, setMode, setFamily } = useTheme();
@@ -18,8 +19,18 @@ export function ThemeSwitcher() {
     system: 'S',
   };
 
+  useBodyScrollLock(showMenu);
+
   return (
     <div className="relative">
+      {showMenu && (
+        <div
+          className="fixed inset-0 z-[9998] bg-black/10"
+          onClick={() => setShowMenu(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <Button
         variant="ghost"
         size="sm"

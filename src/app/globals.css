@@ -1331,13 +1331,18 @@ html.theme-creative {
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    background-color: transparent !important;
-    backdrop-filter: blur(16px);
+    background-color: #ffffff !important;
+    backdrop-filter: none;
   }
 
   .aurora-menu-panel--clear {
-    background-color: transparent !important;
+    background-color: #ffffff !important;
     backdrop-filter: none !important;
+  }
+
+  :is(.dark, [data-theme='dark'], .theme-dark, .theme-illuminated) .aurora-menu-panel,
+  :is(.dark, [data-theme='dark'], .theme-dark, .theme-illuminated) .aurora-menu-panel--clear {
+    background-color: #0f172a !important;
   }
 
   .aurora-menu-panel--clear::before,

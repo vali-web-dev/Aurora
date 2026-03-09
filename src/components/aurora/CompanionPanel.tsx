@@ -110,7 +110,7 @@ export function CompanionPanel() {
 
         {/* Context Snapshot */}
         <section className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
             <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
               Context Snapshot
             </h3>
@@ -140,7 +140,7 @@ export function CompanionPanel() {
             </dl>
           </div>
 
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
             <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
               Memory Controls
             </h3>
@@ -176,7 +176,7 @@ export function CompanionPanel() {
 
         {/* Active Signals */}
         {signals.length > 0 && (
-          <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4">
+          <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
             <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50 mb-3">
               Current Signals
             </h3>
@@ -212,7 +212,7 @@ export function CompanionPanel() {
         )}
 
         {/* Quick Note */}
-        <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4 space-y-3">
+        <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
               Quick Note
@@ -225,7 +225,7 @@ export function CompanionPanel() {
             placeholder="Capture a thought for your companion"
             className={cn(
               'w-full min-h-[96px] rounded-lg border border-slate-200 dark:border-slate-800',
-              'aurora-label bg-white/90 dark:bg-slate-950/70 px-3 py-2 text-sm text-slate-900 dark:text-slate-100',
+              'aurora-label bg-white dark:bg-slate-950 px-3 py-2 text-sm text-slate-900 dark:text-slate-100',
               'placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-500/50'
             )}
           />
@@ -237,7 +237,7 @@ export function CompanionPanel() {
         </section>
 
         {/* Recent Memory */}
-        <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-4">
+        <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
           <h3 className="aurora-label text-sm font-semibold text-slate-900 dark:text-slate-50">
             Recent Memory
           </h3>
@@ -250,7 +250,7 @@ export function CompanionPanel() {
             {recentEvents.map((event) => (
               <div
                 key={event.id}
-                className="rounded-lg border border-slate-200/70 dark:border-slate-800/80 bg-white/90 dark:bg-slate-950/60 px-3 py-2"
+                className="rounded-lg border border-slate-200/70 dark:border-slate-800/80 bg-white dark:bg-slate-950 px-3 py-2"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect, type MouseEvent as ReactMouseEvent } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useState, useRef, useEffect, useId } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { expandableNavigation } from '@/lib/expandable-navigation';
@@ -15,17 +15,21 @@ import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
  * Houses ALL main menu lists and submenu lists - the complete navigation system
  * Organized by: Primary, Explore, Support groups
  */
-export function AuroraLogoMenu() {
+interface AuroraLogoMenuProps {
+  onOpenChange?: (open: boolean) => void;
+  forceCloseSignal?: number;
+}
+
+export function AuroraLogoMenu({ onOpenChange, forceCloseSignal = 0 }: AuroraLogoMenuProps = {}) {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['Primary']);
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
   const { mode } = useTheme();
   const { concept, setConcept } = useAuroraLogo();
   const isIlluminated = mode === 'illuminated';
+  const menuId = useId();
 
   // Organize navigation by groups
   const groupedNav = {
@@ -40,15 +44,40 @@ export function AuroraLogoMenu() {
     Support: 'S',
   } as const;
 
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
+  const groupDescriptions = {
+    Primary: 'Core universes and daily workflows',
+    Explore: 'Discovery, expansion, and experiments',
+    Support: 'Help, settings, and governance',
+  } as const;
 
   useEffect(() => {
     setIsPanelOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (menuRef.current?.contains(target) || triggerRef.current?.contains(target)) {
+        return;
+      }
+      setIsPanelOpen(false);
+    };
+
+    if (!isPanelOpen) {
+      return;
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isPanelOpen]);
+
+  useEffect(() => {
+    onOpenChange?.(isPanelOpen);
+  }, [isPanelOpen, onOpenChange]);
+
+  useEffect(() => {
+    setIsPanelOpen(false);
+  }, [forceCloseSignal]);
 
   // Close menu on ESC key
   useEffect(() => {
@@ -61,34 +90,8 @@ export function AuroraLogoMenu() {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isPanelOpen]);
 
-  const openMenu = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setIsPanelOpen(true);
-  };
-
   const closeMenu = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsPanelOpen(false);
-  };
-
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    openMenu();
-  };
-
-  const handleMouseLeave = (event: ReactMouseEvent<HTMLElement>) => {
-    const relatedTarget = event.relatedTarget as Node | null;
-    if (!relatedTarget && isPanelOpen) return;
-    if (relatedTarget && (menuRef.current?.contains(relatedTarget) || triggerRef.current?.contains(relatedTarget))) {
-      return;
-    }
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      closeMenu();
-    }, 300);
   };
 
   const toggleGroup = (groupName: string) => {
@@ -99,24 +102,23 @@ export function AuroraLogoMenu() {
     );
   };
 
+  const isRouteActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
   return (
     <>
       <div
         className="relative z-[9999]"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         {/* Aurora Logo Button */}
         <button
           type="button"
           ref={triggerRef}
           onClick={() => {
-            closeMenu();
-            router.push('/');
+            setIsPanelOpen((prev) => !prev);
           }}
           className={clsx(
-            'relative flex items-center justify-center h-10 w-10 rounded-xl overflow-hidden',
-            'transition-all duration-300',
+            'relative inline-flex h-11 w-11 items-center justify-center rounded-xl overflow-hidden',
+            'transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50',
             'hover:scale-105 hover:shadow-xl',
             'hover:shadow-[0_0_18px_rgba(0,217,255,0.35)]',
             isIlluminated && 'hover:shadow-[0_0_25px_rgba(139,92,246,0.6)]',
@@ -125,6 +127,7 @@ export function AuroraLogoMenu() {
           aria-label="Aurora Navigation Menu"
           aria-haspopup="menu"
           aria-expanded={isPanelOpen}
+          aria-controls={isPanelOpen ? menuId : undefined}
         >
         {/* Aurora Logo (Concept 1) */}
         <span className="relative z-10">
@@ -139,101 +142,118 @@ export function AuroraLogoMenu() {
           className={clsx(
             'aurora-menu-panel aurora-menu-panel--clear',
             'absolute left-0 top-12',
-            'w-[420px] rounded-2xl shadow-2xl',
-            'border border-slate-200 dark:border-slate-800',
+            'w-[440px] rounded-2xl shadow-2xl',
+            'border border-slate-200/90 dark:border-slate-800/90',
             'max-h-[calc(100vh-100px)] overflow-y-auto',
             'animate-in fade-in slide-in-from-top-3 duration-300'
           )}
           style={{ zIndex: 9999 }}
           role="menu"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          id={menuId}
         >
           {/* Header */}
-          <div className="sticky top-0 px-5 py-4 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm z-10">
-            <h2 className="aurora-heading-3">
-              Aurora Universes
-            </h2>
-            <p className="aurora-label text-xs text-slate-500 dark:text-slate-400 mt-1">
-              Navigate your digital civilization
-            </p>
-            <div className="mt-3 flex items-center gap-2">
+          <div className="sticky top-0 z-10 border-b border-slate-200 px-5 py-4 bg-white dark:border-slate-800 dark:bg-slate-950">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="aurora-heading-3">Aurora Universes</h2>
+                <p className="aurora-label mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  Navigate your digital civilization with structured realms
+                </p>
+              </div>
+              <span className="aurora-label inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
+                Menu
+              </span>
+            </div>
+            <div className="mt-3 inline-flex rounded-lg border border-slate-200 bg-slate-50 p-1 dark:border-slate-700 dark:bg-slate-900">
               <button
                 type="button"
                 onClick={() => setConcept('core')}
                 className={clsx(
-                  'aurora-label text-xs px-2 py-1 rounded-full border transition-colors',
+                  'aurora-label rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40',
                   concept === 'core'
-                    ? 'border-blue-500 text-blue-600 bg-blue-50 dark:bg-blue-950/30'
-                    : 'border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400'
+                    ? 'bg-white text-blue-700 shadow-sm dark:bg-slate-800 dark:text-blue-300'
+                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
                 )}
               >
-                Concept 1
+                Core Mark
               </button>
               <button
                 type="button"
                 onClick={() => setConcept('wave')}
                 className={clsx(
-                  'aurora-label text-xs px-2 py-1 rounded-full border transition-colors',
+                  'aurora-label rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40',
                   concept === 'wave'
-                    ? 'border-purple-500 text-purple-600 bg-purple-50 dark:bg-purple-950/30'
-                    : 'border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400'
+                    ? 'bg-white text-purple-700 shadow-sm dark:bg-slate-800 dark:text-purple-300'
+                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
                 )}
               >
-                Concept 2
+                Wave Mark
               </button>
             </div>
           </div>
 
           {/* Navigation Groups */}
-          <div className="p-3">
+          <div className="space-y-3 p-3.5">
             {Object.entries(groupedNav).map(([groupName, items]) => {
               if (items.length === 0) return null;
               const isExpanded = expandedGroups.includes(groupName);
 
               return (
-                <div key={groupName} className="mb-3 last:mb-0">
+                <section
+                  key={groupName}
+                  className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
+                >
                   {/* Group Header */}
                   <button
                     type="button"
                     onClick={() => toggleGroup(groupName)}
                     className={clsx(
-                      'w-full flex items-center justify-between px-3 py-2 rounded-lg',
-                      'aurora-label',
-                      'transition-all duration-200',
-                      'hover:bg-slate-100 dark:hover:bg-slate-800',
+                      'aurora-label w-full px-3.5 py-3 transition-all duration-200',
+                      'flex items-center justify-between text-left',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40',
+                      'hover:bg-slate-50 dark:hover:bg-slate-800/60',
                       isExpanded
-                        ? 'aurora-label text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30'
-                        : 'aurora-label text-slate-500 dark:text-slate-400'
+                        ? 'bg-slate-50 text-slate-800 dark:bg-slate-800/60 dark:text-slate-100'
+                        : 'text-slate-600 dark:text-slate-300'
                     )}
                   >
-                    <span className="inline-flex items-center gap-2">
-                      <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-current/30 text-[10px] font-semibold" aria-hidden="true">
+                    <span className="inline-flex min-w-0 items-center gap-2.5">
+                      <span className="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border border-current/30 text-[10px] font-semibold" aria-hidden="true">
                         {groupIcons[groupName as keyof typeof groupIcons]}
                       </span>
-                      {groupName}
+                      <span className="min-w-0">
+                        <span className="block text-sm font-semibold">{groupName}</span>
+                        <span className="block truncate text-[11px] text-slate-500 dark:text-slate-400">
+                          {groupDescriptions[groupName as keyof typeof groupDescriptions]}
+                        </span>
+                      </span>
                     </span>
-                    <svg
-                      className={clsx(
-                        'w-4 h-4 transition-transform duration-200',
-                        isExpanded && 'rotate-180'
-                      )}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                    <span className="inline-flex items-center gap-2">
+                      <span className="inline-flex rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                        {items.length}
+                      </span>
+                      <svg
+                        className={clsx(
+                          'h-4 w-4 transition-transform duration-200',
+                          isExpanded && 'rotate-180'
+                        )}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </span>
                   </button>
 
                   {/* Group Items */}
                   {isExpanded && (
-                    <div className="mt-1 space-y-0.5">
+                    <div className="space-y-1 border-t border-slate-200 px-2.5 py-2.5 dark:border-slate-800">
                       {items.map((item) => {
                         const iconName = resolvePageIconName(item.label, item.href);
                         return (
@@ -243,18 +263,19 @@ export function AuroraLogoMenu() {
                             href={item.href}
                             onClick={closeMenu}
                             className={clsx(
-                              'flex items-start gap-3 px-3 py-2.5 rounded-lg',
-                              'transition-all duration-200',
-                              'hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50',
-                              'dark:hover:from-purple-950/20 dark:hover:to-pink-950/20',
-                              pathname === item.href
-                                ? 'bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-950/40 dark:to-pink-950/40'
+                              'flex items-start gap-3 rounded-lg border px-3 py-2.5',
+                              'transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40',
+                              'border-transparent hover:border-slate-200 hover:bg-slate-50',
+                              'dark:hover:border-slate-700 dark:hover:bg-slate-800/60',
+                              isRouteActive(item.href)
+                                ? 'border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950'
                                 : ''
                             )}
+                            role="menuitem"
                           >
                             <span
                               className={clsx(
-                                'w-5 h-5 flex-shrink-0 mt-0.5',
+                                'mt-0.5 h-5 w-5 flex-shrink-0',
                                 getPageIconColor(iconName)
                               )}
                             >
@@ -264,20 +285,23 @@ export function AuroraLogoMenu() {
                               />
                             </span>
                             <div className="flex-1 min-w-0">
-                              <div className="aurora-label text-sm text-slate-900 dark:text-slate-50">
+                              <div className="aurora-label text-sm font-medium text-slate-900 dark:text-slate-50">
                                 {item.label}
                               </div>
                               {item.description && (
-                                <div className="aurora-label text-xs text-slate-500 dark:text-slate-400 truncate">
+                                <div className="aurora-label mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">
                                   {item.description}
                                 </div>
                               )}
                             </div>
+                            <span className="aurora-label mt-0.5 text-xs text-slate-400 dark:text-slate-500" aria-hidden="true">
+                              ↗
+                            </span>
                           </Link>
 
                           {/* Submenu Items */}
                           {item.children && item.children.length > 0 && (
-                            <div className="ml-8 mt-0.5 pl-3 border-l-2 border-slate-200 dark:border-slate-800 space-y-0.5">
+                            <div className="ml-8 mt-1 space-y-1 border-l border-slate-200 pl-2.5 dark:border-slate-700">
                               {item.children.map((child) => {
                                 const iconName = resolvePageIconName(child.label, child.href);
                                 return (
@@ -286,13 +310,14 @@ export function AuroraLogoMenu() {
                                   href={child.href}
                                   onClick={closeMenu}
                                   className={clsx(
-                                    'aurora-label block px-3 py-1.5 rounded-md text-xs',
-                                    'transition-all duration-200',
+                                    'aurora-label block rounded-md px-3 py-1.5 text-xs',
+                                    'transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40',
                                     'hover:bg-slate-100 dark:hover:bg-slate-800',
-                                    pathname === child.href
+                                    isRouteActive(child.href)
                                       ? 'aurora-label bg-slate-100 dark:bg-slate-800 font-medium text-slate-900 dark:text-slate-50'
                                       : 'aurora-label text-slate-600 dark:text-slate-400'
                                   )}
+                                  role="menuitem"
                                 >
                                   <div className="font-medium inline-flex items-center gap-1.5">
                                     <span className={clsx('inline-flex h-3.5 w-3.5', getPageIconColor(iconName))} aria-hidden="true">
@@ -301,7 +326,7 @@ export function AuroraLogoMenu() {
                                     <span>{child.label}</span>
                                   </div>
                                   {child.description && (
-                                    <div className="aurora-label text-[10px] text-slate-500 dark:text-slate-500 truncate mt-0.5">
+                                    <div className="aurora-label mt-0.5 truncate text-[10px] text-slate-500 dark:text-slate-500">
                                       {child.description}
                                     </div>
                                   )}
@@ -315,14 +340,14 @@ export function AuroraLogoMenu() {
                       })}
                     </div>
                   )}
-                </div>
+                </section>
               );
             })}
           </div>
 
           {/* Footer */}
-          <div className="sticky bottom-0 px-5 py-3 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm">
-            <p className="aurora-label text-[10px] text-slate-400 dark:text-slate-500 text-center">
+          <div className="sticky bottom-0 border-t border-slate-200 bg-white px-5 py-3 dark:border-slate-800 dark:bg-slate-950">
+            <p className="aurora-label text-center text-[10px] text-slate-400 dark:text-slate-500">
               Press ESC to close • Navigate with keyboard
             </p>
           </div>

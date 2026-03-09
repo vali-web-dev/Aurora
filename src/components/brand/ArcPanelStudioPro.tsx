@@ -394,7 +394,7 @@ export function ArcPanelStudioPro() {
 
       {/* EXPORT DIALOG */}
       {showExportDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="rounded-lg bg-slate-800 border border-slate-700 p-6 max-w-md shadow-xl">
             <h2 className="text-lg font-bold mb-4">Export Design</h2>
             <div className="space-y-3 mb-6">

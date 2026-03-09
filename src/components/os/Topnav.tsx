@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState, type FocusEvent as ReactFocusEvent } from 'react';
+import { useEffect, useId, useRef, useState, type FocusEvent as ReactFocusEvent } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { flattenedNavigation } from '@/lib/expandable-navigation';
 import { useCartStore } from '@/lib/commerce/cart-store';
@@ -18,6 +18,7 @@ import { useTheme } from '@/lib/design-system/theme-provider';
 import { useCompanion } from '@/lib/companion/companion-provider';
 import { useAuroraLogo } from '@/lib/brand/aurora-logo-provider';
 import { useKeyboardShortcuts } from '@/lib/hooks/useKeyboardShortcuts';
+import { useBodyScrollLock } from '@/lib/hooks/useBodyScrollLock';
 import { AuroraLogoMenu } from '@/components/os/AuroraLogoMenu';
 import { AuroraContextMenu } from '@/components/os/AuroraContextMenu';
 import { PageIcon, getPageIconColor, resolvePageIconName } from '@/components/aurora/PageIcons';
@@ -57,22 +58,23 @@ export function TopNav() {
   const [hasSeenMenuHint, setHasSeenMenuHint] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isTopNavInteracting, setIsTopNavInteracting] = useState(false);
-  const userCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const guestCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [logoMenuOpen, setLogoMenuOpen] = useState(false);
+  const [contextMenuOpen, setContextMenuOpen] = useState(false);
+  const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
+  const [cartMenuOpen, setCartMenuOpen] = useState(false);
+  const [menuCloseSignal, setMenuCloseSignal] = useState(0);
+  const cartMenuId = useId();
+  const guestMenuId = useId();
+  const userMenuId = useId();
   const { itemCount, savedCount, total } = useCartStore();
   const { orderCount, pendingCount } = useOrderStore();
   const isBlockingOpen = searchOpen || docsOpen || helpOpen;
+  const isAnyMenuListOpen = logoMenuOpen || contextMenuOpen || notificationMenuOpen || cartMenuOpen || guestMenuOpen || userMenuOpen;
+  const isInteractionBlockingOpen = isBlockingOpen || isAnyMenuListOpen;
 
   const isIlluminated = mode === 'illuminated';
   const isLoading = status === 'loading';
   const isAuthenticated = status === 'authenticated';
-
-  useEffect(() => {
-    return () => {
-      if (userCloseTimerRef.current) clearTimeout(userCloseTimerRef.current);
-      if (guestCloseTimerRef.current) clearTimeout(guestCloseTimerRef.current);
-    };
-  }, []);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -86,6 +88,28 @@ export function TopNav() {
   useEffect(() => {
     setHasSeenMenuHint(hasSeenMenuHintInSession());
   }, []);
+
+  useBodyScrollLock(isInteractionBlockingOpen);
+
+  useEffect(() => {
+    if (!isAnyMenuListOpen) {
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      setGuestMenuOpen(false);
+      setUserMenuOpen(false);
+      setCartMenuOpen(false);
+      setMenuCloseSignal((value) => value + 1);
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isAnyMenuListOpen]);
 
   useEffect(() => {
     const onDesktop = window.matchMedia('(min-width: 768px)').matches;
@@ -116,6 +140,21 @@ export function TopNav() {
       setShowMenuHintPulse(false);
     }
   };
+
+  const closeLocalMenus = () => {
+    setGuestMenuOpen(false);
+    setUserMenuOpen(false);
+    setCartMenuOpen(false);
+  };
+
+  const closeManagedMenus = () => {
+    setMenuCloseSignal((value) => value + 1);
+  };
+
+  useEffect(() => {
+    closeLocalMenus();
+    closeManagedMenus();
+  }, [pathname]);
 
   const handleTopNavBlurCapture = (event: ReactFocusEvent<HTMLElement>) => {
     const relatedTarget = event.relatedTarget as Node | null;
@@ -165,7 +204,7 @@ export function TopNav() {
         'dark:border-slate-700/70 dark:bg-slate-900/85 dark:text-slate-300',
         'transition-all duration-300',
         showMenuHintPulse && !prefersReducedMotion && 'animate-pulse opacity-80',
-        isBlockingOpen || isTopNavInteracting
+        isInteractionBlockingOpen || isTopNavInteracting
           ? 'opacity-0 -translate-y-1'
           : 'opacity-90 peer-hover:opacity-0 peer-hover:-translate-y-1',
         isIlluminated && 'border-blue-400/50 shadow-[0_0_14px_rgba(59,130,246,0.25)]'
@@ -195,7 +234,7 @@ export function TopNav() {
         'relative overflow-visible',
         'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl',
         'transition-all duration-300',
-        isBlockingOpen
+        isInteractionBlockingOpen
           ? 'translate-y-0'
           : 'translate-y-0 md:-translate-y-full md:peer-hover:translate-y-0 md:hover:translate-y-0 md:focus-within:translate-y-0',
         isIlluminated && 'border-blue-400/30 shadow-[0_0_30px_rgba(59,130,246,0.15)]'
@@ -208,13 +247,17 @@ export function TopNav() {
       }}
       onBlurCapture={handleTopNavBlurCapture}
     >
-      {isBlockingOpen && (
+      {isInteractionBlockingOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/10"
           onClick={() => {
             setSearchOpen(false);
             setDocsOpen(false);
             setHelpOpen(false);
+            setGuestMenuOpen(false);
+            setUserMenuOpen(false);
+            setCartMenuOpen(false);
+            setMenuCloseSignal((value) => value + 1);
           }}
           role="presentation"
         />
@@ -225,75 +268,66 @@ export function TopNav() {
       </div>
       <div className="mx-auto w-full max-w-7xl px-4 relative z-10">
         <div className="flex flex-col gap-2 py-2.5">
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             {/* Aurora Navigation - Clean Architecture */}
-            <div className="flex items-start gap-3 shrink-0">
+            <div className="flex h-11 shrink-0 items-center gap-3">
               {/* Aurora Logo Menu - All Universes */}
-              <div className="mt-[10px] h-11 flex items-start">
-                <AuroraLogoMenu />
+              <div className="flex h-11 items-center">
+                <AuroraLogoMenu onOpenChange={setLogoMenuOpen} forceCloseSignal={menuCloseSignal} />
               </div>
 
               {/* Aurora Context Menu - Current Page */}
-              <div className="hidden sm:block h-11">
-                <AuroraContextMenu />
+              <div className="hidden h-11 items-center sm:flex">
+                <AuroraContextMenu onOpenChange={setContextMenuOpen} forceCloseSignal={menuCloseSignal} />
               </div>
             </div>
 
-            <div className="flex-1 min-w-[220px] max-w-[620px]">
+            <div className="flex h-11 flex-1 min-w-[220px] max-w-[620px] items-center">
               <GlobalSearch
                 externalOpen={searchOpen}
                 onOpenChange={setSearchOpen}
                 triggerMode="input"
                 className="w-full"
               />
-              <div className="mt-1.5 hidden sm:flex justify-center">
-                <div className="origin-top scale-[0.363]">
-                  <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-[10px]">
-                    {breadcrumbSegments.map((crumb, index) => {
-                      const isLast = index === breadcrumbSegments.length - 1;
-                      const iconName = resolvePageIconName(crumb.label, crumb.href);
-                      return (
-                        <div key={`${crumb.href}-${index}`} className="flex items-center gap-1">
-                          {index > 0 && <span className="aurora-label text-slate-400 dark:text-slate-500">/</span>}
-                          {isLast ? (
-                            <span className="aurora-label inline-flex items-center gap-1 font-medium text-slate-700 dark:text-slate-300">
-                              <span className={clsx('inline-flex h-3.5 w-3.5', getPageIconColor(iconName))} aria-hidden="true">
-                                <PageIcon pageName={iconName} className="h-3.5 w-3.5" />
-                              </span>
-                              <span>{crumb.label}</span>
-                            </span>
-                          ) : (
-                            <Link
-                              href={crumb.href}
-                              className="aurora-label inline-flex items-center gap-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-                            >
-                              <span className={clsx('inline-flex h-3.5 w-3.5', getPageIconColor(iconName))} aria-hidden="true">
-                                <PageIcon pageName={iconName} className="h-3.5 w-3.5" />
-                              </span>
-                              <span>{crumb.label}</span>
-                            </Link>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </nav>
-                </div>
-              </div>
             </div>
 
             {/* Right Actions */}
-            <div className="flex items-start justify-end gap-3 h-11 shrink-0">
-              <NotificationBellNav />
-              <div className="group relative">
-                <Link
-                  href="/commerce/cart"
+            <div className="flex h-11 shrink-0 items-center justify-end gap-2 sm:gap-3">
+              <div className="flex h-11 items-center">
+                <NotificationBellNav onOpenChange={setNotificationMenuOpen} forceCloseSignal={menuCloseSignal} />
+              </div>
+              <div
+                className="relative flex h-11 items-center"
+                onBlurCapture={(event) => {
+                  const next = event.relatedTarget as Node | null;
+                  if (!event.currentTarget.contains(next)) {
+                    setCartMenuOpen(false);
+                  }
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCartMenuOpen((prev) => {
+                      const next = !prev;
+                      if (next) {
+                        setGuestMenuOpen(false);
+                        setUserMenuOpen(false);
+                        closeManagedMenus();
+                      }
+                      return next;
+                    });
+                  }}
                   className={clsx(
                     'aurora-label relative inline-flex h-11 w-11 items-center justify-center rounded-lg',
                     'text-slate-600 dark:text-slate-300',
                     'hover:bg-slate-100 dark:hover:bg-slate-800',
                     'transition-all duration-200'
                   )}
-                  aria-label="Open cart"
+                  aria-label="Toggle cart menu"
+                  aria-haspopup="menu"
+                  aria-expanded={cartMenuOpen}
+                  aria-controls={cartMenuOpen ? cartMenuId : undefined}
                 >
                   <svg
                     className="h-6 w-6"
@@ -314,15 +348,17 @@ export function TopNav() {
                       {itemCount}
                     </span>
                   )}
-                </Link>
+                </button>
 
                 <div
                   className={clsx(
                     'aurora-menu-panel absolute right-0 top-full mt-2 w-72 rounded-lg border border-slate-200 bg-white p-3 shadow-xl dark:border-slate-700 dark:bg-slate-900 z-[9999]',
                     'opacity-0 translate-y-1 pointer-events-none transition-all duration-200',
-                    'group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto',
-                    'group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto'
+                    cartMenuOpen && 'opacity-100 translate-y-0 pointer-events-auto'
                   )}
+                  role="menu"
+                  aria-label="Cart menu"
+                  id={cartMenuId}
                 >
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div className="rounded-md border border-slate-200 px-2 py-1.5 dark:border-slate-700">
@@ -346,6 +382,7 @@ export function TopNav() {
                         )}
                       </p>
                     </div>
+
                   </div>
                   <div className="mt-3 flex items-center gap-2">
                     <Link href="/commerce/cart" className="flex-1">
@@ -364,16 +401,7 @@ export function TopNav() {
           {!isAuthenticated && !isLoading && (
             <>
               <div
-                className="relative"
-                onMouseEnter={() => {
-                  if (guestCloseTimerRef.current) clearTimeout(guestCloseTimerRef.current);
-                  setGuestMenuOpen(true);
-                }}
-                onMouseLeave={() => {
-                  if (guestCloseTimerRef.current) clearTimeout(guestCloseTimerRef.current);
-                  guestCloseTimerRef.current = setTimeout(() => setGuestMenuOpen(false), 120);
-                }}
-                onFocusCapture={() => setGuestMenuOpen(true)}
+                className="relative flex h-11 items-center"
                 onBlurCapture={(event) => {
                   const next = event.relatedTarget as Node | null;
                   if (!event.currentTarget.contains(next)) {
@@ -382,7 +410,17 @@ export function TopNav() {
                 }}
               >
                 <button
-                  onClick={() => setGuestMenuOpen(!guestMenuOpen)}
+                  onClick={() => {
+                    setGuestMenuOpen((prev) => {
+                      const next = !prev;
+                      if (next) {
+                        setUserMenuOpen(false);
+                        setCartMenuOpen(false);
+                        closeManagedMenus();
+                      }
+                      return next;
+                    });
+                  }}
                   className={clsx(
                     'relative inline-flex h-11 w-11 items-center justify-center rounded-full',
                     'bg-slate-100 dark:bg-slate-800',
@@ -391,6 +429,8 @@ export function TopNav() {
                   )}
                   aria-label="Open guest menu"
                   aria-expanded={guestMenuOpen}
+                  aria-haspopup="menu"
+                  aria-controls={guestMenuOpen ? guestMenuId : undefined}
                   type="button"
                 >
                   <div className="aurora-label h-9 w-9 rounded-full bg-gradient-to-br from-slate-500 to-slate-700 flex items-center justify-center text-white text-sm font-semibold">
@@ -405,7 +445,11 @@ export function TopNav() {
                       'bg-white dark:bg-slate-900',
                       'border border-slate-200 dark:border-slate-700',
                       'py-1 max-h-80 overflow-y-auto'
-                    )}>
+                    )}
+                      role="menu"
+                      aria-label="Guest account menu"
+                      id={guestMenuId}
+                    >
                       <div className="px-4 py-2">
                         <p className="aurora-label text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                           Account
@@ -504,16 +548,7 @@ export function TopNav() {
           {/* User Menu */}
           {isAuthenticated && session?.user && (
             <div
-              className="relative"
-              onMouseEnter={() => {
-                if (userCloseTimerRef.current) clearTimeout(userCloseTimerRef.current);
-                setUserMenuOpen(true);
-              }}
-              onMouseLeave={() => {
-                if (userCloseTimerRef.current) clearTimeout(userCloseTimerRef.current);
-                userCloseTimerRef.current = setTimeout(() => setUserMenuOpen(false), 120);
-              }}
-              onFocusCapture={() => setUserMenuOpen(true)}
+              className="relative flex h-11 items-center"
               onBlurCapture={(event) => {
                 const next = event.relatedTarget as Node | null;
                 if (!event.currentTarget.contains(next)) {
@@ -522,7 +557,17 @@ export function TopNav() {
               }}
             >
               <button
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                onClick={() => {
+                  setUserMenuOpen((prev) => {
+                    const next = !prev;
+                    if (next) {
+                      setGuestMenuOpen(false);
+                      setCartMenuOpen(false);
+                      closeManagedMenus();
+                    }
+                    return next;
+                  });
+                }}
                 className={clsx(
                   'relative inline-flex h-11 w-11 items-center justify-center rounded-full',
                   'bg-slate-100 dark:bg-slate-800',
@@ -530,6 +575,8 @@ export function TopNav() {
                   'transition-all duration-200'
                 )}
                 aria-expanded={userMenuOpen}
+                aria-haspopup="menu"
+                aria-controls={userMenuOpen ? userMenuId : undefined}
                 type="button"
               >
                 <div className="aurora-label h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
@@ -545,7 +592,11 @@ export function TopNav() {
                     'bg-white dark:bg-slate-900',
                     'border border-slate-200 dark:border-slate-700',
                     'py-1 max-h-80 overflow-y-auto'
-                  )}>
+                  )}
+                    role="menu"
+                    aria-label="User menu"
+                    id={userMenuId}
+                  >
                     <Link
                       href="/dashboard"
                       className="aurora-label block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -651,6 +702,40 @@ export function TopNav() {
               )}
             </div>
           )}
+
+          <div className="mx-auto mt-0.5 hidden w-full max-w-[620px] justify-center sm:flex">
+            <div className="origin-top scale-[0.363]">
+              <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-[10px]">
+                {breadcrumbSegments.map((crumb, index) => {
+                  const isLast = index === breadcrumbSegments.length - 1;
+                  const iconName = resolvePageIconName(crumb.label, crumb.href);
+                  return (
+                    <div key={`${crumb.href}-${index}`} className="flex items-center gap-1">
+                      {index > 0 && <span className="aurora-label text-slate-400 dark:text-slate-500">/</span>}
+                      {isLast ? (
+                        <span className="aurora-label inline-flex items-center gap-1 font-medium text-slate-700 dark:text-slate-300">
+                          <span className={clsx('inline-flex h-3.5 w-3.5', getPageIconColor(iconName))} aria-hidden="true">
+                            <PageIcon pageName={iconName} className="h-3.5 w-3.5" />
+                          </span>
+                          <span>{crumb.label}</span>
+                        </span>
+                      ) : (
+                        <Link
+                          href={crumb.href}
+                          className="aurora-label inline-flex items-center gap-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                        >
+                          <span className={clsx('inline-flex h-3.5 w-3.5', getPageIconColor(iconName))} aria-hidden="true">
+                            <PageIcon pageName={iconName} className="h-3.5 w-3.5" />
+                          </span>
+                          <span>{crumb.label}</span>
+                        </Link>
+                      )}
+                    </div>
+                  );
+                })}
+              </nav>
+            </div>
+          </div>
 
           {/* Collapsible Menu - Mobile Only */}
           <CollapsibleNav />

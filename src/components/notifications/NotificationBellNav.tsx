@@ -6,11 +6,24 @@ import Link from 'next/link';
 import { onEvent } from '@/lib/websocket-client';
 import { WSEventType } from '@/lib/websocket-types';
 
-export function NotificationBellNav() {
+interface NotificationBellNavProps {
+  onOpenChange?: (open: boolean) => void;
+  forceCloseSignal?: number;
+}
+
+export function NotificationBellNav({ onOpenChange, forceCloseSignal = 0 }: NotificationBellNavProps = {}) {
   const { data: session } = useSession();
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+    useEffect(() => {
+      onOpenChange?.(isOpen);
+    }, [isOpen, onOpenChange]);
+
+    useEffect(() => {
+      setIsOpen(false);
+    }, [forceCloseSignal]);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Fetch initial unread count

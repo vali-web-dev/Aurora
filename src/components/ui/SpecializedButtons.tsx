@@ -6,6 +6,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, ButtonProps } from './Button';
 import { cn } from '@/lib/utils';
+import { useBodyScrollLock } from '@/lib/hooks/useBodyScrollLock';
 
 // ========================================
 // ICON BUTTON
@@ -218,6 +219,8 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen]);
 
+  useBodyScrollLock(isOpen);
+
   const handleItemClick = (item: DropdownButtonItem) => {
     if (!item.disabled) {
       onSelect(item.value);
@@ -227,6 +230,14 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
 
   return (
     <div className="aurora-dropdown-btn-container" style={{ position: 'relative', display: 'inline-block' }} ref={dropdownRef}>
+      {isOpen && (
+        <div
+          style={{ position: 'fixed', inset: 0, zIndex: 999 }}
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <Button
         variant={variant}
         size={size}
@@ -249,7 +260,7 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
             minWidth: '200px',
             maxHeight: `${maxHeight}px`,
             overflowY: 'auto',
-            background: 'rgba(15, 23, 42, 0.98)',
+            background: 'rgb(15, 23, 42)',
             backdropFilter: 'blur(12px)',
             border: '1px solid rgba(148, 163, 184, 0.2)',
             borderRadius: '8px',

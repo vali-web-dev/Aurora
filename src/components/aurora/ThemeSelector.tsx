@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useTheme } from '@/lib/design-system/theme-provider';
+import { useBodyScrollLock } from '@/lib/hooks/useBodyScrollLock';
 import type { ThemeMode, ThemeFamily } from '@/lib/design-system/tokens';
 import clsx from 'clsx';
 
@@ -78,6 +79,8 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
     }
   }, [isOpen]);
 
+  useBodyScrollLock(isOpen && variant === 'compact');
+
   if (variant === 'expanded') {
     return (
       <div className="space-y-8 py-4">
@@ -98,7 +101,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
                   'border border-transparent',
                   mode === m.value
                     ? 'aurora-label bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg dark:shadow-blue-900/50 ring-2 ring-blue-400 dark:ring-blue-500'
-                    : 'aurora-label bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md'
+                    : 'aurora-label bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md'
                 )}
               >
                 <div className="text-3xl mb-2 transform transition-transform group-hover:scale-110">
@@ -138,7 +141,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
               'border border-slate-200 dark:border-slate-800',
               isVeilEnabled
                 ? 'aurora-label bg-blue-500/10 text-blue-700 dark:text-blue-200 border-blue-400/60'
-                : 'aurora-label bg-slate-50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300'
+                : 'aurora-label bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300'
             )}
           >
             <div className="text-left">
@@ -177,7 +180,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
                   'border border-transparent text-center',
                   family === f.value
                     ? 'aurora-label ring-2 ring-offset-2 dark:ring-offset-slate-950 text-white shadow-lg'
-                    : 'aurora-label bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md'
+                    : 'aurora-label bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md'
                 )}
                 style={
                   family === f.value
@@ -210,6 +213,14 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
   // Collapsible Compact variant for navbar
   return (
     <div className="relative">
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[9998] bg-black/10"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Trigger Button */}
       <button
         ref={buttonRef}
@@ -219,7 +230,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
           'transition-all duration-300 ease-out',
           isOpen
             ? 'aurora-label bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg'
-            : 'aurora-label text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 bg-slate-50/50 dark:bg-slate-900/30',
+            : 'aurora-label text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 bg-slate-50 dark:bg-slate-900',
           'border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-600'
         )}
         title="Theme & Mode"
@@ -373,7 +384,7 @@ export function ThemeSelector({ showLabel = true, variant = 'compact' }: ThemeSe
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+          <div className="px-4 py-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
             <p className="aurora-label text-xs text-slate-500 dark:text-slate-400 text-center">
               Current: <span className="font-semibold capitalize">{mode}</span> mode, <span className="font-semibold capitalize">{family}</span> family
             </p>

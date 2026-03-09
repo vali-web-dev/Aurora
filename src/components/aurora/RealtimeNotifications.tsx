@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Badge } from '@/components/aurora/Badge';
 import { useRealtime } from '@/lib/realtime/realtime-provider';
 import { announce } from '@/lib/a11y/announcer';
+import { useBodyScrollLock } from '@/lib/hooks/useBodyScrollLock';
 
 interface LiveNotification {
   id: string;
@@ -111,6 +112,8 @@ export function RealtimeNotifications() {
     return () => announce('Live updates closed');
   }, [isOpen]);
 
+  useBodyScrollLock(isOpen);
+
   const toneVariant = (tone: LiveNotification['tone']) => {
     if (tone === 'success') return 'success';
     if (tone === 'warning') return 'warning';
@@ -128,9 +131,9 @@ export function RealtimeNotifications() {
         className={clsx(
           'aurora-label relative w-10 h-10 rounded-lg flex items-center justify-center',
           'aurora-label text-slate-600 dark:text-slate-300',
-          'bg-slate-100/70 dark:bg-slate-900/60',
+          'bg-slate-100 dark:bg-slate-900',
           'border border-slate-200 dark:border-slate-800',
-          'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
+          'hover:bg-slate-200 dark:hover:bg-slate-800'
         )}
         aria-label="Open live notifications"
         aria-haspopup="dialog"
@@ -144,6 +147,14 @@ export function RealtimeNotifications() {
           </span>
         )}
       </button>
+
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[9998] bg-black/10"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {isOpen && (
         <div

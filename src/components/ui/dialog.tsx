@@ -108,7 +108,7 @@ export function Dialog({ open, onOpenChange, children, announceLabel }: DialogPr
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-x-0 bottom-0 top-[80px] z-50 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-x-0 bottom-0 top-[80px] z-50 bg-black/70 backdrop-blur-sm"
         onClick={handleBackdropClick}
         role="presentation"
       />

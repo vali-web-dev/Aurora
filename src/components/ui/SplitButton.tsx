@@ -6,6 +6,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, ButtonProps } from './Button';
 import { cn } from '@/lib/utils';
+import { useBodyScrollLock } from '@/lib/hooks/useBodyScrollLock';
 
 export interface SplitButtonAction {
   label: string;
@@ -80,8 +81,18 @@ export const SplitButton: React.FC<SplitButtonProps> = ({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen]);
 
+  useBodyScrollLock(isOpen);
+
   return (
     <div className="aurora-split-btn-container" style={{ position: 'relative', display: 'inline-flex' }} ref={dropdownRef}>
+      {isOpen && (
+        <div
+          style={{ position: 'fixed', inset: 0, zIndex: 999 }}
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Primary Action Button */}
       <Button
         variant={variant}
@@ -127,7 +138,7 @@ export const SplitButton: React.FC<SplitButtonProps> = ({
             position: 'absolute',
             ...getDropdownPosition(dropdownPlacement),
             minWidth: '200px',
-            background: 'rgba(15, 23, 42, 0.98)',
+            background: 'rgb(15, 23, 42)',
             backdropFilter: 'blur(12px)',
             border: '1px solid rgba(148, 163, 184, 0.2)',
             borderRadius: '8px',

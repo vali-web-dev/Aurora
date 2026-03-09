@@ -151,7 +151,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
             Quick Tips to Get Started:
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900">
               <div className="text-2xl mb-2">📝</div>
               <div className="aurora-label text-sm text-slate-900 dark:text-slate-50 mb-1">
                 Create a Post
@@ -161,7 +161,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
               </div>
             </div>
             
-            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900">
               <div className="text-2xl mb-2">👥</div>
               <div className="aurora-label text-sm text-slate-900 dark:text-slate-50 mb-1">
                 Join a Community
@@ -171,7 +171,7 @@ export function EmptyDashboardState({ onSampleDataCreated }: EmptyDashboardState
               </div>
             </div>
             
-            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900">
               <div className="text-2xl mb-2">🛍️</div>
               <div className="aurora-label text-sm text-slate-900 dark:text-slate-50 mb-1">
                 Shop & Explore

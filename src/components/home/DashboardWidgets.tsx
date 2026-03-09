@@ -110,7 +110,7 @@ export function RecentOrdersWidget() {
               href={`/commerce/orders/${order.id}`}
               className={clsx(
                 'block p-4 rounded-lg',
-                'bg-slate-50 dark:bg-slate-900/50',
+                'bg-slate-50 dark:bg-slate-900',
                 'hover:bg-slate-100 dark:hover:bg-slate-900',
                 'border border-slate-200 dark:border-slate-800',
                 'transition-colors'
@@ -266,7 +266,7 @@ export function ActivityFeedWidget({ activities }: { activities: any[] }) {
                 key={activity.id}
                 className={clsx(
                   'flex items-center gap-3 p-3 rounded-lg',
-                  'bg-slate-50 dark:bg-slate-900/50',
+                  'bg-slate-50 dark:bg-slate-900',
                   'hover:bg-slate-100 dark:hover:bg-slate-900',
                   'transition-colors cursor-pointer'
                 )}

@@ -165,7 +165,7 @@ export function GlobalSearch({
             placeholder={placeholder}
             className={clsx(
               'aurora-label h-11 w-full rounded-lg border pl-3 pr-10 text-sm',
-              'bg-white/90 dark:bg-slate-900/70',
+              'bg-white dark:bg-slate-900',
               'border-slate-200 dark:border-slate-800',
               'aurora-label text-slate-700 dark:text-slate-200',
               'placeholder:opacity-70',
@@ -256,9 +256,9 @@ export function GlobalSearch({
               'aurora-label hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg',
               'text-sm font-medium transition-all duration-200',
               'aurora-label text-slate-600 dark:text-slate-300',
-              'bg-slate-100/70 dark:bg-slate-900/60',
+              'bg-slate-100 dark:bg-slate-900',
               'border border-slate-200 dark:border-slate-800',
-              'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
+              'hover:bg-slate-200 dark:hover:bg-slate-800'
             )}
             aria-label="Open search"
             aria-haspopup="dialog"
@@ -274,9 +274,9 @@ export function GlobalSearch({
             className={clsx(
               'aurora-label md:hidden w-10 h-10 rounded-lg flex items-center justify-center',
               'aurora-label text-slate-600 dark:text-slate-300',
-              'bg-slate-100/70 dark:bg-slate-900/60',
+              'bg-slate-100 dark:bg-slate-900',
               'border border-slate-200 dark:border-slate-800',
-              'hover:bg-slate-200/70 dark:hover:bg-slate-800/70'
+              'hover:bg-slate-200 dark:hover:bg-slate-800'
             )}
             aria-label="Open search"
             aria-haspopup="dialog"
