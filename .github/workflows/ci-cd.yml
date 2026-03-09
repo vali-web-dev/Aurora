@@ -131,6 +131,10 @@ jobs:
         if: always()
         run: node scripts/publish-artifact-smoke-summary.js --file artifacts/artifact-storage-smoke.json
 
+      - name: Validate Endpoint Contract Summary Config
+        if: always()
+        run: node scripts/publish-endpoint-contract-summary.js --file artifacts/api-endpoint-contracts.json --validate-config-only
+
       - name: Publish Endpoint Contract Summary
         if: always()
         run: node scripts/publish-endpoint-contract-summary.js --file artifacts/api-endpoint-contracts.json
