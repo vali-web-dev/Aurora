@@ -137,7 +137,20 @@ jobs:
 
       - name: Publish Endpoint Contract Summary
         if: always()
-        run: node scripts/publish-endpoint-contract-summary.js --file artifacts/api-endpoint-contracts.json
+        run: |
+          node scripts/publish-endpoint-contract-summary.js \
+            --file artifacts/api-endpoint-contracts.json \
+            --show-domains --show-domain-percentages \
+            --json-summary-out artifacts/endpoint-contract-summary.json
+
+      - name: Upload Endpoint Contract Summary JSON
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: endpoint-contract-summary-${{ github.run_id }}
+          path: artifacts/endpoint-contract-summary.json
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Publish Build Badge Annotation
         if: always()
